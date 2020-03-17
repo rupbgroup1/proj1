@@ -14,7 +14,7 @@ export default class RegistrationP1 extends Component {
         this.state = {
             userPrivateName: '',
             userLastName: '',
-            nameIsPrivate: false,
+            nameIsPrivate: true,
             yearOfBirth: '2020',
             gender:''
         };
@@ -23,9 +23,12 @@ export default class RegistrationP1 extends Component {
 
 
     render() {
-        const years = ["2020", "2019", "2018", "2017", "2016", "2015"];
+
+        const thisYear = (new Date()).getFullYear();
+        const years = Array.from(new Array(100),( val, index) => (thisYear-index).toString());
+        
         return (
-            <ScrollView>
+            
             <View style={styles.screen}>
               <Header />
                 <View style={styles.container}>
@@ -62,8 +65,8 @@ export default class RegistrationP1 extends Component {
                         style={{ width: 55, backgroundColor: 'white'}}
                         selectedValue={this.state.yearOfBirth}
                         onValueChange={(value) => this.setState({ yearOfBirth: value })}>
-                        {years.map((item) => {
-                            return (<Picker.Item label={item} value={item} key={item}/>);
+                        {years.map((item,index) => {
+                            return (<Picker.Item label={item} value={item} key={index}/>);
                         })}
                     </Picker>
                     <Text style={styles.subTitle} >
@@ -87,7 +90,6 @@ export default class RegistrationP1 extends Component {
                     </View>
                 </View>
             </View>
-            </ScrollView>
         );
     }
 }
@@ -96,7 +98,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: '#E0CEBA'
+        backgroundColor: '#ecf0f1'
     },
     input: {
         width: '80%',
