@@ -7,12 +7,15 @@ import { SimpleLineIcons } from '@expo/vector-icons';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import GenderButton from '../components/GenderButton';
+import 'react-native-gesture-handler';
 
 
 
 const AddPicture = ({navigation}) =>{
+
+
     return(
-        <View style={{backgroundColor:'#E0CEBA', height:'100%'}}>  
+        <View style={{backgroundColor:'#F0F8FF', height:'100%'}}>  
         <Header/>
        <Text style={styles.subTitle}>
            הגדר את תמונת הפרופיל שלך
@@ -27,10 +30,11 @@ const AddPicture = ({navigation}) =>{
             <GenderButton onPress={() => navigation.navigate('ImageGallery')}><SimpleLineIcons name="picture" size={40} color="black"/></GenderButton>
         
             </View>
-
            
                     <View style={styles.checkbox}>
-                        <CheckBox onClick={(PicIsPrivate) => this.setState({ PicIsPrivate})} />
+                        <CheckBox 
+                        onClick={(PicIsPrivate) => this.setState({ PicIsPrivate})}
+                         />
                         <Text style={{ paddingTop: 3, textAlign: 'center'}}>אני מאשר לחשוף את התמונה למשתמשים באפליקציה</Text>
                     </View>
         
@@ -39,6 +43,8 @@ const AddPicture = ({navigation}) =>{
                             title={'המשך'}
                         />
                    </View> 
+
+                   
 
 
 
