@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
         height: 44,
         padding: 10,
         borderWidth: 1,
-        borderColor: '#E0CEBA',
+        borderColor: '#F0F8FF',
         textAlign: 'right',
         backgroundColor: 'white',
         marginRight:'10%',
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
         
     },
     container: {
-        backgroundColor: '#E0CEBA',
+        backgroundColor: '#F0F8FF',
         height: '100%',
         width: '100%'
 

@@ -7,6 +7,13 @@ import RegistrationIntroduction from './screens/RegistrationIntroduction';
 import RegistrationP1 from './screens/RegistrationP1';
 import RegistrationPicture from './screens/RegistrationPicture';
 import ForgotPassword from './screens/ForgotPassword';
+import Pic from './screens/Pic';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import CameraPage from './screens/CameraPage';
+import ImageGallery from './screens/ImageGallery';
+
+
 
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
@@ -22,6 +29,19 @@ const fetchFonts = () => {
   });
 };
 
+const navigator = createStackNavigator({
+  ImageGallery:ImageGallery,
+  CameraPage: CameraPage,
+  Pic: Pic 
+  
+}, {
+  initialRouteName: 'Pic',
+  defaultNavigationOptions: {
+    title: 'Pic'
+  }
+})
+const Na = createAppContainer(navigator)
+
 export default function App() {
   const [dataLoaded, setDataLoaded] = useState(false);
   if (!dataLoaded) {
@@ -34,7 +54,7 @@ export default function App() {
     );
   }
     return (
-    <RegistrationPicture/>
+      <Na/>
     );
  
 }
