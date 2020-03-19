@@ -69,29 +69,29 @@ export default class RegistrationP4 extends React.Component {
     };
 
 
-    // componentDidMount() {
-    //     return fetch('http://localhost:50456/api/City', {
-    //         method: 'GET',
-    //         headers: new Headers({
-    //             'Content-Type': 'application/json; charset=UTF-8',
-    //         })
-    //     })
-    //         .then(res => {
-    //             console.log('res=', res);
-    //             console.log('res.status', res.status);
-    //             console.log('res.ok', res.ok);
-    //             return res.json();
-    //         })
-    //         .then(
-    //             (result) => {
-    //                 console.log("fetch btnFetchGetCities= ", result);
-    //                 this.setState({ allCities: result, isLoading: false })
+    componentDidMount() {
+        return fetch('http://localhost:50456/api/City', {
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'application/json; charset=UTF-8',
+            })
+        })
+            .then(res => {
+                console.log('res=', res);
+                console.log('res.status', res.status);
+                console.log('res.ok', res.ok);
+                return res.json();
+            })
+            .then(
+                (result) => {
+                    console.log("fetch btnFetchGetCities= ", result);
+                    this.setState({ allCities: result, isLoading: false })
 
-    //             },
-    //             (error) => {
-    //                 console.log("err post=", error);
-    //             });
-    // }
+                },
+                (error) => {
+                    console.log("err post=", error);
+                });
+    }
 
 
     render() {

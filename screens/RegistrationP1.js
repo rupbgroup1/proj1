@@ -4,7 +4,6 @@ import Header from '../components/Header';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import GenderButton from '../components/GenderButton';
 import colors from '../assets/constant/colors';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 
 export default class RegistrationP1 extends Component {

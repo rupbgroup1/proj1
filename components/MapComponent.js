@@ -12,7 +12,9 @@ const MapComponent = props => {
             zoomEnabled={true}
             initialRegion={{
                latitude: 32.109333,
-               longitude: 34.855499
+               longitude: 34.855499,
+               latitudeDelta:  0.00922,
+               longitudeDelta: 0.00421
             }}
          />
       </View>
