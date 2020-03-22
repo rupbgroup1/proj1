@@ -83,7 +83,7 @@ export default class RegistrationP1 extends Component {
                    <Text style={ this.state.gender==='other'? styles.genderNoteSelected : styles.genderNote}  >אחר </Text>
                    </View>
                     <View style={styles.button}>
-                        <Button
+                        <Button onPress={() => this.props.navigation.navigate('Pic')} 
                             title={'המשך'}
                         />
                     </View>

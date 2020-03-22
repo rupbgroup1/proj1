@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, View, StyleSheet, Text } from 'react-native';
 
-const RegistrationIntroduction = () => {
+const RegistrationIntroduction = ({navigation}) => {
  
     return (
       <View style={styles.container}>
@@ -15,7 +15,7 @@ const RegistrationIntroduction = () => {
     הגדרת הפרופיל בכל עת
         </Text>
         <View style={styles.button}>
-        <Button
+        <Button onPress={() => navigation.navigate('RegistrationP1')}
           title={'שנתחיל?'}
         />
         </View> 

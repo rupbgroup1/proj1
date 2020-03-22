@@ -1,10 +1,21 @@
 import React, { Component, useState } from 'react';
 import { Alert, Button, TextInput, View, StyleSheet, Text } from 'react-native';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 
 import LoginScreen from './screens/LoginScreen';
+import ForgotPassword from './screens/ForgotPassword';
+import RegistrationP1 from './screens/RegistrationP1';
+import Pic from './screens/Pic';
+import CameraPage from './screens/CameraPage';
+import ImageGallery from './screens/ImageGallery';
 import RegistrationIntroduction from './screens/RegistrationIntroduction';
 import RegistrationP4 from './screens/RegistrationP4';
-import RegistrationP1 from './screens/RegistrationP1';
+
+
+
+
+
 import MapView from 'react-native-maps';
 
 
@@ -22,6 +33,24 @@ const fetchFonts = () => {
   });
 };
 
+const navigator = createStackNavigator({
+  LoginScreen:LoginScreen,
+  ForgotPassword:ForgotPassword,
+  Pic: Pic,
+  CameraPage:CameraPage,
+  ImageGallery:ImageGallery,
+  RegistrationP1:RegistrationP1,
+  RegistrationP4:RegistrationP4,
+  RegistrationIntroduction:RegistrationIntroduction
+  
+  }, {
+        initialRouteName: 'LoginScreen',
+        defaultNavigationOptions: {
+        header: null
+     }
+  })
+const Na = createAppContainer(navigator)
+
 
 export default function App() {
   const [dataLoaded, setDataLoaded] = useState(false);
@@ -36,7 +65,7 @@ export default function App() {
   }
     return (
 
-    <RegistrationP1/>
+    <Na/>
 
     );
  

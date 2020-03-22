@@ -39,7 +39,7 @@ export default class LoginScreen extends Component {
           secureTextEntry={true}
           style={styles.input}
         />
-          <Text style={styles.forgotPassword} >
+          <Text onPress={() => this.props.navigation.navigate('ForgotPassword')} style={styles.forgotPassword} >
            שכחתי סיסמה {'\n'}{'\n'}
           </Text>
         
@@ -51,12 +51,13 @@ export default class LoginScreen extends Component {
         
         </View>
         <View style={styles.createUser}>
-        <Text style={{color:'black', fontSize:16}} >
+        <Text onPress={() => this.props.navigation.navigate('RegistrationIntroduction')} style={styles.forgotPassword} style={{color:'blue', fontSize:16}}>
+            להרשמה לחץ כאן
+          </Text>
+        <Text style={{color:'black', fontSize:16, alignContent:"right"}} >
           אין לך משתמש עדיין?   {'\n'}
-          </Text>
-          <Text style={{color:'blue', fontSize:16}}>
-           להרשמה לחץ כאן
-          </Text>
+        </Text>
+          
         </View> 
       </View>
     );
