@@ -9,16 +9,79 @@ export default class LoginScreen extends Component {
       username: '',
       password: '',
       titleText: 'Commy',
+      user: {}
     };
+
+    const apiUrl = 'http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/User';
   }
 
-  onLogin() {
-    const username =this.state.username;
-    const password  = this.state.password;
+  fetchOnLogin=()=> {
+    const loginDetails={
+      Email :this.state.username,
+      Password : this.state.password
+    } 
 
-    Alert.alert('Credentials', `${username} + ${password}`);
+    fetch(this.apiUrl+'/login', {
+      method: 'POST',
+      body: JSON.stringify(loginDetails),
+      headers: new Headers({
+          'Content-type': 'application/json; charset=UTF-8'
+      })
+  })
+        .then(res => {
+          console.log('res=', res);
+          console.log('res.status', res.status);
+          console.log('res.ok', res.ok);
+          return res.json()
+        })
+        .then(
+          (result) => {
+            console.log("fetch = ", result);
+            this.setState({user:result})
+          },
+          (error) => {
+            console.log("err post=", error);
+            Alert.alert("הפרטים אינם נכונים, אנא נסה שנית");
+          });
+    
+  
   }
 
+
+  fetchPostNewUser = () => {
+    const newUser = {
+        Email: "test@gmail.com",
+        Password:"123456",
+        FirstName: this.state.userPrivateName,
+        LastName: this.state.userLastName,
+        Gender: this.state.gender,
+        YearOfBirth: this.state.yearOfBirth,
+        IsPrivateName: this.state.IsPrivateName, 
+    }
+
+    fetch(this.apiUrl, {
+        method: 'POST',
+        body: JSON.stringify(newUser),
+        headers: new Headers({
+            'Content-type': 'application/json; charset=UTF-8'
+        })
+    })
+        .then(res => {
+            console.log('res=', res);
+            return res.json()
+        })
+        .then(
+            (result) => {
+                console.log("fetch POST= ", result);
+                console.log(result.Avg);
+            },
+            (error) => {
+                console.log("err post=", error);
+            }
+        );
+
+
+}
   render() {
     return (
       
@@ -46,7 +109,7 @@ export default class LoginScreen extends Component {
         <View style={styles.button}>
         <Button
           title={'כניסה'}
-          onPress={this.onLogin.bind(this)}
+          onPress={this.fetchOnLogin.bind(this)}
         />
         
         </View>

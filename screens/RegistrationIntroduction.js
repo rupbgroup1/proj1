@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { Button, View, StyleSheet, Text } from 'react-native';
 
-const RegistrationIntroduction = () => {
- 
-    return (
+const RegistrationIntroduction = props => {
+     return (
       <View style={styles.container}>
         <Text style={styles.introductionText} >
          לפנייך תהליך הרשמה קצר. 
@@ -16,7 +15,11 @@ const RegistrationIntroduction = () => {
         </Text>
         <View style={styles.button}>
         <Button
-          title={'שנתחיל?'}
+          title={'שנתחיל?'} onPress={() => {
+            props.navigation.navigate(
+               'RegPage1'
+            );
+        }}
         />
         </View> 
       </View>

@@ -1,12 +1,10 @@
-import MapView from 'react-native-maps';
 import React, { Component } from 'react';
-import { FlatList, Button, View, StyleSheet, Text, ActivityIndicator } from 'react-native';
+import { Button, View, StyleSheet, Text, ActivityIndicator } from 'react-native';
 import Header from '../components/Header';
 import { SearchBar } from 'react-native-elements';
 import colors from '../assets/constant/colors';
 import MapComponent from '../components/MapComponent';
 import { ListItem } from 'react-native-elements'
-import { Thumbnail, Right } from 'native-base';
 
 export default class RegistrationP4 extends React.Component {
     constructor(props) {
@@ -93,7 +91,7 @@ export default class RegistrationP4 extends React.Component {
                 });
     }
 
-
+    
     render() {
         const { search } = this.state;
         const { searchStreet } = this.state;
@@ -125,10 +123,6 @@ export default class RegistrationP4 extends React.Component {
                     />
                     <Text>מקום מגורים נבחר - {this.state.choosenCity.CityName} </Text>
 
-
-                    {/* <Text style={styles.note} >
-                        {this.state.allCities[0].CityName}
-                    </Text> */}
                     {this.state.search === '' ?
                         <View style={styles.streetContainer}>
                             <Text style={styles.subTitle} >

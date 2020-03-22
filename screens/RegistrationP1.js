@@ -5,17 +5,14 @@ import { SimpleLineIcons } from '@expo/vector-icons';
 import GenderButton from '../components/GenderButton';
 import colors from '../assets/constant/colors';
 
-
 export default class RegistrationP1 extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            userPrivateName: '',
-            userLastName: '',
-            nameIsPrivate: true,
-            yearOfBirth: '2020',
-            gender:''
+            Email:'',
+            Password:''
+
         };
 
     }
@@ -23,68 +20,51 @@ export default class RegistrationP1 extends Component {
 
     render() {
 
-        const thisYear = (new Date()).getFullYear();
-        const years = Array.from(new Array(100),( val, index) => (thisYear-index).toString());
-        
+        const { navigation} = this.props;
         return (
             
             <View style={styles.screen}>
               <Header />
                 <View style={styles.container}>
                     <Text style={styles.subTitle} >
-                        מה שמך?
+                       מה כתובת המייל שלך?
                    </Text>
                     <Text style={styles.note} >
-                        השימוש בשמך האמיתי יקל על חברים לזהות אותך.
+                      השימוש בכתובת המייל הינו לצורכי המערכת בלבד ואינו נחשף לכלל המשתמשים
                     </Text>
                     <TextInput
-                        value={this.state.userPrivateName}
-                        onChangeText={(userPrivateName) => this.setState({ userPrivateName })}
-                        placeholder={'שם פרטי'}
+                        value={this.state.Email}
+                        onChangeText={(Email) => this.setState({ Email })}
+                        placeholder={'אימייל'}
                         style={styles.input}
                     />
+                     <Text style={styles.subTitle} >
+                      סימסה
+                   </Text>
                     <TextInput
-                        value={this.state.userLastName}
-                        onChangeText={(userLastName) => this.setState({ userLastName })}
-                        placeholder={'שם משפחה'}
+                        value={this.state.Password}
+                        onChangeText={(Password) => this.setState({ Password })}
+                        placeholder={'סיסמה'}
+                        style={styles.input}
+                    />
+                    <Text style={styles.note} >
+                     הסיסמה תכיל לפחות 6 תווים
+                    </Text>
+                    <TextInput
+                        value={this.state.Password}
+                        
+                        placeholder={'הזן שוב את הסיסמה לאישור'}
                         style={styles.input}
                     />
                     <View style={styles.checkbox}>
-                        <CheckBox onChange={(nameIsPrivate) => this.setState({ nameIsPrivate})} />
-                        <Text style={{ paddingTop: 3 }}>אני מאשר לחשוף את שמי למשתמשים באפליקציה</Text>
+                        <CheckBox />
+                        <Text style={{ paddingTop: 3 }}>הסיסמה מאושרת</Text>
                     </View>
-                    <Text style={styles.subTitle} >
-                        מהי שנת הלידה שלך?
-                    </Text>
-                    <Text style={styles.note} >
-                        ניתן לבחור בהמשך מי יראה את זה מהפרופיל שלך.
-                    </Text>
-                    <Picker
-                        mode="dialog"
-                        style={{ width: 55, backgroundColor: 'white'}}
-                        selectedValue={this.state.yearOfBirth}
-                        onValueChange={(value) => this.setState({ yearOfBirth: value })}>
-                        {years.map((item,index) => {
-                            return (<Picker.Item label={item} value={item} key={index}/>);
-                        })}
-                    </Picker>
-                    <Text style={styles.subTitle} >
-                        מהו מינך?
-                   </Text>
-                   <View style={styles.genderView}>
-                    <GenderButton onPress={() => this.setState({ gender: 'male' })}><SimpleLineIcons name="user" size={40} color="black"/></GenderButton>
-                    <GenderButton onPress={() => this.setState({ gender: "female" })} ><SimpleLineIcons name="user-female" size={40} color="black"/></GenderButton>
-                    <GenderButton onPress={() => this.setState({ gender: "other" })}><SimpleLineIcons name="user-follow" size={40} color="black"/></GenderButton>
-                    </View>
-                   <View style={styles.genderView}>
-                   <Text style={
-                       this.state.gender==='male'? styles.genderNoteSelected : styles.genderNote} >גבר </Text>
-                   <Text style={ this.state.gender==='female'? styles.genderNoteSelected : styles.genderNote}  >אישה </Text>
-                   <Text style={ this.state.gender==='other'? styles.genderNoteSelected : styles.genderNote}  >אחר </Text>
-                   </View>
+                    
                     <View style={styles.button}>
                         <Button
                             title={'המשך'}
+                         
                         />
                     </View>
                 </View>

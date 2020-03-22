@@ -4,6 +4,7 @@ import { Alert, Button, TextInput, View, StyleSheet, Text } from 'react-native';
 import LoginScreen from './screens/LoginScreen';
 import RegistrationIntroduction from './screens/RegistrationIntroduction';
 import RegistrationP4 from './screens/RegistrationP4';
+import RegistrationP2 from './screens/RegistrationP2';
 import RegistrationP1 from './screens/RegistrationP1';
 import MapView from 'react-native-maps';
 
@@ -34,11 +35,11 @@ export default function App() {
       />
     );
   }
-    return (
+  return (
 
-    <RegistrationP1/>
+    <RegistrationP2 />
 
-    );
- 
+  );
+
 }
 
