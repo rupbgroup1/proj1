@@ -62,7 +62,7 @@ export default class RegistrationP1 extends Component {
                     </View>
                     
                     <View style={styles.button}>
-                        <Button
+                        <Button onPress={() => this.props.navigation.navigate('Pic')} 
                             title={'המשך'}
                          
                         />

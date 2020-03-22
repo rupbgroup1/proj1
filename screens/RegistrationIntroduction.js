@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Button, View, StyleSheet, Text } from 'react-native';
 
-const RegistrationIntroduction = props => {
-     return (
+const RegistrationIntroduction = ({navigation}) => {
+ 
+    return (
       <View style={styles.container}>
         <Text style={styles.introductionText} >
          לפנייך תהליך הרשמה קצר. 
@@ -14,12 +15,8 @@ const RegistrationIntroduction = props => {
     הגדרת הפרופיל בכל עת
         </Text>
         <View style={styles.button}>
-        <Button
-          title={'שנתחיל?'} onPress={() => {
-            props.navigation.navigate(
-               'RegPage1'
-            );
-        }}
+        <Button onPress={() => navigation.navigate('RegistrationP1')}
+          title={'שנתחיל?'}
         />
         </View> 
       </View>
