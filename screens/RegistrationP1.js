@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Alert, Button, TextInput, View, StyleSheet, Text, CheckBox, Picker, ScrollView } from 'react-native';
+import { Alert, Button, TextInput, View, StyleSheet, Text, Picker, ScrollView } from 'react-native';
+import CheckBox from 'react-native-check-box';
 import Header from '../components/Header';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import GenderButton from '../components/GenderButton';

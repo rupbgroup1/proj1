@@ -2,10 +2,8 @@ import React, { Component, useState } from 'react';
 import { Alert, Button, TextInput, View, StyleSheet, Text } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-
 import LoginScreen from './screens/LoginScreen';
 import ForgotPassword from './screens/ForgotPassword';
-import RegistrationP1 from './screens/RegistrationP1';
 import Pic from './screens/Pic';
 import CameraPage from './screens/CameraPage';
 import ImageGallery from './screens/ImageGallery';

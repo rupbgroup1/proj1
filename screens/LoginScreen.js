@@ -117,7 +117,7 @@ export default class LoginScreen extends Component {
         <Text onPress={() => this.props.navigation.navigate('RegistrationIntroduction')} style={styles.forgotPassword} style={{color:'blue', fontSize:16}}>
             להרשמה לחץ כאן
           </Text>
-        <Text style={{color:'black', fontSize:16, alignContent:"right"}} >
+        <Text style={{color:'black', fontSize:16}} >
           אין לך משתמש עדיין?   {'\n'}
         </Text>
           
