@@ -35,13 +35,14 @@ const navigator = createStackNavigator({
   CameraPage:CameraPage,
   ImageGallery:ImageGallery,
   RegistrationP1:RegistrationP1,
+  RegistrationP2:RegistrationP2,
   RegistrationP4:RegistrationP4,
   RegistrationIntroduction:RegistrationIntroduction
   
   }, {
         initialRouteName: 'LoginScreen',
         defaultNavigationOptions: {
-        header: null
+        headerShown: false
      }
   })
 const Na = createAppContainer(navigator)

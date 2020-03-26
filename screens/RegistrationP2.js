@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { Alert, Button, TextInput, View, StyleSheet, Text, CheckBox, Picker, ScrollView } from 'react-native';
+import { Alert, Button, TextInput, View, StyleSheet, Text, Picker } from 'react-native';
 import Header from '../components/Header';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import GenderButton from '../components/GenderButton';
 import colors from '../assets/constant/colors';
+import { StackRouter } from 'react-navigation';
+import CheckBox from 'react-native-check-box';
 
 
 export default class RegistrationP2 extends Component {
@@ -15,22 +17,30 @@ export default class RegistrationP2 extends Component {
             userLastName: '',
             nameIsPrivate: true,
             yearOfBirth: '2020',
-            gender: 0
+            gender: 0,
+            nameError: '',
+            Email: props.navigation.getParam('Email'),
+            Password: props.navigation.getParam('Password')
         };
 
-        const apiUrl = 'http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/User';
+        this.handleChecked= this.handleChecked.bind(this);
     }
+
+    handleChecked() {
+        this.setState({ nameIsPrivate: !this.state.nameIsPrivate });
+    }
+    
     fetchPostNewUser = () => {
         const newUser = {
-            Email: "test@gmail.com",
-            Password:"123456",
+            Email: this.state.Email,
+            Password: this.state.Password,
             FirstName: this.state.userPrivateName,
             LastName: this.state.userLastName,
             Gender: this.state.gender,
             YearOfBirth: this.state.yearOfBirth,
-            IsPrivateName: this.state.IsPrivateName, 
+            IsPrivateName: this.state.IsPrivateName
+            
         }
-Alert.alert("works");
         fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/User', {
             method: 'POST',
             body: JSON.stringify(newUser),
@@ -39,20 +49,17 @@ Alert.alert("works");
             })
         })
             .then(res => {
-                console.log('res=', res);
-                Alert.alert("1");
+                //console.log('res=', res);
                 return res.json()
             })
             .then(
                 (result) => {
                     console.log("fetch POST= ", result);
-                    console.log(result.Avg);
-                    Alert.alert("2");
+                    this.props.navigation.navigate('Pic');
                 },
                 (error) => {
-                    error.text();
                     console.log("err post=", error);
-                    Alert.alert("3");
+                    Alert.alert("אנא נסה שנית");
                 }
             );
 
@@ -60,10 +67,9 @@ Alert.alert("works");
     }
 
     render() {
-
         const thisYear = (new Date()).getFullYear();
         const years = Array.from(new Array(100), (val, index) => (thisYear - index).toString());
-
+        const { navigation } = this.props;
         return (
 
             <View style={styles.screen} >
@@ -80,15 +86,26 @@ Alert.alert("works");
                         onChangeText={(userPrivateName) => this.setState({ userPrivateName })}
                         placeholder={'שם פרטי'}
                         style={styles.input}
+
                     />
+
                     <TextInput
                         value={this.state.userLastName}
                         onChangeText={(userLastName) => this.setState({ userLastName })}
                         placeholder={'שם משפחה'}
                         style={styles.input}
                     />
+                    {!!this.state.nameError && (
+                        <Text style={{ color: "red" }}>{this.state.nameError}</Text>
+                    )}
                     <View style={styles.checkbox}>
-                        <CheckBox onChange={(nameIsPrivate) => this.setState({ nameIsPrivate })} />
+
+                        <CheckBox
+                            isChecked={this.state.nameIsPrivate}
+                            onClick={() => {
+                                this.setState({ nameIsPrivate: !this.state.nameIsPrivate })
+                            }}
+                        />
                         <Text style={{ paddingTop: 3 }}>אני מאשר לחשוף את שמי למשתמשים באפליקציה</Text>
                     </View>
                     <Text style={styles.subTitle} >
@@ -122,7 +139,12 @@ Alert.alert("works");
                     </View>
                     <View style={styles.button}>
                         <Button
-                            title={'המשך'} onPress={()=>this.fetchPostNewUser()}
+                            title={'המשך'} onPress={() => {
+                                if (this.state.userPrivateName.trim() === "" || this.state.userLastName.trim() === "") {
+                                    this.setState(() => ({ nameError: "אנא מלא/י שם פרטי ושם משפחה" }));
+                                }
+                                else this.fetchPostNewUser()
+                            }}
                         />
                     </View>
                 </View>

@@ -21,7 +21,7 @@ export default class RegistrationP1 extends Component {
 
     render() {
 
-        const { navigation} = this.props;
+        const {navigation} = this.props;
         return (
             
             <View style={styles.screen}>
@@ -40,7 +40,7 @@ export default class RegistrationP1 extends Component {
                         style={styles.input}
                     />
                      <Text style={styles.subTitle} >
-                      סימסה
+                      סיסמה
                    </Text>
                     <TextInput
                         value={this.state.Password}
@@ -63,7 +63,7 @@ export default class RegistrationP1 extends Component {
                     </View>
                     
                     <View style={styles.button}>
-                        <Button onPress={() => this.props.navigation.navigate('Pic')} 
+                        <Button onPress={() => this.props.navigation.navigate('RegistrationP2', {Email:this.state.Email, Password:this.state.Password})} 
                             title={'המשך'}
                          
                         />

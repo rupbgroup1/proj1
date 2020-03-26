@@ -12,7 +12,6 @@ export default class LoginScreen extends Component {
       user: {}
     };
 
-    const apiUrl = 'http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/User';
   }
 
   fetchOnLogin=()=> {
@@ -21,7 +20,8 @@ export default class LoginScreen extends Component {
       Password : this.state.password
     } 
 
-    fetch(this.apiUrl+'/login', {
+
+    fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/User/login', {
       method: 'POST',
       body: JSON.stringify(loginDetails),
       headers: new Headers({
@@ -29,15 +29,14 @@ export default class LoginScreen extends Component {
       })
   })
         .then(res => {
-          console.log('res=', res);
-          console.log('res.status', res.status);
-          console.log('res.ok', res.ok);
+          //console.log('res=', res);
           return res.json()
         })
         .then(
           (result) => {
-            console.log("fetch = ", result);
+            // console.log("fetch = ", result);
             this.setState({user:result})
+            Alert.alert("הצליייח");
           },
           (error) => {
             console.log("err post=", error);
@@ -109,17 +108,17 @@ export default class LoginScreen extends Component {
         <View style={styles.button}>
         <Button
           title={'כניסה'}
-          onPress={this.fetchOnLogin.bind(this)}
+          onPress={()=>this.fetchOnLogin()}
         />
         
         </View>
         <View style={styles.createUser}>
-        <Text onPress={() => this.props.navigation.navigate('RegistrationIntroduction')} style={styles.forgotPassword} style={{color:'blue', fontSize:16}}>
-            להרשמה לחץ כאן
-          </Text>
         <Text style={{color:'black', fontSize:16}} >
           אין לך משתמש עדיין?   {'\n'}
         </Text>
+        <Text onPress={() => this.props.navigation.navigate('RegistrationIntroduction')} style={styles.forgotPassword} style={{color:'blue', fontSize:16}}>
+            להרשמה לחץ כאן
+          </Text>
           
         </View> 
       </View>
