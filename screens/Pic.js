@@ -51,7 +51,7 @@ export default class Pic extends Component {
         
                     <View style={styles.button,{marginTop:50}}>
                         <Button
-                            title={'המשך'}
+                            title={'המשך'}  onPress={() => this.props.navigation.navigate('RegistrationP4')} 
                         />
                    </View>
 

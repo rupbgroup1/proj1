@@ -15,7 +15,7 @@ export default class RegistrationP2 extends Component {
         this.state = {
             userPrivateName: '',
             userLastName: '',
-            nameIsPrivate: true,
+            nameIsPrivate: false,
             yearOfBirth: '2020',
             gender: 0,
             nameError: '',
@@ -23,13 +23,10 @@ export default class RegistrationP2 extends Component {
             Password: props.navigation.getParam('Password')
         };
 
-        this.handleChecked= this.handleChecked.bind(this);
+       
     }
 
-    handleChecked() {
-        this.setState({ nameIsPrivate: !this.state.nameIsPrivate });
-    }
-    
+
     fetchPostNewUser = () => {
         const newUser = {
             Email: this.state.Email,
@@ -98,16 +95,7 @@ export default class RegistrationP2 extends Component {
                     {!!this.state.nameError && (
                         <Text style={{ color: "red" }}>{this.state.nameError}</Text>
                     )}
-                    <View style={styles.checkbox}>
-
-                        <CheckBox
-                            isChecked={this.state.nameIsPrivate}
-                            onClick={() => {
-                                this.setState({ nameIsPrivate: !this.state.nameIsPrivate })
-                            }}
-                        />
-                        <Text style={{ paddingTop: 3 }}>אני מאשר לחשוף את שמי למשתמשים באפליקציה</Text>
-                    </View>
+                    
                     <Text style={styles.subTitle} >
                         מהי שנת הלידה שלך?
                     </Text>

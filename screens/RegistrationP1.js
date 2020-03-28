@@ -58,7 +58,7 @@ export default class RegistrationP1 extends Component {
                         style={styles.input}
                     />
                     <View style={styles.checkbox}>
-                        <CheckBox />
+                        <CheckBox/>
                         <Text style={{ paddingTop: 3 }}>הסיסמה מאושרת</Text>
                     </View>
                     

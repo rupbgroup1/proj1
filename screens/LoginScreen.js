@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Alert, Button, TextInput, View, StyleSheet, Text, ImageBackground } from 'react-native';
+import RememberMe from '../components/RememberMe';
 
 export default class LoginScreen extends Component {
   constructor(props) {
@@ -9,11 +10,14 @@ export default class LoginScreen extends Component {
       username: '',
       password: '',
       titleText: 'Commy',
-      user: {}
+      user: {},
+      usernameValid: true
+
+
     };
 
   }
-
+//Search for the userDetails in DB
   fetchOnLogin=()=> {
     const loginDetails={
       Email :this.state.username,
@@ -34,53 +38,36 @@ export default class LoginScreen extends Component {
         })
         .then(
           (result) => {
-            // console.log("fetch = ", result);
-            this.setState({user:result})
-            Alert.alert("הצליייח");
+          console.log("fetch = ", result);
+          if(result.UserId===0){
+             Alert.alert("הפרטים אינם נכונים, אנא נסה שנית")}
+          else{
+            this.setState({user:result});
+            this.props.navigation.navigate('RegistrationExtra');
+          }
+          
+           //להוסיף מעבר לעמוד הבא ברגע שיהיה עמוד לעבור אליו
           },
           (error) => {
             console.log("err post=", error);
-            Alert.alert("הפרטים אינם נכונים, אנא נסה שנית");
+            Alert.alert("איראה שגיאה, אנא נסה שנית");
           });
     
   
   }
-
-
-  fetchPostNewUser = () => {
-    const newUser = {
-        Email: "test@gmail.com",
-        Password:"123456",
-        FirstName: this.state.userPrivateName,
-        LastName: this.state.userLastName,
-        Gender: this.state.gender,
-        YearOfBirth: this.state.yearOfBirth,
-        IsPrivateName: this.state.IsPrivateName, 
-    }
-
-    fetch(this.apiUrl, {
-        method: 'POST',
-        body: JSON.stringify(newUser),
-        headers: new Headers({
-            'Content-type': 'application/json; charset=UTF-8'
-        })
-    })
-        .then(res => {
-            console.log('res=', res);
-            return res.json()
-        })
-        .then(
-            (result) => {
-                console.log("fetch POST= ", result);
-                console.log(result.Avg);
-            },
-            (error) => {
-                console.log("err post=", error);
-            }
-        );
-
-
-}
+//Check that the user name entered is valid
+  // validate = (text) => {
+  //   console.log(text);
+  //   let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  //   if (reg.test(text) === false) {
+  //     this.setState({ usernameValid: false })
+  //     return false;
+  //   }
+  //   else {
+  //     this.setState({ usernameValid: true })
+  //     console.log("Email is Correct");
+  //   }
+  // }
   render() {
     return (
       
@@ -88,6 +75,7 @@ export default class LoginScreen extends Component {
         <Text style={styles.titleText} >
           {this.state.titleText}{'\n'}
         </Text>
+        
         <TextInput
           value={this.state.username}
           onChangeText={(username) => this.setState({ username })}
@@ -101,17 +89,24 @@ export default class LoginScreen extends Component {
           secureTextEntry={true}
           style={styles.input}
         />
-          <Text onPress={() => this.props.navigation.navigate('ForgotPassword')} style={styles.forgotPassword} >
-           שכחתי סיסמה {'\n'}{'\n'}
-          </Text>
+        <View style={styles.RememberMe}>
+        <RememberMe  user={{Email: this.state.Email, Password:this.state.Password}}/>
+        </View>
+        
         
         <View style={styles.button}>
         <Button
           title={'כניסה'}
-          onPress={()=>this.fetchOnLogin()}
+          onPress={()=>{
+            this.state.usernameValid ? this.fetchOnLogin() : Alert.alert("שם משתמש לא תקין")
+          }
+          }
         />
         
         </View>
+        <Text onPress={() => this.props.navigation.navigate('ForgotPassword')} style={styles.forgotPassword} >
+           שכחתי סיסמה {'\n'}{'\n'}
+          </Text>
         <View style={styles.createUser}>
         <Text style={{color:'black', fontSize:16}} >
           אין לך משתמש עדיין?   {'\n'}
@@ -119,7 +114,6 @@ export default class LoginScreen extends Component {
         <Text onPress={() => this.props.navigation.navigate('RegistrationIntroduction')} style={styles.forgotPassword} style={{color:'blue', fontSize:16}}>
             להרשמה לחץ כאן
           </Text>
-          
         </View> 
       </View>
     );
@@ -134,7 +128,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ecf0f1'    
   },
   input: {
-    width: '60%',
+    width: '70%',
     height: 44,
     padding: 10,
     borderWidth: 1,
@@ -150,16 +144,23 @@ const styles = StyleSheet.create({
   }, 
   forgotPassword:{
     color: 'blue',
-    textAlign: 'left'
+    textAlign: 'left',
+    paddingTop:20
   },
   button:{
-   width: '60%',
+   width: '70%',
    
   },
   createUser:{
-    padding: 30,
+    padding: 10,
     flexDirection: 'row',
-    marginBottom: 80,
+    direction: "rtl",
+    marginBottom: 40,
     fontFamily: 'varela'
+  },
+  RememberMe:{
+   flexDirection:'row',
+   marginRight:145,
+   paddingBottom:20
   }
 });

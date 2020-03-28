@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, View, StyleSheet, Text } from 'react-native';
+import colors from '../assets/constant/colors';
 
 const RegistrationIntroduction = ({navigation}) => {
  
@@ -15,7 +16,7 @@ const RegistrationIntroduction = ({navigation}) => {
     הגדרת הפרופיל בכל עת
         </Text>
         <View style={styles.button}>
-        <Button onPress={() => navigation.navigate('RegistrationP1')}
+        <Button onPress={() => navigation.navigate('RegistrationP4')}
           title={'שנתחיל?'}
         />
         </View> 
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#ecf0f1',
+    backgroundColor: colors.regBackground,
   },
   introductionText: {
     fontFamily: 'rubik-regular',

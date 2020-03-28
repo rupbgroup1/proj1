@@ -1,194 +1,113 @@
 import React, { Component } from 'react';
-import { Button, View, StyleSheet, Text, ActivityIndicator } from 'react-native';
-import Header from '../components/Header';
-import { SearchBar } from 'react-native-elements';
-import colors from '../assets/constant/colors';
+import { View, StyleSheet, Text, Button } from 'react-native';
 import MapComponent from '../components/MapComponent';
-import { ListItem } from 'react-native-elements'
-
-export default class RegistrationP4 extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            street: '',
-            city: '',
-            search: '',
-            searchStreet: '',
-            round: true,
-            allCities: [
-                {
-                    CityName: "תל מונד",
-                    CityCode: 7,
-                    Size: 1000
-                },
-                {
-                    CityName: "תל אביב",
-                    CityCode: 8,
-                    Size: 2000
-                },
-                {
-                    CityName: "חיפה",
-                    CityCode: 9,
-                    Size: 200000
-                }
-
-            ],
-            choosenCity: {},
-            cittiesFilteredArray: [],
-            isLoading: false
-        };
-    }
+import GoogleAPIAutoComplete from '../components/GoogleAPIAutoComplete';
+import { getLocation } from '../components/GeoCodes';
+import colors from '../assets/constant/colors';
+import Header from '../components/Header';
 
 
-    updateSearch = search => {
-        this.setState({ search }, () => {
-            this.updateCitiesArray();
-        });
-    }
-
-
-
-    updateCitiesArray = () => {
-        let city = this.state.allCities;
-        let filteredCities = [];
-        for (let index = 0; index < this.state.allCities.length; index++) {
-            if (city[index].CityName.startsWith(this.state.search)) {
-                filteredCities.push(city[index]);
-            }
-        }
-        this.setState({ cittiesFilteredArray: filteredCities })
+export default class RegistraionP4 extends Component {
+    state = {
+        region: {},
+        addressName: ''
     };
-
-
-
-    updateChoosenCity = (city) => {
-        this.setState({ choosenCity: city, search: '' })
-    };
-
 
     componentDidMount() {
-        return fetch('http://localhost:50456/api/City', {
-            method: 'GET',
-            headers: new Headers({
-                'Content-Type': 'application/json; charset=UTF-8',
-            })
-        })
-            .then(res => {
-                console.log('res=', res);
-                console.log('res.status', res.status);
-                console.log('res.ok', res.ok);
-                return res.json();
-            })
-            .then(
-                (result) => {
-                    console.log("fetch btnFetchGetCities= ", result);
-                    this.setState({ allCities: result, isLoading: false })
-
-                },
-                (error) => {
-                    console.log("err post=", error);
-                });
+        this.getInitialState();
     }
 
-    
+    //get current location of the user
+    getInitialState() {
+        getLocation().then(
+            (data) => {
+                console.log(data);
+                this.setState({
+                    region: {
+                        latitude: data.latitude,
+                        longitude: data.longitude,
+                        latitudeDelta: 0.003,
+                        longitudeDelta: 0.003
+
+                    }
+                });
+            }
+        );
+    }
+
+
+    getCoordsFromName(loc) {
+        //console.log(loc);
+        this.setState({
+            region: {
+                latitude: loc.lat,
+                longitude: loc.lng,
+                latitudeDelta: 0.003,
+                longitudeDelta: 0.003
+            }
+        });
+        geocodeLocationByCoords(loc.lat, loc.lan);
+    }
+
+    onMapRegionChange(region) {
+        this.setState({ region });
+
+    }
+
+
     render() {
-        const { search } = this.state;
-        const { searchStreet } = this.state;
-
-        if (this.state.isLoading) {
-            return (
-                <View style={{ flex: 1, padding: 100 }}>
-                    <ActivityIndicator />
-                </View>
-            );
-        }
         return (
-
             <View style={styles.screen}>
                 <Header />
-                <View style={styles.container}>
-                    <Text style={styles.subTitle} >
-                        בחר מקום מגורים
-                   </Text>
-                    <SearchBar
-                        placeholder="חפש עיר/ישוב"
-                        onChangeText={this.updateSearch}
-                        value={search}
-                        lightTheme={true}
-                        round={true}
-                        containerStyle={styles.SearchBar}
-                        inputContainerStyle={styles.ContainerSearchBar}
-
-                    />
-                    <Text>מקום מגורים נבחר - {this.state.choosenCity.CityName} </Text>
-
-                    {this.state.search === '' ?
-                        <View style={styles.streetContainer}>
-                            <Text style={styles.subTitle} >
-                                בחר רחוב
+                <Text style={styles.subTitle} >
+                    אנא בחר/י מקום מגורים
+                </Text>
+                <Text >
+                    מקום המגורים לא יחשף ללא הרשאתך
                     </Text>
-                            <SearchBar
-                                placeholder="חפש שם רחוב"
-                                value={searchStreet}
-                                lightTheme={true}
-                                round={true}
-                                containerStyle={styles.SearchBar}
-                                inputContainerStyle={styles.ContainerSearchBar}
-
-                            /></View>
-                        :
-                        this.state.cittiesFilteredArray.map((l, i) => (
-                            <ListItem
-                                key={l.CityCode}
-                                title={l.CityName}
-                                bottomDivider
-                                style={styles.cititiesList}
-                                onPress={() => this.updateChoosenCity(l)}
-
-                            />
-                        ))
-                    }
-                    <MapComponent/>
-                    <Button title={'סיום'} />
-
+                    
+                <View style={{ flex: 1 }}>
+                    <GoogleAPIAutoComplete notifyChange={(loc) => this.getCoordsFromName(loc)}
+                    />
                 </View>
+
+                {
+                    this.state.region['latitude'] ?
+                        <View style={{ flex: 1 }}>
+                            <MapComponent
+                                region={this.state.region}
+                                onRegionChange={(reg) => this.onMapRegionChange(reg)} />
+                        </View> : null}
+                        <Text style={styles.subTitle} >
+                   אנא סמנ/י שכונה על גבי המפה
+                </Text>
+                {
+                    this.state.region['latitude'] ?
+                        <View style={{ flex: 1 }}>
+                            <MapComponent
+                                region={this.state.region}
+                                onRegionChange={(reg) => this.onMapRegionChange(reg)} />
+                        </View> : null}
+            <Button  title={'המשך'}
+
+            /> 
             </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
+    screen: {
         flex: 1,
-        alignItems: 'center',
-        backgroundColor: '#ecf0f1'
-    },
-    streetContainer: {
-        flex: 1,
-        width: "85%"
-    },
-    SearchBar: {
-        backgroundColor: '#ecf0f1',
-        width: "85%",
-
-    },
-    ContainerSearchBar: {
-        backgroundColor: "#DCDCDC",
-        
+        justifyContent: "center",
+        alignContent: "center"
     },
     subTitle: {
         marginVertical: 1,
         fontSize: 20,
         fontWeight: 'bold',
         color: colors.subTitle,
-        paddingTop: 25,
-    },
-
-    screen: {
-        flex: 1
-    },
-    cititiesList: {
-        width: "90%"
+        paddingTop: 25
     }
+
 });

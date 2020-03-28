@@ -11,12 +11,12 @@ import RegistrationIntroduction from './screens/RegistrationIntroduction';
 import RegistrationP4 from './screens/RegistrationP4';
 import RegistrationP2 from './screens/RegistrationP2';
 import RegistrationP1 from './screens/RegistrationP1';
-import MapView from 'react-native-maps';
-
+import RegistrationExtra from './screens/RegistrationExtra';
 
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 
+//add fonts to the app
 const fetchFonts = () => {
   return Font.loadAsync({
     'kalam-bold': require('./assets/fonts/Kalam-Bold.ttf'),
@@ -28,6 +28,7 @@ const fetchFonts = () => {
   });
 };
 
+//add screens to nav
 const navigator = createStackNavigator({
   LoginScreen:LoginScreen,
   ForgotPassword:ForgotPassword,
@@ -37,6 +38,7 @@ const navigator = createStackNavigator({
   RegistrationP1:RegistrationP1,
   RegistrationP2:RegistrationP2,
   RegistrationP4:RegistrationP4,
+  RegistrationExtra:RegistrationExtra,
   RegistrationIntroduction:RegistrationIntroduction
   
   }, {
@@ -49,6 +51,7 @@ const Na = createAppContainer(navigator)
 
 
 export default function App() {
+  //check that the fonts are loaded before the screen
   const [dataLoaded, setDataLoaded] = useState(false);
   if (!dataLoaded) {
     return (
