@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Alert, Button, TextInput, View, StyleSheet, Text, CheckBox, Picker, ScrollView } from 'react-native';
+import { Alert, Button, TextInput, View, StyleSheet, Text, Picker, ScrollView } from 'react-native';
+import CheckBox from 'react-native-check-box';
 import Header from '../components/Header';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import GenderButton from '../components/GenderButton';
@@ -20,7 +21,7 @@ export default class RegistrationP1 extends Component {
 
     render() {
 
-        const { navigation} = this.props;
+        const {navigation} = this.props;
         return (
             
             <View style={styles.screen}>
@@ -39,7 +40,7 @@ export default class RegistrationP1 extends Component {
                         style={styles.input}
                     />
                      <Text style={styles.subTitle} >
-                      סימסה
+                      סיסמה
                    </Text>
                     <TextInput
                         value={this.state.Password}
@@ -57,12 +58,12 @@ export default class RegistrationP1 extends Component {
                         style={styles.input}
                     />
                     <View style={styles.checkbox}>
-                        <CheckBox />
+                        <CheckBox/>
                         <Text style={{ paddingTop: 3 }}>הסיסמה מאושרת</Text>
                     </View>
                     
                     <View style={styles.button}>
-                        <Button onPress={() => this.props.navigation.navigate('Pic')} 
+                        <Button onPress={() => this.props.navigation.navigate('RegistrationP2', {Email:this.state.Email, Password:this.state.Password})} 
                             title={'המשך'}
                          
                         />

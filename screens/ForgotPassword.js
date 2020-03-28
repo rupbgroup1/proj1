@@ -80,14 +80,15 @@ const styles = StyleSheet.create({
         
     },
     container: {
-        backgroundColor: '#F0F8FF',
+        backgroundColor: colors.regBackground,
         height: '100%',
         width: '100%'
 
     },
 
     button : {
-        marginTop:5
+        marginTop:5,
+        width: '60%'
     }
 
 })

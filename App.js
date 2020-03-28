@@ -2,23 +2,26 @@ import React, { Component, useState } from 'react';
 import { Alert, Button, TextInput, View, StyleSheet, Text } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-
 import LoginScreen from './screens/LoginScreen';
 import ForgotPassword from './screens/ForgotPassword';
-import RegistrationP1 from './screens/RegistrationP1';
 import Pic from './screens/Pic';
 import CameraPage from './screens/CameraPage';
 import ImageGallery from './screens/ImageGallery';
 import RegistrationIntroduction from './screens/RegistrationIntroduction';
 import RegistrationP4 from './screens/RegistrationP4';
 import RegistrationP2 from './screens/RegistrationP2';
-import RegistrationP1 from './screens/RegistrationP1';
+<<<<<<< HEAD
 import MapView from 'react-native-maps';
 
+=======
+import RegistrationP1 from './screens/RegistrationP1';
+import RegistrationExtra from './screens/RegistrationExtra';
+>>>>>>> e89e2fd48b0d7ba7e99f391fdf38379625cd2ce7
 
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 
+//add fonts to the app
 const fetchFonts = () => {
   return Font.loadAsync({
     'kalam-bold': require('./assets/fonts/Kalam-Bold.ttf'),
@@ -30,6 +33,7 @@ const fetchFonts = () => {
   });
 };
 
+//add screens to nav
 const navigator = createStackNavigator({
   LoginScreen:LoginScreen,
   ForgotPassword:ForgotPassword,
@@ -37,19 +41,22 @@ const navigator = createStackNavigator({
   CameraPage:CameraPage,
   ImageGallery:ImageGallery,
   RegistrationP1:RegistrationP1,
+  RegistrationP2:RegistrationP2,
   RegistrationP4:RegistrationP4,
+  RegistrationExtra:RegistrationExtra,
   RegistrationIntroduction:RegistrationIntroduction
   
   }, {
         initialRouteName: 'LoginScreen',
         defaultNavigationOptions: {
-        header: null
+        headerShown: false
      }
   })
 const Na = createAppContainer(navigator)
 
 
 export default function App() {
+  //check that the fonts are loaded before the screen
   const [dataLoaded, setDataLoaded] = useState(false);
   if (!dataLoaded) {
     return (
