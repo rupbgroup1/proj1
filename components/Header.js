@@ -1,11 +1,13 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import GenderButton from './GenderButton';
+import { SimpleLineIcons } from '@expo/vector-icons';
 
 
 const Header = props => {
   return (
     <View style={styles.header}>
-      <Text style={styles.headerTitle}>Commy</Text>
+       <Text style={styles.headerTitle}>Commy</Text>
     </View>
   );
 };

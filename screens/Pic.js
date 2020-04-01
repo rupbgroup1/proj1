@@ -1,5 +1,5 @@
 import React, { Component, createElement } from 'react';
-import { Button, View, StyleSheet, Text,  Image , TextInput } from 'react-native';
+import { Button, View, StyleSheet, Text,  Image , TextInput, Alert } from 'react-native';
 import Header from '../components/Header';
 import GenderButton from '../components/GenderButton';
 import colors from '../assets/constant/colors';
@@ -11,10 +11,22 @@ import {createStackNavigator,createAppContainer} from 'react-navigation';
 
 export default class Pic extends Component {
     
-    constructor() {
-        super();
-        this.state = {isChecked: true};
+    constructor(props) {
+        super(props);
+        this.state = {isChecked: true, 
+            picUri:''};
         this.handleChecked = this.handleChecked.bind(this); // set this, because you need get methods from CheckBox 
+  }
+
+  addPic (path)  {
+      if (path = "" ){
+        this.setState({picUri:path});
+        Alert.alert(path);
+      }
+      else{
+        this.setState({picUri:"https://cdn1.iconfinder.com/data/icons/business-users/512/circle-512.png"});
+      }
+
   }
 
   handleChecked () {
@@ -48,13 +60,19 @@ export default class Pic extends Component {
                   />
                         <Text style={{ paddingTop: 3, textAlign: 'center'}}>אני מאשר לחשוף את התמונה למשתמשים באפליקציה</Text>
                     </View>
+                    <Image
+                        style={{ alignSelf: 'center', width: 300, height: 250 }}
+                        source={{uri: this.props.navigation.getParam('photoUri')}} 
+                        onPress={() => this.setState({ picUri: this.props.navigation.getParam('photoUri')})}/>
         
-                    <View style={styles.button,{marginTop:50}}>
+                    <View style={styles.button,{marginTop:0}}>
                         <Button
                             title={'המשך'}  onPress={() => this.props.navigation.navigate('RegistrationP4')} 
                         />
                    </View>
-
+                   <Text>
+                       {this.props.picUri}
+                   </Text>
         </View>
         
        )

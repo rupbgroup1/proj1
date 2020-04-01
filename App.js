@@ -11,7 +11,8 @@ import RegistrationIntroduction from './screens/RegistrationIntroduction';
 import RegistrationP4 from './screens/RegistrationP4';
 import RegistrationP2 from './screens/RegistrationP2';
 import RegistrationP1 from './screens/RegistrationP1';
-import RegistrationExtra from './screens/RegistrationExtra';
+import RegistrationExtra from './screens/RegistrationExtra'
+import MapView from 'react-native-maps';
 import FindNeighboor from './screens/FindNeighboor';
 
 import * as Font from 'expo-font';

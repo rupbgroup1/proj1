@@ -19,6 +19,8 @@ export default class CameraPage extends React.Component {
     
   }
 
+  
+
   async componentDidMount() {
     const { status } = await Camera.requestPermissionsAsync();
     this.setState({ hasCameraPermission: status === 'granted' });
@@ -26,17 +28,17 @@ export default class CameraPage extends React.Component {
 
   btnSnap = async () => {
     if (this.camera) {
-      let photo = await this.camera.takePictureAsync({ quality: 0.2 });
+      let photo = await this.camera.takePictureAsync({ quality: 0.1, base64:true});
      
       this.setState({ photoUri: photo.uri });
       
       Alert.alert(
-        'Would you like to save the picture?',
+        'האם תרצה לשמור את התמונה?',
         '',
         [
-          {text: 'yes', onPress: () => this.props.navigation.navigate('Pic', {photoUri: photo.uri})},
+          {text: 'כן', onPress: () => this.props.navigation.navigate('Pic', {photoUri: photo.uri})},
           {
-            text: 'No',
+            text: 'לא',
             style: 'cancel',
           }],
        
@@ -49,7 +51,7 @@ export default class CameraPage extends React.Component {
 
   btnUpload = () => {
     let img = this.state.photoUri;
-    let imgName = 'imgFromCamera.jpg';
+    let imgName = 'imgProfile.jpg';
     this.imageUpload(img, imgName);
   };
 
@@ -96,7 +98,7 @@ export default class CameraPage extends React.Component {
                       }}>
                       <Text
                         style={{ fontSize: 18, marginBottom: 10, color: 'white' }}>
-                        {' '}Flip{' '}
+                        {' '}החלף מצלמה{' '}
                       </Text>
                     </TouchableOpacity>
                   </View>
