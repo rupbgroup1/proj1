@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Button, TextInput, View, StyleSheet, Text, ImageBackground } from 'react-native';
+import { Alert, Button, TextInput, View, StyleSheet, Text} from 'react-native';
 import RememberMe from '../components/RememberMe';
 
 export default class LoginScreen extends Component {
@@ -12,8 +12,6 @@ export default class LoginScreen extends Component {
       titleText: 'Commy',
       user: {},
       usernameValid: true
-
-
     };
 
   }
@@ -43,10 +41,9 @@ export default class LoginScreen extends Component {
              Alert.alert("הפרטים אינם נכונים, אנא נסה שנית")}
           else{
             this.setState({user:result});
-            this.props.navigation.navigate('RegistrationExtra');
+            this.props.navigation.navigate('FindNeighboor' , {user:this.state.user});
           }
           
-           //להוסיף מעבר לעמוד הבא ברגע שיהיה עמוד לעבור אליו
           },
           (error) => {
             console.log("err post=", error);
@@ -58,7 +55,7 @@ export default class LoginScreen extends Component {
 //Check that the user name entered is valid
   // validate = (text) => {
   //   console.log(text);
-  //   let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  //   let reg = '^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/';
   //   if (reg.test(text) === false) {
   //     this.setState({ usernameValid: false })
   //     return false;
@@ -68,6 +65,7 @@ export default class LoginScreen extends Component {
   //     console.log("Email is Correct");
   //   }
   // }
+  
   render() {
     return (
       

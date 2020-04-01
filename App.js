@@ -12,6 +12,7 @@ import RegistrationP4 from './screens/RegistrationP4';
 import RegistrationP2 from './screens/RegistrationP2';
 import RegistrationP1 from './screens/RegistrationP1';
 import RegistrationExtra from './screens/RegistrationExtra';
+import FindNeighboor from './screens/FindNeighboor';
 
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
@@ -39,6 +40,7 @@ const navigator = createStackNavigator({
   RegistrationP2:RegistrationP2,
   RegistrationP4:RegistrationP4,
   RegistrationExtra:RegistrationExtra,
+  FindNeighboor:FindNeighboor,
   RegistrationIntroduction:RegistrationIntroduction
   
   }, {

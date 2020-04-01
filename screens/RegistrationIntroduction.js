@@ -16,7 +16,7 @@ const RegistrationIntroduction = ({navigation}) => {
     הגדרת הפרופיל בכל עת
         </Text>
         <View style={styles.button}>
-        <Button onPress={() => navigation.navigate('RegistrationP4')}
+        <Button onPress={() => navigation.navigate('RegistrationP1')}
           title={'שנתחיל?'}
         />
         </View> 
