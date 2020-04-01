@@ -24,13 +24,14 @@ export default class ImageGallery extends React.Component {
             this.setState({ image: result.uri });
           }
 
+
           Alert.alert(
-            'Would you like to save the picture?',
+            'האם תרצה לשמור את התמונה?',
             '',
             [
-              {text: 'yes', onPress: () => this.props.navigation.navigate('AddNote', {photoUri: result.uri})},
+              {text: 'כן', onPress: () => this.props.navigation.navigate('Pic', {photoUri: result.uri})},
               {
-                text: 'No',
+                text: 'לא',
                 style: 'cancel',
               }],
            
@@ -47,7 +48,7 @@ export default class ImageGallery extends React.Component {
                 <View style={styles.Content}>
                     <View style={{ margin: 20 }}>
                         <Button
-                            title="Choose From Galery"
+                            title="בחירת תמונה מהגלריה"
                             onPress={this.btnOpenGalery}
                         />
                     </View>
