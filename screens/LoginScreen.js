@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Alert, Button, TextInput, View, StyleSheet, Text, ImageBackground } from 'react-native';
+import { Alert, Button, TextInput, View, StyleSheet, Text} from 'react-native';
 import RememberMe from '../components/RememberMe';
+
 
 export default class LoginScreen extends Component {
   constructor(props) {
@@ -12,8 +13,6 @@ export default class LoginScreen extends Component {
       titleText: 'Commy',
       user: {},
       usernameValid: true
-
-
     };
 
   }
@@ -43,10 +42,9 @@ export default class LoginScreen extends Component {
              Alert.alert("הפרטים אינם נכונים, אנא נסה שנית")}
           else{
             this.setState({user:result});
-            this.props.navigation.navigate('RegistrationExtra');
+            this.props.navigation.navigate('FindNeighboor' , {user:this.state.user});
           }
           
-           //להוסיף מעבר לעמוד הבא ברגע שיהיה עמוד לעבור אליו
           },
           (error) => {
             console.log("err post=", error);
@@ -58,7 +56,7 @@ export default class LoginScreen extends Component {
 //Check that the user name entered is valid
   // validate = (text) => {
   //   console.log(text);
-  //   let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  //   let reg = '^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/';
   //   if (reg.test(text) === false) {
   //     this.setState({ usernameValid: false })
   //     return false;
@@ -68,6 +66,7 @@ export default class LoginScreen extends Component {
   //     console.log("Email is Correct");
   //   }
   // }
+  
   render() {
     return (
       
@@ -96,9 +95,11 @@ export default class LoginScreen extends Component {
         
         <View style={styles.button}>
         <Button
+          fontFamily='rubik-regular'
+          color='blue'
           title={'כניסה'}
           onPress={()=>{
-            this.state.usernameValid ? this.fetchOnLogin() : Alert.alert("שם משתמש לא תקין")
+          this.state.usernameValid ? this.fetchOnLogin() : Alert.alert("שם משתמש לא תקין")
           }
           }
         />
@@ -108,10 +109,10 @@ export default class LoginScreen extends Component {
            שכחתי סיסמה {'\n'}{'\n'}
           </Text>
         <View style={styles.createUser}>
-        <Text style={{color:'black', fontSize:16}} >
+        <Text style={{color:'black', fontSize:16, fontFamily: 'rubik-regular'}} >
           אין לך משתמש עדיין?   {'\n'}
         </Text>
-        <Text onPress={() => this.props.navigation.navigate('RegistrationIntroduction')} style={styles.forgotPassword} style={{color:'blue', fontSize:16}}>
+        <Text style={{fontFamily: 'rubik-regular'}} onPress={() => this.props.navigation.navigate('RegistrationIntroduction')} style={styles.forgotPassword} style={{color:'blue', fontSize:16}}>
             להרשמה לחץ כאן
           </Text>
         </View> 
@@ -125,9 +126,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#ecf0f1'    
+    backgroundColor: '#ecf0f1', 
   },
   input: {
+    
+    fontFamily: 'rubik-regular',
     width: '70%',
     height: 44,
     padding: 10,
@@ -143,6 +146,8 @@ const styles = StyleSheet.create({
     fontSize: 60
   }, 
   forgotPassword:{
+    
+    fontFamily: 'rubik-regular',
     color: 'blue',
     textAlign: 'left',
     paddingTop:20
@@ -152,6 +157,7 @@ const styles = StyleSheet.create({
    
   },
   createUser:{
+    fontFamily: 'rubik-regular',
     padding: 10,
     flexDirection: 'row',
     direction: "rtl",

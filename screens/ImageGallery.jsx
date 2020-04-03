@@ -46,7 +46,7 @@ export default class ImageGallery extends React.Component {
                 style={styles.container}>
                
                 <View style={styles.Content}>
-                    <View style={{ margin: 20 }}>
+                    <View style={{ margin: 20, fontFamily: 'rubik-regular'}}>
                         <Button
                             title="בחירת תמונה מהגלריה"
                             onPress={this.btnOpenGalery}

@@ -58,7 +58,7 @@ export default class Pic extends Component {
                               this.setState({isChecked:!this.state.isChecked })
                               }}
                   />
-                        <Text style={{ paddingTop: 3, textAlign: 'center'}}>אני מאשר לחשוף את התמונה למשתמשים באפליקציה</Text>
+                        <Text style={{ paddingTop: 3, textAlign: 'center', fontFamily: 'rubik-regular'}}>אני מאשר לחשוף את התמונה למשתמשים באפליקציה</Text>
                     </View>
                     <Image
                         style={{ alignSelf: 'center', width: 300, height: 250 }}
@@ -83,6 +83,7 @@ export default class Pic extends Component {
 const styles = StyleSheet.create({
     
     subTitle: {
+        fontFamily: 'rubik-regular',
         marginVertical: 1,
         fontSize: 20,
         fontWeight: 'bold',
@@ -98,12 +99,14 @@ const styles = StyleSheet.create({
     },
 
     textOr:{
+        fontFamily: 'rubik-regular',
         marginTop:19,
         fontWeight:'bold',
         fontSize:30
     
     },
     checkBox: {
+        
         flex: 1,
         flexDirection: "row",
         

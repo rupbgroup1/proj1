@@ -104,7 +104,7 @@ export default class RegistrationP2 extends Component {
                     </Text>
                     <Picker
                         mode="dialog"
-                        style={{ width: 55, backgroundColor: 'white' }}
+                        style={{ width: 55, backgroundColor: 'white', fontFamily: 'rubik-regular' }}
                         selectedValue={this.state.yearOfBirth}
                         onValueChange={(value) => this.setState({ yearOfBirth: value })}>
                         {years.map((item, index) => {
@@ -148,6 +148,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#ecf0f1'
     },
     input: {
+        fontFamily: 'rubik-regular',
         width: '80%',
         height: 44,
         padding: 10,
@@ -158,6 +159,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     subTitle: {
+        fontFamily: 'rubik-regular',
         marginVertical: 1,
         fontSize: 20,
         fontWeight: 'bold',
@@ -165,16 +167,19 @@ const styles = StyleSheet.create({
         paddingTop: 25
     },
     note: {
+        fontFamily: 'rubik-regular',
         marginVertical: 1,
         marginBottom: 10,
         fontSize: 14,
         color: 'black'
     },
     forgotPassword: {
+        fontFamily: 'rubik-regular',
         color: 'blue',
         textAlign: 'left'
     },
     button: {
+        fontFamily: 'rubik-regular',
         width: '50%',
         paddingTop: 20
     },
@@ -203,6 +208,8 @@ const styles = StyleSheet.create({
         marginLeft: 35
     },
     genderNoteSelected: {
+        fontFamily: 'rubik-regular',
+        fontWeight:'bold',
         marginVertical: 1,
         marginBottom: 10,
         fontSize: 20,

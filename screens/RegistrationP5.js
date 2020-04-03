@@ -7,17 +7,14 @@ const RegistrationIntroduction = ({navigation}) => {
     return (
       <View style={styles.container}>
         <Text style={styles.introductionText} >
-         לפנייך תהליך הרשמה קצר. 
+         הפרופיל נוצר בהצלחה
         </Text>
         <Text style={styles.introductionText} >
-    לאחר ההרשמה, ניתן להמשיך את 
-        </Text>
-        <Text style={styles.introductionText} >
-    הגדרת הפרופיל בכל עת
+    חוזק הפרופיל כעת הוא 40% 
         </Text>
         <View style={styles.button}>
-        <Button onPress={() => navigation.navigate('RegistrationP1')}
-          title={'שנתחיל?'}
+        <Button onPress={() => navigation.navigate('RegistrationExrea')}
+          title={'לשיפור הפרופיל שלי'}
         />
         </View> 
       </View>
@@ -41,7 +38,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   button:{
-    fontFamily: 'rubik-regular',
+   fontFamily: 'rubik-medium',
    width: '60%',
    paddingTop: 50
   }

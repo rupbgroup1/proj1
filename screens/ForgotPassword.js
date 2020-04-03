@@ -14,10 +14,37 @@ export default class ForgotPassword extends Component {
         };
 
 
-        validateEmail = email => {
-            var re = /^(([^<>()\[\]\\.,;:\s@”]+(\.[^<>()\[\]\\.,;:\s@”]+)*)|(“.+”))@((\[[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}])|(([a-zA-Z\-0–9]+\.)+[a-zA-Z]{2,}))$/;
-            return re.test(email);
-            };
+       
+    }
+    //serach for the email in DB
+    fetchFP=()=> {
+        const Email= this.state.userEmail;
+        fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/User/login', {
+            method: 'POST',
+            body: JSON.stringify(Email),
+            headers: new Headers({
+                'Content-type': 'application/json; charset=UTF-8'
+            })
+        })
+        .then(res => {
+            //console.log('res=', res);
+            return res.json()
+          })
+          .then(
+            (result) => {
+            console.log("fetch = ", result);
+            if(result.UserId===0){
+               Alert.alert("המייל לא שמור במערכת")}
+            else{
+              //להוסיף קישור לשחזור סיסמה
+            }
+            
+            },
+            (error) => {
+              console.log("err post=", error);
+              Alert.alert("איראה שגיאה, אנא נסה שנית");
+            });
+    
     }
     render(){
         return (
@@ -56,6 +83,7 @@ export default class ForgotPassword extends Component {
 
 const styles = StyleSheet.create({
     input: {
+        fontFamily:'rubik-regular',
         height: 44,
         padding: 10,
         borderWidth: 1,
@@ -68,6 +96,7 @@ const styles = StyleSheet.create({
         
     },
     subTitle: {
+        fontFamily:'rubik-regular',
         marginVertical: 1,
         fontSize: 20,
         fontWeight: 'bold',
@@ -87,8 +116,8 @@ const styles = StyleSheet.create({
     },
 
     button : {
+        fontFamily:'Rubik-BoldItalic',
         marginTop:5,
-        width: '60%'
     }
 
 })

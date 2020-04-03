@@ -82,7 +82,8 @@ const RememberMe = ({ navigation }) => {
         title='זכור אותי'
         checked={rememberMe}
         containerStyle={{backgroundColor: 'transparent', borderColor: 'transparent' }}
-        textStyle={{color: 'grey'}}
+        textStyle={{color: 'grey', 
+        fontFamily: 'rubik-regular'}}
         checkedColor='black'
         onPress={toggleRememberMe}
       />

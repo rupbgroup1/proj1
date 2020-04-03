@@ -11,9 +11,10 @@ import RegistrationIntroduction from './screens/RegistrationIntroduction';
 import RegistrationP4 from './screens/RegistrationP4';
 import RegistrationP2 from './screens/RegistrationP2';
 import RegistrationP1 from './screens/RegistrationP1';
-
+import FindNeighboor from './screens/FindNeighboor';
 import RegistrationExtra from './screens/RegistrationExtra'
 import MapView from 'react-native-maps';
+import RegistrationP5 from './screens/RegistrationP5';
 
 
 import * as Font from 'expo-font';
@@ -27,8 +28,9 @@ const fetchFonts = () => {
     'kalam-regular': require('./assets/fonts/Kalam-Regular.ttf'),
     'varela': require('./assets/fonts/VarelaRound-Regular.ttf'),
     'rubik-regular': require('./assets/fonts/Rubik-Regular.ttf'),
-    'rubik-medium': require('./assets/fonts/Rubik-Medium.ttf')
-  });
+    'rubik-medium': require('./assets/fonts/Rubik-Medium.ttf'),
+    'rubik-bold': require('./assets/fonts/Rubik-Bold.ttf')
+  });  
 };
 
 //add screens to nav
@@ -42,7 +44,9 @@ const navigator = createStackNavigator({
   RegistrationP2:RegistrationP2,
   RegistrationP4:RegistrationP4,
   RegistrationExtra:RegistrationExtra,
-  RegistrationIntroduction:RegistrationIntroduction
+  FindNeighboor:FindNeighboor,
+  RegistrationIntroduction:RegistrationIntroduction,
+  RegistrationP5:RegistrationP5
   
   }, {
         initialRouteName: 'LoginScreen',

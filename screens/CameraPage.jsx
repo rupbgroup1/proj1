@@ -97,7 +97,7 @@ export default class CameraPage extends React.Component {
                         });
                       }}>
                       <Text
-                        style={{ fontSize: 18, marginBottom: 10, color: 'white' }}>
+                        style={{ fontSize: 18, marginBottom: 10, color: 'white', fontFamily: 'rubik-regular' }}>
                         {' '}החלף מצלמה{' '}
                       </Text>
                     </TouchableOpacity>

@@ -5,6 +5,7 @@ import GoogleAPIAutoComplete from '../components/GoogleAPIAutoComplete';
 import { getLocation } from '../components/GeoCodes';
 import colors from '../assets/constant/colors';
 import Header from '../components/Header';
+import { Right } from 'native-base';
 
 
 export default class RegistraionP4 extends Component {
@@ -56,18 +57,19 @@ export default class RegistraionP4 extends Component {
 
 
     render() {
+        const { navigation } = this.props;
         return (
             <View style={styles.screen}>
                 <Header />
                 <Text style={styles.subTitle} >
                     אנא בחר/י מקום מגורים
                 </Text>
-                <Text >
+                <Text style={{fontFamily: 'rubik-regular', textAlign:'center', marginBottom:10}}>
                     מקום המגורים לא יחשף ללא הרשאתך
                     </Text>
                     
-                <View style={{ flex: 1 }}>
-                    <GoogleAPIAutoComplete notifyChange={(loc) => this.getCoordsFromName(loc)}
+                <View style={{ flex: 1, textAlign:'right'}}>
+                    <GoogleAPIAutoComplete style={{textAlign:'right'}} notifyChange={(loc) => this.getCoordsFromName(loc)}
                     />
                 </View>
 
@@ -89,7 +91,7 @@ export default class RegistraionP4 extends Component {
                                 onRegionChange={(reg) => this.onMapRegionChange(reg)} />
                         </View> : null}
             <Button  title={'המשך'}
-
+                onPress={() => this.props.navigation.navigate('RegistrationP5')}
             /> 
             </View>
         );
@@ -103,6 +105,9 @@ const styles = StyleSheet.create({
         alignContent: "center"
     },
     subTitle: {
+        fontFamily: 'rubik-regular',
+        textAlign:'center',
+        marginBottom:10,
         marginVertical: 1,
         fontSize: 20,
         fontWeight: 'bold',
