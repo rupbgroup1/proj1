@@ -11,25 +11,10 @@ import RegistrationIntroduction from './screens/RegistrationIntroduction';
 import RegistrationP4 from './screens/RegistrationP4';
 import RegistrationP2 from './screens/RegistrationP2';
 import RegistrationP1 from './screens/RegistrationP1';
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 import RegistrationExtra from './screens/RegistrationExtra'
 import MapView from 'react-native-maps';
 
-=======
-import RegistrationExtra from './screens/RegistrationExtra';
->>>>>>> e89e2fd48b0d7ba7e99f391fdf38379625cd2ce7
-=======
-import RegistrationExtra from './screens/RegistrationExtra';
->>>>>>> e89e2fd48b0d7ba7e99f391fdf38379625cd2ce7
-=======
-import RegistrationExtra from './screens/RegistrationExtra';
->>>>>>> e89e2fd48b0d7ba7e99f391fdf38379625cd2ce7
-=======
-import RegistrationExtra from './screens/RegistrationExtra';
->>>>>>> e89e2fd48b0d7ba7e99f391fdf38379625cd2ce7
 
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
