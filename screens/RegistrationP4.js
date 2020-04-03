@@ -56,6 +56,7 @@ export default class RegistraionP4 extends Component {
 
 
     render() {
+        const { navigation } = this.props;
         return (
             <View style={styles.screen}>
                 <Header />
@@ -89,7 +90,7 @@ export default class RegistraionP4 extends Component {
                                 onRegionChange={(reg) => this.onMapRegionChange(reg)} />
                         </View> : null}
             <Button  title={'המשך'}
-
+                onPress={() => this.props.navigation.navigate('RegistrationP5')}
             /> 
             </View>
         );

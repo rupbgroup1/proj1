@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
-import { Alert, Button, TextInput, View, StyleSheet, Text, Picker, ScrollView } from 'react-native';
-import CheckBox from 'react-native-check-box';
+import { Alert, Button, TextInput, View, StyleSheet, Text } from 'react-native';
 import Header from '../components/Header';
-import { SimpleLineIcons } from '@expo/vector-icons';
-import GenderButton from '../components/GenderButton';
 import colors from '../assets/constant/colors';
 
 export default class RegistrationP1 extends Component {
@@ -12,16 +9,43 @@ export default class RegistrationP1 extends Component {
 
         this.state = {
             Email:'',
-            Password:''
+            Password:'',
+            ConfirmedPassword:''
 
         };
 
     }
 
+    //בדיקה האם המייל קיים כבר בשרת
+    // checkUserEmailIsValid=()=> {
+    //     fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/User/?username='+this.state.Email, {
+    //         method: 'GET',
+    //         headers: new Headers({
+    //             'Content-Type': 'application/json; charset=UTF-8',
+    //         })
+    //     })
+    //     .then(res => {
+    //         console.log('res=', res);
+    //         return res.json();
+    //     })
+    //     .then(
+    //         (result) => {
+    //             console.log("fetc= ", result);
+    //             result===0 ? this.props.navigation.navigate('RegistrationP2', {Email:this.state.Email, Password:this.state.Password}) : Alert.alert("כבר קיים יוזר עם שם משתמש זה");
+                
+
+    //         },
+    //         (error) => {
+    //             console.log("err post=", error);
+    //         }
+    //     );
+    // }
+
 
     render() {
 
         const {navigation} = this.props;
+       
         return (
             
             <View style={styles.screen}>
@@ -47,23 +71,42 @@ export default class RegistrationP1 extends Component {
                         onChangeText={(Password) => this.setState({ Password })}
                         placeholder={'סיסמה'}
                         style={styles.input}
+                        secureTextEntry
                     />
                     <Text style={styles.note} >
                      הסיסמה תכיל לפחות 6 תווים
                     </Text>
                     <TextInput
-                        value={this.state.Password}
-                        
+                        value={this.state.ConfirmedPassword}
+                        onChangeText={(ConfirmedPassword) => this.setState({ ConfirmedPassword })}
                         placeholder={'הזן שוב את הסיסמה לאישור'}
                         style={styles.input}
+                        secureTextEntry
                     />
-                    <View style={styles.checkbox}>
-                        <CheckBox/>
-                        <Text style={{ paddingTop: 3 }}>הסיסמה מאושרת</Text>
-                    </View>
-                    
+                    {!!this.state.feildsError && (
+                        <Text style={{ color: "red" }}>{this.state.feildsError}</Text>
+                    )}
+                    {!!this.state.passError && (
+                        <Text style={{ color: "red" }}>{this.state.passError}</Text>
+                    )}
+                    {!!this.state.validatePassErr && (
+                        <Text style={{ color: "green" }}>{this.state.validatePassErr}</Text>
+                    )}
+                    {/* {this.state.Password == this.state.ConfirmedPassword || this.state.Password != null || this.state.ConfirmedPassword != null ?
+                    <Text style={{ paddingTop: 3, color:'green' }}>הסיסמה מאושרת</Text> : null} */}
+
                     <View style={styles.button}>
-                        <Button onPress={() => this.props.navigation.navigate('RegistrationP2', {Email:this.state.Email, Password:this.state.Password})} 
+                        <Button onPress={() => {
+                            if (this.state.Email.trim() === "" || this.state.Password.trim() === "" || this.state.ConfirmedPassword.trim() === "") {
+                                this.setState(() => ({ feildsError: "שדות אלו הינם שדות חובה" }));
+                            }
+                            else if (this.state.Password.trim() != this.state.ConfirmedPassword.trim()) {
+                                this.setState(() => ({ passError: "הסיסמאות אינן תואמות" }));
+                            }
+                            else if (this.state.Password.trim() === this.state.ConfirmedPassword.trim()) {
+                                this.setState(() => ({ validatePassErr: "הסיסמאות תואמות" }));
+                                this.props.navigation.navigate('RegistrationP2', {Email:this.state.Email, Password:this.state.Password})
+                            }} }
                             title={'המשך'}
                          
                         />
@@ -117,9 +160,6 @@ const styles = StyleSheet.create({
     },
     screen: {
         flex: 1
-    },
-    checkbox: {
-        flexDirection: 'row'
     },
     genderView:{
         flexDirection: 'row',
