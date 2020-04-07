@@ -1,5 +1,4 @@
 import React, { Component, useState } from 'react';
-import { Alert, Button, TextInput, View, StyleSheet, Text } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import LoginScreen from './screens/LoginScreen';
@@ -13,9 +12,7 @@ import RegistrationP2 from './screens/RegistrationP2';
 import RegistrationP1 from './screens/RegistrationP1';
 import FindNeighboor from './screens/FindNeighboor';
 import RegistrationExtra from './screens/RegistrationExtra'
-import MapView from 'react-native-maps';
 import RegistrationP5 from './screens/RegistrationP5';
-
 
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';

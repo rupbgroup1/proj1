@@ -57,6 +57,7 @@ export default class ForgotPassword extends Component {
 
                 <TextInput
                         value={this.state.userEmail}
+                        //validate is not working
                         onChangeText={(userEmail) =>{
                            this.setState({ userEmail },()=>
                            {if(!this.validateEmail(this.state.userEmail))

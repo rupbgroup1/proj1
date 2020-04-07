@@ -21,7 +21,7 @@ export default class FindNeighboor extends Component {
             latitudeDelta: 0.003,
             longitudeDelta: 0.003
         },
-        user: props.navigation.getParam('user')
+        //user: props.navigation.getParam('user')
     };
  }
 

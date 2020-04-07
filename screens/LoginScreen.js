@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Alert, Button, TextInput, View, StyleSheet, Text} from 'react-native';
 import RememberMe from '../components/RememberMe';
+import {AsyncStorage} from 'react-native';
 
 
 export default class LoginScreen extends Component {
@@ -11,11 +12,13 @@ export default class LoginScreen extends Component {
       username: '',
       password: '',
       titleText: 'Commy',
-      user: {},
+      user: [],
       usernameValid: true
     };
-
+    
   }
+
+  
 //Search for the userDetails in DB
   fetchOnLogin=()=> {
     const loginDetails={
@@ -37,14 +40,15 @@ export default class LoginScreen extends Component {
         })
         .then(
           (result) => {
-          console.log("fetch = ", result);
+          console.log("fetch = ", result) ;
           if(result.UserId===0){
              Alert.alert("הפרטים אינם נכונים, אנא נסה שנית")}
           else{
-            this.setState({user:result});
-            this.props.navigation.navigate('FindNeighboor' , {user:this.state.user});
-          }
-          
+            //this.setState({user:result});
+            AsyncStorage.setItem( "user", JSON.stringify(result),()=>{
+              this.props.navigation.navigate('RegistrationExtra');
+            });
+           }
           },
           (error) => {
             console.log("err post=", error);
@@ -54,18 +58,7 @@ export default class LoginScreen extends Component {
   
   }
 //Check that the user name entered is valid
-  // validate = (text) => {
-  //   console.log(text);
-  //   let reg = '^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/';
-  //   if (reg.test(text) === false) {
-  //     this.setState({ usernameValid: false })
-  //     return false;
-  //   }
-  //   else {
-  //     this.setState({ usernameValid: true })
-  //     console.log("Email is Correct");
-  //   }
-  // }
+
   
   render() {
     return (
@@ -89,7 +82,8 @@ export default class LoginScreen extends Component {
           style={styles.input}
         />
         <View style={styles.RememberMe}>
-        <RememberMe  user={{Email: this.state.Email, Password:this.state.Password}}/>
+        <RememberMe  user={{Email: this.state.username, Password:this.state.Password}}/>
+        {/* user={{Email: this.state.username, Password:this.state.Password}} */}
         </View>
         
         
@@ -103,7 +97,7 @@ export default class LoginScreen extends Component {
           }
           }
         />
-        
+        <Text>{this.state.username}{this.state.password}</Text>
         </View>
         <Text onPress={() => this.props.navigation.navigate('ForgotPassword')} style={styles.forgotPassword} >
            שכחתי סיסמה {'\n'}{'\n'}
@@ -143,7 +137,7 @@ const styles = StyleSheet.create({
   titleText: {
     fontFamily:'kalam-regular',
     marginVertical: 1,
-    fontSize: 60
+    fontSize: 70
   }, 
   forgotPassword:{
     

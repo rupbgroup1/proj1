@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { TouchableOpacity, StyleSheet, Text, View, AsyncStorage, Alert } from 'react-native';
-import { CheckBox } from 'react-native-elements';
-import { AppRegistry } from "react-native";
+import {CheckBox} from 'react-native-elements';
+
 
 
 const RememberMe = ({ navigation }) => {
@@ -75,8 +75,6 @@ const RememberMe = ({ navigation }) => {
     };
 
   return (
-    
-
       <CheckBox
         center
         title='זכור אותי'
@@ -90,7 +88,7 @@ const RememberMe = ({ navigation }) => {
 
       
   );
-};
+}
 
 
 export default RememberMe;
