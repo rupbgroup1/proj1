@@ -83,7 +83,6 @@ export default class LoginScreen extends Component {
         />
         <View style={styles.RememberMe}>
         <RememberMe  user={{Email: this.state.username, Password:this.state.Password}}/>
-        {/* user={{Email: this.state.username, Password:this.state.Password}} */}
         </View>
         
         

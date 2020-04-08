@@ -11,9 +11,36 @@ import { Right } from 'native-base';
 export default class RegistraionP4 extends Component {
     state = {
         region: {},
-        addressName: ''
+        addressName: '',
+        user:this.props.navigation.getParam('user')
+
     };
 
+    fetchPostNewUser = () => {
+
+        fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/User', {
+            method: 'POST',
+            body: JSON.stringify(this.state.user),
+            headers: new Headers({
+                'Content-type': 'application/json; charset=UTF-8'
+            })
+        })
+            .then(res => {
+                //console.log('res=', res);
+                return res.json()
+            })
+            .then(
+                (result) => {
+                    console.log("fetch POST= ", result);
+                    //this.props.navigation.navigate('Pic');
+                },
+                (error) => {
+                    console.log("err post=", error);
+                    Alert.alert("אנא נסה שנית");
+                }
+            );
+
+    }
     componentDidMount() {
         this.getInitialState();
     }
@@ -80,16 +107,8 @@ export default class RegistraionP4 extends Component {
                                 region={this.state.region}
                                 onRegionChange={(reg) => this.onMapRegionChange(reg)} />
                         </View> : null}
-                        <Text style={styles.subTitle} >
-                   אנא סמנ/י שכונה על גבי המפה
-                </Text>
-                {
-                    this.state.region['latitude'] ?
-                        <View style={{ flex: 1 }}>
-                            <MapComponent
-                                region={this.state.region}
-                                onRegionChange={(reg) => this.onMapRegionChange(reg)} />
-                        </View> : null}
+                        
+               
             <Button  title={'המשך'}
                 onPress={() => this.props.navigation.navigate('RegistrationP5')}
             /> 

@@ -17,29 +17,29 @@ export default class RegistrationP1 extends Component {
     }
 
     //בדיקה האם המייל קיים כבר בשרת
-    // checkUserEmailIsValid=()=> {
-    //     fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/User/?username='+this.state.Email, {
-    //         method: 'GET',
-    //         headers: new Headers({
-    //             'Content-Type': 'application/json; charset=UTF-8',
-    //         })
-    //     })
-    //     .then(res => {
-    //         console.log('res=', res);
-    //         return res.json();
-    //     })
-    //     .then(
-    //         (result) => {
-    //             console.log("fetc= ", result);
-    //             result===0 ? this.props.navigation.navigate('RegistrationP2', {Email:this.state.Email, Password:this.state.Password}) : Alert.alert("כבר קיים יוזר עם שם משתמש זה");
+    checkUserEmailIsValid=()=> {
+        fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/User/?username='+this.state.Email, {
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'application/json; charset=UTF-8',
+            })
+        })
+        .then(res => {
+            console.log('res=', res);
+            return res.json();
+        })
+        .then(
+            (result) => {
+                console.log("fetch= ", result);
+                result===0 ? this.props.navigation.navigate('RegistrationP2', {Email:this.state.Email, Password:this.state.Password}) : Alert.alert("כבר קיים יוזר עם שם משתמש זה");
                 
 
-    //         },
-    //         (error) => {
-    //             console.log("err post=", error);
-    //         }
-    //     );
-    // }
+            },
+            (error) => {
+                console.log("err post=", error);
+            }
+        );
+    }
 
 
     render() {
@@ -105,7 +105,8 @@ export default class RegistrationP1 extends Component {
                             }
                             else if (this.state.Password.trim() === this.state.ConfirmedPassword.trim()) {
                                 this.setState(() => ({ validatePassErr: "הסיסמאות תואמות" }));
-                                this.props.navigation.navigate('RegistrationP2', {Email:this.state.Email, Password:this.state.Password})
+                               this.checkUserEmailIsValid();
+                                //this.props.navigation.navigate('RegistrationP2', {Email:this.state.Email, Password:this.state.Password})
                             }} }
                             title={'המשך'}
                          

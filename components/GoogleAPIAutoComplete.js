@@ -13,9 +13,13 @@ function GoogleAPIAutoComplete(props){
         returnKeyType={'search'} // Can be left out for default return key 
         listViewDisplayed={false}    // true/false/undefined
         fetchDetails={true}
-        onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
+        onPress={( data,details = null) => { // 'details' is provided when fetchDetails = true
          //props.notifyChange(data.geometry.location);
-         console.log(details);
+         const lon = JSON.stringify(data);
+         console.log(lon);
+         const lonCor=lon.longitude;
+         console.log(lonCor);
+         props.updateState(details);
         }}
         query={{
             key: ApiKey.id,

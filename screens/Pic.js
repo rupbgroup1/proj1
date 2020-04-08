@@ -13,8 +13,11 @@ export default class Pic extends Component {
     
     constructor(props) {
         super(props);
-        this.state = {isChecked: true, 
-            picUri:''};
+        this.state = {
+            isChecked: true, 
+            picUri:'',
+            //Add user params 
+        };
         this.handleChecked = this.handleChecked.bind(this); // set this, because you need get methods from CheckBox 
   }
 

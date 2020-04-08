@@ -14,12 +14,14 @@ export default class FindNeighboor extends Component {
         neiName:'',
         usersAround:[],
         region: {
+            latitudeDelta: 0.003,
+            longitudeDelta: 0.003,
             //latitude: this.props.user.lat,
             //longitude: this.props.user.lan,
+            //for now: **delete**
             latitude: 32.253330,
-            longitude: 34.918060,
-            latitudeDelta: 0.003,
-            longitudeDelta: 0.003
+            longitude: 34.918060
+            
         },
         //user: props.navigation.getParam('user')
     };
