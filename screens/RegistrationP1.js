@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Button, TextInput, View, StyleSheet, Text } from 'react-native';
+import { Alert, Button, TextInput, View, StyleSheet, Text , AsyncStorage} from 'react-native';
 import Header from '../components/Header';
 import colors from '../assets/constant/colors';
 
@@ -16,6 +16,7 @@ export default class RegistrationP1 extends Component {
 
     }
 
+    
     //בדיקה האם המייל קיים כבר בשרת
     checkUserEmailIsValid=()=> {
         fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/User/?username='+this.state.Email, {
@@ -25,12 +26,12 @@ export default class RegistrationP1 extends Component {
             })
         })
         .then(res => {
-            console.log('res=', res);
+            //console.log('res=', res);
             return res.json();
         })
         .then(
             (result) => {
-                console.log("fetch= ", result);
+                //console.log("fetch= ", result);
                 result===0 ? this.props.navigation.navigate('RegistrationP2', {Email:this.state.Email, Password:this.state.Password}) : Alert.alert("כבר קיים יוזר עם שם משתמש זה");
                 
 
@@ -105,6 +106,11 @@ export default class RegistrationP1 extends Component {
                             }
                             else if (this.state.Password.trim() === this.state.ConfirmedPassword.trim()) {
                                 this.setState(() => ({ validatePassErr: "הסיסמאות תואמות" }));
+                                let userDetails={
+                                    Email:this.state.Email,
+                                    Password:this.state.Password
+                                };
+                                AsyncStorage.setItem( "user", JSON.stringify(userDetails));
                                this.checkUserEmailIsValid();
                                 //this.props.navigation.navigate('RegistrationP2', {Email:this.state.Email, Password:this.state.Password})
                             }} }

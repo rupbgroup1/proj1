@@ -1,26 +1,26 @@
-import React, { useState, Component } from 'react';
-import {Dimensions, TouchableOpacity} from 'react-native';
+import React, { useState, Component, useCallback, useEffect } from 'react';
+import {Dimensions, TouchableOpacity, AsyncStorage} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
-
 
 const MapComponent = (props) => {
     const [selectedLocation, setSelectedLocation]= useState();
 
     const selectLocation=event=>{
-        console.log(event);
         setSelectedLocation({
-            lat:event.nativeEvent.coordinate.latitude,
-            lng:event.nativeEvent.coordinate.longitude
+            Lat:event.nativeEvent.coordinate.latitude,
+            Lan:event.nativeEvent.coordinate.longitude
         });
-        console.log(selectLocation.lat);
+       
     };
 
+    
     let markerCoordinates;
     if(selectedLocation){
         markerCoordinates={
-            latitude: selectedLocation.lat,
-            longitude: selectedLocation.lng
+            latitude: selectedLocation.Lat,
+            longitude: selectedLocation.Lan
         };
+        AsyncStorage.mergeItem('user', JSON.stringify(selectedLocation));
     }
 
    return (

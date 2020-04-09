@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, Button } from 'react-native';
+import { View, StyleSheet, Text, Button, AsyncStorage } from 'react-native';
 import MapComponent from '../components/MapComponent';
 import GoogleAPIAutoComplete from '../components/GoogleAPIAutoComplete';
 import { getLocation } from '../components/GeoCodes';
@@ -9,13 +9,21 @@ import { Right } from 'native-base';
 
 
 export default class RegistraionP4 extends Component {
-    state = {
-        region: {},
-        addressName: '',
-        user:this.props.navigation.getParam('user')
+    constructor(props) {
+        super(props);
+        this.state = {
+            region: {},
+            addressName: '',
+            user: this.props.navigation.getParam('user'),
 
-    };
+            lat1: 0.00,
+            lng1: 0.00
 
+
+        };
+    }
+
+    //SAVE USER IN DB
     fetchPostNewUser = () => {
 
         fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/User', {
@@ -41,10 +49,22 @@ export default class RegistraionP4 extends Component {
             );
 
     }
+
+test(){
+    AsyncStorage.getItem('user', (err, result) => {
+        console.log(result);
+    });
+}
     componentDidMount() {
         this.getInitialState();
+        
     }
 
+    // updateState(lat, lng) {
+
+    //     this.setState({ lat1: lat, lng1: lng });
+      
+    // }
     //get current location of the user
     getInitialState() {
         getLocation().then(
@@ -79,24 +99,24 @@ export default class RegistraionP4 extends Component {
 
     onMapRegionChange(region) {
         this.setState({ region });
-
+        
     }
-
 
     render() {
         const { navigation } = this.props;
         return (
             <View style={styles.screen}>
                 <Header />
+                <Text>{this.state.lat},{this.state.lng}</Text>
                 <Text style={styles.subTitle} >
                     אנא בחר/י מקום מגורים
                 </Text>
-                <Text style={{fontFamily: 'rubik-regular', textAlign:'center', marginBottom:10}}>
+                <Text style={{ fontFamily: 'rubik-regular', textAlign: 'center', marginBottom: 10 }}>
                     מקום המגורים לא יחשף ללא הרשאתך
                     </Text>
-                    
-                <View style={{ flex: 1, textAlign:'right'}}>
-                    <GoogleAPIAutoComplete style={{textAlign:'right'}} notifyChange={(loc) => this.getCoordsFromName(loc)}
+
+                <View style={{ flex: 1, textAlign: 'right' }}>
+                    <GoogleAPIAutoComplete style={{ textAlign: 'right' }} notifyChange={(loc) => this.getCoordsFromName(loc)}
                     />
                 </View>
 
@@ -105,13 +125,16 @@ export default class RegistraionP4 extends Component {
                         <View style={{ flex: 1 }}>
                             <MapComponent
                                 region={this.state.region}
-                                onRegionChange={(reg) => this.onMapRegionChange(reg)} />
+                                onRegionChange={(reg) => this.onMapRegionChange(reg)}
+                                //passToParent={(lat,lng)=>this.updateState(lat,lng)}
+                            />
                         </View> : null}
-                        
-               
-            <Button  title={'המשך'}
-                onPress={() => this.props.navigation.navigate('RegistrationP5')}
-            /> 
+
+
+                <Button title={'המשך'}
+                    onPress={() => this.test()}
+                    //this.props.navigation.navigate('RegistrationP5')
+                />
             </View>
         );
     }
@@ -125,8 +148,8 @@ const styles = StyleSheet.create({
     },
     subTitle: {
         fontFamily: 'rubik-regular',
-        textAlign:'center',
-        marginBottom:10,
+        textAlign: 'center',
+        marginBottom: 10,
         marginVertical: 1,
         fontSize: 20,
         fontWeight: 'bold',
