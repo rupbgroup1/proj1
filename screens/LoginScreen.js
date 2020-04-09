@@ -105,7 +105,7 @@ export default class LoginScreen extends Component {
         <Text style={{color:'black', fontSize:16, fontFamily: 'rubik-regular'}} >
           אין לך משתמש עדיין?   {'\n'}
         </Text>
-        <Text style={{fontFamily: 'rubik-regular'}} onPress={() => this.props.navigation.navigate('RegistrationP4')} style={styles.forgotPassword} style={{color:'blue', fontSize:16}}>
+        <Text style={{fontFamily: 'rubik-regular'}} onPress={() => this.props.navigation.navigate('RegistrationIntroduction')} style={styles.forgotPassword} style={{color:'blue', fontSize:16}}>
             להרשמה לחץ כאן
           </Text>
         </View> 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, Button, AsyncStorage } from 'react-native';
+import { View, StyleSheet, Text, Button, AsyncStorage, Alert } from 'react-native';
 import MapComponent from '../components/MapComponent';
 import GoogleAPIAutoComplete from '../components/GoogleAPIAutoComplete';
 import { getLocation } from '../components/GeoCodes';
@@ -13,19 +13,23 @@ export default class RegistraionP4 extends Component {
         super(props);
         this.state = {
             region: {},
-            addressName: '',
-            user: this.props.navigation.getParam('user'),
-
-            lat1: 0.00,
-            lng1: 0.00
-
-
+            CityName: 'test',
+            NeiName:'test'
         };
     }
 
     //SAVE USER IN DB
-    fetchPostNewUser = () => {
+    async getUser() {
+        let userJSON = await AsyncStorage.getItem('user');
+        const userObj = await JSON.parse(userJSON);
+        //console.log(userJSON);
+        //console.log(userObj);
+        this.setState({user:userObj});
+        //console.log("state: " ,this.state.user);
+        this.fetchPostNewUser();
+    }
 
+    fetchPostNewUser = () => {
         fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/User', {
             method: 'POST',
             body: JSON.stringify(this.state.user),
@@ -40,7 +44,13 @@ export default class RegistraionP4 extends Component {
             .then(
                 (result) => {
                     console.log("fetch POST= ", result);
-                    //this.props.navigation.navigate('Pic');
+                    if(result===1)
+                    this.props.navigation.navigate('RegistrationP5');
+                    else{
+                        Alert.alert("מצטערים, הפרויפיל לא נוצר בהצלחה. אנא נסה שנית.");
+                        this.props.navigation.navigate('RegistrationP1');
+
+                    }
                 },
                 (error) => {
                     console.log("err post=", error);
@@ -50,21 +60,12 @@ export default class RegistraionP4 extends Component {
 
     }
 
-test(){
-    AsyncStorage.getItem('user', (err, result) => {
-        console.log(result);
-    });
-}
     componentDidMount() {
         this.getInitialState();
-        
+
     }
 
-    // updateState(lat, lng) {
 
-    //     this.setState({ lat1: lat, lng1: lng });
-      
-    // }
     //get current location of the user
     getInitialState() {
         getLocation().then(
@@ -99,7 +100,7 @@ test(){
 
     onMapRegionChange(region) {
         this.setState({ region });
-        
+
     }
 
     render() {
@@ -126,14 +127,21 @@ test(){
                             <MapComponent
                                 region={this.state.region}
                                 onRegionChange={(reg) => this.onMapRegionChange(reg)}
-                                //passToParent={(lat,lng)=>this.updateState(lat,lng)}
                             />
                         </View> : null}
 
 
                 <Button title={'המשך'}
-                    onPress={() => this.test()}
-                    //this.props.navigation.navigate('RegistrationP5')
+                //need to check user filled in all fields!!
+                    onPress={() =>  {
+                        let userDetails={
+                           CityName:this.state.CityName,
+                           NeighborhoodName:this.state.NeiName
+                        }
+                    AsyncStorage.mergeItem('user', JSON.stringify(userDetails));
+                        this.getUser()
+                     }}
+                
                 />
             </View>
         );

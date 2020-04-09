@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Button, TextInput, View, StyleSheet, Text, Picker } from 'react-native';
+import {Button, TextInput, View, StyleSheet, Text, Picker,AsyncStorage } from 'react-native';
 import Header from '../components/Header';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import GenderButton from '../components/GenderButton';
@@ -18,12 +18,8 @@ export default class RegistrationP2 extends Component {
             nameIsPrivate: false,
             yearOfBirth: '2020',
             gender: 0,
-            nameError: '',
-            Email: props.navigation.getParam('Email'),
-            Password: props.navigation.getParam('Password')
-        };
-
-       
+            nameError: ''
+        }; 
     }
 
 
@@ -97,7 +93,17 @@ export default class RegistrationP2 extends Component {
                                 if (this.state.userPrivateName.trim() === "" || this.state.userLastName.trim() === "") {
                                     this.setState(() => ({ nameError: "אנא מלא/י שם פרטי ושם משפחה" }));
                                 }
-                                else this.props.navigation.navigate('Pic', {Email:this.state.Email, Password:this.state.Password, FirstName: this.state.userPrivateName, LastName: this.state.userLastName, Gender: this.state.gender, YearOfBirth: this.state.yearOfBirth});
+                                else {
+                                    let userDetails={
+                                        FirstName:this.state.userPrivateName,
+                                        LastName:this.state.userLastName,
+                                        Gender:this.state.gender,
+                                        YearOfBirth:this.state.yearOfBirth
+
+                                    }
+                                AsyncStorage.mergeItem('user', JSON.stringify(userDetails));
+                                this.props.navigation.navigate('Pic');
+                                }
                                 
                             }}
                         />

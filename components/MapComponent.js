@@ -33,7 +33,7 @@ const MapComponent = (props) => {
          // onRegionChange={(reg) => props.onRegionChange(reg)}
          onPress={selectLocation}
         >
-         { markerCoordinates && <Marker title='המיקום שלי' coordinate={markerCoordinates}></Marker>}
+         { markerCoordinates? <Marker title='המיקום שלי' coordinate={markerCoordinates}></Marker>: <Marker title='המיקום שלי' coordinate={props.region}></Marker>}
       </MapView>
       
       </TouchableOpacity>
