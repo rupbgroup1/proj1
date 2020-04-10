@@ -43,7 +43,8 @@ const styles = StyleSheet.create({
   button:{
     fontFamily: 'rubik-regular',
    width: '60%',
-   paddingTop: 50
+   paddingTop: 50,
+   
   }
  
 });

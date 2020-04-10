@@ -46,6 +46,7 @@ export default class Pic extends Component {
         return(
         <View style={{backgroundColor:'#F0F8FF', height:'100%', alignItems:'center'}}>  
         <Header/>
+        <BackButton goBack={() => navigation.navigate('RegistrationP2')} />
        <Text style={styles.subTitle}>
            הגדר את תמונת הפרופיל שלך
        </Text>

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Alert, Button, TextInput, View, StyleSheet, Text} from 'react-native';
+import { Alert, Button, TextInput, View, StyleSheet, Text } from 'react-native';
 import RememberMe from '../components/RememberMe';
-import {AsyncStorage} from 'react-native';
+import { AsyncStorage } from 'react-native';
+import Background from '../components/Background'
 
 
 export default class LoginScreen extends Component {
@@ -15,59 +16,63 @@ export default class LoginScreen extends Component {
       user: [],
       usernameValid: true
     };
-    
+
   }
 
-  
-//Search for the userDetails in DB
-  fetchOnLogin=()=> {
-    const loginDetails={
-      Email :this.state.username,
-      Password : this.state.password
-    } 
 
+  //Search for the userDetails in DB
+  fetchOnLogin = () => {
+    const loginDetails = {
+      Email: this.state.username,
+      Password: this.state.password
+    }
+
+    //Check that the user name entered is valid
+    if (this.state.username == '' || this.state.password == '') {
+      return Alert.alert("אנא מלא שם משתמש וסיסמה");
+    }
 
     fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/User/login', {
       method: 'POST',
       body: JSON.stringify(loginDetails),
       headers: new Headers({
-          'Content-type': 'application/json; charset=UTF-8'
+        'Content-type': 'application/json; charset=UTF-8'
       })
-  })
-        .then(res => {
-          //console.log('res=', res);
-          return res.json()
-        })
-        .then(
-          (result) => {
-          console.log("fetch = ", result) ;
-          if(result.UserId===0){
-             Alert.alert("הפרטים אינם נכונים, אנא נסה שנית")}
-          else{
+    })
+      .then(res => {
+        //console.log('res=', res);
+        return res.json()
+      })
+      .then(
+        (result) => {
+          console.log("fetch = ", result);
+          if (result.UserId === 0) {
+            Alert.alert("הפרטים אינם נכונים, אנא נסה שנית")
+          }
+          else {
             //this.setState({user:result});
-            AsyncStorage.setItem( "user", JSON.stringify(result),()=>{
-              this.props.navigation.navigate('RegistrationExtra');
+            AsyncStorage.setItem("user", JSON.stringify(result), () => {
+              this.props.navigation.navigate('FindNeighboor');
             });
-           }
-          },
-          (error) => {
-            console.log("err post=", error);
-            Alert.alert("איראה שגיאה, אנא נסה שנית");
-          });
-    
-  
-  }
-//Check that the user name entered is valid
+          }
+        },
+        (error) => {
+          console.log("err post=", error);
+          Alert.alert("איראה שגיאה, אנא נסה שנית");
+        });
 
+
+  }
   
+
+
   render() {
     return (
-      
-      <View style={styles.container}>
+      <Background >
+
         <Text style={styles.titleText} >
           {this.state.titleText}{'\n'}
         </Text>
-        
         <TextInput
           value={this.state.username}
           onChangeText={(username) => this.setState({ username })}
@@ -82,34 +87,35 @@ export default class LoginScreen extends Component {
           style={styles.input}
         />
         <View style={styles.RememberMe}>
-        <RememberMe  user={{Email: this.state.username, Password:this.state.Password}}/>
+          <RememberMe user={{ Email: this.state.username, Password: this.state.Password }} />
         </View>
-        
-        
+
+
         <View style={styles.button}>
-        <Button
-          fontFamily='rubik-regular'
-          color='blue'
-          title={'כניסה'}
-          onPress={()=>{
-          this.state.usernameValid ? this.fetchOnLogin() : Alert.alert("שם משתמש לא תקין")
-          }
-          }
-        />
-        <Text>{this.state.username}{this.state.password}</Text>
+          <Button
+            fontFamily='rubik-regular'
+            color='#0d7d96'
+            title={'כניסה'}
+            onPress={() => {
+              this.state.usernameValid ? this.fetchOnLogin() : Alert.alert("שם משתמש לא תקין")
+            }
+            }
+          />
+
         </View>
         <Text onPress={() => this.props.navigation.navigate('ForgotPassword')} style={styles.forgotPassword} >
-           שכחתי סיסמה {'\n'}{'\n'}
-          </Text>
-        <View style={styles.createUser}>
-        <Text style={{color:'black', fontSize:16, fontFamily: 'rubik-regular'}} >
-          אין לך משתמש עדיין?   {'\n'}
+          שכחתי סיסמה {'\n'}{'\n'}
         </Text>
-        <Text style={{fontFamily: 'rubik-regular'}} onPress={() => this.props.navigation.navigate('RegistrationIntroduction')} style={styles.forgotPassword} style={{color:'blue', fontSize:16}}>
+        <View style={styles.createUser}>
+          <Text style={{ color: 'white', fontSize: 18, fontFamily: 'rubik-regular' }} >
+            אין לך משתמש עדיין?   {'\n'}
+          </Text>
+          <Text style={{ fontFamily: 'rubik-regular' }} onPress={() => this.props.navigation.navigate('RegistrationIntroduction')} style={styles.forgotPassword} style={{ color: '#0d7d96', fontSize: 18 }}>
             להרשמה לחץ כאן
           </Text>
-        </View> 
-      </View>
+        </View>
+
+      </Background>
     );
   }
 }
@@ -119,37 +125,38 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#ecf0f1', 
+    //backgroundColor: '#ecf0f1', 
   },
   input: {
-    
+
     fontFamily: 'rubik-regular',
-    width: '70%',
+    width: '90%',
     height: 44,
-    padding: 10,
+    padding: 5,
     borderWidth: 1,
     borderColor: 'white',
     marginBottom: 10,
     backgroundColor: 'white',
     textAlign: 'right',
+    borderRadius: 8
   },
   titleText: {
-    fontFamily:'kalam-regular',
+    fontFamily: 'kalam-regular',
     marginVertical: 1,
     fontSize: 70
-  }, 
-  forgotPassword:{
-    
+  },
+  forgotPassword: {
+
     fontFamily: 'rubik-regular',
-    color: 'blue',
+    color: 'white',
     textAlign: 'left',
-    paddingTop:20
+    paddingTop: 20
   },
-  button:{
-   width: '70%',
-   
+  button: {
+    width: '90%'
+
   },
-  createUser:{
+  createUser: {
     fontFamily: 'rubik-regular',
     padding: 10,
     flexDirection: 'row',
@@ -157,9 +164,9 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     fontFamily: 'varela'
   },
-  RememberMe:{
-   flexDirection:'row',
-   marginRight:145,
-   paddingBottom:20
+  RememberMe: {
+    flexDirection: 'row',
+    marginRight: 145,
+    paddingBottom: 20
   }
 });
