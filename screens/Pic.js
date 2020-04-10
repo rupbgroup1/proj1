@@ -6,7 +6,7 @@ import colors from '../assets/constant/colors';
 import CheckBox from 'react-native-check-box'
 import { SimpleLineIcons } from '@expo/vector-icons';
 import 'react-native-gesture-handler';
-import {createStackNavigator,createAppContainer} from 'react-navigation';
+import {createStackNavigator,createAppContainer,withNavigation} from 'react-navigation';
 
 
 export default class Pic extends Component {
@@ -14,26 +14,35 @@ export default class Pic extends Component {
     constructor(props) {
         super(props);
         this.state = {isChecked: true, 
-            picUri:''};
+            picUri:'https://cdn1.iconfinder.com/data/icons/business-users/512/circle-512.png'};
         this.handleChecked = this.handleChecked.bind(this); // set this, because you need get methods from CheckBox 
   }
 
-  addPic (path)  {
-      if (path = "" ){
-        this.setState({picUri:path});
-        Alert.alert(path);
-      }
-      else{
-        this.setState({picUri:"https://cdn1.iconfinder.com/data/icons/business-users/512/circle-512.png"});
-      }
-
+ 
+  componentDidMount ()  {
+      const {navigation} = this.props;
+    this._unsubscribe = navigation.addListener('didFocus', () => {
+        this.setState({ picUri: this.props.navigation.getParam('photoUri')})
+    });
   }
+
+  componentWillUnmount  ()  {
+    this._unsubscribe();
+  }
+
+  
 
   handleChecked () {
     this.setState({isChecked: !this.state.isChecked});
   }
 
    render (){
+
+    const {picUri} = this.state;
+
+   
+
+    
         return(
         <View style={{backgroundColor:'#F0F8FF', height:'100%', alignItems:'center'}}>  
         <Header/>
@@ -62,8 +71,7 @@ export default class Pic extends Component {
                     </View>
                     <Image
                         style={{ alignSelf: 'center', width: 300, height: 250 }}
-                        source={{uri: this.props.navigation.getParam('photoUri')}} 
-                        onPress={() => this.setState({ picUri: this.props.navigation.getParam('photoUri')})}/>
+                        source={{uri: this.state.picUri}} />
         
                     <View style={styles.button,{marginTop:0}}>
                         <Button
