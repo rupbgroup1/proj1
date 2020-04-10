@@ -7,6 +7,7 @@ import CheckBox from 'react-native-check-box'
 import { SimpleLineIcons } from '@expo/vector-icons';
 import 'react-native-gesture-handler';
 import {createStackNavigator,createAppContainer} from 'react-navigation';
+import BackButton from '../components/BackButton';
 
 
 export default class Pic extends Component {
@@ -40,6 +41,7 @@ export default class Pic extends Component {
         return(
         <View style={{backgroundColor:'#F0F8FF', height:'100%', alignItems:'center'}}>  
         <Header/>
+        <BackButton goBack={() => navigation.navigate('RegistrationP2')} />
        <Text style={styles.subTitle}>
            הגדר את תמונת הפרופיל שלך
        </Text>

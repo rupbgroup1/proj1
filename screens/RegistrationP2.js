@@ -6,6 +6,8 @@ import GenderButton from '../components/GenderButton';
 import colors from '../assets/constant/colors';
 import { StackRouter } from 'react-navigation';
 import CheckBox from 'react-native-check-box';
+import BackButton from '../components/BackButton';
+
 
 
 export default class RegistrationP2 extends Component {
@@ -33,6 +35,7 @@ export default class RegistrationP2 extends Component {
 
             <View style={styles.screen} >
                 <Header />
+                <BackButton goBack={() => navigation.navigate('RegistrationP1')} />
                 <View style={styles.container}>
                     <Text style={styles.subTitle} >
                         מה שמך?

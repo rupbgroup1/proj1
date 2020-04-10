@@ -6,6 +6,7 @@ import { getLocation } from '../components/GeoCodes';
 import colors from '../assets/constant/colors';
 import Header from '../components/Header';
 import { Right } from 'native-base';
+import BackButton from '../components/BackButton';
 
 
 export default class RegistraionP4 extends Component {
@@ -108,6 +109,7 @@ export default class RegistraionP4 extends Component {
         return (
             <View style={styles.screen}>
                 <Header />
+                <BackButton goBack={() => navigation.navigate('Pic')} />
                 <Text>{this.state.lat},{this.state.lng}</Text>
                 <Text style={styles.subTitle} >
                     אנא בחר/י מקום מגורים

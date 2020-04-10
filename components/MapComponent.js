@@ -13,7 +13,6 @@ const MapComponent = (props) => {
        
     };
 
-    
     let markerCoordinates;
     if(selectedLocation){
         markerCoordinates={
