@@ -7,6 +7,7 @@ import CheckBox from 'react-native-check-box'
 import { SimpleLineIcons } from '@expo/vector-icons';
 import 'react-native-gesture-handler';
 import {createStackNavigator,createAppContainer,withNavigation} from 'react-navigation';
+import BackButton from '../components/BackButton';
 
 
 export default class Pic extends Component {
