@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Button, TextInput, View, StyleSheet, Text, Picker } from 'react-native';
+import {Button, TextInput, View, StyleSheet, Text, Picker,AsyncStorage } from 'react-native';
 import Header from '../components/Header';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import GenderButton from '../components/GenderButton';
@@ -18,50 +18,12 @@ export default class RegistrationP2 extends Component {
             nameIsPrivate: false,
             yearOfBirth: '2020',
             gender: 0,
-            nameError: '',
-            Email: props.navigation.getParam('Email'),
-            Password: props.navigation.getParam('Password')
-        };
-
-       
+            nameError: ''
+        }; 
     }
 
 
-    fetchPostNewUser = () => {
-        const newUser = {
-            Email: this.state.Email,
-            Password: this.state.Password,
-            FirstName: this.state.userPrivateName,
-            LastName: this.state.userLastName,
-            Gender: this.state.gender,
-            YearOfBirth: this.state.yearOfBirth,
-            IsPrivateName: this.state.IsPrivateName
-            
-        }
-        fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/User', {
-            method: 'POST',
-            body: JSON.stringify(newUser),
-            headers: new Headers({
-                'Content-type': 'application/json; charset=UTF-8'
-            })
-        })
-            .then(res => {
-                //console.log('res=', res);
-                return res.json()
-            })
-            .then(
-                (result) => {
-                    console.log("fetch POST= ", result);
-                    this.props.navigation.navigate('Pic');
-                },
-                (error) => {
-                    console.log("err post=", error);
-                    Alert.alert("אנא נסה שנית");
-                }
-            );
-
-
-    }
+    
 
     render() {
         const thisYear = (new Date()).getFullYear();
@@ -131,7 +93,18 @@ export default class RegistrationP2 extends Component {
                                 if (this.state.userPrivateName.trim() === "" || this.state.userLastName.trim() === "") {
                                     this.setState(() => ({ nameError: "אנא מלא/י שם פרטי ושם משפחה" }));
                                 }
-                                else this.fetchPostNewUser()
+                                else {
+                                    let userDetails={
+                                        FirstName:this.state.userPrivateName,
+                                        LastName:this.state.userLastName,
+                                        Gender:this.state.gender,
+                                        YearOfBirth:this.state.yearOfBirth
+
+                                    }
+                                AsyncStorage.mergeItem('user', JSON.stringify(userDetails));
+                                this.props.navigation.navigate('Pic');
+                                }
+                                
                             }}
                         />
                     </View>

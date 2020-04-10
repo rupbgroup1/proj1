@@ -1,5 +1,5 @@
 import React, { useState, Component } from 'react';
-import {Dimensions, TouchableOpacity} from 'react-native';
+import {Dimensions, TouchableOpacity,AsyncStorage} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 
 
@@ -15,12 +15,13 @@ const MapComponent = (props) => {
         console.log(selectLocation.lat);
     };
 
-    let markerCoordinates;
-    if(selectedLocation){
-        markerCoordinates={
-            latitude: selectedLocation.lat,
-            longitude: selectedLocation.lng
+let markerCoordinates={};
+    if (selectedLocation) {
+        markerCoordinates = {
+            latitude: selectedLocation.Lat,
+            longitude: selectedLocation.Lan
         };
+        AsyncStorage.mergeItem('user', JSON.stringify(selectedLocation));
     }
 
    return (
@@ -30,10 +31,10 @@ const MapComponent = (props) => {
           height: Dimensions.get('window').height }}
           region={props.region}
           showsUserLocation={true}
-         // onRegionChange={(reg) => props.onRegionChange(reg)}
-         onPress={selectLocation}
+         onRegionChange={(reg) => props.onRegionChange(reg)}
+         //onPress={selectLocation}
         >
-         { markerCoordinates && <Marker title='המיקום שלי' coordinate={markerCoordinates}></Marker>}
+       {markerCoordinates ? <Marker title='המיקום שלי' coordinate={markerCoordinates}></Marker> : <Marker title='המיקום שלי' coordinate={props.region}></Marker>}
       </MapView>
       
       </TouchableOpacity>

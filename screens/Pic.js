@@ -1,5 +1,5 @@
 import React, { Component, createElement } from 'react';
-import { Button, View, StyleSheet, Text,  Image , TextInput, Alert } from 'react-native';
+import { Button, View, StyleSheet, Text,  Image , Alert, AsyncStorage } from 'react-native';
 import Header from '../components/Header';
 import GenderButton from '../components/GenderButton';
 import colors from '../assets/constant/colors';
@@ -75,7 +75,13 @@ export default class Pic extends Component {
         
                     <View style={styles.button,{marginTop:0}}>
                         <Button
-                            title={'המשך'}  onPress={() => this.props.navigation.navigate('RegistrationP4')} 
+                            title={'המשך'}  onPress={() => {
+                                let userDetails={
+                                ImagePath: this.state.picUri
+                                }
+                                AsyncStorage.mergeItem('user', JSON.stringify(userDetails));
+                                this.props.navigation.navigate('RegistrationP4')
+                            } }
                         />
                    </View>
                    <Text>
