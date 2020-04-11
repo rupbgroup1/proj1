@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import GenderButton from './GenderButton';
+import GenderButton from './OurButton';
 import { SimpleLineIcons } from '@expo/vector-icons';
 
 

@@ -1,7 +1,7 @@
 import React, { Component, createElement } from 'react';
 import { Button, View, StyleSheet, Text,  Image , Alert, AsyncStorage } from 'react-native';
 import Header from '../components/Header';
-import GenderButton from '../components/GenderButton';
+import OurButton from '../components/OurButton';
 import colors from '../assets/constant/colors';
 import CheckBox from 'react-native-check-box'
 import { SimpleLineIcons } from '@expo/vector-icons';
@@ -50,9 +50,9 @@ export default class Pic extends Component {
           source={{uri: 'https://cdn1.iconfinder.com/data/icons/business-users/512/circle-512.png'}}
         />
             <View style={styles.icon}>
-            <GenderButton onPress={() => this.props.navigation.navigate('CameraPage')}><SimpleLineIcons name="camera" size={40} color="black"/></GenderButton>
+            <OurButton onPress={() => this.props.navigation.navigate('CameraPage')}><SimpleLineIcons name="camera" size={40} color="black"/></OurButton>
             <Text style={styles.textOr}> או </Text>
-            <GenderButton onPress={() => this.props.navigation.navigate('ImageGallery')}><SimpleLineIcons name="picture" size={40} color="black"/></GenderButton>
+            <OurButton onPress={() => this.props.navigation.navigate('ImageGallery')}><SimpleLineIcons name="picture" size={40} color="black"/></OurButton>
         
             </View>
            

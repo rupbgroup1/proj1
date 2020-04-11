@@ -1,6 +1,6 @@
 import React from 'react';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import ApiKey from '../assets/constant/ApiKey';
+import ApiKey from '../../assets/constant/ApiKey';
 
 function GoogleAPIAutoComplete(props){
     return (
@@ -15,11 +15,7 @@ function GoogleAPIAutoComplete(props){
         fetchDetails={true}
         onPress={( data,details = null) => { // 'details' is provided when fetchDetails = true
          //props.notifyChange(data.geometry.location);
-         const lon = JSON.stringify(data);
-         console.log(lon);
-         const lonCor=lon.longitude;
-         console.log(lonCor);
-         props.updateState(details);
+         
         }}
         query={{
             key: ApiKey.id,

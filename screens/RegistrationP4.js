@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, Button, AsyncStorage, Alert } from 'react-native';
-import MapComponent from '../components/MapComponent';
-import GoogleAPIAutoComplete from '../components/GoogleAPIAutoComplete';
-import { getLocation } from '../components/GeoCodes';
+import MapComponent from '../components/Maps/MapComponent';
+import GoogleAPIAutoComplete from '../components/Maps/GoogleAPIAutoComplete';
+import { getLocation } from '../components/Maps/GeoCodes';
 import colors from '../assets/constant/colors';
 import Header from '../components/Header';
 import { Right } from 'native-base';
@@ -26,7 +26,6 @@ export default class RegistraionP4 extends Component {
         //console.log(userJSON);
         //console.log(userObj);
         this.setState({user:userObj});
-        //console.log("state: " ,this.state.user);
         this.fetchPostNewUser();
     }
 

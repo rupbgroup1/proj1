@@ -2,14 +2,14 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
 
-const GenderButton = props => {
+const OurButton = props => {
   return (
     <TouchableOpacity  activeOpacity={0.1} onPress={props.onPress}>
-      <View style={styles.button}>
+      <View style={styles.button, props.style}>
         <Text style={styles.buttonText}>{props.children}</Text>
       </View>
     </TouchableOpacity>
-  );
+  )
 };
 
 const styles = StyleSheet.create({
@@ -23,8 +23,9 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'black',
-    fontSize: 18
+    fontSize: 12,
+    fontFamily: 'rubik-regular'
   }
 });
 
-export default GenderButton;
+export default OurButton;
