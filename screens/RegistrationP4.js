@@ -62,7 +62,6 @@ export default class RegistraionP4 extends Component {
 
     componentDidMount() {
         this.getInitialState();
-
     }
 
 
@@ -91,11 +90,10 @@ export default class RegistraionP4 extends Component {
             region: {
                 latitude: loc.lat,
                 longitude: loc.lng,
-                latitudeDelta: 0.003,
-                longitudeDelta: 0.003
+                longitudeDelta:0.003,
+                longitudeDelta:0.003
             }
         });
-        geocodeLocationByCoords(loc.lat, loc.lan);
     }
 
     onMapRegionChange(region) {
@@ -117,8 +115,9 @@ export default class RegistraionP4 extends Component {
                     מקום המגורים לא יחשף ללא הרשאתך
                     </Text>
 
-                <View style={{ flex: 1, textAlign: 'right' }}>
-                    <GoogleAPIAutoComplete style={{ textAlign: 'right' }} notifyChange={(loc) => this.getCoordsFromName(loc)}
+          <View style={{ flex: 1 }}>
+                <View style={{ flex: 1 }}>
+                    <GoogleAPIAutoComplete notifyChange={(loc) => this.getCoordsFromName(loc)}
                     />
                 </View>
 
@@ -127,10 +126,9 @@ export default class RegistraionP4 extends Component {
                         <View style={{ flex: 1 }}>
                             <MapComponent
                                 region={this.state.region}
-                                onRegionChange={(reg) => this.onMapRegionChange(reg)}
-                            />
+                                onRegionChange={(reg) => this.onMapRegionChange(reg)} />
                         </View> : null}
-
+            </View>
 
                 <Button title={'המשך'}
                 //need to check user filled in all fields!!

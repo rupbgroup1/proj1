@@ -14,19 +14,20 @@ function GoogleAPIAutoComplete(props){
         listViewDisplayed={false}    // true/false/undefined
         fetchDetails={true}
         onPress={( data,details = null) => { // 'details' is provided when fetchDetails = true
-         //props.notifyChange(data.geometry.location);
-         
+         props.notifyChange(details.geometry.location);
+         console.log(data,details);
         }}
         query={{
             key: ApiKey.id,
             language: 'he',
-            types: '(cities)',
-            
+
         }}
         nearbyPlacesAPI='GooglePlacesSearch'
         debounce={300}
+          
         GooglePlacesDetailsQuery={{
-            fields: 'address_component',
+            //fields: 'address_component'
+            //fields: 'formatted_address'
           }}
     />
         );
