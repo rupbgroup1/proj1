@@ -15,11 +15,6 @@ function GoogleAPIAutoComplete(props){
         fetchDetails={true}
         onPress={( data,details = null) => { // 'details' is provided when fetchDetails = true
          //props.notifyChange(data.geometry.location);
-         const lon = JSON.stringify(data);
-         console.log(lon);
-         const lonCor=lon.longitude;
-         console.log(lonCor);
-         props.updateState(details);
         }}
         query={{
             key: ApiKey.id,

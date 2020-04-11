@@ -47,7 +47,7 @@ export default class RegistraionP4 extends Component {
                     if(result===1)
                     this.props.navigation.navigate('RegistrationP5');
                     else{
-                        Alert.alert("מצטערים, הפרויפיל לא נוצר בהצלחה. אנא נסה שנית.");
+                        Alert.alert("מצטערים, הפרופיל לא נוצר בהצלחה. אנא נסה שנית.");
                         this.props.navigation.navigate('RegistrationP1');
 
                     }
@@ -123,7 +123,7 @@ export default class RegistraionP4 extends Component {
 
                 {
                     this.state.region['latitude'] ?
-                        <View style={{ flex: 1 }}>
+                        <View style={styles.map}>
                             <MapComponent
                                 region={this.state.region}
                                 onRegionChange={(reg) => this.onMapRegionChange(reg)}
@@ -163,6 +163,11 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: colors.subTitle,
         paddingTop: 25
+    },
+    map:{
+        flex:1,
+        justifyContent:'center',
+        flexDirection:'row'
     }
 
 });
