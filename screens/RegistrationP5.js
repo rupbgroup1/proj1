@@ -10,7 +10,7 @@ const RegistrationIntroduction = ({navigation}) => {
          הפרופיל נוצר בהצלחה
         </Text>
         <Text style={styles.introductionText} >
-    חוזק הפרופיל כעת הוא 40% 
+          חוזק הפרופיל כעת הוא 40% 
         </Text>
         <View style={styles.button}>
         <Button onPress={() => navigation.navigate('RegistrationExrea')}

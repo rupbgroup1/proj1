@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
-import {Button, TextInput, View, StyleSheet, Text, Picker,AsyncStorage } from 'react-native';
+import { Button, TextInput, View, StyleSheet, Text, Picker, AsyncStorage } from 'react-native';
 import Header from '../components/Header';
-import { SimpleLineIcons } from '@expo/vector-icons';
-import GenderButton from '../components/GenderButton';
+import {
+    SimpleLineIcons,
+    FontAwesome5
+} from '@expo/vector-icons';
+import OurButton from '../components/OurButton';
 import colors from '../assets/constant/colors';
 import { StackRouter } from 'react-navigation';
 import CheckBox from 'react-native-check-box';
+import BackButton from '../components/BackButton';
+
 
 
 export default class RegistrationP2 extends Component {
@@ -19,11 +24,11 @@ export default class RegistrationP2 extends Component {
             yearOfBirth: '2020',
             gender: 0,
             nameError: ''
-        }; 
+        };
     }
 
 
-    
+
 
     render() {
         const thisYear = (new Date()).getFullYear();
@@ -33,6 +38,7 @@ export default class RegistrationP2 extends Component {
 
             <View style={styles.screen} >
                 <Header />
+                <BackButton goBack={() => navigation.navigate('RegistrationP1')} />
                 <View style={styles.container}>
                     <Text style={styles.subTitle} >
                         מה שמך?
@@ -57,7 +63,7 @@ export default class RegistrationP2 extends Component {
                     {!!this.state.nameError && (
                         <Text style={{ color: "red" }}>{this.state.nameError}</Text>
                     )}
-                    
+
                     <Text style={styles.subTitle} >
                         מהי שנת הלידה שלך?
                     </Text>
@@ -77,13 +83,12 @@ export default class RegistrationP2 extends Component {
                         מהו מינך?
                    </Text>
                     <View style={styles.genderView}>
-                        <GenderButton onPress={() => this.setState({ gender: 0 })}><SimpleLineIcons name="user" size={40} color="black" /></GenderButton>
-                        <GenderButton onPress={() => this.setState({ gender: 1 })} ><SimpleLineIcons name="user-female" size={40} color="black" /></GenderButton>
-                        <GenderButton onPress={() => this.setState({ gender: 2 })}><SimpleLineIcons name="user-follow" size={40} color="black" /></GenderButton>
+                        <OurButton style={styles.genderButton} onPress={() => this.setState({ gender: 0 })}><SimpleLineIcons name="user" size={40} color="black" /></OurButton>
+                        <OurButton style={styles.genderButton} onPress={() => this.setState({ gender: 1 })} ><SimpleLineIcons name="user-female" size={40} color="black" /></OurButton>
+                        <OurButton style={styles.genderButton}onPress={() => this.setState({ gender: 2 })}><SimpleLineIcons name="user-follow" size={40} color="black" /></OurButton>
                     </View>
                     <View style={styles.genderView}>
-                        <Text style={
-                            this.state.gender === 0 ? styles.genderNoteSelected : styles.genderNote} >גבר </Text>
+                        <Text style={this.state.gender === 0 ? styles.genderNoteSelected : styles.genderNote} >גבר </Text>
                         <Text style={this.state.gender === 1 ? styles.genderNoteSelected : styles.genderNote}  >אישה </Text>
                         <Text style={this.state.gender === 2 ? styles.genderNoteSelected : styles.genderNote}  >אחר </Text>
                     </View>
@@ -94,17 +99,17 @@ export default class RegistrationP2 extends Component {
                                     this.setState(() => ({ nameError: "אנא מלא/י שם פרטי ושם משפחה" }));
                                 }
                                 else {
-                                    let userDetails={
-                                        FirstName:this.state.userPrivateName,
-                                        LastName:this.state.userLastName,
-                                        Gender:this.state.gender,
-                                        YearOfBirth:this.state.yearOfBirth
+                                    let userDetails = {
+                                        FirstName: this.state.userPrivateName,
+                                        LastName: this.state.userLastName,
+                                        Gender: this.state.gender,
+                                        YearOfBirth: this.state.yearOfBirth
 
                                     }
-                                AsyncStorage.mergeItem('user', JSON.stringify(userDetails));
-                                this.props.navigation.navigate('Pic');
+                                    AsyncStorage.mergeItem('user', JSON.stringify(userDetails));
+                                    this.props.navigation.navigate('Pic');
                                 }
-                                
+
                             }}
                         />
                     </View>
@@ -170,8 +175,19 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignContent: 'space-between',
-        marginTop: 15
+        marginTop: 15,
+
     },
+    genderButton:
+    {
+        backgroundColor:'white',
+        paddingHorizontal: 15,
+        paddingVertical:15,
+        borderRadius: 30,
+        marginRight:15,
+        marginLeft:15
+    },
+
     genderNote: {
         marginVertical: 1,
         marginBottom: 10,
@@ -182,7 +198,7 @@ const styles = StyleSheet.create({
     },
     genderNoteSelected: {
         fontFamily: 'rubik-regular',
-        fontWeight:'bold',
+        fontWeight: 'bold',
         marginVertical: 1,
         marginBottom: 10,
         fontSize: 20,

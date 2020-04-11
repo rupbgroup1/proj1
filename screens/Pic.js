@@ -1,45 +1,53 @@
 import React, { Component, createElement } from 'react';
 import { Button, View, StyleSheet, Text,  Image , Alert, AsyncStorage } from 'react-native';
 import Header from '../components/Header';
-import GenderButton from '../components/GenderButton';
+import OurButton from '../components/OurButton';
 import colors from '../assets/constant/colors';
 import CheckBox from 'react-native-check-box'
 import { SimpleLineIcons } from '@expo/vector-icons';
 import 'react-native-gesture-handler';
-import {createStackNavigator,createAppContainer} from 'react-navigation';
+import {createStackNavigator,createAppContainer,withNavigation} from 'react-navigation';
+import BackButton from '../components/BackButton';
 
 
 export default class Pic extends Component {
     
     constructor(props) {
         super(props);
-        this.state = {
-            isChecked: true, 
-            picUri:'',
-            //Add user params 
-        };
+        this.state = {isChecked: true, 
+            picUri:'https://cdn1.iconfinder.com/data/icons/business-users/512/circle-512.png'};
         this.handleChecked = this.handleChecked.bind(this); // set this, because you need get methods from CheckBox 
   }
 
-  addPic (path)  {
-      if (path = "" ){
-        this.setState({picUri:path});
-        Alert.alert(path);
-      }
-      else{
-        this.setState({picUri:"https://cdn1.iconfinder.com/data/icons/business-users/512/circle-512.png"});
-      }
-
+ 
+  componentDidMount ()  {
+      const {navigation} = this.props;
+    this._unsubscribe = navigation.addListener('didFocus', () => {
+        this.setState({ picUri: this.props.navigation.getParam('photoUri')})
+    });
   }
+
+  componentWillUnmount  ()  {
+    this._unsubscribe();
+  }
+
+  
 
   handleChecked () {
     this.setState({isChecked: !this.state.isChecked});
   }
 
    render (){
+
+    const {picUri} = this.state;
+
+   
+
+    
         return(
         <View style={{backgroundColor:'#F0F8FF', height:'100%', alignItems:'center'}}>  
         <Header/>
+        <BackButton goBack={() => navigation.navigate('RegistrationP2')} />
        <Text style={styles.subTitle}>
            הגדר את תמונת הפרופיל שלך
        </Text>
@@ -48,9 +56,9 @@ export default class Pic extends Component {
           source={{uri: 'https://cdn1.iconfinder.com/data/icons/business-users/512/circle-512.png'}}
         />
             <View style={styles.icon}>
-            <GenderButton onPress={() => this.props.navigation.navigate('CameraPage')}><SimpleLineIcons name="camera" size={40} color="black"/></GenderButton>
+            <OurButton onPress={() => this.props.navigation.navigate('CameraPage')}><SimpleLineIcons name="camera" size={40} color="black"/></OurButton>
             <Text style={styles.textOr}> או </Text>
-            <GenderButton onPress={() => this.props.navigation.navigate('ImageGallery')}><SimpleLineIcons name="picture" size={40} color="black"/></GenderButton>
+            <OurButton onPress={() => this.props.navigation.navigate('ImageGallery')}><SimpleLineIcons name="picture" size={40} color="black"/></OurButton>
         
             </View>
            
@@ -65,8 +73,7 @@ export default class Pic extends Component {
                     </View>
                     <Image
                         style={{ alignSelf: 'center', width: 300, height: 250 }}
-                        source={{uri: this.props.navigation.getParam('photoUri')}} 
-                        onPress={() => this.setState({ picUri: this.props.navigation.getParam('photoUri')})}/>
+                        source={{uri: this.state.picUri}} />
         
                     <View style={styles.button,{marginTop:0}}>
                         <Button

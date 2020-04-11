@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, Button, AsyncStorage, Alert } from 'react-native';
-import MapComponent from '../components/MapComponent';
-import GoogleAPIAutoComplete from '../components/GoogleAPIAutoComplete';
-import { getLocation } from '../components/GeoCodes';
+import MapComponent from '../components/Maps/MapComponent';
+import GoogleAPIAutoComplete from '../components/Maps/GoogleAPIAutoComplete';
+import { getLocation } from '../components/Maps/GeoCodes';
 import colors from '../assets/constant/colors';
 import Header from '../components/Header';
 import { Right } from 'native-base';
+import BackButton from '../components/BackButton';
 
 
 export default class RegistraionP4 extends Component {
@@ -25,7 +26,6 @@ export default class RegistraionP4 extends Component {
         //console.log(userJSON);
         //console.log(userObj);
         this.setState({user:userObj});
-        //console.log("state: " ,this.state.user);
         this.fetchPostNewUser();
     }
 
@@ -62,7 +62,6 @@ export default class RegistraionP4 extends Component {
 
     componentDidMount() {
         this.getInitialState();
-
     }
 
 
@@ -91,11 +90,10 @@ export default class RegistraionP4 extends Component {
             region: {
                 latitude: loc.lat,
                 longitude: loc.lng,
-                latitudeDelta: 0.003,
-                longitudeDelta: 0.003
+                longitudeDelta:0.003,
+                longitudeDelta:0.003
             }
         });
-        geocodeLocationByCoords(loc.lat, loc.lan);
     }
 
     onMapRegionChange(region) {
@@ -108,6 +106,7 @@ export default class RegistraionP4 extends Component {
         return (
             <View style={styles.screen}>
                 <Header />
+                <BackButton goBack={() => navigation.navigate('Pic')} />
                 <Text>{this.state.lat},{this.state.lng}</Text>
                 <Text style={styles.subTitle} >
                     אנא בחר/י מקום מגורים
@@ -116,8 +115,9 @@ export default class RegistraionP4 extends Component {
                     מקום המגורים לא יחשף ללא הרשאתך
                     </Text>
 
-                <View style={{ flex: 1, textAlign: 'right' }}>
-                    <GoogleAPIAutoComplete style={{ textAlign: 'right' }} notifyChange={(loc) => this.getCoordsFromName(loc)}
+          <View style={{ flex: 1 }}>
+                <View style={{ flex: 1 }}>
+                    <GoogleAPIAutoComplete notifyChange={(loc) => this.getCoordsFromName(loc)}
                     />
                 </View>
 
@@ -126,10 +126,9 @@ export default class RegistraionP4 extends Component {
                         <View style={styles.map}>
                             <MapComponent
                                 region={this.state.region}
-                                onRegionChange={(reg) => this.onMapRegionChange(reg)}
-                            />
+                                onRegionChange={(reg) => this.onMapRegionChange(reg)} />
                         </View> : null}
-
+            </View>
 
                 <Button title={'המשך'}
                 //need to check user filled in all fields!!

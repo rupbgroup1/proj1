@@ -1,6 +1,6 @@
 import React from 'react';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import ApiKey from '../assets/constant/ApiKey';
+import ApiKey from '../../assets/constant/ApiKey';
 
 function GoogleAPIAutoComplete(props){
     return (
@@ -19,13 +19,14 @@ function GoogleAPIAutoComplete(props){
         query={{
             key: ApiKey.id,
             language: 'he',
-            types: '(cities)',
-            
+
         }}
         nearbyPlacesAPI='GooglePlacesSearch'
         debounce={300}
+          
         GooglePlacesDetailsQuery={{
-            fields: 'address_component',
+            //fields: 'address_component'
+            //fields: 'formatted_address'
           }}
     />
         );
