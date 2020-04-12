@@ -52,7 +52,7 @@ export default class LoginScreen extends Component {
           else {
             //this.setState({user:result});
             AsyncStorage.setItem("user", JSON.stringify(result), () => {
-              this.props.navigation.navigate('FindNeighboor');
+              this.props.navigation.navigate('MainPage');
             });
           }
         },
@@ -110,7 +110,7 @@ export default class LoginScreen extends Component {
           <Text style={{ color: 'white', fontSize: 18, fontFamily: 'rubik-regular' }} >
             אין לך משתמש עדיין?   {'\n'}
           </Text>
-          <Text style={{ fontFamily: 'rubik-regular' }} onPress={() => this.props.navigation.navigate('RegistrationIntroduction')} style={styles.forgotPassword} style={{ color: '#0d7d96', fontSize: 18 }}>
+          <Text style={{ fontFamily: 'rubik-regular' }} onPress={() => this.props.navigation.navigate('RegistrationP4')} style={styles.forgotPassword} style={{ color: '#0d7d96', fontSize: 18 }}>
             להרשמה לחץ כאן
           </Text>
         </View>

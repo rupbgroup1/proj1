@@ -47,7 +47,7 @@ const MapComponent = (props) => {
                                 longitude: user.Lan
                             }}
                             title={user.FirstName+", "+user.AboutMe}
-                            pinColor={user.Gender!==2?blueMarker:pinkMarker}
+                            pinColor={user.Gender!==1?blueMarker:pinkMarker}
 
                         ></Marker>
                         )
@@ -55,7 +55,7 @@ const MapComponent = (props) => {
                 })
                 }
 
-                {/* {markerCoordinates ? <Marker title='המיקום שלי' coordinate={markerCoordinates}></Marker> : <Marker title='המיקום שלי' coordinate={props.region}></Marker>} */}
+                {markerCoordinates ? <Marker title='המיקום שלי' coordinate={markerCoordinates}></Marker> : <Marker title='המיקום שלי' coordinate={props.region}></Marker>}
             </MapView>
 
         </TouchableOpacity>

@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { Alert, Button, TextInput, View, StyleSheet, Text, Picker, AsyncStorage } from 'react-native';
+import { Alert, Button, TextInput, View, StyleSheet, Text, AsyncStorage } from 'react-native';
 import Header from '../components/Header';
 import colors from '../assets/constant/colors';
 import { Input } from 'react-native-elements';
 import MultiSelect from 'react-native-multiple-select';
+import OurButton from '../components/OurButton';
+import { EvilIcons, FontAwesome5 } from '@expo/vector-icons';
 
 
 
@@ -16,29 +18,57 @@ export default class RegistrationExtra extends Component {
             jobArea: '',
             aboutMe: '',
             familyStatus: '',
-            numOfKids: '0',
+            numOfKids: '',
             kidsYearOfBirth: '',
             intresrs: '',
             acceptInvitations: true,
             selectedYears: [],
-            user:{}
-
+            user: {},
+            IntrestsArray: []
         };
 
     }
 
     componentDidMount = () => {
+        this.fetchGetAllIntrests();
         this.getUser();
     }
 
     async getUser() {
         let userJSON = await AsyncStorage.getItem('user');
         const userObj = await JSON.parse(userJSON);
-        this.setState({user:userObj})
+        this.setState({ user: userObj })
     }
 
     onSelectedItemsChange = selectedYears => {
         this.setState({ selectedYears });
+    }
+
+    //fetch -get all intrests to search by
+    fetchGetAllIntrests() {
+        return fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/Intrests', {
+
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'application/json; charset=UTF-8',
+            })
+        })
+            .then(res => {
+                //console.log('res=', res);
+                //console.log("in");
+                //const statusCode = res.status;
+                //console.log(statusCode);
+                return res.json();
+            })
+            .then(
+                (result) => {
+                    this.setState({ IntrestsArray: result })
+                },
+                (error) => {
+                    console.log("err post=", error);
+                    Alert.alert("מצטערים, אנו נסו שנית!");
+                }
+            );
     }
 
     render() {
@@ -84,7 +114,7 @@ export default class RegistrationExtra extends Component {
                         onChangeText={(numOfKids) => this.setState({ numOfKids })}
                         containerStyle={{ width: '90%', padding: 10 }}
                     />
-                    <MultiSelect
+                    {/* <MultiSelect
                         styleDropdownMenu
                         items={years}
                         uniqueKey="id"
@@ -105,26 +135,20 @@ export default class RegistrationExtra extends Component {
                         searchInputStyle={{ color: '#CCC' }}
                         submitButtonColor="#CCC"
                         submitButtonText="Submit"
-                    />
-
-                    {/* <Picker
-                            prompt='בחר'
-                            mode='dropdown'
-                            style={{ width: 55, backgroundColor: 'white' }}
-                            selectedValue={this.state.yearOfBirth}
-                            onValueChange={(value) => this.setState({ yearOfBirth: value })}>
-                            {years.map((item, index) => {
-                                return (<Picker.Item label={item} value={item} key={index} />);
-                            })}
-                        </Picker> */}
+                    /> */}
+                    <Text>
+                        תחומי עניין
+</Text>
+                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: "center", alignItems: "center" }}>
+                        {this.state.IntrestsArray !== null && this.state.IntrestsArray.map((Interest, i) =>
+                            <OurButton style={styles.intrestButtons}
+                                title={Interest.IName} key={Interest.Id} onPress={() => this.fetchSearchNeiByInterest(Interest.Id)}>{Interest.MainInterest}<FontAwesome5 name={Interest.Icon} size={20} color={colors.rainbow[i]} /></OurButton>)}
+                    </View>
 
                     <View style={styles.button}>
                         <Button
                             title={'המשך'} onPress={() => {
-                                if (this.state.userPrivateName.trim() === "" || this.state.userLastName.trim() === "") {
-                                    this.setState(() => ({ nameError: "אנא מלא/י שם פרטי ושם משפחה" }));
-                                }
-                                else this.fetchPostNewUser()
+                                this.fetchPostNewUser()
                             }}
                         />
                     </View>
@@ -135,6 +159,14 @@ export default class RegistrationExtra extends Component {
 }
 
 const styles = StyleSheet.create({
+
+    intrestButtons: {
+        backgroundColor: 'white',
+        borderRadius: 10,
+        margin: 3,
+        paddingHorizontal: 5,
+        paddingVertical: 5
+    },
     container: {
         flex: 1,
         alignItems: 'center',

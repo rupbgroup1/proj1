@@ -142,10 +142,10 @@ export default class RegistraionP4 extends Component {
                 <Text style={{ fontFamily: 'rubik-regular', textAlign: 'center', marginBottom: 10 }}>
                     מקום המגורים לא יחשף ללא הרשאתך
                     </Text>
-
+        <Text>{this.state.CityName}</Text>
           <View style={{ flex: 1 }}>
                 <View style={{ flex: 1 }}>
-                    <GoogleAPIAutoComplete notifyChange={(loc) => this.getCoordsFromName(loc)}
+                    <GoogleAPIAutoComplete notifyChange={(loc) => this.getCoordsFromName(loc)}  CityName={(name)=>this.setState({CityName:name})}
                     />
                 </View>
 
@@ -154,7 +154,8 @@ export default class RegistraionP4 extends Component {
                         <View style={styles.map}>
                             <MapComponent
                                 region={this.state.region}
-                                onRegionChange={(reg) => this.onMapRegionChange(reg)} />
+                                onRegionChange={(reg) => this.onMapRegionChange(reg)}
+                                searchData={this.state.searchData} />
                         </View> : null}
             </View>
 
