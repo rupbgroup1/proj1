@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import colors from '../assets/constant/colors';
 import { Input } from 'react-native-elements';
 import MultiSelect from 'react-native-multiple-select';
+import OurButton from '../components/OurButton';
 
 
 
@@ -21,14 +22,15 @@ export default class RegistrationExtra extends Component {
             intresrs: '',
             acceptInvitations: true,
             selectedYears: [],
-            user: {}
-
+            user: {}, 
+            IntrestsArray:[]
         };
 
     }
 
     componentDidMount = () => {
-        this.getUser();
+        this.fetchGetAllIntrests();
+         this.getUser();
     }
 
     async getUser() {
@@ -39,6 +41,33 @@ export default class RegistrationExtra extends Component {
 
     onSelectedItemsChange = selectedYears => {
         this.setState({ selectedYears });
+    }
+
+    //fetch -get all intrests to search by
+    fetchGetAllIntrests() {
+        return fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/Intrests', {
+
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'application/json; charset=UTF-8',
+            })
+        })
+            .then(res => {
+                //console.log('res=', res);
+                //console.log("in");
+                //const statusCode = res.status;
+                //console.log(statusCode);
+                return res.json();
+            })
+            .then(
+                (result) => {
+                    this.setState({ IntrestsArray: result })
+                },
+                (error) => {
+                    console.log("err post=", error);
+                    Alert.alert("מצטערים, אנו נסו שנית!");
+                }
+            );
     }
 
     render() {
@@ -107,11 +136,11 @@ export default class RegistrationExtra extends Component {
                         submitButtonText="Submit"
                     />
 
-                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: "center", alignItems: "center" }}>
+                    {/* <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: "center", alignItems: "center" }}>
                         {this.state.IntrestsArray !== null && this.state.IntrestsArray.map((Interest, i) =>
                             <OurButton style={styles.intrestButtons}
                                 title={Interest.IName} key={Interest.Id} onPress={() => this.fetchSearchNeiByInterest(Interest.Id)}>{Interest.MainInterest}<FontAwesome5 name={Interest.Icon} size={20} color={colors.rainbow[i]} /></OurButton>)}
-                    </View>
+                    </View> */}
 
                     <View style={styles.button}>
                         <Button

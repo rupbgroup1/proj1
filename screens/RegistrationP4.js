@@ -14,8 +14,6 @@ export default class RegistraionP4 extends Component {
         super(props);
         this.state = {
             region: {},
-            CityName: 'test',
-            NeiName:'test',
             searchData:[]
         };
     }
