@@ -39,6 +39,7 @@ export default class RegistraionP4 extends Component {
         })
             .then(res => {
                 //console.log('res=', res);
+                //con
                 return res.json()
             })
             .then(
