@@ -14,8 +14,7 @@ export default class RegistraionP4 extends Component {
         super(props);
         this.state = {
             region: {},
-            CityName: 'test',
-            NeiName:'test'
+            CityName: 'חיפה'
         };
     }
 
@@ -37,28 +36,55 @@ export default class RegistraionP4 extends Component {
                 'Content-type': 'application/json; charset=UTF-8'
             })
         })
+        .then(res => {
+            //console.log('res=', res);
+            return res.json()
+        })
+        .then(
+            (result) => {
+                console.log("fetch POST= ", result);
+                if(result===1)
+                this.props.navigation.navigate('RegistrationP5');
+                else{
+                    Alert.alert("מצטערים, הפרופיל לא נוצר בהצלחה. אנא נסה שנית.");
+                    this.props.navigation.navigate('RegistrationP1');
+
+                }
+            },
+            (error) => {
+                console.log("err post=", error);
+                Alert.alert("אנא נסה שנית");
+            }
+        );
+
+    }
+
+    fetchGetNeiInCity = () => {
+        fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/Neighboorhoods?cityName=' + this.state.CityName, {
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'application/json; charset=UTF-8',
+            })
+        })
             .then(res => {
                 //console.log('res=', res);
-                return res.json()
+                return res.json();
             })
             .then(
                 (result) => {
-                    console.log("fetch POST= ", result);
-                    if(result===1)
-                    this.props.navigation.navigate('RegistrationP5');
-                    else{
-                        Alert.alert("מצטערים, הפרופיל לא נוצר בהצלחה. אנא נסה שנית.");
-                        this.props.navigation.navigate('RegistrationP1');
-
+                    //console.log("fetch= ", result);
+                   if (result > 0) {
+                        AsyncStorage.setItem("user", JSON.stringify(userDetails));
+                        this.props.navigation.navigate('RegistrationP2');
                     }
                 },
                 (error) => {
                     console.log("err post=", error);
-                    Alert.alert("אנא נסה שנית");
+                    Alert.alert("לא נמצאו שכונות בעיר זו");
                 }
             );
-
     }
+    
 
     componentDidMount() {
         this.getInitialState();
@@ -96,8 +122,10 @@ export default class RegistraionP4 extends Component {
         });
     }
 
+    //when choosing the location on map
     onMapRegionChange(region) {
         this.setState({ region });
+        this.fetchGetNeiInCity();
 
     }
 
