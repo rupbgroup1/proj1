@@ -2,21 +2,16 @@ import React, { Component } from 'react';
 import { Button, View, StyleSheet, Text } from 'react-native';
 import colors from '../assets/constant/colors';
 
-const RegistrationIntroduction = ({navigation}) => {
+const MainPage = ({navigation}) => {
  
     return (
       <View style={styles.container}>
-        <Text style={styles.introductionText} >
-         הפרופיל נוצר בהצלחה
-        </Text>
-        <Text style={styles.introductionText} >
-          חוזק הפרופיל כעת הוא 40% 
-        </Text>
-        <View style={styles.button}>
-        <Button onPress={() => navigation.navigate('RegistrationExtra')}
-          title={'לשיפור הפרופיל שלי'}
+        <Button onPress={() => navigation.navigate('FindNeighboor')}
+          title={'הכר את שכניך'}
         />
-        </View> 
+        <Button onPress={() => navigation.navigate('RegistrationExtra')}
+          title={'המשך הרשמה'}
+        />
       </View>
     );
   
@@ -38,11 +33,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   button:{
-   fontFamily: 'rubik-medium',
+    fontFamily: 'rubik-regular',
    width: '60%',
-   paddingTop: 50
+   paddingTop: 50,
+   
   }
  
 });
 
- export default RegistrationIntroduction;
+ export default MainPage;

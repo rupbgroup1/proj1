@@ -52,7 +52,7 @@ export default class LoginScreen extends Component {
           else {
             //this.setState({user:result});
             AsyncStorage.setItem("user", JSON.stringify(result), () => {
-              this.props.navigation.navigate('FindNeighboor');
+              this.props.navigation.navigate('MainPage');
             });
           }
         },

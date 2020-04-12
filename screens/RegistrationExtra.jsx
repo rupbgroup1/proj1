@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Button, TextInput, View, StyleSheet, Text, Picker, AsyncStorage } from 'react-native';
+import { Alert, Button, TextInput, View, StyleSheet, Text, AsyncStorage } from 'react-native';
 import Header from '../components/Header';
 import colors from '../assets/constant/colors';
 import { Input } from 'react-native-elements';
@@ -21,7 +21,7 @@ export default class RegistrationExtra extends Component {
             intresrs: '',
             acceptInvitations: true,
             selectedYears: [],
-            user:{}
+            user: {}
 
         };
 
@@ -34,7 +34,7 @@ export default class RegistrationExtra extends Component {
     async getUser() {
         let userJSON = await AsyncStorage.getItem('user');
         const userObj = await JSON.parse(userJSON);
-        this.setState({user:userObj})
+        this.setState({ user: userObj })
     }
 
     onSelectedItemsChange = selectedYears => {
@@ -107,16 +107,11 @@ export default class RegistrationExtra extends Component {
                         submitButtonText="Submit"
                     />
 
-                    {/* <Picker
-                            prompt='בחר'
-                            mode='dropdown'
-                            style={{ width: 55, backgroundColor: 'white' }}
-                            selectedValue={this.state.yearOfBirth}
-                            onValueChange={(value) => this.setState({ yearOfBirth: value })}>
-                            {years.map((item, index) => {
-                                return (<Picker.Item label={item} value={item} key={index} />);
-                            })}
-                        </Picker> */}
+                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: "center", alignItems: "center" }}>
+                        {this.state.IntrestsArray !== null && this.state.IntrestsArray.map((Interest, i) =>
+                            <OurButton style={styles.intrestButtons}
+                                title={Interest.IName} key={Interest.Id} onPress={() => this.fetchSearchNeiByInterest(Interest.Id)}>{Interest.MainInterest}<FontAwesome5 name={Interest.Icon} size={20} color={colors.rainbow[i]} /></OurButton>)}
+                    </View>
 
                     <View style={styles.button}>
                         <Button

@@ -15,7 +15,8 @@ export default class RegistraionP4 extends Component {
         this.state = {
             region: {},
             CityName: 'test',
-            NeiName:'test'
+            NeiName:'test',
+            searchData:[]
         };
     }
 
@@ -126,7 +127,8 @@ export default class RegistraionP4 extends Component {
                         <View style={{ flex: 1 }}>
                             <MapComponent
                                 region={this.state.region}
-                                onRegionChange={(reg) => this.onMapRegionChange(reg)} />
+                                onRegionChange={(reg) => this.onMapRegionChange(reg)}
+                                searchData={this.state.searchData} />
                         </View> : null}
             </View>
 
