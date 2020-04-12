@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, Button, AsyncStorage, Alert } from 'react-native';
+import { View, StyleSheet, Text, Button, AsyncStorage, Alert, FlatList } from 'react-native';
 import MapComponent from '../components/Maps/MapComponent';
 import GoogleAPIAutoComplete from '../components/Maps/GoogleAPIAutoComplete';
 import { getLocation } from '../components/Maps/GeoCodes';
@@ -7,6 +7,7 @@ import colors from '../assets/constant/colors';
 import Header from '../components/Header';
 import { Right } from 'native-base';
 import BackButton from '../components/BackButton';
+import {Dropdown} from 'react-native-material-dropdown';
 
 
 export default class RegistraionP4 extends Component {
@@ -14,7 +15,8 @@ export default class RegistraionP4 extends Component {
         super(props);
         this.state = {
             region: {},
-            CityName: 'חיפה'
+            CityName: 'חיפה',
+            NeiName:''
         };
     }
 
@@ -84,6 +86,20 @@ export default class RegistraionP4 extends Component {
                 }
             );
     }
+
+    NeigborhoodList= () =>{
+        <FlatList
+            data={DATA}
+            renderItem={({ item }) => (
+            <Item
+                id={item.id}
+                title={item.title}
+                selected={!!selected.get(item.id)}
+                onSelect={onSelect}
+            />
+            )} 
+        />
+    }
     
 
     componentDidMount() {
@@ -125,7 +141,7 @@ export default class RegistraionP4 extends Component {
     //when choosing the location on map
     onMapRegionChange(region) {
         this.setState({ region });
-        this.fetchGetNeiInCity();
+        //this.fetchGetNeiInCity();
 
     }
 
