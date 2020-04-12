@@ -4,14 +4,7 @@ import { AsyncStorage } from 'react-native';
 import React, {useState} from 'react';
 
 const GoogleAPIAutoComplete=(props) =>{
-    const [selectedCity, setSelectedCity] = useState();
     
-    if (selectedCity) {
-         let City = {
-            CityName: selectedCity.CityName
-        };
-        AsyncStorage.mergeItem('user', JSON.stringify(City));
-    }
     return (
 
         <GooglePlacesAutocomplete
@@ -24,9 +17,7 @@ const GoogleAPIAutoComplete=(props) =>{
             fetchDetails={true}
             onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
                 props.notifyChange(details.geometry.location);
-                setSelectedCity({
-                    CityName:details.name
-                });
+                props.CityName(details.name);
 
             }}
             query={{
@@ -36,7 +27,6 @@ const GoogleAPIAutoComplete=(props) =>{
             }}
             nearbyPlacesAPI='GooglePlacesSearch'
             debounce={300}
-
             GooglePlacesDetailsQuery={{
                 //fields: 'address_component'
                 //fields: 'formatted_address'

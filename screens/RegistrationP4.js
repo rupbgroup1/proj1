@@ -14,6 +14,7 @@ export default class RegistraionP4 extends Component {
         super(props);
         this.state = {
             region: {},
+            CityName:'',
             searchData:[]
         };
     }
@@ -113,10 +114,10 @@ export default class RegistraionP4 extends Component {
                 <Text style={{ fontFamily: 'rubik-regular', textAlign: 'center', marginBottom: 10 }}>
                     מקום המגורים לא יחשף ללא הרשאתך
                     </Text>
-
+        <Text>{this.state.CityName}</Text>
           <View style={{ flex: 1 }}>
                 <View style={{ flex: 1 }}>
-                    <GoogleAPIAutoComplete notifyChange={(loc) => this.getCoordsFromName(loc)}
+                    <GoogleAPIAutoComplete notifyChange={(loc) => this.getCoordsFromName(loc)}  CityName={(name)=>this.setState({CityName:name})}
                     />
                 </View>
 
