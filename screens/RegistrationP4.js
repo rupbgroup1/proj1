@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, Button, AsyncStorage, Alert } from 'react-native';
+import { View, StyleSheet, Text, Button, AsyncStorage, Alert, FlatList } from 'react-native';
 import MapComponent from '../components/Maps/MapComponent';
 import GoogleAPIAutoComplete from '../components/Maps/GoogleAPIAutoComplete';
 import { getLocation } from '../components/Maps/GeoCodes';
@@ -7,6 +7,7 @@ import colors from '../assets/constant/colors';
 import Header from '../components/Header';
 import { Right } from 'native-base';
 import BackButton from '../components/BackButton';
+import {Dropdown} from 'react-native-material-dropdown';
 
 
 export default class RegistraionP4 extends Component {
@@ -14,8 +15,8 @@ export default class RegistraionP4 extends Component {
         super(props);
         this.state = {
             region: {},
-            CityName:'',
-            searchData:[]
+            CityName: 'חיפה',
+            NeiName:''
         };
     }
 
@@ -37,29 +38,69 @@ export default class RegistraionP4 extends Component {
                 'Content-type': 'application/json; charset=UTF-8'
             })
         })
+        .then(res => {
+            //console.log('res=', res);
+            return res.json()
+        })
+        .then(
+            (result) => {
+                console.log("fetch POST= ", result);
+                if(result===1)
+                this.props.navigation.navigate('RegistrationP5');
+                else{
+                    Alert.alert("מצטערים, הפרופיל לא נוצר בהצלחה. אנא נסה שנית.");
+                    this.props.navigation.navigate('RegistrationP1');
+
+                }
+            },
+            (error) => {
+                console.log("err post=", error);
+                Alert.alert("אנא נסה שנית");
+            }
+        );
+
+    }
+
+    fetchGetNeiInCity = () => {
+        fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/Neighboorhoods?cityName=' + this.state.CityName, {
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'application/json; charset=UTF-8',
+            })
+        })
             .then(res => {
                 //console.log('res=', res);
-                //con
-                return res.json()
+                return res.json();
             })
             .then(
                 (result) => {
-                    console.log("fetch POST= ", result);
-                    if(result===1)
-                    this.props.navigation.navigate('RegistrationP5');
-                    else{
-                        Alert.alert("מצטערים, הפרויפיל לא נוצר בהצלחה. אנא נסה שנית.");
-                        this.props.navigation.navigate('RegistrationP1');
-
+                    //console.log("fetch= ", result);
+                   if (result > 0) {
+                        AsyncStorage.setItem("user", JSON.stringify(userDetails));
+                        this.props.navigation.navigate('RegistrationP2');
                     }
                 },
                 (error) => {
                     console.log("err post=", error);
-                    Alert.alert("אנא נסה שנית");
+                    Alert.alert("לא נמצאו שכונות בעיר זו");
                 }
             );
-
     }
+
+    NeigborhoodList= () =>{
+        <FlatList
+            data={DATA}
+            renderItem={({ item }) => (
+            <Item
+                id={item.id}
+                title={item.title}
+                selected={!!selected.get(item.id)}
+                onSelect={onSelect}
+            />
+            )} 
+        />
+    }
+    
 
     componentDidMount() {
         this.getInitialState();
@@ -97,8 +138,10 @@ export default class RegistraionP4 extends Component {
         });
     }
 
+    //when choosing the location on map
     onMapRegionChange(region) {
         this.setState({ region });
+        //this.fetchGetNeiInCity();
 
     }
 
@@ -124,7 +167,7 @@ export default class RegistraionP4 extends Component {
 
                 {
                     this.state.region['latitude'] ?
-                        <View style={{ flex: 1 }}>
+                        <View style={styles.map}>
                             <MapComponent
                                 region={this.state.region}
                                 onRegionChange={(reg) => this.onMapRegionChange(reg)}
@@ -165,6 +208,11 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: colors.subTitle,
         paddingTop: 25
+    },
+    map:{
+        flex:1,
+        justifyContent:'center',
+        flexDirection:'row'
     }
 
 });
