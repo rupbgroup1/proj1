@@ -46,14 +46,15 @@ export default class LoginScreen extends Component {
       .then(
         (result) => {
           console.log("fetch = ", result);
-          if (result.UserId === 0) {
-            Alert.alert("הפרטים אינם נכונים, אנא נסה שנית")
+          if (result.UserId > 0) {
+            AsyncStorage.setItem("user", JSON.stringify(result), () => {
+              this.props.navigation.navigate('MainPage');
+              console.log(result);
+            }); 
           }
           else {
             //this.setState({user:result});
-            AsyncStorage.setItem("user", JSON.stringify(result), () => {
-              this.props.navigation.navigate('MainPage');
-            });
+            Alert.alert("הפרטים אינם נכונים, אנא נסה שנית")
           }
         },
         (error) => {

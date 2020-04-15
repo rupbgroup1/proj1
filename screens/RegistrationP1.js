@@ -171,7 +171,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: '#ecf0f1'
+        backgroundColor: '#E5F0FF'
+        //backgroundColor: '#ecf0f1'
     },
     input: {
         fontFamily: 'rubik-regular',

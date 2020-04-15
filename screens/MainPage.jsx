@@ -12,6 +12,7 @@ const MainPage = ({navigation}) => {
         <Button onPress={() => navigation.navigate('RegistrationExtra')}
           title={'המשך הרשמה'}
         />
+        
       </View>
     );
   

@@ -6,6 +6,7 @@ import { Input } from 'react-native-elements';
 import MultiSelect from 'react-native-multiple-select';
 import OurButton from '../components/OurButton';
 import { EvilIcons, FontAwesome5 } from '@expo/vector-icons';
+import Interests from '../components/Interests';
 
 
 
@@ -24,7 +25,9 @@ export default class RegistrationExtra extends Component {
             acceptInvitations: true,
             selectedYears: [],
             user: {},
-            IntrestsArray: []
+            IntrestsArray: [],
+            subInArray:[],
+            mainI:''
         };
 
     }
@@ -43,7 +46,19 @@ export default class RegistrationExtra extends Component {
     onSelectedItemsChange = selectedYears => {
         this.setState({ selectedYears });
     }
+    //this function starts when the user press on interest
+    saveFunc(id){
 
+        console.log(id);
+        //need to write it..
+    }
+//when main I is selected - this func fetch all the sub interests
+    handleMainChange(mainI) {
+        this.setState({ mainI:mainI },()=>{
+            this.fetchSubInterest();
+        });
+        
+    }
     //fetch -get all intrests to search by
     fetchGetAllIntrests() {
         return fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/Intrests', {
@@ -114,36 +129,16 @@ export default class RegistrationExtra extends Component {
                         onChangeText={(numOfKids) => this.setState({ numOfKids })}
                         containerStyle={{ width: '90%', padding: 10 }}
                     />
-                    {/* <MultiSelect
-                        styleDropdownMenu
-                        items={years}
-                        uniqueKey="id"
-                        //ref={(component) => { this.multiSelect = component }}
-                        onSelectedItemsChange={this.onSelectedItemsChange}
-                        selectedItems={this.state.selectedYears}
-                        selectText="בחר שנים"
-                        searchInputPlaceholderText="חפש שנת לידה"
-                        onChangeInput={(text) => console.log(text)}
-                        //altFontFamily="ProximaNova-Light"
-                        tagRemoveIconColor="#CCC"
-                        tagBorderColor="#CCC"
-                        tagTextColor="#CCC"
-                        selectedItemTextColor="#CCC"
-                        selectedItemIconColor="#CCC"
-                        itemTextColor="#000"
-                        displayKey="name"
-                        searchInputStyle={{ color: '#CCC' }}
-                        submitButtonColor="#CCC"
-                        submitButtonText="Submit"
-                    /> */}
+
                     <Text>
                         תחומי עניין
-</Text>
-                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: "center", alignItems: "center" }}>
-                        {this.state.IntrestsArray !== null && this.state.IntrestsArray.map((Interest, i) =>
-                            <OurButton style={styles.intrestButtons}
-                                title={Interest.IName} key={Interest.Id} onPress={() => this.fetchSearchNeiByInterest(Interest.Id)}>{Interest.MainInterest}<FontAwesome5 name={Interest.Icon} size={20} color={colors.rainbow[i]} /></OurButton>)}
-                    </View>
+                    </Text>
+                    <Interests
+                        IntrestsArray={this.state.IntrestsArray}
+                        handleMainChange={(mainI) => this.handleMainChange(mainI)}
+                        subInArray={this.state.subInArray}
+                        callFetch={(id) => this.saveFunc(id)}
+                    />
 
                     <View style={styles.button}>
                         <Button

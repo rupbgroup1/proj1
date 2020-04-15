@@ -4,10 +4,9 @@ import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 const BackButton = ({ goBack }) => (
   <TouchableOpacity onPress={goBack} style={styles.container}>
-    <Image style={styles.image} source={require('../assets/arrowBack.png')} />
+    <Image style={styles.image} source={require('../assets/whiteArrow.png')} />
   </TouchableOpacity>
 );
-
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',

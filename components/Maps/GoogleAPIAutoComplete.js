@@ -8,7 +8,6 @@ const GoogleAPIAutoComplete=(props) =>{
     return (
 
         <GooglePlacesAutocomplete
-
             placeholder='חפש'
             minLength={2} // minimum length of text to search
             autoFocus={true}
@@ -18,7 +17,6 @@ const GoogleAPIAutoComplete=(props) =>{
             onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
                 props.notifyChange(details.geometry.location);
                 props.CityName(details.name);
-
             }}
             query={{
                 key: ApiKey.id,
@@ -31,6 +29,29 @@ const GoogleAPIAutoComplete=(props) =>{
                 //fields: 'address_component'
                 //fields: 'formatted_address'
             }}
+            styles={{
+                textInputContainer: {
+                  backgroundColor: 'rgba(0,0,0,0)',
+                  borderTopWidth: 0,
+                  borderBottomWidth:0, 
+                  
+                },
+                textInput: {
+                  marginLeft: 0,
+                  marginRight: 0,
+                  height: 38,
+                  color: '#5d5d5d',
+                  fontSize: 16,
+        paddingLeft: 10,
+        textAlign: 'right',
+        borderRadius: 8,
+        borderColor: "black",
+        borderWidth:1
+                },
+                predefinedPlacesDescription: {
+                  color: 'rgba(0,0,0,0)'
+                },
+              }}
         />
     );
 }

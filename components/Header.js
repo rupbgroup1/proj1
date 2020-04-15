@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import GenderButton from './OurButton';
-import { SimpleLineIcons } from '@expo/vector-icons';
+import colors from '../assets/constant/colors';
 
 
 const Header = props => {
@@ -17,12 +16,15 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 83,
     paddingTop: 15,
-    backgroundColor: '#008B8B',
+    backgroundColor:colors.header,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    borderBottomEndRadius:1,
+    borderColor:"white",
+    borderRadius:2
   },
   headerTitle: {
-    color: 'black',
+    color: 'white',
     fontSize: 30, 
     fontFamily: 'kalam-regular',
     paddingTop:10

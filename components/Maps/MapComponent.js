@@ -4,8 +4,8 @@ import MapView, { Marker } from 'react-native-maps';
 
 const MapComponent = (props) => {
     const [selectedLocation, setSelectedLocation] = useState();
-    const blueMarker ="#180e8c";
-    const pinkMarker ="#c439c6";
+    const blueMarker ="#0C2C33";
+    const pinkMarker ="#703D57";
 
 
     const selectLocation = event => {
@@ -19,7 +19,10 @@ const MapComponent = (props) => {
     if (selectedLocation) {
         markerCoordinates = {
             latitude: selectedLocation.Lat,
-            longitude: selectedLocation.Lan
+            longitude: selectedLocation.Lan,
+            latitudeDelta: 0.02,
+                longitudeDelta: 0.02
+
         };
         AsyncStorage.mergeItem('user', JSON.stringify(selectedLocation));
     }
@@ -37,15 +40,16 @@ const MapComponent = (props) => {
                 onPress={selectLocation}
                 searchData={props.searchData}
             >
-                {props.searchData.length>0&& props.searchData.map((user, i) => {
+                {props.searchData.length>0 && props.searchData.map((user, i) => {
                     if (user.Lat && user.Lan) {
                         console.log("TEST=", user.Lat);
                         return (<Marker
                             key={user.UserId}
                             coordinate={{
                                 latitude: user.Lat,
-                                longitude: user.Lan
-                            }}
+                                longitude: user.Lan,
+            }
+                            }
                             title={user.FirstName+", "+user.AboutMe}
                             pinColor={user.Gender!==1?blueMarker:pinkMarker}
 

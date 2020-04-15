@@ -92,7 +92,7 @@ export default class RegistraionP4 extends Component {
                 latitude: loc.lat,
                 longitude: loc.lng,
                 longitudeDelta:0.003,
-                longitudeDelta:0.003
+                latitudeDelta:0.003
             }
         });
     }
@@ -153,7 +153,8 @@ const styles = StyleSheet.create({
     screen: {
         flex: 1,
         justifyContent: "center",
-        alignContent: "center"
+        alignContent: "center",
+        backgroundColor: colors.reeBackgrouond
     },
     subTitle: {
         fontFamily: 'rubik-regular',
