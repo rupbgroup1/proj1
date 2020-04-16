@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: '#E5F0FF'
+        backgroundColor: colors.reeBackgrouond
         //backgroundColor: '#ecf0f1'
     },
     input: {
@@ -214,7 +214,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     screen: {
-        flex: 1
+        flex: 1,
+        backgroundColor: colors.reeBackgrouond       
     },
     genderView: {
         flexDirection: 'row',

@@ -7,7 +7,7 @@ import colors from '../assets/constant/colors';
 import Header from '../components/Header';
 import { Right } from 'native-base';
 import BackButton from '../components/BackButton';
-import {Dropdown} from 'react-native-material-dropdown';
+import { Dropdown } from 'react-native-material-dropdown';
 
 
 export default class RegistraionP4 extends Component {
@@ -15,8 +15,13 @@ export default class RegistraionP4 extends Component {
         super(props);
         this.state = {
             region: {},
-            CityName: 'חיפה',
-            NeiName:''
+            CityName: '',
+            NeiList: [],
+            NeiName: '',
+            ShowDropDown: false,
+            searchData: [],
+            canSubmit: false,
+            mapVisible: false
         };
     }
 
@@ -26,7 +31,7 @@ export default class RegistraionP4 extends Component {
         const userObj = await JSON.parse(userJSON);
         //console.log(userJSON);
         //console.log(userObj);
-        this.setState({user:userObj});
+        this.setState({ user: userObj });
         this.fetchPostNewUser();
     }
 
@@ -38,69 +43,71 @@ export default class RegistraionP4 extends Component {
                 'Content-type': 'application/json; charset=UTF-8'
             })
         })
-        .then(res => {
-            //console.log('res=', res);
-            return res.json()
-        })
-        .then(
-            (result) => {
-                console.log("fetch POST= ", result);
-                if(result===1)
-                this.props.navigation.navigate('RegistrationP5');
-                else{
-                    Alert.alert("מצטערים, הפרופיל לא נוצר בהצלחה. אנא נסה שנית.");
-                    this.props.navigation.navigate('RegistrationP1');
-
-                }
-            },
-            (error) => {
-                console.log("err post=", error);
-                Alert.alert("אנא נסה שנית");
-            }
-        );
-
-    }
-
-    fetchGetNeiInCity = () => {
-        fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/Neighboorhoods?cityName=' + this.state.CityName, {
-            method: 'GET',
-            headers: new Headers({
-                'Content-Type': 'application/json; charset=UTF-8',
-            })
-        })
             .then(res => {
                 //console.log('res=', res);
-                return res.json();
+                return res.json()
             })
             .then(
                 (result) => {
-                    //console.log("fetch= ", result);
-                   if (result > 0) {
-                        AsyncStorage.setItem("user", JSON.stringify(userDetails));
-                        this.props.navigation.navigate('RegistrationP2');
+                    console.log("fetch POST= ", result);
+                    if (result === 1)
+                        this.props.navigation.navigate('RegistrationP5');
+                    else {
+                        Alert.alert("מצטערים, הפרופיל לא נוצר בהצלחה. אנא נסה שנית.");
+                        this.props.navigation.navigate('RegistrationP1');
+
                     }
                 },
                 (error) => {
                     console.log("err post=", error);
-                    Alert.alert("לא נמצאו שכונות בעיר זו");
+                    Alert.alert("אנא נסה שנית");
                 }
             );
+
     }
 
-    NeigborhoodList= () =>{
-        <FlatList
-            data={DATA}
-            renderItem={({ item }) => (
-            <Item
-                id={item.id}
-                title={item.title}
-                selected={!!selected.get(item.id)}
-                onSelect={onSelect}
-            />
-            )} 
-        />
+    fetcGetNeigborhood = (name) => {
+        fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/Neighboorhoods?cityName=' + name, {
+            method: 'GET',
+            headers: new Headers({
+                'Content-type': 'application/json; charset=UTF-8'
+            })
+        })
+            .then(res => {
+                //console.log('res=', res);
+                //con
+                return res.json()
+            })
+            .then(
+                (result) => {
+                    //console.log("fetch Get= ", result);
+                    if (result.length > 1) {
+                        this.setState({ ShowDropDown: true, NeiList: result })
+                    }
+                    else this.setState({ canSubmit:true, ShowDropDown:false, NeiName:name});
+                },
+                (error) => {
+                    console.log("err post=", error);
+                    Alert.alert("אנא נסה שנית");
+                }
+            );
+
     }
-    
+
+    // NeigborhoodList= () =>{
+    //     <FlatList
+    //         data={DATA}
+    //         renderItem={({ item }) => (
+    //         <Item
+    //             id={item.id}
+    //             title={item.title}
+    //             selected={!!selected.get(item.id)}
+    //             onSelect={onSelect}
+    //         />
+    //         )} 
+    //     />
+    // }
+
 
     componentDidMount() {
         this.getInitialState();
@@ -129,11 +136,12 @@ export default class RegistraionP4 extends Component {
     getCoordsFromName(loc) {
         //console.log(loc);
         this.setState({
+            mapVisible: true,
             region: {
                 latitude: loc.lat,
                 longitude: loc.lng,
-                longitudeDelta:0.003,
-                latitudeDelta:0.003
+                longitudeDelta: 0.003,
+                latitudeDelta: 0.003
             }
         });
     }
@@ -145,48 +153,84 @@ export default class RegistraionP4 extends Component {
 
     }
 
+    handleCityName(name) {
+        this.setState({ CityName: name });
+        this.fetcGetNeigborhood(name);
+    };
+
+    // valueExtractor=val=>{
+
+    // };
+
     render() {
         const { navigation } = this.props;
         return (
             <View style={styles.screen}>
                 <Header />
                 <BackButton goBack={() => navigation.navigate('Pic')} />
-                <Text>{this.state.lat},{this.state.lng}</Text>
                 <Text style={styles.subTitle} >
-                    אנא בחר/י מקום מגורים
-                </Text>
+                  אנא בחר/י מקום מגורים
+        </Text>
                 <Text style={{ fontFamily: 'rubik-regular', textAlign: 'center', marginBottom: 10 }}>
                     מקום המגורים לא יחשף ללא הרשאתך
-                    </Text>
-        <Text>{this.state.CityName}</Text>
-          <View style={{ flex: 1 }}>
+                     </Text>
+                {/* <View style={{ flex: 1 }}>  */}
                 <View style={{ flex: 1 }}>
-                    <GoogleAPIAutoComplete notifyChange={(loc) => this.getCoordsFromName(loc)}  CityName={(name)=>this.setState({CityName:name})}
-                    />
+                    <GoogleAPIAutoComplete notifyChange={(loc) => this.getCoordsFromName(loc)} CityName={(name) => this.handleCityName(name)} />
                 </View>
 
-                {
-                    this.state.region['latitude'] ?
-                        <View style={styles.map}>
-                            <MapComponent
-                                region={this.state.region}
-                                onRegionChange={(reg) => this.onMapRegionChange(reg)}
-                                searchData={this.state.searchData} />
-                        </View> : null}
-            </View>
+                {this.state.mapVisible &&
+                    <Text style={{ fontFamily: 'rubik-regular', textAlign: 'center', marginBottom: 10 }}>אנא סמנ/י מיקומך על המפה</Text>
+                }
 
-                <Button title={'המשך'}
-                //need to check user filled in all fields!!
-                    onPress={() =>  {
-                        let userDetails={
-                           CityName:this.state.CityName,
-                           NeighborhoodName:this.state.NeiName
-                        }
-                    AsyncStorage.mergeItem('user', JSON.stringify(userDetails));
-                        this.getUser()
-                     }}
-                
-                />
+                {
+                    this.state.mapVisible &&
+                    <View style={styles.map}>
+                        <MapComponent
+                            region={this.state.region}
+                            onRegionChange={(reg) => this.onMapRegionChange(reg)}
+                            searchData={this.state.searchData}
+                        />
+                    </View>
+                }
+                {this.state.ShowDropDown &&
+                    <Text style={{ fontFamily: 'rubik-regular', textAlign: 'center', marginBottom: 10 }}>אנא בחר/י שכונת מגורים אליה תשתייכ/י </Text>
+                    
+                }
+                {
+                    this.state.ShowDropDown &&
+                    <View>
+                        <Dropdown
+                            label='רשימת שכונות'
+                            //value={this.state.Name}
+                            valueExtractor={({ NCode }) => NCode}
+                            labelExtractor={({ Name }) => Name}
+                            data={this.state.NeiList}
+                            selectedItemColor='#008b8b'
+                            onChangeText={(value) => {
+                                this.setState({
+                                    NeiName: value,
+                                    canSubmit:true
+                                });
+                            }}
+                        />
+                    </View>
+                }
+                {/* </View> */}
+                {this.state.canSubmit &&
+                    <Button title={'המשך'}
+                        //need to check user filled in all fields!!
+                        onPress={() => {
+                            let userDetails = {
+                                CityName: this.state.CityName,
+                                NeighborhoodName: this.state.NeiName
+                            }
+                            AsyncStorage.mergeItem('user', JSON.stringify(userDetails));
+                            this.getUser()
+                        }}
+
+                    />
+                }
             </View>
         );
     }
@@ -209,10 +253,10 @@ const styles = StyleSheet.create({
         color: colors.subTitle,
         paddingTop: 25
     },
-    map:{
-        flex:1,
-        justifyContent:'center',
-        flexDirection:'row'
+    map: {
+        flex: 1,
+        justifyContent: 'center',
+        flexDirection: 'row'
     }
 
 });
