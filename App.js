@@ -14,6 +14,7 @@ import FindNeighboor from './screens/FindNeighboor';
 import RegistrationExtra from './screens/RegistrationExtra'
 import RegistrationP5 from './screens/RegistrationP5';
 import MainPage from './screens/MainPage';
+import Feed from './components/Feed';
 
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
@@ -45,7 +46,8 @@ const navigator = createStackNavigator({
   FindNeighboor:FindNeighboor,
   RegistrationIntroduction:RegistrationIntroduction,
   RegistrationP5:RegistrationP5,
-  MainPage:MainPage
+  MainPage:MainPage,
+  Feed:Feed
   
   }, {
         initialRouteName: 'LoginScreen',

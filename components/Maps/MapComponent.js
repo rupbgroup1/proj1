@@ -40,7 +40,7 @@ const MapComponent = (props) => {
                 onPress={selectLocation}
                 searchData={props.searchData}
             >
-                {props.searchData.length>0 && props.searchData.map((user, i) => {
+                {props.searchData.length > 0 && props.searchData.map((user, i) => {
                     if (user.Lat && user.Lan) {
                         console.log("TEST=", user.Lat);
                         return (<Marker

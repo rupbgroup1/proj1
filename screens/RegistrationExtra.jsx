@@ -257,7 +257,7 @@ export default class RegistrationExtra extends Component {
                                 mode="dialog"
                                 style={styles.picker}
                                 //placeholder={this.state.kidsYearOfBirth[index]!==null?this.state.kidsYearOfBirth[index]:"בחר שנת לידה"}
-                                placeholder="בחר שנת לידה"
+                                placeholder="בחר שנת לידה" 
                                 selectedValue={this.state.kidsYearOfBirth[index]}
                                 onValueChange={(value) => {
                                     let kidsCopy = JSON.parse(JSON.stringify(this.state.kidsYearOfBirth));
