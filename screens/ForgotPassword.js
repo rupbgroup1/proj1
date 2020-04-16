@@ -2,7 +2,7 @@ import React, { Component, createElement } from 'react';
 import { Button, View, StyleSheet, Text, Image, TextInput } from 'react-native';
 import Header from '../components/Header';
 import colors from '../assets/constant/colors';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+//import firebase from 'firebase';
 
 
 export default class ForgotPassword extends Component {
@@ -53,6 +53,15 @@ export default class ForgotPassword extends Component {
         this.setState({ ValidEmail: Valid });
     }
 
+    // handlePasswordReset = () => {
+    //     const Email = this.state.userEmail;
+    //     firebase.auth().sendPasswordResetEmail(Email)
+    //     .then(function (user) {
+    //       alert('Please check your email...')
+    //     }).catch(function (e) {
+    //       console.log(e)
+    //     })
+    // }
     render() {
         return (
             <View>

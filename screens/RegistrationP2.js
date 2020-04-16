@@ -7,8 +7,6 @@ import {
 } from '@expo/vector-icons';
 import OurButton from '../components/OurButton';
 import colors from '../assets/constant/colors';
-import { StackRouter } from 'react-navigation';
-import CheckBox from 'react-native-check-box';
 import BackButton from '../components/BackButton';
 
 
