@@ -24,7 +24,8 @@ export default class FindNeighboor extends Component {
             IntrestsArray: [],
             searchData: [],
             subInArray: [],
-            mainI: ''
+            mainI: '',
+            selectedInterest:0
         };
     }
 
@@ -186,7 +187,7 @@ export default class FindNeighboor extends Component {
         return (
             <View style={styles.screen}>
                 <Header />
-                <BackButton goBack={() => navigation.navigate('MainPage')} />
+                <BackButton goBack={() => this.props.navigation.navigate('MainPage')} />
                 <Text style={styles.text} >
                     חפש שם של שכן
                    </Text>
@@ -212,9 +213,14 @@ export default class FindNeighboor extends Component {
                     IntrestsArray={this.state.IntrestsArray}
                     handleMainChange={(mainI) => this.handleMainChange(mainI)}
                     subInArray={this.state.subInArray}
-                    callFetch={(id) => this.fetchSearchNeiByInterest(id)}
-                /><View style={{width:'100%',justifyContent: 'space-between', backgroundColor:'black'}}>
-                <Text style={styles.textHead} >
+                    callFetch={(id) => {
+                        id!==this.state.intrestId&&this.fetchSearchNeiByInterest(id)
+                    }}
+                    isMulti={false}
+                />
+                <View style={{width:'100%',justifyContent: 'space-between', backgroundColor:'black'}}>
+               
+              <Text style={styles.textHead} >
                   שכנים שכדאי לך להכיר
                    </Text>
                    </View>
@@ -274,7 +280,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         fontSize: 20,
         paddingTop: 10,
-        color: colors.header,
+        color: 'white',
         alignSelf: 'flex-start'
     },
     screen: {

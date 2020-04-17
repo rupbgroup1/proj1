@@ -16,6 +16,9 @@ const RegistrationIntroduction = ({navigation}) => {
         <Button onPress={() => navigation.navigate('RegistrationExtra')}
           title={'לשיפור הפרופיל שלי'}
         />
+        <Button onPress={() => navigation.navigate('MainPage')}
+          title={'בפעם אחרת'}
+        />
         </View> 
       </View>
     );

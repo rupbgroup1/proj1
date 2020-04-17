@@ -43,8 +43,10 @@ export default class RegistrationP1 extends Component {
             .then(
                 (result) => {
                     //console.log("fetch= ", result);
+                    const email = this.state.Email;
+                    const emailLower = email.toLowerCase();
                     let userDetails = {
-                        Email: this.state.Email,
+                        Email: emailLower,
                         Password: this.state.Password
                     };
 
@@ -183,7 +185,8 @@ const styles = StyleSheet.create({
         borderColor: 'white',
         marginBottom: 10,
         textAlign: 'right',
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        borderRadius:10
     },
     subTitle: {
         fontFamily: 'rubik-regular',
@@ -206,8 +209,9 @@ const styles = StyleSheet.create({
         textAlign: 'left'
     },
     button: {
-        width: '50%',
-        paddingTop: 20
+        width: '80%',
+        paddingTop: 20,
+        
     },
     createUser: {
         padding: 30,

@@ -1,7 +1,8 @@
 export default {
     subTitle: '#0F4C81',
-    //reeBackgrouond: '#F2F8FD',
-    reeBackgrouond:'#F9F9F9',
+    //reeBackgrouond: '#F1F2F2',
+    //reeBackgrouond:'#F9F9F9',
+    reeBackgrouond: '#ecf0f1',
     header:'#041418',
     rainbow: [
       "#994F14",

@@ -45,7 +45,7 @@ export default class Pic extends Component {
 
     
         return(
-        <View style={{backgroundColor:'#F0F8FF', height:'100%', alignItems:'center'}}>  
+        <View style={styles.screen}>  
         <Header/>
         <BackButton goBack={() => navigation.navigate('RegistrationP2')} />
        <Text style={styles.subTitle}>
@@ -62,20 +62,12 @@ export default class Pic extends Component {
         
             </View>
            
-                    <View style={styles.checkbox}>
-                        <CheckBox 
-                             isChecked={this.state.isChecked}
-                             onClick={()=>{
-                              this.setState({isChecked:!this.state.isChecked })
-                              }}
-                  />
-                        <Text style={{ paddingTop: 3, textAlign: 'center', fontFamily: 'rubik-regular'}}>אני מאשר לחשוף את התמונה למשתמשים באפליקציה</Text>
-                    </View>
+                    
                     <Image
                         style={{ alignSelf: 'center', width: 300, height: 250 }}
                         source={{uri: this.state.picUri}} />
         
-                    <View style={styles.button,{marginTop:0}}>
+                    <View style={{width:'80%',marginTop:0}}>
                         <Button
                             title={'המשך'}  onPress={() => {
                                 let userDetails={
@@ -97,7 +89,11 @@ export default class Pic extends Component {
 }
 
 const styles = StyleSheet.create({
-    
+    screen:{
+        backgroundColor:colors.reeBackgrouond, 
+        height:'100%',
+        alignItems:'center'
+    },
     subTitle: {
         fontFamily: 'rubik-regular',
         marginVertical: 1,

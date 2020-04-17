@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: '#ecf0f1'
+        backgroundColor: colors.reeBackgrouond
     },
     input: {
         fontFamily: 'rubik-regular',
@@ -132,7 +132,8 @@ const styles = StyleSheet.create({
         borderColor: 'white',
         marginBottom: 10,
         textAlign: 'right',
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        borderRadius:10
     },
     subTitle: {
         fontFamily: 'rubik-regular',
@@ -156,8 +157,8 @@ const styles = StyleSheet.create({
     },
     button: {
         fontFamily: 'rubik-regular',
-        width: '50%',
-        paddingTop: 20
+        width: '80%',
+        paddingTop: 20,
     },
     createUser: {
         padding: 30,

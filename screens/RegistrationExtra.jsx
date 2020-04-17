@@ -41,6 +41,8 @@ export default class RegistrationExtra extends Component {
     componentDidMount = () => {
         this.fetchGetAllIntrests();
         this.getUser();
+        this.fetchGetCity();
+        this.fetchGetAllJobTitle();
     }
 
     async getUser() {
@@ -54,7 +56,6 @@ export default class RegistrationExtra extends Component {
     }
     //this function starts when the user press on interest
     saveFunc(id) {
-
         console.log(id);
         //need to write it..
     }
@@ -93,7 +94,7 @@ export default class RegistrationExtra extends Component {
     }
 
     fetchSubInterest = () => {
-        console.log(this.state.mainI);
+        //console.log(this.state.mainI);
         // console.log(this.state.searchName+this.state.user.CityName);
         return fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/Intrests/Sub?mainI=' + this.state.mainI, {
             method: 'GET',
@@ -107,16 +108,17 @@ export default class RegistrationExtra extends Component {
 
             .then(
                 (result) => {
-                    console.log("fetch result= ", result[0]);
+                    //console.log("fetch result= ", result[0]);
                     this.setState({ subInArray: result });
-                    console.log("2");
+
                 },
                 (error) => {
                     console.log("err post=", error);
                 });
 
     }
-    //fetch -get all JOB TITLE to search by
+
+    //fetch -get all JOB TITLE to search by - problem
     fetchGetAllJobTitle() {
         return fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/JobTitle', {
 
@@ -131,6 +133,31 @@ export default class RegistrationExtra extends Component {
             .then(
                 (result) => {
                     this.setState({ JobArray: result })
+                    console.log(result);
+
+                },
+                (error) => {
+                    console.log("err post=", error);
+                    Alert.alert("מצטערים, אנו נסו שנית!");
+                }
+            );
+    }
+    //fetch -getCity to search by - problem
+    fetchGetCity() {
+        return fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/City', {
+
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'application/json; charset=UTF-8',
+            })
+        })
+            .then(res => {
+                return res.json();
+            })
+            .then(
+                (result) => {
+                    console.log(result);
+                    this.setState({ CityArry: result })
                 },
                 (error) => {
                     console.log("err post=", error);
@@ -141,8 +168,8 @@ export default class RegistrationExtra extends Component {
 
     //create array when num of kids 
     handleNumOfKids(num) {
-        this.state.kidsYearOfBirth.length=0;
-        this.setState({NumOfChildren:num});
+        this.state.kidsYearOfBirth.length = 0;
+        this.setState({ NumOfChildren: num });
         if (parseInt(num) > 0) {
             for (let index = 0; index < parseInt(num); index++) {
                 this.state.kidsYearOfBirth.push({ id: (index + 1), year: '' });
@@ -150,7 +177,7 @@ export default class RegistrationExtra extends Component {
         }
     }
 
-    
+
 
 
     render() {
@@ -214,7 +241,45 @@ export default class RegistrationExtra extends Component {
                     {/* </ScrollView> */}
 
 
+                    {/* <Dropdown
+                        labelFontSize='20'
+                        fontSize='20'
+                        itemTextStyle={{ textAlign: "right" }}
+                        containerStyle={{ width: '90%', marginLeft: '5%', marginRight: '5%', fontFamily: 'rubik-regular' }}
+                        labelTextStyle={{ marginLeft: '70%', fontFamily: 'rubik-regular' }}
+                        label='מצב משפחתי'
+                        data={status}
+                        onChangeText={() => this.setState({ familyStatus: this.props.familyStatus })}
+                        valueExtractor={({ value }) => value}
+                    /> */}
+                    {/* <Dropdown
+                        labelFontSize='20'
+                        fontSize='20'
+                        itemTextStyle={{ textAlign: "right" }}
+                        containerStyle={{ width: '90%', marginLeft: '5%', marginRight: '5%', fontFamily: 'rubik-regular' }}
+                        labelTextStyle={{ marginLeft: '70%', fontFamily: 'rubik-regular' }}
+                        label='תחום עבודה'
+                        data={this.state.JobArray}
+                        onChangeText={(value) => this.setState({ jobType: value })}
+                        valueExtractor={({ JobCode }) => JobCode}
+                        labelExtractor={({ JobName }) => JobName}
 
+                    />
+
+                    <Dropdown
+                        label='מקום עבודה'
+                        valueExtractor={({ CityCode }) => CityCode}
+                        labelExtractor={({ CityName }) => CityName}
+                        data={this.state.CityArry}
+                        selectedItemColor='#008b8b'
+                        onChangeText={(value) => this.setState({ jobArea: value })}
+                        labelFontSize='20'
+                        fontSize='20'
+                        itemTextStyle={{ textAlign: "right" }}
+                        containerStyle={{ width: '90%', marginLeft: '5%', marginRight: '5%', fontFamily: 'rubik-regular' }}
+                        labelTextStyle={{ marginLeft: '70%', fontFamily: 'rubik-regular' }}
+                        selectedItemColor='#008b8b'
+                    /> */}
                     <Input
                         value={this.state.user.JobTitleId}
                         label='תחום עבודה'
@@ -243,27 +308,27 @@ export default class RegistrationExtra extends Component {
                     <Input
                         value={this.state.numOfKids}
                         label='מספר ילדים'
-                        placeholder={this.state.user.NumOfChildren !== null ? (this.state.user.NumOfChildren)+"" : 'כתוב/י מספר..'}
+                        placeholder={this.state.user.NumOfChildren !== null ? (this.state.user.NumOfChildren) + "" : 'כתוב/י מספר..'}
                         onChangeText={(numOfKids) => this.handleNumOfKids(numOfKids)}
                         containerStyle={{ width: '90%', padding: 10 }}
                         placeholderTextColor={'black'}
                     />
 
- 
-                    {(this.state.kidsYearOfBirth.length > 0)&& <Text>שנות לידה ילדים</Text>}
+
+                    {(this.state.kidsYearOfBirth.length > 0) && <Text>שנות לידה ילדים</Text>}
                     <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                         {this.state.kidsYearOfBirth.length > 0 && this.state.kidsYearOfBirth.map((age, index) => {
                             return (<Picker
                                 mode="dialog"
                                 style={styles.picker}
                                 //placeholder={this.state.kidsYearOfBirth[index]!==null?this.state.kidsYearOfBirth[index]:"בחר שנת לידה"}
-                                placeholder="בחר שנת לידה" 
+                                placeholder="בחר שנת לידה"
                                 selectedValue={this.state.kidsYearOfBirth[index]}
                                 onValueChange={(value) => {
                                     let kidsCopy = JSON.parse(JSON.stringify(this.state.kidsYearOfBirth));
-                                    kidsCopy[index]=value;
+                                    kidsCopy[index] = value;
                                     this.setState({ kidsYearOfBirth: kidsCopy });
-                                    }}>
+                                }}>
                                 {years.map((item, index) => {
                                     return (<Picker.Item label={item} value={item} key={index} />);
                                 })}
@@ -281,6 +346,7 @@ export default class RegistrationExtra extends Component {
                         handleMainChange={(mainI) => this.handleMainChange(mainI)}
                         subInArray={this.state.subInArray}
                         callFetch={(id) => this.saveFunc(id)}
+                        isMulti={true}
                     />
 
                     <View style={styles.button}>
@@ -313,9 +379,9 @@ const styles = StyleSheet.create({
         paddingVertical: 5
     },
     container: {
-       // flex: 1,
+        // flex: 1,
         //justifyContent: 'space-between',
-    //alignItems: 'center',
+        //alignItems: 'center',
         backgroundColor: colors.reeBackgrouond
     },
     input: {
