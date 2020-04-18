@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Button, TextInput, View, StyleSheet, Text, AsyncStorage, Picker } from 'react-native';
+import { Alert, Button, TextInput, View, StyleSheet, Text, AsyncStorage, Picker, TouchableOpacity } from 'react-native';
 import Header from '../components/Header';
 import colors from '../assets/constant/colors';
 import { Input } from 'react-native-elements';
@@ -8,7 +8,7 @@ import OurButton from '../components/OurButton';
 import { EvilIcons, FontAwesome5 } from '@expo/vector-icons';
 import Interests from '../components/Interests';
 import { Dropdown } from 'react-native-material-dropdown';
-//import Autocomplete from'react-native-autocomplete-input';
+import Autocomplete from 'react-native-autocomplete-input';
 import { ScrollView } from 'react-native-gesture-handler';
 //import InputAutoSuggest from 'react-native-autocomplete-search';
 
@@ -33,7 +33,11 @@ export default class RegistrationExtra extends Component {
             mainI: '',
             kidsYearOfBirth: [],
             JobArray: [],
-            query: ''
+            query: '',
+            queryCity: '',
+            hideResults:false,
+            CityArray:[],
+            hideCityResults:false
         };
 
     }
@@ -133,7 +137,7 @@ export default class RegistrationExtra extends Component {
             .then(
                 (result) => {
                     this.setState({ JobArray: result })
-                    console.log(result);
+                    //console.log(result);
 
                 },
                 (error) => {
@@ -156,8 +160,8 @@ export default class RegistrationExtra extends Component {
             })
             .then(
                 (result) => {
-                    console.log(result);
-                    this.setState({ CityArry: result })
+                    //console.log(result);
+                    this.setState({ CityArray: result })
                 },
                 (error) => {
                     console.log("err post=", error);
@@ -177,8 +181,27 @@ export default class RegistrationExtra extends Component {
         }
     }
 
+    //filter job array
+    findJob(query) {
+        if (query === '') {
+          return [];
+        }
+    
+        const { JobArray } = this.state;
+        const regex = new RegExp(`${query.trim()}`, 'i');
+        return JobArray.filter(job => job.JobName.search(regex) >= 0);
+      }
 
-
+    //filter city array
+      findCity(query) {
+        if (query === '') {
+          return [];
+        }
+    
+        const { CityArray} = this.state;
+        const regex = new RegExp(`${query.trim()}`, 'i');
+        return CityArray.filter(city => city.CityName.search(regex) >= 0);
+      }
 
     render() {
         const thisYear = (new Date()).getFullYear();
@@ -188,114 +211,89 @@ export default class RegistrationExtra extends Component {
             value: 'רווק/ה'
         }, {
             id: 2,
-            value: '/אהנשוי',
+            value: 'נשוי/אה',
         }, {
             id: 3,
             value: 'אלמן/ה',
-        }
-            , {
+        } , {
             id: 4,
             value: 'גרוש/ה',
         }];
+
         const { navigation } = this.props;
+        //return the filtered film array according the query from the input
+        const jobs = this.findJob(this.state.query);
+        const cities = this.findCity(this.state.queryCity);
+        
         return (
 
             <View style={styles.screen} >
                 <Header />
-                <ScrollView style={styles.container}>
+                <ScrollView style={styles.container} 
+                keyboardShouldPersistTaps= {"always"}>
                     <Text style={styles.subTitle} >
                         פרטים נוספים
                    </Text>
-                    {/* <View style={{ fontFamily: 'rubik-regular' }}>
-                        {/* <Dropdown
-                        labelFontSize='20'
-                        fontSize='20'
-                        itemTextStyle={{ textAlign: "right" }}
-                        containerStyle={{ width: '90%', marginLeft: '5%', marginRight: '5%', fontFamily: 'rubik-regular' }}
-                        labelTextStyle={{ marginLeft: '70%', fontFamily: 'rubik-regular' }}
-                        label='מצב משפחתי'
-                        data={status}
-                        onChangeText={() => this.setState({ familyStatus: this.props.familyStatus })}
-
-
-                    /> */}
-
-                    {/* </View> */}
-
-                    {/* <ScrollView> */}
-                    {/* <Autocomplete
-                autoCorrect={false}
-                defaultValue={this.state.query}
-                placeholder='הוספ/י'
-                data={this.state.JobArray}
-                onChangeText={text => this.setState({ query: text })}
-                renderItem={({ job }) => (
-                    <TouchableOpacity onPress={() => this.setState({ query: job })}>
-                      <Text style={styles.itemText}>
-                         {job}
-                      </Text>
-                    </TouchableOpacity>
-                  )}
-    
-    /> */}
-                    {/* </ScrollView> */}
-
-
-                    {/* <Dropdown
-                        labelFontSize='20'
-                        fontSize='20'
-                        itemTextStyle={{ textAlign: "right" }}
-                        containerStyle={{ width: '90%', marginLeft: '5%', marginRight: '5%', fontFamily: 'rubik-regular' }}
-                        labelTextStyle={{ marginLeft: '70%', fontFamily: 'rubik-regular' }}
-                        label='מצב משפחתי'
-                        data={status}
-                        onChangeText={() => this.setState({ familyStatus: this.props.familyStatus })}
-                        valueExtractor={({ value }) => value}
-                    /> */}
-                    {/* <Dropdown
-                        labelFontSize='20'
-                        fontSize='20'
-                        itemTextStyle={{ textAlign: "right" }}
-                        containerStyle={{ width: '90%', marginLeft: '5%', marginRight: '5%', fontFamily: 'rubik-regular' }}
-                        labelTextStyle={{ marginLeft: '70%', fontFamily: 'rubik-regular' }}
-                        label='תחום עבודה'
-                        data={this.state.JobArray}
-                        onChangeText={(value) => this.setState({ jobType: value })}
-                        valueExtractor={({ JobCode }) => JobCode}
-                        labelExtractor={({ JobName }) => JobName}
+                    
+                    <View>
+                    <Autocomplete
+                        hideResults={this.state.hideResults}
+                        autoCorrect={false}
+                        defaultValue={this.state.query}
+                        placeholder='בחר/י תחום עבודה'
+                        data={jobs}
+                        style={styles.autocompleteContainer}
+                        onChangeText={text => this.setState({ query: text, hideResults:false })}
+                        renderItem={({ item }) => (
+                            //you can change the view you want to show in suggestion from here
+                            <TouchableOpacity onPress={() => this.setState({ query: item.JobName, hideResults:true , jobType:item.JobCode})}>
+                              <Text style={styles.itemText}>
+                                {item.JobName} 
+                              </Text>
+                            </TouchableOpacity>
+                          )}
 
                     />
+                    </View>
+                    <View>
+                    <Autocomplete
+                    
+                        hideResults={this.state.hideCityResults}//close the results
+                        autoCorrect={false}
+                        defaultValue={this.state.queryCity}
+                        placeholder='בחר/י מקום עבודה'
+                        data={cities}
+                        style={styles.autocompleteContainer}
+                        onChangeText={text => this.setState({ queryCity: text, hideCityResults:false })}
+                        renderItem={({ item }) => (
+                            //the view
+                            <TouchableOpacity onPress={() => this.setState({ queryCity: item.CityName, hideCityResults:true, jobArea:item.CityCode  })}>
+                              <Text style={styles.itemText}>
+                                {item.CityName} 
+                              </Text>
+                            </TouchableOpacity>
+                          )}
 
-                    <Dropdown
-                        label='מקום עבודה'
-                        valueExtractor={({ CityCode }) => CityCode}
-                        labelExtractor={({ CityName }) => CityName}
-                        data={this.state.CityArry}
-                        selectedItemColor='#008b8b'
-                        onChangeText={(value) => this.setState({ jobArea: value })}
-                        labelFontSize='20'
-                        fontSize='20'
-                        itemTextStyle={{ textAlign: "right" }}
-                        containerStyle={{ width: '90%', marginLeft: '5%', marginRight: '5%', fontFamily: 'rubik-regular' }}
-                        labelTextStyle={{ marginLeft: '70%', fontFamily: 'rubik-regular' }}
-                        selectedItemColor='#008b8b'
-                    /> */}
-                    <Input
-                        value={this.state.user.JobTitleId}
-                        label='תחום עבודה'
-                        placeholder={this.state.user.JobTitleId + ""}
-                        onChangeText={(jobType) => this.setState({ jobType })}
-                        containerStyle={{ width: '90%', padding: 10 }}
-                        placeholderTextColor={'black'}
                     />
-                    <Input
-                        value={this.state.jobArea}
-                        label='מקום עבודה'
-                        placeholder={this.state.user.WorkPlace !== null ? this.state.user.WorkPlace : 'הוספ/י'}
-                        onChangeText={(jobArea) => this.setState({ jobArea })}
-                        containerStyle={{ width: '90%', padding: 10 }}
-                        placeholderTextColor={'black'}
-                    />
+                    </View>
+                    
+                    <View>
+                        <Dropdown
+                            label='סטטוס משפחתי'
+                            //value={this.state.Name}
+                            valueExtractor={({ id }) => id}
+                            labelExtractor={({ value }) => value}
+                            data={status}
+                            selectedItemColor= {colors.subTitle}
+                            onChangeText={(value) => {
+                                this.setState({
+                                    familyStatus: value
+                                });
+                                //console.log(this.state.familyStatus)
+                            }}
+                        />
+                    </View>
+                    
                     <Input
                         value={this.state.aboutMe}
                         label='קצת על עצמי'
@@ -370,6 +368,13 @@ const styles = StyleSheet.create({
     autocompleteContainer: {
         backgroundColor: '#ffffff',
         borderWidth: 0,
+            // flex: 1,
+            // left: 0,
+            // position: 'absolute',
+            // right: 0,
+            // top: 0,
+            // zIndex: 1
+        
     },
     intrestButtons: {
         backgroundColor: 'white',
@@ -401,6 +406,11 @@ const styles = StyleSheet.create({
         color: colors.subTitle,
         paddingTop: 25
     },
+    itemText: {
+        fontSize: 15,
+        margin: 2,
+        color:'black'
+      },
     note: {
         marginVertical: 1,
         marginBottom: 10,

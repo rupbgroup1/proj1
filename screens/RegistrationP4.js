@@ -84,7 +84,7 @@ export default class RegistraionP4 extends Component {
                     if (result.length > 1) {
                         this.setState({ ShowDropDown: true, NeiList: result })
                     }
-                    else this.setState({ canSubmit:true, ShowDropDown:false, NeiName:name});
+                    else this.setState({ canSubmit: true, ShowDropDown: false, NeiName: name });
                 },
                 (error) => {
                     console.log("err post=", error);
@@ -169,18 +169,18 @@ export default class RegistraionP4 extends Component {
                 <Header />
                 <BackButton goBack={() => navigation.navigate('Pic')} />
                 <Text style={styles.subTitle} >
-                  אנא בחר/י מקום מגורים
+                    אנא בחר/י מקום מגורים
         </Text>
                 <Text style={{ fontFamily: 'rubik-regular', textAlign: 'center', marginBottom: 10 }}>
                     מקום המגורים לא יחשף ללא הרשאתך
                      </Text>
                 {/* <View style={{ flex: 1 }}>  */}
-                <View style={{ flex: 1 }}>
-                    <GoogleAPIAutoComplete notifyChange={(loc) => this.getCoordsFromName(loc)} CityName={(name) => this.handleCityName(name)} />
-                </View>
+
+                <GoogleAPIAutoComplete notifyChange={(loc) => this.getCoordsFromName(loc)} CityName={(name) => this.handleCityName(name)} />
+
 
                 {this.state.mapVisible &&
-                    <Text style={{ fontFamily: 'rubik-regular', textAlign: 'center', marginBottom: 10 }}>אנא סמנ/י מיקומך על המפה</Text>
+                    <Text style={{ fontFamily: 'rubik-regular', textAlign: 'center' }}>אנא סמנ/י מיקומך על המפה</Text>
                 }
 
                 {
@@ -195,7 +195,6 @@ export default class RegistraionP4 extends Component {
                 }
                 {this.state.ShowDropDown &&
                     <Text style={{ fontFamily: 'rubik-regular', textAlign: 'center', marginBottom: 10 }}>אנא בחר/י שכונת מגורים אליה תשתייכ/י </Text>
-                    
                 }
                 {
                     this.state.ShowDropDown &&
@@ -210,7 +209,7 @@ export default class RegistraionP4 extends Component {
                             onChangeText={(value) => {
                                 this.setState({
                                     NeiName: value,
-                                    canSubmit:true
+                                    canSubmit: true
                                 });
                             }}
                         />
@@ -228,7 +227,6 @@ export default class RegistraionP4 extends Component {
                             AsyncStorage.mergeItem('user', JSON.stringify(userDetails));
                             this.getUser()
                         }}
-
                     />
                 }
             </View>
@@ -239,8 +237,10 @@ export default class RegistraionP4 extends Component {
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
-        justifyContent: "center",
-        alignContent: "center",
+        justifyContent: 'center',
+
+        //alignContent: "center",
+        //alignItems:"stretch",
         backgroundColor: colors.reeBackgrouond
     },
     subTitle: {
@@ -251,12 +251,14 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         color: colors.subTitle,
-        paddingTop: 25
+        paddingTop: 25,
     },
     map: {
-        flex: 1,
-        justifyContent: 'center',
-        flexDirection: 'row'
+        //display: 'flex',
+        alignItems: "stretch",
+        height: '100%',
+        flex: 1
+
     }
 
 });

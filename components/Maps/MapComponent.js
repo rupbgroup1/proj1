@@ -31,7 +31,7 @@ const MapComponent = (props) => {
         <TouchableOpacity style={{ flex: 1 }} onPress={props.onPress}>
             <MapView
                 style={{
-                    flex: 1, width: Dimensions.get('window').width,
+                 flex:1,width:Dimensions.get('window').width,
                     height: Dimensions.get('window').height
                 }}
                 region={props.region}
