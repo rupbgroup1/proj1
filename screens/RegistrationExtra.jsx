@@ -3,15 +3,10 @@ import { Alert, Button, TextInput, View, StyleSheet, Text, AsyncStorage, Picker,
 import Header from '../components/Header';
 import colors from '../assets/constant/colors';
 import { Input } from 'react-native-elements';
-import MultiSelect from 'react-native-multiple-select';
-import OurButton from '../components/OurButton';
-import { EvilIcons, FontAwesome5 } from '@expo/vector-icons';
 import Interests from '../components/Interests';
 import { Dropdown } from 'react-native-material-dropdown';
 import Autocomplete from 'react-native-autocomplete-input';
 import { ScrollView } from 'react-native-gesture-handler';
-//import InputAutoSuggest from 'react-native-autocomplete-search';
-
 
 
 export default class RegistrationExtra extends Component {
@@ -37,7 +32,8 @@ export default class RegistrationExtra extends Component {
             queryCity: '',
             hideResults:false,
             CityArray:[],
-            hideCityResults:false
+            hideCityResults:false,
+            choosenInterests:[]
         };
 
     }
@@ -52,7 +48,7 @@ export default class RegistrationExtra extends Component {
     async getUser() {
         let userJSON = await AsyncStorage.getItem('user');
         const userObj = await JSON.parse(userJSON);
-        this.setState({ user: userObj })
+        this.setState({ user: userObj});
     }
 
     onSelectedItemsChange = selectedYears => {
@@ -203,6 +199,46 @@ export default class RegistrationExtra extends Component {
         return CityArray.filter(city => city.CityName.search(regex) >= 0);
       }
 
+      fetchUpdateUser(){
+          const user={
+            UserId:this.state.user.UserId,
+            JobTitleId: this.state.jobType,
+            WorkPlace: this.state.jobArea,
+            FamilyStatus:this.state.familyStatus,
+            NumOfChildren:this.state.numOfKids,
+            AboutMe:this.state.aboutMe,
+            Kids:this.state.kidsYearOfBirth,
+            Intrests:this.state.choosenInterests
+          }
+          
+        fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/User/Extra', {
+            method: 'PUT',
+            body: JSON.stringify(user),
+            headers: new Headers({
+                'Content-type': 'application/json; charset=UTF-8'
+            })
+        })
+            .then(res => {
+                //console.log('res=', res);
+                return res.json()
+            })
+            .then(
+                (result) => {
+                    console.log("fetch POST= ", result);
+                    if (result === 1){
+                    AsyncStorage.mergeItem('user', JSON.stringify(user));
+                        this.props.navigation.navigate('MainPage');
+                    }
+                    else {
+                        Alert.alert("אנא נסו שנית");
+                    }
+                },
+                (error) => {
+                    console.log("err post=", error);
+                    Alert.alert("אנא נסה שנית");
+                }
+            );
+      }
     render() {
         const thisYear = (new Date()).getFullYear();
         const years = Array.from(new Array(60), (val, index) => (thisYear - index).toString());
@@ -343,14 +379,14 @@ export default class RegistrationExtra extends Component {
                         IntrestsArray={this.state.IntrestsArray}
                         handleMainChange={(mainI) => this.handleMainChange(mainI)}
                         subInArray={this.state.subInArray}
-                        callFetch={(id) => this.saveFunc(id)}
+                        callFetch={(iArray) => this.setState({choosenInterests:iArray})}
                         isMulti={true}
                     />
 
                     <View style={styles.button}>
                         <Button
                             title={'המשך'} onPress={() => {
-                                this.fetchPostNewUser()
+                                this.fetchUpdateUser()
                             }}
                         />
                     </View>
@@ -368,12 +404,6 @@ const styles = StyleSheet.create({
     autocompleteContainer: {
         backgroundColor: '#ffffff',
         borderWidth: 0,
-            // flex: 1,
-            // left: 0,
-            // position: 'absolute',
-            // right: 0,
-            // top: 0,
-            // zIndex: 1
         
     },
     intrestButtons: {
@@ -411,53 +441,16 @@ const styles = StyleSheet.create({
         margin: 2,
         color:'black'
       },
-    note: {
-        marginVertical: 1,
-        marginBottom: 10,
-        fontSize: 14,
-        color: 'black'
-    },
-    forgotPassword: {
-        color: 'blue',
-        textAlign: 'left'
-    },
+    
     button: {
-        width: '50%',
-        paddingTop: 20
+        width: '90%',
+        paddingTop: 40,
+       alignSelf:"center"
     },
-    createUser: {
-        padding: 30,
-        flexDirection: 'row'
-    },
+    
     screen: {
         flex: 1,
         justifyContent: 'space-between',
         alignItems: 'center',
-    },
-    checkbox: {
-        flexDirection: 'row'
-    },
-    genderView: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignContent: 'space-between',
-        marginTop: 15
-    },
-    genderNote: {
-        marginVertical: 1,
-        marginBottom: 10,
-        fontSize: 14,
-        color: 'black',
-        marginRight: 35,
-        marginLeft: 35
-    },
-    genderNoteSelected: {
-        marginVertical: 1,
-        marginBottom: 10,
-        fontSize: 20,
-        color: colors.subTitle,
-        marginRight: 35,
-        marginLeft: 35,
-        fontWeight: 'bold'
     }
-});
+   });
