@@ -1,9 +1,8 @@
 import React from 'react';
-import { Alert, View, Button,  Image, KeyboardAvoidingView } from 'react-native';
-import styles from './pageStyle';
+import { Alert, View, Button,  Image, KeyboardAvoidingView, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
-export default class ImageGallery extends Component {
+export default class ImageGallery extends React.Component {
     static navigationOptions = {
         title: 'GALLERY',
     };
@@ -25,13 +24,14 @@ export default class ImageGallery extends Component {
             this.setState({ image: result.uri });
           }
 
+
           Alert.alert(
-            'Would you like to save the picture?',
+            'האם תרצה לשמור את התמונה?',
             '',
             [
-              {text: 'yes', onPress: () => this.props.navigation.navigate('AddNote', {photoUri: result.uri})},
+              {text: 'כן', onPress: () => this.props.navigation.navigate('Pic', {photoUri: result.uri})},
               {
-                text: 'No',
+                text: 'לא',
                 style: 'cancel',
               }],
            
@@ -46,9 +46,9 @@ export default class ImageGallery extends Component {
                 style={styles.container}>
                
                 <View style={styles.Content}>
-                    <View style={{ margin: 20 }}>
+                    <View style={{ margin: 20, fontFamily: 'rubik-regular'}}>
                         <Button
-                            title="Choose From Galery"
+                            title="בחירת תמונה מהגלריה"
                             onPress={this.btnOpenGalery}
                         />
                     </View>
@@ -59,3 +59,20 @@ export default class ImageGallery extends Component {
         );
     }
 }
+const styles = StyleSheet.create({
+    
+    Content: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: 30,
+      
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: 40
+},
+  })

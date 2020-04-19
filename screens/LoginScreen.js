@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
-import { Alert, Button, TextInput, View, StyleSheet, Text, ImageBackground } from 'react-native';
+import { Alert, Button, TextInput, View, StyleSheet, Text } from 'react-native';
+import RememberMe from '../components/RememberMe';
+import { AsyncStorage } from 'react-native';
+import Background from '../components/Background'
+
 
 export default class LoginScreen extends Component {
   constructor(props) {
@@ -9,20 +13,66 @@ export default class LoginScreen extends Component {
       username: '',
       password: '',
       titleText: 'Commy',
+      user: [],
+      usernameValid: true
     };
+
   }
 
-  onLogin() {
-    const username =this.state.username;
-    const password  = this.state.password;
 
-    Alert.alert('Credentials', `${username} + ${password}`);
+  //Search for the userDetails in DB
+  fetchOnLogin = () => {
+    const email = this.state.username;
+    const emailLower = email.toLowerCase();
+    const loginDetails = {
+      Email: emailLower,
+      Password: this.state.password
+    }
+
+    //Check that the user name entered is valid
+    if (this.state.username == '' || this.state.password == '') {
+      return Alert.alert("אנא מלא שם משתמש וסיסמה");
+    }
+
+    fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/User/login', {
+      method: 'POST',
+      body: JSON.stringify(loginDetails),
+      headers: new Headers({
+        'Content-type': 'application/json; charset=UTF-8'
+      })
+    })
+      .then(res => {
+        //console.log('res=', res);
+        return res.json()
+      })
+      .then(
+        (result) => {
+          console.log("fetch = ", result);
+          if (result.UserId > 0) {
+            AsyncStorage.setItem("user", JSON.stringify(result), () => {
+              this.props.navigation.navigate('MainPage');
+              console.log(result);
+            }); 
+          }
+          else {
+            //this.setState({user:result});
+            Alert.alert("הפרטים אינם נכונים, אנא נסה שנית")
+          }
+        },
+        (error) => {
+          console.log("err post=", error);
+          Alert.alert("איראה שגיאה, אנא נסה שנית");
+        });
+
+
   }
+  
+
 
   render() {
     return (
-      
-      <View style={styles.container}>
+      <Background >
+
         <Text style={styles.titleText} >
           {this.state.titleText}{'\n'}
         </Text>
@@ -39,26 +89,36 @@ export default class LoginScreen extends Component {
           secureTextEntry={true}
           style={styles.input}
         />
-          <Text style={styles.forgotPassword} >
-           שכחתי סיסמה {'\n'}{'\n'}
-          </Text>
-        
-        <View style={styles.button}>
-        <Button
-          title={'כניסה'}
-          onPress={this.onLogin.bind(this)}
-        />
-        
+        <View style={styles.RememberMe}>
+          <RememberMe user={{ Email: this.state.username, Password: this.state.Password }} />
         </View>
+
+
+        <View style={styles.button}>
+          <Button
+            fontFamily='rubik-regular'
+            color='#0d7d96'
+            title={'כניסה'}
+            onPress={() => {
+              this.state.usernameValid ? this.fetchOnLogin() : Alert.alert("שם משתמש לא תקין")
+            }
+            }
+          />
+
+        </View>
+        <Text onPress={() => this.props.navigation.navigate('ForgotPassword')} style={styles.forgotPassword} >
+          שכחתי סיסמה {'\n'}{'\n'}
+        </Text>
         <View style={styles.createUser}>
-        <Text style={{color:'black', fontSize:16}} >
-          אין לך משתמש עדיין?   {'\n'}
+          <Text style={{ color: 'white', fontSize: 18, fontFamily: 'rubik-regular' }} >
+            אין לך משתמש עדיין?   {'\n'}
           </Text>
-          <Text style={{color:'blue', fontSize:16}}>
-           להרשמה לחץ כאן
+          <Text style={{ fontFamily: 'rubik-regular' }} onPress={() => this.props.navigation.navigate('RegistrationP4')} style={styles.forgotPassword} style={{ color: '#0d7d96', fontSize: 18 }}>
+            להרשמה לחץ כאן
           </Text>
-        </View> 
-      </View>
+        </View>
+
+      </Background>
     );
   }
 }
@@ -68,35 +128,48 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#ecf0f1'    
+    //backgroundColor: '#ecf0f1', 
   },
   input: {
-    width: '60%',
+
+    fontFamily: 'rubik-regular',
+    width: '90%',
     height: 44,
-    padding: 10,
+    padding: 5,
     borderWidth: 1,
     borderColor: 'white',
     marginBottom: 10,
     backgroundColor: 'white',
     textAlign: 'right',
+    borderRadius: 8
   },
   titleText: {
-    fontFamily:'kalam-regular',
+    fontFamily: 'kalam-regular',
     marginVertical: 1,
-    fontSize: 60
-  }, 
-  forgotPassword:{
-    color: 'blue',
-    textAlign: 'left'
+    fontSize: 70
   },
-  button:{
-   width: '60%',
-   
+  forgotPassword: {
+
+    fontFamily: 'rubik-regular',
+    color: 'white',
+    textAlign: 'left',
+    paddingTop: 20
   },
-  createUser:{
-    padding: 30,
+  button: {
+    width: '90%'
+
+  },
+  createUser: {
+    fontFamily: 'rubik-regular',
+    padding: 10,
     flexDirection: 'row',
-    marginBottom: 80,
+    direction: "rtl",
+    marginBottom: 40,
     fontFamily: 'varela'
+  },
+  RememberMe: {
+    flexDirection: 'row',
+    marginRight: 145,
+    paddingBottom: 20
   }
 });

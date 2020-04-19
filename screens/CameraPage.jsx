@@ -1,10 +1,8 @@
 import React from 'react';
-import { Alert, Text, View, Dimensions, Image, TouchableOpacity } from 'react-native';
-import styles from './pageStyle';
+import { StyleSheet,Alert, Text, View, Dimensions, Image, TouchableOpacity } from 'react-native';
 import { Camera } from 'expo-camera';
-import * as Permissions from 'expo-permissions';
 
-export default class CameraPage extends Component {
+export default class CameraPage extends React.Component {
   static navigationOptions = {
     title: 'CAMERA',
   };
@@ -28,17 +26,17 @@ export default class CameraPage extends Component {
 
   btnSnap = async () => {
     if (this.camera) {
-      let photo = await this.camera.takePictureAsync({ quality: 0.2 });
+      let photo = await this.camera.takePictureAsync({ quality: 0.1, base64:true});
      
       this.setState({ photoUri: photo.uri });
       
       Alert.alert(
-        'Would you like to save the picture?',
+        'האם תרצה לשמור את התמונה?',
         '',
         [
-          {text: 'yes', onPress: () => this.props.navigation.navigate('AddNote', {photoUri: photo.uri})},
+          {text: 'כן', onPress: () => this.props.navigation.navigate('Pic', {photoUri: photo.uri})},
           {
-            text: 'No',
+            text: 'לא',
             style: 'cancel',
           }],
        
@@ -51,7 +49,7 @@ export default class CameraPage extends Component {
 
   btnUpload = () => {
     let img = this.state.photoUri;
-    let imgName = 'imgFromCamera.jpg';
+    let imgName = 'imgProfile.jpg';
     this.imageUpload(img, imgName);
   };
 
@@ -97,8 +95,8 @@ export default class CameraPage extends Component {
                         });
                       }}>
                       <Text
-                        style={{ fontSize: 18, marginBottom: 10, color: 'white' }}>
-                        {' '}Flip{' '}
+                        style={{ fontSize: 18, marginBottom: 10, color: 'white', fontFamily: 'rubik-regular' }}>
+                        {' '}החלף מצלמה{' '}
                       </Text>
                     </TouchableOpacity>
                   </View>
@@ -127,7 +125,7 @@ export default class CameraPage extends Component {
                       alignSelf: 'center', width: 25, height: 25,
                       borderRadius: 50
                     }}
-                    source={require('../../assets/camera-shutter.png')} />
+                    source={require('../assets/camera-shutter.png')} />
                 </View>
               </TouchableOpacity>
               {/* <ActionButton icon="camera" onPress={this.btnLocation} /> */}
@@ -139,4 +137,15 @@ export default class CameraPage extends Component {
     }
   }
 }
+
+const styles = StyleSheet.create({
+    
+  Content: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 30,
+    
+},
+})
 

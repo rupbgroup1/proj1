@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import colors from '../assets/constant/colors';
 
 
 const Header = props => {
   return (
     <View style={styles.header}>
-      <Text style={styles.headerTitle}>Commy</Text>
+       <Text style={styles.headerTitle}>Commy</Text>
     </View>
   );
 };
@@ -13,14 +14,17 @@ const Header = props => {
 const styles = StyleSheet.create({
   header: {
     width: '100%',
-    height: 80,
+    height: 83,
     paddingTop: 15,
-    backgroundColor: '#008B8B',
+    backgroundColor:colors.header,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    borderBottomEndRadius:1,
+    borderColor:"white",
+    borderRadius:2
   },
   headerTitle: {
-    color: 'black',
+    color: 'white',
     fontSize: 30, 
     fontFamily: 'kalam-regular',
     paddingTop:10
