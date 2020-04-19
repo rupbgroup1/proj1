@@ -56,7 +56,8 @@ export default class RegistrationExtra extends Component {
     }
     //this function starts when the user press on interest
     saveFunc(id) {
-        console.log(id);
+        //console.log(id);
+        this.state.choosenInterests
         //need to write it..
     }
     //when main I is selected - this func fetch all the sub interests
@@ -172,7 +173,7 @@ export default class RegistrationExtra extends Component {
         this.setState({ NumOfChildren: num });
         if (parseInt(num) > 0) {
             for (let index = 0; index < parseInt(num); index++) {
-                this.state.kidsYearOfBirth.push({ id: (index + 1), year: '' });
+                this.state.kidsYearOfBirth.push({ Id: this.state.user.UserId, YearOfBirth: '' });
             }
         }
     }
@@ -360,7 +361,7 @@ export default class RegistrationExtra extends Component {
                                 selectedValue={this.state.kidsYearOfBirth[index]}
                                 onValueChange={(value) => {
                                     let kidsCopy = JSON.parse(JSON.stringify(this.state.kidsYearOfBirth));
-                                    kidsCopy[index] = value;
+                                    kidsCopy[index].YearOfBirth = value;
                                     this.setState({ kidsYearOfBirth: kidsCopy });
                                 }}>
                                 {years.map((item, index) => {

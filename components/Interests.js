@@ -1,28 +1,33 @@
 import OurButton from '../components/OurButton';
-import { EvilIcons, FontAwesome5 } from '@expo/vector-icons';
-import { Input, Divider } from 'react-native-elements';
+import { FontAwesome5 } from '@expo/vector-icons';
 import colors from '../assets/constant/colors';
-import React, { Component, useState , useEffect} from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 
 
 const Interest = (props) => {
     const [selectedSub, setSelectedSub] = useState(0);
     const [selectedMultiSub, setSelectedMultiSub] = useState([]);
-    
-    //pass the updated intrests selected
-    useEffect(() => {
-        props.isMulti&&props.callFetch(selectedMultiSub)
-      },[selectedMultiSub] );
 
-//when i is pressed it checks wether it's multi/single and updates the value
+    //pass the updated interests selected (array)
+    useEffect(() => {
+        console.log(selectedMultiSub);
+        props.isMulti && props.callFetch(selectedMultiSub)
+    }, [selectedMultiSub]
+    
+    );
+
+    //when i is pressed it checks wether it's multi/single and updates the value
     handleSubPress = (interestId) => {
+        const iObj = {Id:interestId};
         if (props.isMulti) {
-            if (selectedMultiSub.includes(interestId)) {
-                setSelectedMultiSub(selectedMultiSub.filter(item => item !== interestId));
+            if  (selectedMultiSub.some(e => e.Id === interestId)) {
+                setSelectedMultiSub(selectedMultiSub.filter(item => item.Id !== interestId));
+               
             }
             else {
-                setSelectedMultiSub(selectedMultiSub => [...selectedMultiSub, interestId]);
+                setSelectedMultiSub(selectedMultiSub => [...selectedMultiSub, iObj]);
+               
             }
         }
         else {
@@ -52,7 +57,7 @@ const Interest = (props) => {
                 {props.subInArray !== null && props.subInArray.map((Interest, i) =>
                     //subCat
                     <OurButton
-                        style={(!props.isMulti & selectedSub === Interest.Id) || (props.isMulti & selectedMultiSub.includes(Interest.Id)) ? styles.subButton : styles.intrestButtons}
+                        style={(!props.isMulti & selectedSub === Interest.Id) || (props.isMulti &  selectedMultiSub.some(e => e.Id === Interest.Id)) ? styles.subButton : styles.intrestButtons}
                         title={Interest.Subintrest}
                         key={Interest.Id}
                         isMulti={props.isMulti}
@@ -68,7 +73,7 @@ const Interest = (props) => {
     )
 };
 const styles = StyleSheet.create({
-   //not selected
+    //not selected
     intrestButtons: {
         backgroundColor: 'white',
         borderRadius: 15,
