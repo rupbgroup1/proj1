@@ -39,27 +39,25 @@ export default class RegistrationExtra extends Component {
     }
 
     componentDidMount = () => {
-        this.fetchGetAllIntrests();
         this.getUser();
+        this.fetchGetAllIntrests();
         this.fetchGetCity();
         this.fetchGetAllJobTitle();
+        console.log(this.state.choosenInterests);
     }
 
     async getUser() {
         let userJSON = await AsyncStorage.getItem('user');
         const userObj = await JSON.parse(userJSON);
-        this.setState({ user: userObj});
+        console.log("fromuser", userObj.Intrests);
+        this.setState({ user: userObj, kidsYearOfBirth:userObj.Kids, initialInterest:userObj.Intrests},()=>console.log(this.state.kidsYearOfBirth));
+     
     }
 
     onSelectedItemsChange = selectedYears => {
         this.setState({ selectedYears });
     }
-    //this function starts when the user press on interest
-    saveFunc(id) {
-        //console.log(id);
-        this.state.choosenInterests
-        //need to write it..
-    }
+    
     //when main I is selected - this func fetch all the sub interests
     handleMainChange(mainI) {
         this.setState({ mainI: mainI }, () => {
@@ -69,7 +67,7 @@ export default class RegistrationExtra extends Component {
     }
     //fetch -get all intrests to search by
     fetchGetAllIntrests() {
-        return fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/Intrests', {
+        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Intrests', {
 
             method: 'GET',
             headers: new Headers({
@@ -77,10 +75,6 @@ export default class RegistrationExtra extends Component {
             })
         })
             .then(res => {
-                //console.log('res=', res);
-                //console.log("in");
-                //const statusCode = res.status;
-                //console.log(statusCode);
                 return res.json();
             })
             .then(
@@ -97,7 +91,7 @@ export default class RegistrationExtra extends Component {
     fetchSubInterest = () => {
         //console.log(this.state.mainI);
         // console.log(this.state.searchName+this.state.user.CityName);
-        return fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/Intrests/Sub?mainI=' + this.state.mainI, {
+        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Intrests/Sub?mainI=' + this.state.mainI, {
             method: 'GET',
             headers: new Headers({
                 'Content-type': 'application/json; charset=UTF-8'
@@ -121,7 +115,7 @@ export default class RegistrationExtra extends Component {
 
     //fetch -get all JOB TITLE to search by - problem
     fetchGetAllJobTitle() {
-        return fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/JobTitle', {
+        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/JobTitle', {
 
             method: 'GET',
             headers: new Headers({
@@ -145,7 +139,7 @@ export default class RegistrationExtra extends Component {
     }
     //fetch -getCity to search by - problem
     fetchGetCity() {
-        return fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/City', {
+        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/City', {
 
             method: 'GET',
             headers: new Headers({
@@ -173,7 +167,7 @@ export default class RegistrationExtra extends Component {
         this.setState({ NumOfChildren: num });
         if (parseInt(num) > 0) {
             for (let index = 0; index < parseInt(num); index++) {
-                this.state.kidsYearOfBirth.push({ Id: this.state.user.UserId, YearOfBirth: '' });
+                this.state.kidsYearOfBirth.push({ Id: this.state.user.UserId, YearOfBirth: 2020 });
             }
         }
     }
@@ -211,8 +205,9 @@ export default class RegistrationExtra extends Component {
             Kids:this.state.kidsYearOfBirth,
             Intrests:this.state.choosenInterests
           }
+
           
-        fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/User/Extra', {
+        fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/User/Extra', {
             method: 'PUT',
             body: JSON.stringify(user),
             headers: new Headers({
@@ -228,6 +223,7 @@ export default class RegistrationExtra extends Component {
                     console.log("fetch POST= ", result);
                     if (result === 1){
                     AsyncStorage.mergeItem('user', JSON.stringify(user));
+                    Alert.alert("הפרטים נשמרו בהצלחה");
                         this.props.navigation.navigate('MainPage');
                     }
                     else {
@@ -258,7 +254,7 @@ export default class RegistrationExtra extends Component {
         }];
 
         const { navigation } = this.props;
-        //return the filtered film array according the query from the input
+        //return the filtered array according the query from the input
         const jobs = this.findJob(this.state.query);
         const cities = this.findCity(this.state.queryCity);
         
@@ -282,7 +278,6 @@ export default class RegistrationExtra extends Component {
                         style={styles.autocompleteContainer}
                         onChangeText={text => this.setState({ query: text, hideResults:false })}
                         renderItem={({ item }) => (
-                            //you can change the view you want to show in suggestion from here
                             <TouchableOpacity onPress={() => this.setState({ query: item.JobName, hideResults:true , jobType:item.JobCode})}>
                               <Text style={styles.itemText}>
                                 {item.JobName} 
@@ -349,20 +344,19 @@ export default class RegistrationExtra extends Component {
                         placeholderTextColor={'black'}
                     />
 
-
                     {(this.state.kidsYearOfBirth.length > 0) && <Text>שנות לידה ילדים</Text>}
                     <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                         {this.state.kidsYearOfBirth.length > 0 && this.state.kidsYearOfBirth.map((age, index) => {
                             return (<Picker
                                 mode="dialog"
                                 style={styles.picker}
-                                //placeholder={this.state.kidsYearOfBirth[index]!==null?this.state.kidsYearOfBirth[index]:"בחר שנת לידה"}
-                                placeholder="בחר שנת לידה"
-                                selectedValue={this.state.kidsYearOfBirth[index]}
+                                //placeholder={this.state.kidsYearOfBirth[index]!==null?this.state.kidsYearOfBirth[index].YearOfBirth:"בחר שנת לידה"}
+                                //placeholder="בחר שנת לידה"
+                                selectedValue={this.state.kidsYearOfBirth[index].YearOfBirth}
                                 onValueChange={(value) => {
                                     let kidsCopy = JSON.parse(JSON.stringify(this.state.kidsYearOfBirth));
                                     kidsCopy[index].YearOfBirth = value;
-                                    this.setState({ kidsYearOfBirth: kidsCopy });
+                                    this.setState({kidsYearOfBirth: kidsCopy});
                                 }}>
                                 {years.map((item, index) => {
                                     return (<Picker.Item label={item} value={item} key={index} />);
@@ -382,6 +376,7 @@ export default class RegistrationExtra extends Component {
                         subInArray={this.state.subInArray}
                         callFetch={(iArray) => this.setState({choosenInterests:iArray})}
                         isMulti={true}
+                       // initialInterest={this.state.initialInterest}
                     />
 
                     <View style={styles.button}>

@@ -36,7 +36,7 @@ export default class RegistraionP4 extends Component {
     }
 
     fetchPostNewUser = () => {
-        fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/User', {
+        fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/User', {
             method: 'POST',
             body: JSON.stringify(this.state.user),
             headers: new Headers({
@@ -67,7 +67,7 @@ export default class RegistraionP4 extends Component {
     }
 
     fetcGetNeigborhood = (name) => {
-        fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/Neighboorhoods?cityName=' + name, {
+        fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Neighboorhoods?cityName=' + name, {
             method: 'GET',
             headers: new Headers({
                 'Content-type': 'application/json; charset=UTF-8'

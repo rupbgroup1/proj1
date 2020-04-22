@@ -16,7 +16,7 @@ export default class ForgotPassword extends Component {
     //serach for the email in DB
     //בדיקה האם המייל קיים כבר בשרת
     checkUserEmailIsValid = () => {
-        fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/User/?username=' + this.state.Email, {
+        fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/User/?username=' + this.state.Email, {
             method: 'GET',
             headers: new Headers({
                 'Content-Type': 'application/json; charset=UTF-8',
