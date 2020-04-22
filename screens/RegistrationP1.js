@@ -30,7 +30,7 @@ export default class RegistrationP1 extends Component {
 
     //בדיקה האם המייל קיים כבר בשרת
     checkUserEmailIsValid = () => {
-        fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/User/?username=' + this.state.Email, {
+        fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/User/?username=' + this.state.Email, {
             method: 'GET',
             headers: new Headers({
                 'Content-Type': 'application/json; charset=UTF-8',

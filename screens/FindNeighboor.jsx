@@ -17,7 +17,7 @@ export default class FindNeighboor extends Component {
             RandomUser:10,
             randomArray :[1,2,3],
             searchName: '',
-            //usersAround: [],
+            MatchUsers:[],
             region: {
                 latitudeDelta: 0.02,
                 longitudeDelta: 0.02,
@@ -29,7 +29,7 @@ export default class FindNeighboor extends Component {
             searchData: [],
             subInArray: [],
             mainI: '',
-            selectedInterest:0
+            selectedInterest:0,
         };
     }
 
@@ -47,16 +47,48 @@ export default class FindNeighboor extends Component {
                 ...this.state.region,
                 latitude: userObj.Lat,
                 longitude: userObj.Lan
-            }
+            },
+            
         });
+        
+        this.fetchGetMatches(userObj.UserId);
         console.log(userJSON);
         console.log("lala" + this.state.searchData);
         this.setState({ user: userObj });
 
     }
+
+    //fetch - get match users
+    fetchGetMatches(userId) {
+        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Neighboors/Match?userId='+userId, {
+
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'application/json; charset=UTF-8',
+            })
+        })
+            .then(res => {
+                return res.json();
+            })
+            .then(
+                (result) => {
+                    if (result.length > 0) {
+                        console.log("matcch", result);
+                        this.setState({ MatchUsers : result })
+                    }
+                    else
+                        Alert.alert(" matchמצטערים, אנו נסו שנית!");
+                },
+                (error) => {
+                    console.log("err post=", error);
+                    Alert.alert("מצטערים, אנו נסו שנית!");
+                }
+            );
+    }
+    
     //fetch -get all intrests to search by
     fetchGetAllIntrests() {
-        return fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/Intrests', {
+        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Intrests', {
 
             method: 'GET',
             headers: new Headers({
@@ -94,7 +126,7 @@ export default class FindNeighboor extends Component {
         }
 
         // console.log(this.state.searchName+this.state.user.CityName);
-        return fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/Neighboors/userName', {
+        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Neighboors/userName', {
             method: 'POST',
             body: JSON.stringify(searchKeys),
             headers: new Headers({
@@ -123,7 +155,7 @@ export default class FindNeighboor extends Component {
     fetchSubInterest = () => {
         console.log(this.state.mainI);
         // console.log(this.state.searchName+this.state.user.CityName);
-        return fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/Intrests/Sub?mainI=' + this.state.mainI, {
+        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Intrests/Sub?mainI=' + this.state.mainI, {
             method: 'GET',
             headers: new Headers({
                 'Content-type': 'application/json; charset=UTF-8'
@@ -152,7 +184,7 @@ export default class FindNeighboor extends Component {
         const intrestId = Id;
         const NeighborhoodName = this.state.user.NeighborhoodName;
 
-        return fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/Neighboors/Intrest/' + NeighborhoodName + '/' + intrestId, {
+        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Neighboors/Intrest/' + NeighborhoodName + '/' + intrestId, {
             method: 'GET',
             headers: new Headers({
                 'Content-type': 'application/json; charset=UTF-8'
@@ -226,8 +258,8 @@ export default class FindNeighboor extends Component {
                     }}
                     isMulti={false}
                 />
-                <View style={{width:'100%',justifyContent: 'space-between', backgroundColor:'black'}}>
-               
+                <View style={{width:'100%',justifyContent: 'space-between', backgroundColor:colors.header}}>
+                
               <Text style={styles.textHead} >
                   שכנים שכדאי לך להכיר
                    </Text>
@@ -239,7 +271,8 @@ export default class FindNeighboor extends Component {
                     <MapComponent
                         region={this.state.region}
                         onRegionChange={(reg) => this.onMapRegionChange(reg)}
-                        searchData={this.state.searchData}
+                        //checking - show match or search result
+                        searchData={(!this.state.searchName&&this.state.selectedInterest<1) ?this.state.MatchUsers:this.state.searchData}
                         style={{ flex: 1, height: '100%', width: '100%', borderRadius: 10 }}
 
                     />

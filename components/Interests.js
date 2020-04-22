@@ -17,7 +17,7 @@ const Interest = (props) => {
         props.isMulti&& props.callFetch(selectedMultiSub)
     }, [selectedMultiSub] 
     
-    );
+     );
 
     //when i is pressed it checks wether it's multi/single and updates the value
     handleSubPress = (interestId) => {

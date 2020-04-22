@@ -34,7 +34,7 @@ export default class LoginScreen extends Component {
       return Alert.alert("אנא מלא שם משתמש וסיסמה");
     }
 
-    fetch('http://proj.ruppin.ac.il/bgroup1/test1/tar1/api/User/login', {
+    fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/User/login', {
       method: 'POST',
       body: JSON.stringify(loginDetails),
       headers: new Headers({
