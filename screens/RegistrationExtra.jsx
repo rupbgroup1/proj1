@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Button, TextInput, View, StyleSheet, Text, AsyncStorage, Picker, TouchableOpacity } from 'react-native';
+import { Alert, Button, TextInput, View, StyleSheet, Text, AsyncStorage, Picker, TouchableOpacity, TouchableHighlightBase } from 'react-native';
 import Header from '../components/Header';
 import colors from '../assets/constant/colors';
 import { Input } from 'react-native-elements';
@@ -43,12 +43,16 @@ export default class RegistrationExtra extends Component {
         this.getUser();
         this.fetchGetCity();
         this.fetchGetAllJobTitle();
+        //console.log(this.state.kidsYearOfBirth);
+        
     }
 
     async getUser() {
         let userJSON = await AsyncStorage.getItem('user');
         const userObj = await JSON.parse(userJSON);
-        this.setState({ user: userObj});
+        this.setState({ user: userObj, nameJob:userObj.JobTitle.JobName, numOfKids:userObj.Kids.length, kidsYearOfBirth:userObj.Kids });
+        console.log(this.state.user.Kids);
+        
     }
 
     onSelectedItemsChange = selectedYears => {
@@ -93,7 +97,7 @@ export default class RegistrationExtra extends Component {
                 }
             );
     }
-
+ 
     fetchSubInterest = () => {
         //console.log(this.state.mainI);
         // console.log(this.state.searchName+this.state.user.CityName);
@@ -173,7 +177,7 @@ export default class RegistrationExtra extends Component {
         this.setState({ NumOfChildren: num });
         if (parseInt(num) > 0) {
             for (let index = 0; index < parseInt(num); index++) {
-                this.state.kidsYearOfBirth.push({ Id: this.state.user.UserId, YearOfBirth: '' });
+                this.state.kidsYearOfBirth.push({ Id: this.state.user.UserId, YearOfBirth: 2020 });
             }
         }
     }
@@ -240,6 +244,7 @@ export default class RegistrationExtra extends Component {
                 }
             );
       }
+
     render() {
         const thisYear = (new Date()).getFullYear();
         const years = Array.from(new Array(60), (val, index) => (thisYear - index).toString());
@@ -261,7 +266,7 @@ export default class RegistrationExtra extends Component {
         //return the filtered film array according the query from the input
         const jobs = this.findJob(this.state.query);
         const cities = this.findCity(this.state.queryCity);
-        
+        console.log(jobs);
         return (
 
             <View style={styles.screen} >
@@ -272,14 +277,21 @@ export default class RegistrationExtra extends Component {
                         פרטים נוספים
                    </Text>
                     
-                    <View>
+                    <View style={{padding:10,flex:1, zIndex:999, fontFamily: 'rubik-regular'}}>
+                        
                     <Autocomplete
+                    //תחום
+                
+                        //inputContainerStyle={{ alignItems:"flex-end"}}
+                        listContainerStyle={{alignItems:"flex-end"}}
+                        listStyle={{position:"relative"}}
                         hideResults={this.state.hideResults}
                         autoCorrect={false}
                         defaultValue={this.state.query}
-                        placeholder='בחר/י תחום עבודה'
+                        placeholder={this.state.user.JobName !== null ? (this.state.nameJob) + "" : 'בחר/י תחום עבודה' }
                         data={jobs}
                         style={styles.autocompleteContainer}
+                        containerStyle={{}}
                         onChangeText={text => this.setState({ query: text, hideResults:false })}
                         renderItem={({ item }) => (
                             //you can change the view you want to show in suggestion from here
@@ -292,14 +304,16 @@ export default class RegistrationExtra extends Component {
 
                     />
                     </View>
-                    <View>
+                    <View style={{padding:10, flex:1,zIndex:999, fontFamily: 'rubik-regular'}}> 
                     <Autocomplete
-                    
+                    //מקום עבודה
+                        listContainerStyle={{alignItems:"flex-end"}}
+                        listStyle={{position:"relative"}}
+                        data={cities}
                         hideResults={this.state.hideCityResults}//close the results
                         autoCorrect={false}
                         defaultValue={this.state.queryCity}
-                        placeholder='בחר/י מקום עבודה'
-                        data={cities}
+                        placeholder={this.state.user.WorkPlace !== null ? (this.state.user.WorkPlace) + "" : 'בחר/י מקום עבודה' }
                         style={styles.autocompleteContainer}
                         onChangeText={text => this.setState({ queryCity: text, hideCityResults:false })}
                         renderItem={({ item }) => (
@@ -314,10 +328,12 @@ export default class RegistrationExtra extends Component {
                     />
                     </View>
                     
-                    <View>
+                    <View style={{ fontFamily: 'rubik-regular', alignItems: 'center', justifyContent: 'center' }}>
+
                         <Dropdown
+                            labelFontSize='20'
                             label='סטטוס משפחתי'
-                            //value={this.state.Name}
+                            value={this.state.user.FamilyStatus}
                             valueExtractor={({ id }) => id}
                             labelExtractor={({ value }) => value}
                             data={status}
@@ -328,52 +344,99 @@ export default class RegistrationExtra extends Component {
                                 });
                                 //console.log(this.state.familyStatus)
                             }}
+                            itemTextStyle={{textAlign:"right", fontFamily: 'rubik-regular'}}
+                            containerStyle={{ width: '90%', fontFamily: 'rubik-regular' }}
+                            labelTextStyle={{ fontFamily: 'rubik-regular', alignItems:"flex-end", textAlign:"right", paddingLeft:'60%'}}
+                            
+                            
                         />
                     </View>
                     
                     <Input
+                    //קצת על עצמי 
                         value={this.state.aboutMe}
                         label='קצת על עצמי'
-                        placeholder={this.state.user.AboutMe !== null ? this.state.user.AboutMe : 'כתוב/י תיאור..'}
+                        placeholder={this.state.user.AboutMe !== null ? (this.state.user.AboutMe) + "" : 'כתוב/י מספר..'}
                         onChangeText={(aboutMe) => this.setState({ aboutMe })}
                         containerStyle={{ width: '90%', padding: 10 }}
                         multiline={true}
                         placeholderTextColor={'black'}
+                        containerStyle={{  padding: 10, alignItems:"flex-end", textAlign:"right",  fontFamily: 'rubik-regular', fontSize:20, paddingLeft:'5%', paddingRight:'5%'}}
+                        placeholderTextColor={'black'}
+                        labelStyle={{fontSize:20,  fontFamily: 'rubik-regular',}}
+                        inputStyle={{ fontFamily: 'rubik-regular', textAlign:"right"}}
+
                     />
                     <Input
+                    ///מספר ילדים
                         value={this.state.numOfKids}
                         label='מספר ילדים'
-                        placeholder={this.state.user.NumOfChildren !== null ? (this.state.user.NumOfChildren) + "" : 'כתוב/י מספר..'}
+                        placeholder={(this.state.user.NumOfChildren !== null || this.state.numOfKids !== null) ? (this.state.user.NumOfChildren) + "" : 'כתוב/י מספר..'}
                         onChangeText={(numOfKids) => this.handleNumOfKids(numOfKids)}
                         containerStyle={{ width: '90%', padding: 10 }}
                         placeholderTextColor={'black'}
+                        containerStyle={{  padding: 10, alignItems:"flex-end", textAlign:"right",  fontFamily: 'rubik-regular', fontSize:20, paddingLeft:'5%', paddingRight:'5%'}}
+                        placeholderTextColor={'black'}
+                        labelStyle={{fontSize:20,  fontFamily: 'rubik-regular',}}
+                        inputStyle={{ fontFamily: 'rubik-regular', textAlign:"right"}}
+
                     />
 
 
-                    {(this.state.kidsYearOfBirth.length > 0) && <Text>שנות לידה ילדים</Text>}
-                    <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                        {this.state.kidsYearOfBirth.length > 0 && this.state.kidsYearOfBirth.map((age, index) => {
+                    {(this.state.numOfKids.length > 0 || this.state.kidsYearOfBirth.length >0 ) && <Text style={{ padding: 10, alignItems:"flex-end", textAlign:"right",  fontFamily: 'rubik-regular', fontSize:20, paddingRight:'5%', color:'#778899'}}>שנות לידה ילדים</Text>}
+                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignSelf:"center"}}>
+                        {(this.state.numOfKids.length > 0) && this.state.kidsYearOfBirth.map((age, index) => {
                             return (<Picker
                                 mode="dialog"
                                 style={styles.picker}
                                 //placeholder={this.state.kidsYearOfBirth[index]!==null?this.state.kidsYearOfBirth[index]:"בחר שנת לידה"}
                                 placeholder="בחר שנת לידה"
-                                selectedValue={this.state.kidsYearOfBirth[index]}
+                                selectedValue={this.state.kidsYearOfBirth[index].YearOfBirth}
                                 onValueChange={(value) => {
                                     let kidsCopy = JSON.parse(JSON.stringify(this.state.kidsYearOfBirth));
                                     kidsCopy[index].YearOfBirth = value;
-                                    this.setState({ kidsYearOfBirth: kidsCopy });
-                                }}>
+                                    this.setState({ kidsYearOfBirth: kidsCopy});
+                                 }}>
                                 {years.map((item, index) => {
                                     return (<Picker.Item label={item} value={item} key={index} />);
                                 })}
+                                
                             </Picker>)
                         }
 
 
-                        )}</View>
+                        )}
 
-                    <Text>
+
+                        {(this.state.kidsYearOfBirth.length > 0) && this.state.kidsYearOfBirth.map((age, index) => {
+                            return (<Picker
+                                mode="dialog"
+                                style={styles.picker}
+                                //placeholder={this.state.kidsYearOfBirth[index]!==null?this.state.kidsYearOfBirth[index]:"בחר שנת לידה"}
+                                placeholder="בחר שנת לידה"
+                                selectedValue={this.state.kidsYearOfBirth[index].YearOfBirth}
+                                onValueChange={(value) => {
+                                    let kidsCopy = JSON.parse(JSON.stringify(this.state.kidsYearOfBirth));
+                                    kidsCopy[index].YearOfBirth = value;
+                                    this.setState({ kidsYearOfBirth: kidsCopy });
+                                    console.log(this.state.kidsYearOfBirth)
+                                }}>
+                                {years.map((item, index) => {
+                                    return (<Picker.Item label={item} value={item} key={index} />);
+                                })}
+                                
+                            </Picker>)
+                        }
+
+
+                        )}
+
+
+                            
+                        
+                        </View>
+
+                    <Text style={{ padding: 10, alignItems:"flex-end", textAlign:"right",  fontFamily: 'rubik-regular', fontSize:20, paddingRight:'5%', color:'#778899'}}>
                         בחר/י תחומי עניין
                     </Text>
                     <Interests
@@ -399,12 +462,24 @@ export default class RegistrationExtra extends Component {
 
 const styles = StyleSheet.create({
     picker: {
-        width: 55, fontFamily: 'rubik-regular', paddingHorizontal: 15,
-        paddingVertical: 15, backgroundColor: 'white'
+        width: 90, fontFamily: 'rubik-regular', paddingHorizontal: 15,
+        paddingVertical: 15, backgroundColor: 'white', borderColor: 'gray', 
+
     },
     autocompleteContainer: {
         backgroundColor: '#ffffff',
         borderWidth: 0,
+        height:36,
+        borderColor:'#ffffff',
+        fontSize:20,
+        textAlign:"right",
+        fontFamily: 'rubik-regular',
+        flex:1
+
+        
+        
+
+
         
     },
     intrestButtons: {
@@ -431,11 +506,14 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     subTitle: {
+        fontFamily: 'rubik-regular',
         marginVertical: 1,
-        fontSize: 20,
+        fontSize: 30,
         fontWeight: 'bold',
         color: colors.subTitle,
-        paddingTop: 25
+        paddingTop: 25,
+        textAlign:"center",
+
     },
     itemText: {
         fontSize: 15,

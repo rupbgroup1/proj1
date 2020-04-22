@@ -6,14 +6,16 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 
 
 const Interest = (props) => {
+    //one choice
     const [selectedSub, setSelectedSub] = useState(0);
-    const [selectedMultiSub, setSelectedMultiSub] = useState([]);
+    //multii
+    const [selectedMultiSub, setSelectedMultiSub] = useState(props.initialInterest);
 
-    //pass the updated interests selected (array)
+    //pass the updated interests selected (array) for multi only
     useEffect(() => {
         console.log(selectedMultiSub);
-        props.isMulti && props.callFetch(selectedMultiSub)
-    }, [selectedMultiSub]
+        props.isMulti&& props.callFetch(selectedMultiSub)
+    }, [selectedMultiSub] 
     
     );
 
@@ -21,21 +23,26 @@ const Interest = (props) => {
     handleSubPress = (interestId) => {
         const iObj = {Id:interestId};
         if (props.isMulti) {
+            //it check if the user press on the same i to cancel it or selected new i
             if  (selectedMultiSub.some(e => e.Id === interestId)) {
+                //remove from array
                 setSelectedMultiSub(selectedMultiSub.filter(item => item.Id !== interestId));
-               
             }
             else {
+                //add to array
                 setSelectedMultiSub(selectedMultiSub => [...selectedMultiSub, iObj]);
-               
             }
         }
         else {
-            setSelectedSub(interestId);
-            props.callFetch(interestId);
+            //it check if the user press on the same i to cancel it or selected new i
+            //update state
+            selectedSub===interestId? setSelectedSub(0) : setSelectedSub(interestId);
+            //update parent
+            selectedSub===interestId? props.callFetch(0) :props.callFetch(interestId);
         }
 
     };
+    
 
 
     return (
@@ -57,11 +64,15 @@ const Interest = (props) => {
                 {props.subInArray !== null && props.subInArray.map((Interest, i) =>
                     //subCat
                     <OurButton
-                        style={(!props.isMulti & selectedSub === Interest.Id) || (props.isMulti &  selectedMultiSub.some(e => e.Id === Interest.Id)) ? styles.subButton : styles.intrestButtons}
+                    //change color when selected
+                        style={(!props.isMulti && selectedSub === Interest.Id) || (props.isMulti && selectedMultiSub.some(e => e.Id === Interest.Id)) ? styles.subButton : styles.intrestButtons}
                         title={Interest.Subintrest}
                         key={Interest.Id}
+                        //get from parent= is it multi selected?
                         isMulti={props.isMulti}
+                        //change value when pressed
                         onPress={() => handleSubPress(Interest.Id)}>
+                    
                         {Interest.Subintrest}
                     </OurButton>
 

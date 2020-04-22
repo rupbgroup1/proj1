@@ -1,17 +1,21 @@
 import React, { Component } from 'react';
-import { Button, View, StyleSheet, Text, ActivityIndicator, TextInput, AsyncStorage } from 'react-native';
+import { Button, View, StyleSheet, Text, ActivityIndicator, TextInput, AsyncStorage, Alert } from 'react-native';
 import Header from '../components/Header';
 import colors from '../assets/constant/colors';
 import MapComponent from '../components/Maps/MapComponent';
 import { Input, Divider } from 'react-native-elements';
 import Interests from '../components/Interests';
 import BackButton from '../components/BackButton';
+import { Dropdown } from 'react-native-material-dropdown';
 
 
 export default class FindNeighboor extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            selected:false,
+            RandomUser:10,
+            randomArray :[1,2,3],
             searchName: '',
             //usersAround: [],
             region: {
@@ -32,6 +36,7 @@ export default class FindNeighboor extends Component {
     componentDidMount() {
         this.fetchGetAllIntrests();
         this.getUser();
+       // console.log(this.state.searchData)
     }
 
     async getUser() {
@@ -45,7 +50,7 @@ export default class FindNeighboor extends Component {
             }
         });
         console.log(userJSON);
-        console.log(userObj);
+        console.log("lala" + this.state.searchData);
         this.setState({ user: userObj });
 
     }
@@ -97,7 +102,7 @@ export default class FindNeighboor extends Component {
             })
         })
             .then(res => {
-                console.log('SEARCHDATA');
+                //console.log('SEARCHDATA');
                 return res.json();
 
             })
@@ -182,8 +187,11 @@ export default class FindNeighboor extends Component {
 
     }
 
-    render() {
+   
 
+    
+    render() {
+        
         return (
             <View style={styles.screen}>
                 <Header />
@@ -223,7 +231,10 @@ export default class FindNeighboor extends Component {
               <Text style={styles.textHead} >
                   שכנים שכדאי לך להכיר
                    </Text>
-                   </View>
+                   
+                   
+                </View>
+               
                 <View style={styles.mapView}>
                     <MapComponent
                         region={this.state.region}
@@ -232,7 +243,10 @@ export default class FindNeighboor extends Component {
                         style={{ flex: 1, height: '100%', width: '100%', borderRadius: 10 }}
 
                     />
+
+            <Button title={"עזור לנו להשתפר עבורך"} onPress={() => this.props.navigation.navigate('Param')}/>
                 </View>
+               
             
             </View>
         );
@@ -277,12 +291,12 @@ const styles = StyleSheet.create({
     textHead:{
         fontFamily: 'rubik-regular',
         marginVertical: 1,
-        marginBottom: 10,
         fontSize: 20,
-        paddingTop: 10,
+        padding: 10,
         color: 'white',
-        alignSelf: 'flex-start'
-    },
+        alignSelf: 'flex-end',
+
+            },
     screen: {
         flex: 1,
         alignItems: 'center',

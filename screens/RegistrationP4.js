@@ -80,7 +80,7 @@ export default class RegistraionP4 extends Component {
             })
             .then(
                 (result) => {
-                    //console.log("fetch Get= ", result);
+                    console.log("fetch Get= ", result);
                     if (result.length > 1) {
                         this.setState({ ShowDropDown: true, NeiList: result })
                     }

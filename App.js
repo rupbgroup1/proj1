@@ -15,6 +15,7 @@ import RegistrationExtra from './screens/RegistrationExtra'
 import RegistrationP5 from './screens/RegistrationP5';
 import MainPage from './screens/MainPage';
 import Feed from './components/Feed';
+import Param from './screens/Param'
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 
@@ -33,8 +34,8 @@ const fetchFonts = () => {
 
 //add screens to nav
 const navigator = createStackNavigator({
-  LoginScreen:LoginScreen,
-  ForgotPassword:ForgotPassword,
+  LoinScreen:LoginScreen,
+  ForggotPassword:ForgotPassword,
   Pic: Pic,
   CameraPage:CameraPage,
   ImageGallery:ImageGallery,
@@ -46,10 +47,11 @@ const navigator = createStackNavigator({
   RegistrationIntroduction:RegistrationIntroduction,
   RegistrationP5:RegistrationP5,
   MainPage:MainPage,
-  Feed:Feed
+  Feed:Feed,
+  Param:Param
   
   }, {
-        initialRouteName: 'LoginScreen',
+        initialRouteName: 'RegistrationExtra',
         defaultNavigationOptions: {
         headerShown: false
      }
