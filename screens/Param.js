@@ -11,7 +11,7 @@ export default class Param extends Component{
         super(props);
         this.state={
             paramArray:[],
-            paramValue:'',
+            ParamNameHeb:'',
             paramId:''
         }
     }
@@ -48,9 +48,12 @@ export default class Param extends Component{
      
 
     fetchPostNewParam = () => {
-        fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Param?ParamId=' +this.state.paramId , {
-            method: 'POST',
-            //body: "ParamId=this.state.paramId"
+        let param={
+            CategoryId: this.state.paramId
+        }
+        fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Votes' , {
+            method: 'PUT',
+            body: JSON.stringify(param),
             headers: new Headers({
                 'Content-type': 'application/json; charset=UTF-8'
             })
@@ -63,7 +66,7 @@ export default class Param extends Component{
                 (result) => {
                     console.log("fetch POST= ", result);
                     if (result === 1)
-                        this.props.navigation.navigate('RegistrationP5');
+                        this.props.navigation.navigate('FindNeighboor');
                     else {
                         Alert.alert("מצערים, לא ניתן לשלוח כעת. אנא נסה מאוחר יותר")
 
@@ -91,7 +94,7 @@ export default class Param extends Component{
     
              
             <View style={{flex:1, marginTop:50}}>
-            <Text style={styles.subTitle}> איזה פרמטר חשוב לך בהתאמה עם שכנייך? </Text>
+            <Text style={styles.subTitle}> איזה פרמטר חשוב לך בהכרות עם שכנייך? </Text>
             </View>
             <View>
             
@@ -101,15 +104,15 @@ export default class Param extends Component{
                         <Dropdown
                             labelFontSize='20'
                             label='בחר/י פרמטר'
-                            value={this.state.paramValue}
+                            value={this.state.ParamNameHeb}
                             valueExtractor={({ ParamCode }) => ParamCode}
-                            labelExtractor={({ ParamName }) => ParamName}
+                            labelExtractor={({ ParamNameHeb }) => ParamNameHeb}
                             data={paramArray}
                             selectedItemColor= {colors.subTitle}
-                            onChangeText={(ParamName, ParamCode) => {
+                            onChangeText={(ParamNameHeb, ParamCode) => {
                                 this.setState({
                                     paramId: ParamCode,
-                                    ParamName:ParamName
+                                    ParamNameHeb:ParamNameHeb
 
                                 });
                                 //console.log(this.state.familyStatus)

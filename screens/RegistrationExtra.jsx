@@ -6,7 +6,8 @@ import { Input } from 'react-native-elements';
 import Interests from '../components/Interests';
 import { Dropdown } from 'react-native-material-dropdown';
 import Autocomplete from 'react-native-autocomplete-input';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler'; 
+import BackButton from '../components/BackButton';
 
 
 export default class RegistrationExtra extends Component {
@@ -264,6 +265,7 @@ export default class RegistrationExtra extends Component {
 
             <View style={styles.screen} >
                 <Header />
+                <BackButton goBack={() => navigation.navigate('MainPage')}/>
                 <ScrollView style={styles.container} 
                 keyboardShouldPersistTaps= {"always"}>
                     <Text style={styles.subTitle} >
@@ -271,7 +273,7 @@ export default class RegistrationExtra extends Component {
                    </Text>
                     
                     <View style={{padding:10,flex:1, zIndex:999, fontFamily: 'rubik-regular'}}>
-                        
+                        <Text>מקצוע</Text>
                     <Autocomplete
                     //תחום
                 
@@ -297,6 +299,7 @@ export default class RegistrationExtra extends Component {
                     />
                     </View>
                     <View style={{padding:10, flex:1,zIndex:999, fontFamily: 'rubik-regular'}}> 
+                    <Text>מקום עבודה</Text>
                     <Autocomplete
                     //מקום עבודה
                         listContainerStyle={{alignItems:"flex-end"}}

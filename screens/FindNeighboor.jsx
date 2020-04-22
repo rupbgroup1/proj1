@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, View, StyleSheet, Text, ActivityIndicator, TextInput, AsyncStorage, Alert } from 'react-native';
+import { Button, View, StyleSheet, Text, ActivityIndicator, TextInput, AsyncStorage, Alert, TouchableOpacity } from 'react-native';
 import Header from '../components/Header';
 import colors from '../assets/constant/colors';
 import MapComponent from '../components/Maps/MapComponent';
@@ -242,7 +242,6 @@ export default class FindNeighboor extends Component {
                 //placeholderTextColor="black"
 
                 />
-                <Divider style={{ backgroundColor: 'blue', height: 2 }} />
                 <Text style={styles.text} >
                     או
                    </Text>
@@ -276,8 +275,11 @@ export default class FindNeighboor extends Component {
                         style={{ flex: 1, height: '100%', width: '100%', borderRadius: 10 }}
 
                     />
-
-            <Button title={"עזור לנו להשתפר עבורך"} onPress={() => this.props.navigation.navigate('Param')}/>
+ <TouchableOpacity
+         onPress={() => this.props.navigation.navigate('Param')}
+       >
+         <Text>מרוצה מההתאמה? עזור לנו להשתפר עבורך</Text>
+ </TouchableOpacity>
                 </View>
                
             
@@ -327,7 +329,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         padding: 10,
         color: 'white',
-        alignSelf: 'flex-end',
+        alignSelf: 'center',
 
             },
     screen: {

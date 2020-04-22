@@ -9,7 +9,7 @@ const Interest = (props) => {
     //one choice
     const [selectedSub, setSelectedSub] = useState(0);
     //multii
-    const [selectedMultiSub, setSelectedMultiSub] = useState(props.initialInterest);
+    const [selectedMultiSub, setSelectedMultiSub] = useState([]);
 
     //pass the updated interests selected (array) for multi only
     useEffect(() => {
