@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, View, StyleSheet, Text } from 'react-native';
+import { Button, View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
 import colors from '../assets/constant/colors';
 import Feed from '../components/Feed';
 import Header from '../components/Header';
@@ -7,6 +7,7 @@ import PagesNav from '../components/PagesNav';
 import OurButton from '../components/OurButton';
 
 const MainPage = ({navigation}) => {
+  
  
     return (
         <View style={{flex:1,alignItems: 'center'}}>
@@ -16,6 +17,7 @@ const MainPage = ({navigation}) => {
           <Feed/>
           </View>
           <View style={styles.row}>
+          
         <Button 
         onPress={() => navigation.navigate('FindNeighboor')}
         style={styles.item}

@@ -51,7 +51,7 @@ const navigator = createStackNavigator({
   Param:Param
   
   }, {
-        initialRouteName: 'RegistrationExtra',
+        initialRouteName: 'LoinScreen',
         defaultNavigationOptions: {
         headerShown: false
      }

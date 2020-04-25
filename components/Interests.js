@@ -12,7 +12,13 @@ const Interest = (props) => {
     const [selectedMultiSub, setSelectedMultiSub] = useState([]);
 
     //pass the updated interests selected (array) for multi only
-    useEffect(() => {
+    // useEffect(() => {
+    //     console.log("effect", props.initialInterest);
+    //     props.isMulti&& setSelectedMultiSub(props.initialInterest)
+    // }, [] 
+    //  );
+
+     useEffect(() => {
         console.log(selectedMultiSub);
         props.isMulti&& props.callFetch(selectedMultiSub)
     }, [selectedMultiSub] 

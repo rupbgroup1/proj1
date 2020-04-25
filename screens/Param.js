@@ -65,8 +65,10 @@ export default class Param extends Component{
             .then(
                 (result) => {
                     console.log("fetch POST= ", result);
-                    if (result === 1)
+                    if (result === 1){
                         this.props.navigation.navigate('FindNeighboor');
+                        Alert.alert("תודה על תגובתך!");
+                    }
                     else {
                         Alert.alert("מצערים, לא ניתן לשלוח כעת. אנא נסה מאוחר יותר")
 
@@ -119,7 +121,7 @@ export default class Param extends Component{
                             }}
                             itemTextStyle={{textAlign:"right", fontFamily: 'rubik-regular'}}
                             containerStyle={{ width: '90%', fontFamily: 'rubik-regular' }}
-                            labelTextStyle={{ fontFamily: 'rubik-regular', alignItems:"flex-end", textAlign:"right", paddingLeft:'60%'}}
+                            labelTextStyle={{ fontFamily: 'rubik-regular', alignItems:"flex-start", textAlign:"right"}}
                             
                             
                             

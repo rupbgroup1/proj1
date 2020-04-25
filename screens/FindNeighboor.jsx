@@ -54,7 +54,7 @@ export default class FindNeighboor extends Component {
         this.fetchGetMatches(userObj.UserId);
         console.log(userJSON);
         console.log("lala" + this.state.searchData);
-        this.setState({ user: userObj });
+        this.setState({ user: userObj, NeighborhoodName:user.NeighborhoodName });
 
     }
 
@@ -121,7 +121,7 @@ export default class FindNeighboor extends Component {
     fetchSearchNeiByName = () => {
         const searchKeys = {
             FirstName: this.state.searchName,
-            NeighborhoodName: "test"
+            NeighborhoodName: this.state.NeighborhoodName
             //CityName: this.state.user.CityName
         }
 
@@ -182,7 +182,7 @@ export default class FindNeighboor extends Component {
 
         this.setState({ selectedInterest: Id });
         const intrestId = Id;
-        const NeighborhoodName = this.state.user.NeighborhoodName;
+        const NeighborhoodName = 'תל מונד';
 
         return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Neighboors/Intrest/' + NeighborhoodName + '/' + intrestId, {
             method: 'GET',
@@ -257,7 +257,8 @@ export default class FindNeighboor extends Component {
                     }}
                     isMulti={false}
                 />
-                <View style={{width:'100%',justifyContent: 'space-between', backgroundColor:colors.header}}>
+                <Text>{'\n'}</Text>
+                <View style={{width:'100%',justifyContent: 'space-between', backgroundColor:'#e2007a'}}>
                 
               <Text style={styles.textHead} >
                   שכנים שכדאי לך להכיר
@@ -327,7 +328,7 @@ const styles = StyleSheet.create({
         fontFamily: 'rubik-regular',
         marginVertical: 1,
         fontSize: 20,
-        padding: 10,
+        //padding: 10,
         color: 'white',
         alignSelf: 'center',
 

@@ -174,31 +174,15 @@ export default class RegistraionP4 extends Component {
                 <Text style={{ fontFamily: 'rubik-regular', textAlign: 'center', marginBottom: 10 }}>
                     מקום המגורים לא יחשף ללא הרשאתך
                      </Text>
-                {/* <View style={{ flex: 1 }}>  */}
 
                 <GoogleAPIAutoComplete notifyChange={(loc) => this.getCoordsFromName(loc)} CityName={(name) => this.handleCityName(name)} />
 
-
-                {this.state.mapVisible &&
-                    <Text style={{ fontFamily: 'rubik-regular', textAlign: 'center' }}>אנא סמנ/י מיקומך על המפה</Text>
-                }
-
-                {
-                    this.state.mapVisible &&
-                    <View style={styles.map}>
-                        <MapComponent
-                            region={this.state.region}
-                            onRegionChange={(reg) => this.onMapRegionChange(reg)}
-                            searchData={this.state.searchData}
-                        />
-                    </View>
-                }
                 {this.state.ShowDropDown &&
                     <Text style={{ fontFamily: 'rubik-regular', textAlign: 'center', marginBottom: 10 }}>אנא בחר/י שכונת מגורים אליה תשתייכ/י </Text>
                 }
                 {
                     this.state.ShowDropDown &&
-                    <View>
+                    <View style={styles.dropDown}>
                         <Dropdown
                             label='רשימת שכונות'
                             //value={this.state.Name}
@@ -215,7 +199,21 @@ export default class RegistraionP4 extends Component {
                         />
                     </View>
                 }
-                {/* </View> */}
+                {this.state.mapVisible &&
+                    <Text style={{ fontFamily: 'rubik-regular', textAlign: 'center' }}>אנא סמנ/י מיקומך על המפה</Text>
+                }
+
+                {
+                    this.state.mapVisible &&
+                    <View style={styles.map}>
+                        <MapComponent
+                            region={this.state.region}
+                            onRegionChange={(reg) => this.onMapRegionChange(reg)}
+                            searchData={this.state.searchData}
+                        />
+                    </View>
+                }
+                
                 {this.state.canSubmit &&
                     <Button title={'המשך'}
                         //need to check user filled in all fields!!
@@ -237,10 +235,9 @@ export default class RegistraionP4 extends Component {
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
+        flexDirection:'column',
         justifyContent: 'center',
-
-        //alignContent: "center",
-        //alignItems:"stretch",
+        alignContent:'flex-start',
         backgroundColor: colors.reeBackgrouond
     },
     subTitle: {
@@ -254,11 +251,12 @@ const styles = StyleSheet.create({
         paddingTop: 25,
     },
     map: {
-        //display: 'flex',
-        alignItems: "stretch",
-        height: '100%',
-        flex: 1
+        alignContent: 'flex-start',
+        height: '50%'
 
+    },
+    dropDown:{
+        alignContent:'flex-start'
     }
 
 });
