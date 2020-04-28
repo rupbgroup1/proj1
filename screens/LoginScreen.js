@@ -24,6 +24,7 @@ export default class LoginScreen extends Component {
   fetchOnLogin = () => {
     const email = this.state.username;
     const emailLower = email.toLowerCase();
+    
     const loginDetails = {
       Email: emailLower,
       Password: this.state.password
