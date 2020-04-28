@@ -51,7 +51,7 @@ export default class RegistrationP1 extends Component {
                     };
 
                     if (result === 0) {
-                        AsyncStorage.setItem("user", JSON.stringify(userDetails));
+                        AsyncStorage.setItem("user", JSON.stringify(userDetails))
                         this.props.navigation.navigate('RegistrationP2');
                     }
                     else Alert.alert("כבר קיים יוזר עם שם משתמש זה");
