@@ -29,6 +29,7 @@ import firebaseSvc from '../FirebaseSvc';
       return {
         name: this.state.user.FirstName +' '+this.state.user.LastName,
         email: this.state.user.Email,
+        nei: this.state.user.NeighborhoodName,
         //UserCode:this.state.user.UserCode,
         //avatar: this.state.user.ImageId,
         id: this.state.user.UserId,
@@ -45,6 +46,7 @@ import firebaseSvc from '../FirebaseSvc';
                   messages: GiftedChat.append(previousState.messages, message),
                 }))
               );
+              //firebaseSvc.ref(this.state.user.NeighborhoodName);
         });
         
 
@@ -63,6 +65,7 @@ import firebaseSvc from '../FirebaseSvc';
           messages={this.state.messages}
           onSend={firebaseSvc.send}
           user={this.user}
+          placeholder='הקלד הודעה'
           
         />
       );

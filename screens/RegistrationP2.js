@@ -49,7 +49,6 @@ export default class RegistrationP2 extends Component {
                         onChangeText={(userPrivateName) => this.setState({ userPrivateName })}
                         placeholder={'שם פרטי'}
                         style={styles.input}
-
                     />
 
                     <TextInput

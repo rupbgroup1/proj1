@@ -35,7 +35,7 @@ const fetchFonts = () => {
 //add screens to nav
 const navigator = createStackNavigator({
   LoinScreen:LoginScreen,
-  ForggotPassword:ForgotPassword,
+  ForgotPassword:ForgotPassword,
   Pic: Pic,
   CameraPage:CameraPage,
   ImageGallery:ImageGallery,
