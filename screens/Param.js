@@ -119,9 +119,9 @@ export default class Param extends Component{
                                 });
                                 //console.log(this.state.familyStatus)
                             }}
-                            itemTextStyle={{textAlign:"right", fontFamily: 'rubik-regular'}}
+                            itemTextStyle={{textAlign:"center", fontFamily: 'rubik-regular'}}
                             containerStyle={{ width: '90%', fontFamily: 'rubik-regular' }}
-                            labelTextStyle={{ fontFamily: 'rubik-regular', alignItems:"flex-start", textAlign:"right"}}
+                            labelTextStyle={{ fontFamily: 'rubik-regular', alignItems:"center"}}
                             
                             
                             

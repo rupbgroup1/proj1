@@ -30,12 +30,13 @@ export default class RegistraionP4 extends Component {
         let userJSON = await AsyncStorage.getItem('user');
         const userObj = await JSON.parse(userJSON);
         //console.log(userJSON);
-        //console.log(userObj);
-        this.setState({ user: userObj });
-        this.fetchPostNewUser();
+        console.log("asyn", userObj);
+        this.setState({ user: userObj },()=>
+        this.fetchPostNewUser());
     }
 
     fetchPostNewUser = () => {
+        console.log("fetch user:",this.state.user);
         fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/User', {
             method: 'POST',
             body: JSON.stringify(this.state.user),

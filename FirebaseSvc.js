@@ -12,7 +12,7 @@ class FirebaseSvc {
         messagingSenderId: "783563422292"
       });
      }
-
+     
     //  this.observeAuth();
     //  passwordReset: email => {
     //     return firebase.auth().sendPasswordResetEmail(email)
@@ -30,8 +30,14 @@ class FirebaseSvc {
 //     }
 //   }
 // };
+
+
+
   get ref() {
-    return firebase.database().ref('Messages');
+    //const {user}=snapshot.val();
+    //const userNei = user.nei
+    
+    return firebase.database().ref('תל מונד');
   }
 
   parse = snapshot => {
@@ -45,7 +51,7 @@ class FirebaseSvc {
       _id,
       timestamp,
       text,
-      user,
+      user
     };
     return message;
   };
