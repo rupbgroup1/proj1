@@ -1,7 +1,13 @@
 import React, { Component, createElement } from 'react';
-import { Button, View, StyleSheet, Text, Image, TextInput } from 'react-native';
+import { Alert, Button, TextInput, View, StyleSheet, Text } from 'react-native';
 import Header from '../components/Header';
 import colors from '../assets/constant/colors';
+import {
+    SimpleLineIcons,
+    FontAwesome5
+} from '@expo/vector-icons';
+
+import BackButton from '../components/BackButton';
 
 
 export default class ForgotPassword extends Component {
@@ -9,9 +15,15 @@ export default class ForgotPassword extends Component {
         super(props);
 
         this.state = {
-            userEmail: '',
-            ValidEmail: true
+            Email: '',
+            Password: '',
+            ConfirmedPassword: '',
+            ValidEmail: true,
+            ValidPass: true,
+            passError: '',
+
         };
+
     }
     //serach for the email in DB
     //בדיקה האם המייל קיים כבר בשרת
@@ -33,9 +45,6 @@ export default class ForgotPassword extends Component {
                     if (result === 0) {
                         Alert.alert("לא קיים במערכת יוזר עם מייל זה");
                     }
-                    else 
-                    Alert.alert("מייל לשחזור סיסמה נשלח בהצלחה");
-//send email function
                 },
                 (error) => {
                     console.log("err post=", error);
@@ -51,46 +60,163 @@ export default class ForgotPassword extends Component {
         const Valid = expression.test(String(this.state.Email).toLowerCase())
         this.setState({ ValidEmail: Valid });
     }
+    
 
-    // handlePasswordReset = () => {
-    //     const Email = this.state.userEmail;
-    //     firebase.auth().sendPasswordResetEmail(Email)
-    //     .then(function (user) {
-    //       alert('Please check your email...')
-    //     }).catch(function (e) {
-    //       console.log(e)
-    //     })
-    // }
+     //check password is valid - more than 6 digits
+    checkPassIsValid() {
+        if (this.state.Password.length < 6)
+            this.setState({ ValidPass: false });
+        else this.setState({ ValidPass: true });
+    }
+    //checks if the passwords are the same
+    checkPass() {
+        if (this.state.Password.trim() != this.state.ConfirmedPassword.trim()) {
+            this.setState(() => ({ passError: "הסיסמאות אינן תואמות" }));
+        }
+        else this.setState(() => ({ passError: "" }));
+        if (this.state.Password.trim() === this.state.ConfirmedPassword.trim()) {
+            this.setState(() => ({ validatePassErr: "הסיסמאות תואמות" }));
+        }
+        else this.setState(() => ({ validatePassErr: "" }));
+    }
+
+
+    //PUT password in DB
+   
+    fetchPutUser = () => {
+
+        const user = {
+            Email: this.state.Email,
+            Password: this.state.Password
+        }
+        fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/User/Pass', {
+            method: 'PUT',
+            body: JSON.stringify(user),
+            headers: new Headers({
+                'Content-type': 'application/json; charset=UTF-8'
+            })
+        })
+            .then(res => {
+                //console.log('res=', res);
+                return res.json()
+            })
+            .then(
+                (result) => {
+                    console.log("fetch POST= ", result);
+                    if (result === 1){
+
+                        Alert.alert(
+                            'שחזור סיסמה התבצע בהצלחה',
+                            '',
+                            [
+                              {text: 'Ok', onPress: () => this.props.navigation.navigate('LoinScreen')},
+                              ],
+                           
+                          );
+                    }
+                    
+                        
+                    else {
+                       console.log("אנא נסה שנית");
+                    }
+                },
+                (error) => {
+                    console.log("err post=", error);
+                    Alert.alert("אנא נסה שנית");
+                }
+            );
+
+    }
+
+   
     render() {
-        return (
-            <View>
-                <Header />
-                <View style={styles.container}>
-                    <Text style={styles.subTitle} >
-                        הקליד/י את כתובת המייל ולינק ליצרת סיסמה יישלח אליך מיד
-                </Text>
 
+        const { navigation } = this.props;
+        return (
+            <View style={styles.screen}>
+                <Header />
+                <BackButton goBack={() => navigation.navigate('LoinScreen')} />
+                <SimpleLineIcons style={{paddingTop:50, textAlign:"center", fontSize:'100%'}} name="lock" size={40} color="black" />
+                <Text style={styles.subTitle}>שחזור סיסמה</Text>
+                <View style={styles.container}>
+                    <Text style={styles.title} >
+                        מה כתובת המייל שלך?
+                   </Text>
+                    <Text style={styles.note} >
+                       יש להזין את כתובת המייל כדי לחפש את החשבון במאגר
+                    </Text>
                     <TextInput
-                        value={this.state.userEmail}
-                        onChangeText={(userEmail) => {
-                            this.setState({ userEmail })
-                        }}
-                        keyboardType='email-address'
-                        onEndEditing={() => this.checkEmailIsValid()}
+                        value={this.state.Email}
+                        onChangeText={(Email) => this.setState({ Email })}
                         placeholder={'אימייל'}
                         style={styles.input}
+                        keyboardType='email-address'
+                        onEndEditing={() => this.checkEmailIsValid()}
+
                     />
                     {!this.state.ValidEmail && (
                         <Text style={{ color: "red" }}>כתובת המייל לא תקינה</Text>
                     )}
 
+                    <Text style={styles.title} >
+                        סיסמה
+                   </Text>
+                    <TextInput
+                        value={this.state.Password}
+                        onChangeText={(Password) => this.setState({ Password })}
+                        placeholder={'סיסמה'}
+                        style={styles.input}
+                        secureTextEntry
+                        keyboardType='visible-password'
+                        onEndEditing={() => this.checkPassIsValid()}
+                    />
+                    {!this.state.ValidPass && (
+                        <Text style={{ color: "red" }}>סיסמה לא תקינה!!</Text>
+                    )}
+                    <Text style={styles.note} >
+                        הסיסמה תכיל לפחות 6 תווים
+                    </Text>
+                    <TextInput
+                        value={this.state.ConfirmedPassword}
+                        onChangeText={(ConfirmedPassword) => this.setState({ ConfirmedPassword })}
+                        placeholder={'הזן שוב את הסיסמה לאישור'}
+                        style={styles.input}
+                        secureTextEntry
+                        keyboardType='visible-password'
+                        onEndEditing={() => this.checkPass()}
+                    />
+
+                    {!!this.state.passError && (
+                        <Text style={{ color: "red" }}>{this.state.passError}</Text>
+                    )}
+                    {!!this.state.validatePassErr && (
+                        <Text style={{ color: "green" }}>{this.state.validatePassErr}</Text>
+                    )}
+                    {!!this.state.feildsError && (
+                        <Text style={{ color: "red" }}>{this.state.feildsError}</Text>
+                    )}
 
                     <View style={styles.button}>
                         <Button
-                            title={'המשך'}
+                            title={'שחזור'}
+                            onPress={() => {
+                                if (this.state.Email.trim() === "" || this.state.Password.trim() === "" || this.state.ConfirmedPassword.trim() === "") {
+                                    this.setState(() => ({ feildsError: "אנא מלא/י את כל השדות לפני המעבר לעמוד הבא" }));
+                                }
+                                else if (this.state.ValidEmail && this.state.ValidPass && this.state.passError == "") {
+
+                                    this.checkUserEmailIsValid();
+                                    this.fetchPutUser();
+                                }
+                            }}
+
+                                
+
                         />
                     </View>
-                </View>
+                    </View>
+                        
+                
 
             </View>
 
@@ -99,42 +225,66 @@ export default class ForgotPassword extends Component {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        backgroundColor: colors.reeBackgrouond
+        //backgroundColor: '#ecf0f1'
+    },
     input: {
         fontFamily: 'rubik-regular',
+        width: '80%',
         height: 44,
         padding: 10,
         borderWidth: 1,
-        borderColor: '#F0F8FF',
+        borderColor: 'white',
+        marginBottom: 10,
         textAlign: 'right',
         backgroundColor: 'white',
-        marginRight: '10%',
-        marginLeft: '10%',
-        marginTop: '15%'
-
+        borderRadius:10
     },
     subTitle: {
+        fontFamily: 'rubik-regular',
+        marginVertical: 1,
+        fontSize: 40,
+        fontWeight: 'bold',
+        color: 'black',
+        textAlign:"center"
+    },
+    title: {
         fontFamily: 'rubik-regular',
         marginVertical: 1,
         fontSize: 20,
         fontWeight: 'bold',
         color: colors.subTitle,
         paddingTop: 25,
+        textAlign:"center"
+    },
+    note: {
         textAlign: "center",
-        marginRight: '15%',
-        marginLeft: '15%',
-        marginTop: '30%',
-
+        fontFamily: 'rubik-regular',
+        marginVertical: 1,
+        marginBottom: 10,
+        fontSize: 14,
+        color: 'black'
     },
-    container: {
-        backgroundColor: colors.regBackground,
-        height: '100%',
-        width: '100%'
-
-    },
-
     button: {
-        fontFamily: 'Rubik-BoldItalic',
-        marginTop: 5,
-    }
+        width: '80%',
+        paddingTop: 20,
+        
+    },
+    screen: {
+        flex: 1,
+        backgroundColor: colors.reeBackgrouond       
+    },
+    
+    genderNote: {
+        marginVertical: 1,
+        marginBottom: 10,
+        fontSize: 14,
+        color: 'black',
+        marginRight: 35,
+        marginLeft: 35
+    },
 
 })

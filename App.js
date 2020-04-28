@@ -15,7 +15,7 @@ import RegistrationExtra from './screens/RegistrationExtra'
 import RegistrationP5 from './screens/RegistrationP5';
 import MainPage from './screens/MainPage';
 import Feed from './components/Feed';
-import Param from './screens/Param'
+import Param from './screens/Param';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 
