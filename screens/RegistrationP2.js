@@ -70,7 +70,7 @@ export default class RegistrationP2 extends Component {
                     </Text>
                     <Picker
                         mode="dialog"
-                        style={{ width: 55, backgroundColor: 'white', fontFamily: 'rubik-regular' }}
+                        style={styles.yearPicker}
                         selectedValue={this.state.yearOfBirth}
                         onValueChange={(value) => this.setState({ yearOfBirth: value })}>
                         {years.map((item, index) => {
@@ -205,5 +205,8 @@ const styles = StyleSheet.create({
         marginRight: 35,
         marginLeft: 35,
         fontWeight: 'bold'
+    },
+    yearPicker:{
+        width: 55, backgroundColor: 'white', fontFamily: 'rubik-regular'
     }
 });

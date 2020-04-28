@@ -33,20 +33,19 @@ const GoogleAPIAutoComplete=(props) =>{
                 textInputContainer: {
                   backgroundColor: 'rgba(0,0,0,0)',
                   borderTopWidth: 0,
-                  borderBottomWidth:0, 
-                  
+                  borderBottomWidth:0
                 },
                 textInput: {
-                  marginLeft: 0,
-                  marginRight: 0,
-                  height: 38,
+                  marginLeft: 10,
+                  marginRight: 10,
+                  height: 44,
                   color: '#5d5d5d',
                   fontSize: 16,
-        paddingLeft: 10,
-        textAlign: 'right',
-        borderRadius: 8,
-        borderColor: "black",
-        borderWidth:1
+                  paddingLeft: 10,
+                  textAlign: 'right',
+                  borderRadius: 10,
+                  borderColor: "white",
+                  borderWidth:1
                 },
                 predefinedPlacesDescription: {
                   color: 'rgba(0,0,0,0)'

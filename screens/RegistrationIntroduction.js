@@ -18,6 +18,7 @@ const RegistrationIntroduction = ({navigation}) => {
         <View style={styles.button}>
         <Button onPress={() => navigation.navigate('RegistrationP1')}
           title={'שנתחיל?'}
+          color='#0d7d96'
         />
         </View> 
       </View>

@@ -100,6 +100,8 @@ export default class LoginScreen extends Component {
             fontFamily='rubik-regular'
             color='#0d7d96'
             title={'כניסה'}
+            titleText={{fontSize:26, color:'#f0a500'}}
+            titleStyle={{}}
             onPress={() => {
               this.state.usernameValid ? this.fetchOnLogin() : Alert.alert("שם משתמש לא תקין")
             }
@@ -111,10 +113,10 @@ export default class LoginScreen extends Component {
           שכחתי סיסמה {'\n'}{'\n'}
         </Text>
         <View style={styles.createUser}>
-          <Text style={{ color: 'white', fontSize: 18, fontFamily: 'rubik-regular' }} >
+          <Text style={styles.noUser} >
             אין לך משתמש עדיין?   {'\n'}
           </Text>
-          <Text style={{ fontFamily: 'rubik-regular' }} onPress={() => this.props.navigation.navigate('RegistrationIntroduction')} style={styles.forgotPassword} style={{ color: '#0d7d96', fontSize: 18 }}>
+          <Text style={styles.pressToReg} onPress={() => this.props.navigation.navigate('RegistrationIntroduction')}>
             להרשמה לחץ כאן
           </Text>
         </View>
@@ -162,15 +164,23 @@ const styles = StyleSheet.create({
   },
   createUser: {
     fontFamily: 'rubik-regular',
-    padding: 10,
-    flexDirection: 'row',
-    direction: "rtl",
-    marginBottom: 40,
+    flexDirection: 'row-reverse',
     fontFamily: 'varela'
   },
   RememberMe: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     marginRight: 145,
     paddingBottom: 20
+  },
+  noUser:{
+    color: 'white',
+    fontSize: 18,
+    fontFamily: 'rubik-regular', 
+    paddingLeft:10
+  },
+  pressToReg:{
+    fontFamily: 'rubik-regular',
+    color: '#0d7d96',
+    fontSize: 18
   }
 });
