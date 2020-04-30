@@ -167,18 +167,19 @@ export default class RegistraionP4 extends Component {
         const { navigation } = this.props;
         return (
             <View style={styles.screen}>
-                <Header style={styles.header} />
+                <Header/>
                 <BackButton goBack={() => navigation.navigate('Pic')} />
                 <View style={styles.topPage}>
-                <Text style={styles.subTitle} >
+                    <Text style={styles.subTitle} >
                     אנא בחר/י מקום מגורים
-                </Text>
-                <Text style={{ fontFamily: 'rubik-regular', textAlign: 'center', marginBottom: 10 }}>
+                    </Text>
+                    <Text style={{ fontFamily: 'rubik-regular', textAlign: 'center', marginBottom: 10 }}>
                     מקום המגורים לא יחשף ללא הרשאתך
-                     </Text>
-
-                <GoogleAPIAutoComplete  notifyChange={(loc) => this.getCoordsFromName(loc)} CityName={(name) => this.handleCityName(name)} />
-
+                    </Text>
+               </View>
+                <View style={styles.middlePage}>
+                <GoogleAPIAutoComplete style={styles.API} notifyChange={(loc) => this.getCoordsFromName(loc)} CityName={(name) => this.handleCityName(name)} />
+                
                 {this.state.ShowDropDown &&
                     <Text style={{ fontFamily: 'rubik-regular', textAlign: 'center', marginBottom: 10 }}>אנא בחר/י שכונת מגורים אליה תשתייכ/י </Text>
                 }
@@ -242,19 +243,19 @@ const styles = StyleSheet.create({
     screen: {
         flex: 1,
         flexDirection:'column',
-        justifyContent: 'center',
         alignContent:'flex-start',
+        alignItems:'stretch',
+        flexWrap:'wrap',
         backgroundColor: colors.reeBackgrouond
     },
-    header:{
-        flex:1
-    },
     topPage:{
-        flex:2,
-        paddingBottom:30
+        flex:3,
+    },
+    middlePage:{
+        flex:4,
     },
     bottomPage:{
-        flex:3
+        flex:6
     },
     subTitle: {
         fontFamily: 'rubik-regular',
@@ -265,6 +266,10 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: colors.subTitle,
         paddingTop: 25,
+    },
+    API: {
+        paddingBottom:10
+
     },
     map: {
         alignContent: 'flex-start',

@@ -234,7 +234,7 @@ export default class FindNeighboor extends Component {
                    <TextInput
                     value={this.state.searchName}
                     onChangeText={(text) => this.setState({ searchName: text })}
-                    placeholder={'...'}
+                    placeholder={'הזנ/י שם של שכן'}
                     style={styles.input}
                     leftIcon={{ type: 'EvilIcons', name: 'search' }}
                     onEndEditing={() => this.fetchSearchNeiByName()}
@@ -258,11 +258,11 @@ export default class FindNeighboor extends Component {
                     isMulti={false}
                 />
                 <Text>{'\n'}</Text>
-                <View style={{width:'100%',justifyContent: 'space-between', backgroundColor:'#e2007a'}}>
+                <View style={styles.textHeadBackground}>
                 
-              <Text style={styles.textHead} >
-                  שכנים שכדאי לך להכיר
-                   </Text>
+                    <Text style={styles.textHead} >
+                    שכנים שכדאי לך להכיר
+                    </Text>
                    
                    
                 </View>
@@ -305,7 +305,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         margin: 3,
         paddingHorizontal: 5,
-        paddingVertical: 5
+        paddingVertical: 5,
+        borderColor:'white'
     },
     mapView: {
         flex: 1,
@@ -332,24 +333,29 @@ const styles = StyleSheet.create({
         color: 'white',
         alignSelf: 'center',
 
-            },
+    },
+    textHeadBackground:{
+        width:'100%',
+        justifyContent: 'space-between', 
+        backgroundColor:'#F36B74'
+    },
     screen: {
         flex: 1,
         alignItems: 'center',
         backgroundColor: colors.reeBackgrouond
     },
     input: {
-        // height: 35,
-        paddingTop: 5,
-        backgroundColor: 'white',
-        //borderRadius: 10,
-        width: '90%',
-        paddingLeft: 10,
+        fontFamily: 'rubik-regular',
+        width: '95%',
+        height: 44,
+        padding: 10,
+        borderWidth: 1,
+        borderColor: 'white',
+        marginBottom: 10,
         textAlign: 'right',
-        borderRadius: 8,
-        borderColor: "black",
-        borderWidth:1
-
+        backgroundColor: 'white',
+        borderRadius:10,
+        paddingVertical:10
     },
     buttonSearch: {
         width: '100%'

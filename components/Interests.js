@@ -104,11 +104,19 @@ const styles = StyleSheet.create({
         margin: 3,
         paddingHorizontal: 5,
         paddingVertical: 5,
-        borderColor: 'black',
+        borderColor: colors.reeBackgrouond,
         borderBottomWidth: 1,
-        borderTopWidth: 1,
-        borderRightWidth: 1,
-        borderLeftWidth: 1
+        borderTopWidth: 0,
+        borderRightWidth: 0,
+        borderLeftWidth: 1,
+        shadowColor: "#000",
+        shadowOffset: {
+	    width: 0,
+	    height: 0.5,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
 
     },
     //selected

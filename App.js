@@ -51,7 +51,7 @@ const navigator = createStackNavigator({
   Param:Param
   
   }, {
-        initialRouteName: 'LoinScreen',
+        initialRouteName: 'FindNeighboor',
         defaultNavigationOptions: {
         headerShown: false
      }
