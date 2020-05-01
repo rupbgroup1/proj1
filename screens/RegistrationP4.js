@@ -95,20 +95,6 @@ export default class RegistraionP4 extends Component {
 
     }
 
-    // NeigborhoodList= () =>{
-    //     <FlatList
-    //         data={DATA}
-    //         renderItem={({ item }) => (
-    //         <Item
-    //             id={item.id}
-    //             title={item.title}
-    //             selected={!!selected.get(item.id)}
-    //             onSelect={onSelect}
-    //         />
-    //         )} 
-    //     />
-    // }
-
 
     componentDidMount() {
         this.getInitialState();
@@ -149,7 +135,8 @@ export default class RegistraionP4 extends Component {
 
     //when choosing the location on map
     onMapRegionChange(region) {
-        this.setState({ region });
+        console.log("reg=", region);
+        this.setState({ ...this.state.region, region });
         //this.fetchGetNeiInCity();
 
     }
@@ -159,9 +146,6 @@ export default class RegistraionP4 extends Component {
         this.fetcGetNeigborhood(name);
     };
 
-    // valueExtractor=val=>{
-
-    // };
 
     render() {
         const { navigation } = this.props;

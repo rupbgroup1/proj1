@@ -9,7 +9,6 @@ const MapComponent = (props) => {
     //const blueMarker ="#0C2C33";
     //const pinkMarker ="#703D57";
     const blueImage = require('./MarkerIcons/location-icon-m.jpg');
-    //const pinkImage = require('./MarkerIcons/womanIcon.png');
     const pinkImage = require('./MarkerIcons/location-icon-f.jpg');
     
 
@@ -42,13 +41,13 @@ const MapComponent = (props) => {
                 }}
                 region={props.region}
                 showsUserLocation={true}
-                // onRegionChange={(reg) => props.onRegionChange(reg)}
+                onRegionChange={(reg) => props.onRegionChange(reg)}
                 onPress={selectLocation}
                 searchData={props.searchData}
             >
                 {props.searchData.length > 0 && props.searchData.map((user, i) => {
                     if (user.Lat && user.Lan) {
-                        console.log("TEST=", user.Lat);
+                        //console.log("TEST=", user.Lat);
                         let age = new Date().getFullYear() - user.YearOfBirth;
                         return (<Marker
                             key={user.UserId}

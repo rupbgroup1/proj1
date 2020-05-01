@@ -18,7 +18,17 @@ import Feed from './components/Feed';
 import Param from './screens/Param';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
+import { YellowBox } from 'react-native';
+import _ from 'lodash';
 
+//cancel the timer error
+YellowBox.ignoreWarnings(['Setting a timer']);
+const _console = _.clone(console);
+console.warn = message => {
+  if (message.indexOf('Setting a timer') <= -1) {
+    _console.warn(message);
+  }
+};
 //add fonts to the app
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -34,7 +44,7 @@ const fetchFonts = () => {
 
 //add screens to nav
 const navigator = createStackNavigator({
-  LoinScreen:LoginScreen,
+  LoginScreen:LoginScreen,
   ForgotPassword:ForgotPassword,
   Pic: Pic,
   CameraPage:CameraPage,
@@ -51,7 +61,7 @@ const navigator = createStackNavigator({
   Param:Param
   
   }, {
-        initialRouteName: 'LoinScreen',
+        initialRouteName: 'LoginScreen',
         defaultNavigationOptions: {
         headerShown: false
      }

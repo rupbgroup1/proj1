@@ -208,8 +208,7 @@ export default class FindNeighboor extends Component {
     }
 
     onMapRegionChange(region) {
-        this.setState({ region });
-
+        console.log(region);
     }
 
     handleMainChange(mainI) {

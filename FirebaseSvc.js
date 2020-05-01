@@ -1,7 +1,7 @@
 import firebase from 'firebase';
 class FirebaseSvc {
   constructor() {
-    
+
     if (!firebase.apps.length) { //avoid re-initializing
       firebase.initializeApp({
         apiKey: "AIzaSyCV9ZkfhUkShYjGZg4XQgUR0KG5Q1BuzA0",
@@ -11,33 +11,20 @@ class FirebaseSvc {
         storageBucket: "commy-96d29.appspot.com",
         messagingSenderId: "783563422292"
       });
-     }
-     
-    //  this.observeAuth();
-    //  passwordReset: email => {
-    //     return firebase.auth().sendPasswordResetEmail(email)
-    //   }
+    }
+    const nei='';
+  
   }
-//   observeAuth = () =>
-//   firebase.auth().onAuthStateChanged(this.onAuthStateChanged);
 
-// onAuthStateChanged = user => {
-//   if (!user) {
-//     try {
-//       firebase.auth().signInAnonymously();
-//     } catch ({ message }) {
-//       alert(message);
-//     }
-//   }
-// };
+ 
 
+  getNei(neiName){
+   nei=neiName;
+  }
 
-
-  get ref() {
-    //const {user}=snapshot.val();
-    //const userNei = user.nei
-    
-    return firebase.database().ref('תל מונד');
+  get ref() { 
+    //console.log("ref=",Nei);
+    return firebase.database().ref(nei);
   }
 
   parse = snapshot => {
@@ -68,7 +55,8 @@ class FirebaseSvc {
   get timestamp() {
     return firebase.database.ServerValue.TIMESTAMP;
   }
-  
+
+
   // send the message to the Backend
   send = messages => {
     for (let i = 0; i < messages.length; i++) {
