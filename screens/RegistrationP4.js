@@ -29,10 +29,10 @@ export default class RegistraionP4 extends Component {
     async getUser() {
         let userJSON = await AsyncStorage.getItem('user');
         const userObj = await JSON.parse(userJSON);
-        //console.log(userJSON);
-        //console.log(userObj);
-        this.setState({ user: userObj });
-        this.fetchPostNewUser();
+        console.log(userJSON);
+        console.log(userObj);
+        //console.log
+        this.setState({ user: userObj }, ()=> this.fetchPostNewUser());
     }
 
     fetchPostNewUser = () => {

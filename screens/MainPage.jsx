@@ -28,6 +28,12 @@ const MainPage = ({navigation}) => {
         style={styles.item}
         title={'המשך הרשמה'}
         />
+
+<Button 
+        onPress={() => navigation.navigate('Profile')}
+        style={styles.item}
+        title={'פרופיל'}
+        />
         </View>
         {/* <Button onPress={() => navigation.navigate('Feed')}
           title={'פיד'}
