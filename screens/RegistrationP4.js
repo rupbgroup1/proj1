@@ -29,13 +29,14 @@ export default class RegistraionP4 extends Component {
     async getUser() {
         let userJSON = await AsyncStorage.getItem('user');
         const userObj = await JSON.parse(userJSON);
-        console.log(userJSON);
-        console.log(userObj);
-        //console.log
-        this.setState({ user: userObj }, ()=> this.fetchPostNewUser());
+        //console.log(userJSON);
+        console.log("asyn", userObj);
+        this.setState({ user: userObj },()=>
+        this.fetchPostNewUser());
     }
 
     fetchPostNewUser = () => {
+        console.log("fetch user:",this.state.user);
         fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/User', {
             method: 'POST',
             body: JSON.stringify(this.state.user),
@@ -94,20 +95,6 @@ export default class RegistraionP4 extends Component {
 
     }
 
-    // NeigborhoodList= () =>{
-    //     <FlatList
-    //         data={DATA}
-    //         renderItem={({ item }) => (
-    //         <Item
-    //             id={item.id}
-    //             title={item.title}
-    //             selected={!!selected.get(item.id)}
-    //             onSelect={onSelect}
-    //         />
-    //         )} 
-    //     />
-    // }
-
 
     componentDidMount() {
         this.getInitialState();
@@ -148,7 +135,8 @@ export default class RegistraionP4 extends Component {
 
     //when choosing the location on map
     onMapRegionChange(region) {
-        this.setState({ region });
+        console.log("reg=", region);
+        this.setState({ ...this.state.region, region });
         //this.fetchGetNeiInCity();
 
     }
@@ -158,25 +146,24 @@ export default class RegistraionP4 extends Component {
         this.fetcGetNeigborhood(name);
     };
 
-    // valueExtractor=val=>{
-
-    // };
 
     render() {
         const { navigation } = this.props;
         return (
             <View style={styles.screen}>
-                <Header />
+                <Header/>
                 <BackButton goBack={() => navigation.navigate('Pic')} />
-                <Text style={styles.subTitle} >
+                <View style={styles.topPage}>
+                    <Text style={styles.subTitle} >
                     אנא בחר/י מקום מגורים
-        </Text>
-                <Text style={{ fontFamily: 'rubik-regular', textAlign: 'center', marginBottom: 10 }}>
+                    </Text>
+                    <Text style={{ fontFamily: 'rubik-regular', textAlign: 'center', marginBottom: 10 }}>
                     מקום המגורים לא יחשף ללא הרשאתך
-                     </Text>
-
-                <GoogleAPIAutoComplete notifyChange={(loc) => this.getCoordsFromName(loc)} CityName={(name) => this.handleCityName(name)} />
-
+                    </Text>
+               </View>
+                <View style={styles.middlePage}>
+                <GoogleAPIAutoComplete style={styles.API} notifyChange={(loc) => this.getCoordsFromName(loc)} CityName={(name) => this.handleCityName(name)} />
+                
                 {this.state.ShowDropDown &&
                     <Text style={{ fontFamily: 'rubik-regular', textAlign: 'center', marginBottom: 10 }}>אנא בחר/י שכונת מגורים אליה תשתייכ/י </Text>
                 }
@@ -199,8 +186,11 @@ export default class RegistraionP4 extends Component {
                         />
                     </View>
                 }
+                </View>
+                
+                <View style={styles.bottomPage}>
                 {this.state.mapVisible &&
-                    <Text style={{ fontFamily: 'rubik-regular', textAlign: 'center' }}>אנא סמנ/י מיקומך על המפה</Text>
+                    <Text style={{ fontFamily: 'rubik-regular', textAlign: 'center', paddingBottom:10 }}>אנא סמנ/י מיקומך על המפה</Text>
                 }
 
                 {
@@ -227,6 +217,7 @@ export default class RegistraionP4 extends Component {
                         }}
                     />
                 }
+                </View>
             </View>
         );
     }
@@ -236,9 +227,19 @@ const styles = StyleSheet.create({
     screen: {
         flex: 1,
         flexDirection:'column',
-        justifyContent: 'center',
         alignContent:'flex-start',
+        alignItems:'stretch',
+        flexWrap:'wrap',
         backgroundColor: colors.reeBackgrouond
+    },
+    topPage:{
+        flex:3,
+    },
+    middlePage:{
+        flex:4,
+    },
+    bottomPage:{
+        flex:6
     },
     subTitle: {
         fontFamily: 'rubik-regular',
@@ -250,13 +251,20 @@ const styles = StyleSheet.create({
         color: colors.subTitle,
         paddingTop: 25,
     },
+    API: {
+        paddingBottom:10
+
+    },
     map: {
         alignContent: 'flex-start',
-        height: '50%'
+        height: '70%'
 
     },
     dropDown:{
-        alignContent:'flex-start'
+        alignContent:'flex-start',
+        flexDirection:'column-reverse',
+        paddingLeft:20,
+        paddingRight:20
     }
 
 });

@@ -49,7 +49,6 @@ export default class RegistrationP2 extends Component {
                         onChangeText={(userPrivateName) => this.setState({ userPrivateName })}
                         placeholder={'שם פרטי'}
                         style={styles.input}
-
                     />
 
                     <TextInput
@@ -70,7 +69,7 @@ export default class RegistrationP2 extends Component {
                     </Text>
                     <Picker
                         mode="dialog"
-                        style={{ width: 55, backgroundColor: 'white', fontFamily: 'rubik-regular' }}
+                        style={styles.yearPicker}
                         selectedValue={this.state.yearOfBirth}
                         onValueChange={(value) => this.setState({ yearOfBirth: value })}>
                         {years.map((item, index) => {
@@ -104,7 +103,7 @@ export default class RegistrationP2 extends Component {
                                         YearOfBirth: this.state.yearOfBirth
 
                                     }
-                                    AsyncStorage.mergeItem('user', JSON.stringify(userDetails));
+                                    AsyncStorage.mergeItem('user', JSON.stringify(userDetails))
                                     this.props.navigation.navigate('Pic');
                                 }
 
@@ -205,5 +204,8 @@ const styles = StyleSheet.create({
         marginRight: 35,
         marginLeft: 35,
         fontWeight: 'bold'
+    },
+    yearPicker:{
+        width: 55, backgroundColor: 'white', fontFamily: 'rubik-regular'
     }
 });

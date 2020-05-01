@@ -51,7 +51,7 @@ export default class RegistrationP1 extends Component {
                     };
 
                     if (result === 0) {
-                        AsyncStorage.setItem("user", JSON.stringify(userDetails));
+                        AsyncStorage.setItem("user", JSON.stringify(userDetails))
                         this.props.navigation.navigate('RegistrationP2');
                     }
                     else Alert.alert("כבר קיים יוזר עם שם משתמש זה");
@@ -110,7 +110,7 @@ export default class RegistrationP1 extends Component {
                         <Text style={{ color: "red" }}>כתובת המייל לא תקינה</Text>
                     )}
 
-                    <Text style={styles.subTitle} >
+                    <Text style={styles.subTitle}  >
                         סיסמה
                    </Text>
                     <TextInput
@@ -160,7 +160,6 @@ export default class RegistrationP1 extends Component {
                                 }
                             }}
                             title={'המשך'}
-
                         />
                     </View>
                 </View>
@@ -202,7 +201,9 @@ const styles = StyleSheet.create({
         marginVertical: 1,
         marginBottom: 10,
         fontSize: 14,
-        color: 'black'
+        color: 'black',
+        paddingLeft:10,
+        paddingRight:10
     },
     forgotPassword: {
         color: 'blue',

@@ -19,7 +19,17 @@ import Param from './screens/Param';
 import Profile from './screens/Profile';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
+import { YellowBox } from 'react-native';
+import _ from 'lodash';
 
+//cancel the timer error
+YellowBox.ignoreWarnings(['Setting a timer']);
+const _console = _.clone(console);
+console.warn = message => {
+  if (message.indexOf('Setting a timer') <= -1) {
+    _console.warn(message);
+  }
+};
 //add fonts to the app
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -53,7 +63,7 @@ const navigator = createStackNavigator({
   Profile:Profile
   
   }, {
-        initialRouteName: 'Profile',
+        initialRouteName: 'LoginScreen',
         defaultNavigationOptions: {
         headerShown: false
      }

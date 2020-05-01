@@ -53,9 +53,9 @@ export default class Pic extends Component {
           source={{uri: 'https://cdn1.iconfinder.com/data/icons/business-users/512/circle-512.png'}}
         />
             <View style={styles.icon}>
-            <OurButton onPress={() => this.props.navigation.navigate('CameraPage')}><SimpleLineIcons name="camera" size={40} color="black"/></OurButton>
+            <OurButton onPress={() => this.props.navigation.navigate('CameraPage')}><SimpleLineIcons name="camera" size={40} color="black" /></OurButton>
             <Text style={styles.textOr}> או </Text>
-            <OurButton onPress={() => this.props.navigation.navigate('ImageGallery')}><SimpleLineIcons name="picture" size={40} color="black"/></OurButton>
+            <OurButton onPress={() => this.props.navigation.navigate('ImageGallery')}><SimpleLineIcons name="picture" size={40} color="black" /></OurButton>
         
             </View>
            
@@ -101,15 +101,14 @@ const styles = StyleSheet.create({
         textAlign: "center"
     },
     icon:{
+        flex:1,
         flexDirection: 'row',
-        justifyContent: 'center',
-        alignContent: 'space-between', 
-        marginTop: 15
+        justifyContent:'center', 
+        paddingTop: 20
     },
 
     textOr:{
         fontFamily: 'rubik-regular',
-        marginTop:19,
         fontWeight:'bold',
         fontSize:30
     

@@ -22,13 +22,15 @@ import firebaseSvc from '../FirebaseSvc';
     state = {
       messages: [],
       user:{},
-      userCode:0
+      userCode:0,
+      Nei:''
     };
   
     get user() {
       return {
         name: this.state.user.FirstName +' '+this.state.user.LastName,
         email: this.state.user.Email,
+        //nei: this.state.user.NeighborhoodName,
         //UserCode:this.state.user.UserCode,
         //avatar: this.state.user.ImageId,
         id: this.state.user.UserId,
@@ -39,8 +41,9 @@ import firebaseSvc from '../FirebaseSvc';
     async getUser() {
         let userJSON = await AsyncStorage.getItem('user');
         const userObj = await JSON.parse(userJSON);
-        this.setState({ user: userObj, userCode:userObj.UserId },() => {
-            firebaseSvc.refOn(message =>
+        firebaseSvc.getNei(userObj.NeighborhoodName);
+        this.setState({ user: userObj, userCode:userObj.UserId, Nei:userObj.NeighborhoodName },() => {
+                    firebaseSvc.refOn(message =>
                 this.setState(previousState => ({
                   messages: GiftedChat.append(previousState.messages, message),
                 }))
@@ -57,13 +60,20 @@ import firebaseSvc from '../FirebaseSvc';
       componentWillUnmount() {
         firebaseSvc.refOff();
       }
+
+      // renderTime(){
+      //   this.state.messages.forEach(mes => {
+      //    return moment(mes.createdAt).format("LT");
+      //  }); 
+      // }
+
     render() {
       return (
         <GiftedChat
           messages={this.state.messages}
           onSend={firebaseSvc.send}
           user={this.user}
-          
+          placeholder='הקלד הודעה'
         />
       );
     }

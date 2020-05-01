@@ -9,28 +9,34 @@ const Interest = (props) => {
     //one choice
     const [selectedSub, setSelectedSub] = useState(0);
     //multii
-    const [selectedMultiSub, setSelectedMultiSub] = useState([]);
+    const [selectedMultiSub, setSelectedMultiSub] = useState();
+    //set initial value to multi (from user data)
+    useEffect(() => {
+        console.log("effect", props.initialInterest);
+        props.isMulti&& setSelectedMultiSub(props.initialInterest)
+    }, [] 
+     );
 
     //pass the updated interests selected (array) for multi only
-    // useEffect(() => {
-    //     console.log("effect", props.initialInterest);
-    //     props.isMulti&& setSelectedMultiSub(props.initialInterest)
-    // }, [] 
-    //  );
-
      useEffect(() => {
-        console.log(selectedMultiSub);
+        console.log("selected=",selectedMultiSub);
         props.isMulti&& props.callFetch(selectedMultiSub)
     }, [selectedMultiSub] 
     
      );
 
+     subInterestPressedTwice=(interestId)=>{
+        
+        const check = selectedMultiSub.filter(e => e.Id===interestId);
+        console.log("check=",check);
+        return check.length;
+     }
     //when i is pressed it checks wether it's multi/single and updates the value
     handleSubPress = (interestId) => {
         const iObj = {Id:interestId};
         if (props.isMulti) {
             //it check if the user press on the same i to cancel it or selected new i
-            if  (selectedMultiSub.some(e => e.Id === interestId)) {
+            if  (subInterestPressedTwice(interestId)>0) {
                 //remove from array
                 setSelectedMultiSub(selectedMultiSub.filter(item => item.Id !== interestId));
             }
@@ -71,7 +77,8 @@ const Interest = (props) => {
                     //subCat
                     <OurButton
                     //change color when selected
-                        style={(!props.isMulti && selectedSub === Interest.Id) || (props.isMulti && selectedMultiSub.some(e => e.Id === Interest.Id)) ? styles.subButton : styles.intrestButtons}
+                        style={(!props.isMulti && selectedSub === Interest.Id) || (props.isMulti && subInterestPressedTwice(Interest.Id)>0)
+                             ? styles.subButton : styles.intrestButtons}
                         title={Interest.Subintrest}
                         key={Interest.Id}
                         //get from parent= is it multi selected?
@@ -97,11 +104,19 @@ const styles = StyleSheet.create({
         margin: 3,
         paddingHorizontal: 5,
         paddingVertical: 5,
-        borderColor: 'black',
+        borderColor: colors.reeBackgrouond,
         borderBottomWidth: 1,
-        borderTopWidth: 1,
-        borderRightWidth: 1,
-        borderLeftWidth: 1
+        borderTopWidth: 0,
+        borderRightWidth: 0,
+        borderLeftWidth: 1,
+        shadowColor: "#000",
+        shadowOffset: {
+	    width: 0,
+	    height: 0.5,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
 
     },
     //selected
