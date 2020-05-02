@@ -70,8 +70,8 @@ export default class Pic extends Component {
                                 let userDetails={
                                 ImagePath: this.state.picUri
                                 }
-                                AsyncStorage.mergeItem('user', JSON.stringify(userDetails));
-                                this.props.navigation.navigate('RegistrationP4')
+                                AsyncStorage.mergeItem('user', JSON.stringify(userDetails),()=>
+                                this.props.navigation.navigate('RegistrationP4'));
                             } }
                         />
                    </View>

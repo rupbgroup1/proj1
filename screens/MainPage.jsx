@@ -46,16 +46,13 @@ export default class MainPage extends Component {
             title={'המשך הרשמה'}
           />
 
-<Button 
-        onPress={() => navigation.navigate('Profile')}
-        style={styles.item}
-        title={'פרופיל'}
-        />
+          <Button
+            onPress={() => navigation.navigate('Profile')}
+            style={styles.item}
+            title={'פרופיל'}
+          />
         </View>
 
-        {/* <Button onPress={() => navigation.navigate('Feed')}
-          title={'פיד'}
-        /> */}
 
       </View>
     );

@@ -64,11 +64,13 @@ export default class Profile extends Component {
         this.getUser();
     }
 
-    async getUser() {
-        let userJSON = await AsyncStorage.getItem('user');
-        const userObj = await JSON.parse(userJSON);
-        console.log("fromuser", userObj.Intrests);
-        this.setState({ user: userObj,
+    getUser(){
+       AsyncStorage.getItem('user', (ERR,userJSON)=>
+        //console.log("fromuser", userObj.Intrests);
+        {
+            let userObj= JSON.parse(userJSON);
+            console.log("fromuser", userObj, "JSON", userJSON);
+            this.setState({ user: userObj,
             fName:userObj.FirstName,
             aboutMe: userObj.AboutMe,
             cityName: userObj.CityName,
@@ -88,10 +90,8 @@ export default class Profile extends Component {
             vImage: userObj.Image,
             vYearOfBirth: userObj.YearOfBirth,
             vGender: userObj.Gender,    
-        },()=>console.log(this.state.user));
-            
-     
-
+        })
+    }) 
     }
 
       //create array when num of kids 
@@ -233,12 +233,6 @@ export default class Profile extends Component {
     }
 
 
-    
-
-    
-
-
-
     render(){
         //עריכה/לא עריכה
         const editing = this.state.editing;
@@ -304,7 +298,7 @@ export default class Profile extends Component {
 
             {this.state.editing && (
                  <View style={styles.screen}>
-                     <ScrollView keyboardShouldPersistTaps={"handled"}>
+                     <ScrollView >
                    <Text style={styles.subTitle}>עריכת פרופיל</Text>
                    
                    <View style={{alignItems:"center",  }}>
@@ -341,7 +335,7 @@ export default class Profile extends Component {
                     //שם פרטי 
                         value={this.state.vFName}
                         label='שם פרטי'
-                        placeholder={this.state.vFName === null ? 'כתוב/י מספר..'  : (this.state.aboutMe)}
+                        placeholder={this.state.vFName === null ? 'כתוב/י מספר..'  : (this.state.vFName)}
                         onChangeText={(vFName) => this.setState({ vFName })}
                         multiline={true}
                         placeholderTextColor={'black'}

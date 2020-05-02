@@ -49,6 +49,8 @@ const MapComponent = (props) => {
                     if (user.Lat && user.Lan) {
                         //console.log("TEST=", user.Lat);
                         let age = new Date().getFullYear() - user.YearOfBirth;
+                        let about = (user.AboutMe!=null?", "+user.AboutMe:'');
+                        
                         return (<Marker
                             key={user.UserId}
                             coordinate={{
@@ -57,7 +59,7 @@ const MapComponent = (props) => {
                             }
                             }
 
-                            title={user.FirstName + ", " + age + ", " + user.AboutMe}
+                            title={user.FirstName + ", " + age  + about}
                         //pinColor={user.Gender!==1?blueMarker:pinkMarker}
                         >
                             {/* <Text style={{color:'black'}}>{user.MatchRate}%</Text> */}

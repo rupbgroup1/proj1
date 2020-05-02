@@ -103,8 +103,8 @@ export default class RegistrationP2 extends Component {
                                         YearOfBirth: this.state.yearOfBirth
 
                                     }
-                                    AsyncStorage.mergeItem('user', JSON.stringify(userDetails))
-                                    this.props.navigation.navigate('Pic');
+                                    AsyncStorage.mergeItem('user', JSON.stringify(userDetails),()=>
+                                    this.props.navigation.navigate('Pic'));
                                 }
 
                             }}

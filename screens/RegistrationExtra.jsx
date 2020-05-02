@@ -34,34 +34,44 @@ export default class RegistrationExtra extends Component {
             hideResults: false,
             CityArray: [],
             hideCityResults: false,
-            choosenInterests: []
+            choosenInterests: [],
+            finished: false
         };
 
     }
 
     componentDidMount = () => {
         this.getUser();
-        this.fetchGetAllIntrests();
-        this.fetchGetCity();
-        this.fetchGetAllJobTitle();
+
         //console.log(this.state.kidsYearOfBirth);
 
     }
 
-    async getUser() {
-        let userJSON = await AsyncStorage.getItem('user');
-        const userObj = await JSON.parse(userJSON);
-        console.log("fromuser", userObj.Intrests);
-        this.setState({
-            user: userObj,
-            jobArea: userObj.WorkPlace,
-            aboutMe: userObj.AboutMe,
-            familyStatus: userObj.FamilyStatus,
-            numOfKids: userObj.NumOfChildren,
-            kidsYearOfBirth: userObj.Kids,
-            nameJob: userObj.JobTitle.JobName,
-            initialInterest: userObj.Intrests,
-        }, () => console.log("in", this.state.initialInterest));
+    getUser() {
+        //let userJSON = await AsyncStorage.getItem('user');
+        //const userObj = await JSON.parse(userJSON);
+
+        AsyncStorage.getItem('user', (ERR, userJSON) => {
+            let userObj = JSON.parse(userJSON);
+            console.log("fromuser", userObj, "JSON", userJSON);
+            this.setState({
+                user: userObj,
+                jobArea: userObj.WorkPlace,
+                aboutMe: userObj.AboutMe,
+                familyStatus: userObj.FamilyStatus,
+                numOfKids: userObj.NumOfChildren,
+                kidsYearOfBirth: userObj.Kids,
+                nameJob: userObj.JobTitle,
+                initialInterest: userObj.Intrests,
+                finished: true
+
+            }, () => {
+                this.fetchGetAllIntrests();
+                this.fetchGetCity();
+                this.fetchGetAllJobTitle();
+            }
+            );
+        });
     }
 
     onSelectedItemsChange = selectedYears => {
@@ -173,7 +183,7 @@ export default class RegistrationExtra extends Component {
 
     //create array when num of kids 
     handleNumOfKids(num) {
-        this.state.kidsYearOfBirth.length = 0;
+        this.state.kidsYearOfBirth = [];
         this.setState({ NumOfChildren: num });
         if (parseInt(num) > 0) {
             for (let index = 0; index < parseInt(num); index++) {
@@ -216,7 +226,7 @@ export default class RegistrationExtra extends Component {
             Intrests: this.state.choosenInterests
 
         }
-        console.log("userFetch",user);
+        console.log("userFetch", user);
 
 
         fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/User/Extra', {
@@ -269,8 +279,8 @@ export default class RegistrationExtra extends Component {
                     <Text style={styles.subTitle} >
                         פרטים נוספים
                    </Text>
-                   <Text style={{textAlign:'center'}}>
-                       על מנת לשפר את חוזק הפרופיל, אנא מלא/י כמה שיותר פרטים
+                    <Text style={{ textAlign: 'center' }}>
+                        על מנת לשפר את חוזק הפרופיל, אנא מלא/י כמה שיותר פרטים
                    </Text>
 
                     <View style={styles.workPart}>
@@ -278,9 +288,9 @@ export default class RegistrationExtra extends Component {
                         <Autocomplete
                             //מקצוע
 
-                            listContainerStyle={{ alignItems: "flex-start", alignItems:'stretch' }}
-                            listStyle={{position:"relative", borderColor:'white', borderRadius:8}}
-                            inputContainerStyle={{borderColor:colors.reeBackgrouond}}
+                            listContainerStyle={{ alignItems: "flex-start", alignItems: 'stretch' }}
+                            listStyle={{ position: "relative", borderColor: 'white', borderRadius: 8 }}
+                            inputContainerStyle={{ borderColor: colors.reeBackgrouond }}
                             hideResults={this.state.hideResults}
                             autoCorrect={false}
                             defaultValue={this.state.query}
@@ -301,11 +311,11 @@ export default class RegistrationExtra extends Component {
                     </View>
                     <View style={styles.workPart}>
                         <Text style={styles.titles}>מקום עבודה</Text>
-                        <Autocomplete 
+                        <Autocomplete
                             //מקום עבודה
-                            listContainerStyle={{ alignItems: "flex-start", alignItems:'stretch'}}
-                            listStyle={{position:"relative", borderColor:'white', borderRadius:8}}
-                            inputContainerStyle={{borderColor:colors.reeBackgrouond}}
+                            listContainerStyle={{ alignItems: "flex-start", alignItems: 'stretch' }}
+                            listStyle={{ position: "relative", borderColor: 'white', borderRadius: 8 }}
+                            inputContainerStyle={{ borderColor: colors.reeBackgrouond }}
                             data={cities}
                             hideResults={this.state.hideCityResults}//close the results
                             autoCorrect={false}
@@ -344,7 +354,7 @@ export default class RegistrationExtra extends Component {
                             }}
                             itemTextStyle={{ textAlign: "right", fontFamily: 'rubik-regular' }}
                             containerStyle={{ width: '90%' }}
-                            labelTextStyle={{ fontFamily: 'rubik-regular', alignItem: "center", textAlign: "center" }}
+                            labelTextStyle={{ fontFamily: 'rubik-regular', textAlign: "center" }}
                         />
                     </View>
 
@@ -377,11 +387,11 @@ export default class RegistrationExtra extends Component {
 
                     />
 
-                    
-                    {(this.state.kidsYearOfBirth.length > 0) && <Text style={styles.titles}>שנות לידה ילדים</Text>}
+
+                    {this.state.kidsYearOfBirth && <Text style={styles.titles}>שנות לידה ילדים</Text>}
                     <View style={styles.kidsYear}>
-                        
-                        {this.state.kidsYearOfBirth.length > 0 && this.state.kidsYearOfBirth.map((age, index) => {
+
+                        {this.state.kidsYearOfBirth && this.state.kidsYearOfBirth.map((age, index) => {
                             return (<Picker //שנת לידה ילדים
                                 mode="dialog"
                                 style={styles.picker}
@@ -405,14 +415,15 @@ export default class RegistrationExtra extends Component {
                     <Text style={styles.titles}>
                         בחר/י תחומי עניין
                     </Text>
-                    {this.state.initialInterest && <Interests
-                        IntrestsArray={this.state.IntrestsArray}
-                        handleMainChange={(mainI) => this.handleMainChange(mainI)}
-                        subInArray={this.state.subInArray}
-                        callFetch={(iArray) => this.setState({ choosenInterests: iArray })}
-                        isMulti={true}
-                        initialInterest={this.state.initialInterest}
-                    />}
+                    {this.state.finished &&
+                        <Interests
+                            IntrestsArray={this.state.IntrestsArray}
+                            handleMainChange={(mainI) => this.handleMainChange(mainI)}
+                            subInArray={this.state.subInArray}
+                            callFetch={(iArray) => this.setState({ choosenInterests: iArray })}
+                            isMulti={true}
+                            initialInterest={this.state.initialInterest ? this.state.initialInterest : []}
+                        />}
 
                     <View style={styles.button}>
                         <Button
@@ -435,11 +446,11 @@ const styles = StyleSheet.create({
         backgroundColor: colors.reeBackgrouond
     },
     picker: {
-        width: 90, 
-        fontFamily: 'rubik-regular', 
+        width: 90,
+        fontFamily: 'rubik-regular',
         paddingHorizontal: 15,
-        paddingVertical: 15, 
-        backgroundColor: 'white', 
+        paddingVertical: 15,
+        backgroundColor: 'white',
         borderColor: 'gray'
     },
     intrestButtons: {
@@ -459,7 +470,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         textAlign: 'right',
         backgroundColor: 'white',
-        borderRadius:10
+        borderRadius: 10
     },
     subTitle: {
         fontFamily: 'rubik-regular',
@@ -482,26 +493,26 @@ const styles = StyleSheet.create({
         paddingTop: 40,
         alignSelf: "center"
     },
-    workPart: { 
-        padding: 10, fontFamily: 'rubik-regular' 
+    workPart: {
+        padding: 10, fontFamily: 'rubik-regular'
     },
     titles: {
-        textAlign: "center", 
-        fontFamily: 'rubik-regular', 
-        fontSize: 20, 
-        color: '#778899', 
-        paddingBottom: 10 
+        textAlign: "center",
+        fontFamily: 'rubik-regular',
+        fontSize: 20,
+        color: '#778899',
+        paddingBottom: 10
     },
-    familyStatus:{
-        fontFamily: 'rubik-regular', 
-        alignItems: 'center', 
-        flexDirection: 'row-reverse', 
-        justifyContent:'space-around' 
+    familyStatus: {
+        fontFamily: 'rubik-regular',
+        alignItems: 'center',
+        flexDirection: 'row-reverse',
+        justifyContent: 'space-around'
     },
     kidsYear: {
-        flexDirection: 'row', 
-        flexWrap: 'wrap', 
-        alignSelf: "center" 
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        alignSelf: "center"
     }
-    
+
 });

@@ -28,7 +28,7 @@ export default class CameraPage extends React.Component {
     if (this.camera) {
       let photo = await this.camera.takePictureAsync({ quality: 0.1, base64:true});
      
-      this.setState({ photoUri: photo.uri });
+      this.setState({ photoUri: photo.uri },()=>
       
       Alert.alert(
         'האם תרצה לשמור את התמונה?',
@@ -40,7 +40,7 @@ export default class CameraPage extends React.Component {
             style: 'cancel',
           }],
        
-      );
+      ));
 
       
      
