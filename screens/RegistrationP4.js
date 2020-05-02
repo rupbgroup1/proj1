@@ -21,7 +21,8 @@ export default class RegistraionP4 extends Component {
             ShowDropDown: false,
             searchData: [],
             canSubmit: false,
-            mapVisible: false
+            mapVisible: false,
+            uploadImage: false
         };
     }
 
@@ -29,14 +30,16 @@ export default class RegistraionP4 extends Component {
     async getUser() {
         let userJSON = await AsyncStorage.getItem('user');
         const userObj = await JSON.parse(userJSON);
+        //const upload = userObj.ImagePath.length>1?true:false;
         //console.log(userJSON);
-        console.log("asyn", userObj);
-        this.setState({ user: userObj },()=>
+        //console.log("asyn", userObj);
+        this.setState({ user: userObj},()=>
         this.fetchPostNewUser());
     }
 
     fetchPostNewUser = () => {
-        console.log("fetch user:",this.state.user);
+        //console.log("fetch user:",this.state.user);
+        const upload=this.state.user.ImagePath.length>1?true:false;
         fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/User', {
             method: 'POST',
             body: JSON.stringify(this.state.user),
@@ -52,7 +55,7 @@ export default class RegistraionP4 extends Component {
                 (result) => {
                     console.log("fetch POST= ", result);
                     if (result === 1)
-                        this.props.navigation.navigate('RegistrationP5');
+                        this.props.navigation.navigate('RegistrationP5', {uploadImage:upload});
                     else {
                         Alert.alert("מצטערים, הפרופיל לא נוצר בהצלחה. אנא נסה שנית.");
                         this.props.navigation.navigate('RegistrationP1');

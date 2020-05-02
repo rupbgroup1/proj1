@@ -3,6 +3,7 @@ export default {
     //reeBackgrouond: '#F1F2F2',
     //reeBackgrouond:'#F9F9F9',
     reeBackgrouond: '#ecf0f1',
+    turkiz:'#1985A1',
     header:'#041418',
     rainbow: [
       "#994F14",

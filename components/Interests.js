@@ -13,7 +13,8 @@ const Interest = (props) => {
     //set initial value to multi (from user data)
     useEffect(() => {
         console.log("effect", props.initialInterest);
-        props.isMulti&& setSelectedMultiSub(props.initialInterest)
+        props.isMulti&& 
+        setSelectedMultiSub(props.initialInterest)
     }, [] 
      );
 
@@ -121,7 +122,7 @@ const styles = StyleSheet.create({
     },
     //selected
     subButton: {
-        backgroundColor: '#1985A1',
+        backgroundColor: colors.turkiz,
         borderRadius: 15,
         margin: 3,
         paddingHorizontal: 5,
