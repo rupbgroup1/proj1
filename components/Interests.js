@@ -68,7 +68,7 @@ const Interest = (props) => {
                         title={Interest.IName}
                         key={Interest.Id}
                         onPress={() => props.handleMainChange(Interest.MainInterest)}>
-                        <FontAwesome5 name={Interest.Icon} size={25} color={'#1985A1'} />
+                        <FontAwesome5 name={Interest.Icon} size={25} color={colors.turkiz} />
                     </OurButton>
 
                 )}

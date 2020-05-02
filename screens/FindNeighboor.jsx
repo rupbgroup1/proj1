@@ -19,8 +19,8 @@ export default class FindNeighboor extends Component {
             searchName: '',
             MatchUsers:[],
             region: {
-                latitudeDelta: 0.02,
-                longitudeDelta: 0.02,
+                latitudeDelta: 0.009,
+                longitudeDelta: 0.009,
                 //for now: **delete**
                 //longitude:34.121212,
                 //latitude:34.121212
@@ -54,7 +54,7 @@ export default class FindNeighboor extends Component {
         this.fetchGetMatches(userObj.UserId);
         console.log(userJSON);
         console.log("lala" + this.state.searchData);
-        this.setState({ user: userObj, NeighborhoodName:user.NeighborhoodName });
+        this.setState({ user: userObj, NeighborhoodName:userObj.NeighborhoodName });
 
     }
 
@@ -122,10 +122,10 @@ export default class FindNeighboor extends Component {
         const searchKeys = {
             FirstName: this.state.searchName,
             NeighborhoodName: this.state.NeighborhoodName
-            //CityName: this.state.user.CityName
+            
         }
 
-        // console.log(this.state.searchName+this.state.user.CityName);
+        console.log("neiii==", this.state.NeighborhoodName);
         return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Neighboors/userName', {
             method: 'POST',
             body: JSON.stringify(searchKeys),
@@ -228,7 +228,7 @@ export default class FindNeighboor extends Component {
                 <Header />
                 <BackButton goBack={() => this.props.navigation.navigate('MainPage')} />
                 <Text style={styles.text} >
-                    חפש שם של שכן
+                    חיפוש לפי שם של שכן
                    </Text>
                    <TextInput
                     value={this.state.searchName}
@@ -241,9 +241,6 @@ export default class FindNeighboor extends Component {
                 //placeholderTextColor="black"
 
                 />
-                <Text style={styles.text} >
-                    או
-                   </Text>
                 <Text style={styles.text} >
                     חפש לפי תחום עניין משותף
                    </Text>
@@ -336,7 +333,9 @@ const styles = StyleSheet.create({
     textHeadBackground:{
         width:'100%',
         justifyContent: 'space-between', 
-        backgroundColor:'#F36B74'
+        //backgroundColor:'#F36B74'
+        backgroundColor:'#6c2147'
+
     },
     screen: {
         flex: 1,

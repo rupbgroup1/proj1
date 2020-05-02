@@ -7,10 +7,13 @@ import MapView, { Marker } from 'react-native-maps';
 const MapComponent = (props) => {
     const [selectedLocation, setSelectedLocation] = useState();
     //const blueMarker ="#0C2C33";
-    //const pinkMarker ="#703D57";
-    const blueImage = require('./MarkerIcons/location-icon-m.jpg');
-    const pinkImage = require('./MarkerIcons/location-icon-f.jpg');
+    // //const pinkMarker ="#703D57";
+     const blueImage = require('./MarkerIcons/location-icon-m.jpg');
+     const pinkImage = require('./MarkerIcons/location-icon-f.jpg');
     
+    // const blueImage = require('./MarkerIcons/blue-loc.png');
+    // const pinkImage = require('./MarkerIcons/red-loc.png');
+
 
 
     const selectLocation = event => {
@@ -25,32 +28,45 @@ const MapComponent = (props) => {
         markerCoordinates = {
             latitude: selectedLocation.Lat,
             longitude: selectedLocation.Lan,
-            latitudeDelta: 0.02,
-            longitudeDelta: 0.02
+            latitudeDelta: 0.009,
+            longitudeDelta: 0.009
 
         };
         AsyncStorage.mergeItem('user', JSON.stringify(selectedLocation));
     }
-
+ 
     return (
         <TouchableOpacity style={{ flex: 1 }} onPress={props.onPress}>
             <MapView
+                //ref={map => {this.map = map}}
                 style={{
                     flex: 1, width: Dimensions.get('window').width,
                     height: Dimensions.get('window').height
                 }}
                 region={props.region}
                 showsUserLocation={true}
-                onRegionChange={(reg) => props.onRegionChange(reg)}
+                //onRegionChange={(reg) => props.onRegionChange(reg)}
+                onRegionChangeComplete={(reg) => props.onRegionChange(reg)}
                 onPress={selectLocation}
                 searchData={props.searchData}
+                fitToSuppliedMarkers={(["10M","1M","2M","3M","4M","5M","6M","7M","8M","9M"], {
+                        edgePadding:
+                        {
+                            top: 5,
+                            right: 5,
+                            bottom: 5,
+                            left: 5
+                        }, animated:true
+
+                    })
+                }
             >
                 {props.searchData.length > 0 && props.searchData.map((user, i) => {
                     if (user.Lat && user.Lan) {
                         //console.log("TEST=", user.Lat);
                         let age = new Date().getFullYear() - user.YearOfBirth;
-                        let about = (user.AboutMe!=null?", "+user.AboutMe:'');
-                        
+                        let about = (user.AboutMe != null ? ", " + user.AboutMe : '');
+
                         return (<Marker
                             key={user.UserId}
                             coordinate={{
@@ -58,19 +74,18 @@ const MapComponent = (props) => {
                                 longitude: user.Lan,
                             }
                             }
-
-                            title={user.FirstName + ", " + age  + about}
-                        //pinColor={user.Gender!==1?blueMarker:pinkMarker}
+                            identifier={i+"M"}
+                            title={user.FirstName + ", " + age + about}
                         >
                             {/* <Text style={{color:'black'}}>{user.MatchRate}%</Text> */}
                             {user.Gender !== 1 ?
                                 <Image
                                     source={blueImage}
-                                    style={{ height: 46, width: 34 }}
+                                    style={{ height: 36, width:26 }}
                                 /> :
-                                 <Image
+                                <Image
                                     source={pinkImage}
-                                    style={{ height: 46, width: 34 }}
+                                    style={{ height: 36, width: 26 }}
                                 />
                             }
 

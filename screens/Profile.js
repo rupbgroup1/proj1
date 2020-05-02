@@ -301,7 +301,7 @@ export default class Profile extends Component {
                      <ScrollView >
                    <Text style={styles.subTitle}>עריכת פרופיל</Text>
                    
-                   <View style={{alignItems:"center",  }}>
+                   <View style={{alignItems:"center"}}>
                    <Text style={styles.text}>מקצוע</Text>
 
                    <View style={styles.workPart}>
