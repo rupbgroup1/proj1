@@ -57,9 +57,10 @@ import firebaseSvc from '../FirebaseSvc';
         this.getUser();
         
       }
-      componentWillUnmount() {
-        firebaseSvc.refOff();
-      }
+    componentWillUnmount() {
+      firebaseSvc.refOff();
+    }
+
 
       // renderTime(){
       //   this.state.messages.forEach(mes => {

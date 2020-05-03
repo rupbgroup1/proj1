@@ -7,6 +7,10 @@ import PagesNav from '../components/PagesNav';
 import OurButton from '../components/OurButton';
 import firebaseSvc from '../FirebaseSvc';
 import ProfileButton from '../components/ProfileButton';
+import NeiButton from '../components/NeighboorsButton';
+import EventsBTN from '../components/EventsButton';
+import BusinessesBTN from '../components/BusinessesButton';
+import MenuNavigator from '../components/SideBarMenu';
 
 
 export default class MainPage extends Component {
@@ -28,31 +32,37 @@ export default class MainPage extends Component {
   render() {
     const { navigation } = this.props;
     return (
-      <View style={{ flex: 1, alignItems: 'center' }}>
-        <Header />
-        <ProfileButton onPress={() => navigation.navigate('Profile')} />
-        <Text style={styles.header}>מה חדש בשכונה?</Text>
+      <View style={styles.screen}>
+        <Header style={{flex:1}} />
+        <View style={styles.header}>
+        <Text>מה חדש בשכונה?</Text>
+        <MenuNavigator></MenuNavigator>
+        </View>
+        
         <View style={{ width: '100%', height: '50%' }}>
           <Feed />
         </View>
         <View style={styles.row}>
+          <View style={styles.item1}>
+          <NeiButton
+            onPress={() => navigation.navigate('FindNeighboor')}>
+              הכר את שכניך
+          </NeiButton>
+          </View>
 
-          <Button
-            onPress={() => navigation.navigate('FindNeighboor')}
-            style={styles.item}
-            title={'הכר את שכניך'}
-          />
-          <Button
-            onPress={() => navigation.navigate('RegistrationExtra')}
-            style={styles.item}
-            title={'המשך הרשמה'}
-          />
+          <View style={styles.item2}>
+          <EventsBTN
+            onPress={() => navigation.navigate('RegistrationExtra')}>
+            המשך הרשמה
+          </EventsBTN>
+          </View>
 
-          <Button
-            onPress={() => navigation.navigate('ProfileEdit')}
-            style={styles.item}
-            title={'פרופיל'}
-          />
+          <View style={styles.item3}>
+          <BusinessesBTN
+            onPress={() => navigation.navigate('Profile')}>
+            פרופיל
+          </BusinessesBTN>
+          </View>
         </View>
 
 
@@ -63,31 +73,14 @@ export default class MainPage extends Component {
 
 const styles = StyleSheet.create({
 
-  item: {
-    flex: 1,
-    height: 90,
-    paddingVertical: 20,
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    marginHorizontal: 5,
-    borderWidth: 1,
-    borderRadius: 20,
-    borderColor: 'grey',
-
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 10,
-    marginTop: 10,
-    height: 90,
-    paddingVertical: 20,
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    marginHorizontal: 5,
-
+  screen:{
+    flex:1,
+    justifyContent:'flex-start',
+    flexDirection:'column'
   },
   header: {
+    flex:1,
+    textAlign:'center',
     fontFamily: 'rubik-regular',
     marginVertical: 1,
     fontSize: 20,
@@ -95,30 +88,28 @@ const styles = StyleSheet.create({
     color: colors.subTitle,
     paddingTop: 25
   },
-  container: {
-    flex: 1,
-    width: '100%',
-    justifyContent: 'space-between',
-    backgroundColor: colors.regBackground,
-    paddingVertical: 20,
-    paddingHorizontal: 20
+  feed:{
+    flex:3,
+    width:'95%'
   },
-  introductionText: {
-    fontFamily: 'rubik-regular',
-    marginVertical: 1,
-    fontSize: 20,
-    marginRight: 35,
-    marginLeft: 35,
-    textAlign: 'center',
+  row: {
+    flex:3,
+    flexDirection: 'column',
   },
-  button: {
-    fontFamily: 'rubik-regular',
-    width: '60%',
-    paddingTop: 50,
-    paddingVertical: 20,
-    paddingHorizontal: 20
-
-
-  }
+  item1:{
+    position: 'absolute',
+    bottom:10,
+    left:10,
+  },
+  item2:{
+    position: 'absolute',
+    bottom:80,
+    left:120,
+  },
+  item3:{
+    position: 'absolute',
+    bottom:30,
+    left:220,
+  },
 
 });
