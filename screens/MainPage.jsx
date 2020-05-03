@@ -6,7 +6,9 @@ import Header from '../components/Header';
 import PagesNav from '../components/PagesNav';
 import OurButton from '../components/OurButton';
 import firebaseSvc from '../FirebaseSvc';
-
+import BusinessesBTN from '../components/BusinessesButton';
+import NeiButton from '../components/NeighboorsButton';
+import EventsBTN from '../components/EventsButton';
 
 export default class MainPage extends Component {
   constructor(props) {
@@ -33,7 +35,7 @@ export default class MainPage extends Component {
         <View style={{ width: '100%', height: '50%' }}>
           <Feed />
         </View>
-        <View style={styles.row}>
+        {/* <View style={styles.row}>
 
           <Button
             onPress={() => navigation.navigate('FindNeighboor')}
@@ -51,6 +53,29 @@ export default class MainPage extends Component {
             style={styles.item}
             title={'פרופיל'}
           />
+        </View> */}
+        <View style={styles.row}>
+          
+          <View style={styles.item1}>
+          <NeiButton
+            onPress={() => navigation.navigate('FindNeighboor')}>
+              הכר את שכניך
+          </NeiButton>
+          </View>
+
+          <View style={styles.item2}>
+          <EventsBTN
+            onPress={() => navigation.navigate('RegistrationExtra')}>
+            המשך הרשמה
+          </EventsBTN>
+          </View>
+
+          <View style={styles.item3} >
+          <BusinessesBTN
+            onPress={() => navigation.navigate('Profile')}>
+            פרופיל
+          </BusinessesBTN>
+          </View>
         </View>
 
 
@@ -61,31 +86,14 @@ export default class MainPage extends Component {
 
 const styles = StyleSheet.create({
 
-  item: {
-    flex: 1,
-    height: 90,
-    paddingVertical: 20,
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    marginHorizontal: 5,
-    borderWidth: 1,
-    borderRadius: 20,
-    borderColor: 'grey',
-
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 10,
-    marginTop: 10,
-    height: 90,
-    paddingVertical: 20,
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    marginHorizontal: 5,
-
+  screen:{
+    flex:1,
+    justifyContent:'flex-start',
+    flexDirection:'column'
   },
   header: {
+    flex:1,
+    textAlign:'center',
     fontFamily: 'rubik-regular',
     marginVertical: 1,
     fontSize: 20,
@@ -93,30 +101,26 @@ const styles = StyleSheet.create({
     color: colors.subTitle,
     paddingTop: 25
   },
-  container: {
-    flex: 1,
-    width: '100%',
-    justifyContent: 'space-between',
-    backgroundColor: colors.regBackground,
-    paddingVertical: 20,
-    paddingHorizontal: 20
+  feed:{
+    flex:3,
+    width:'95%'
   },
-  introductionText: {
-    fontFamily: 'rubik-regular',
-    marginVertical: 1,
-    fontSize: 20,
-    marginRight: 35,
-    marginLeft: 35,
-    textAlign: 'center',
+  row: {
+    flex:3,
+    flexDirection: 'row',
+    justifyContent:'space-evenly'
   },
-  button: {
-    fontFamily: 'rubik-regular',
-    width: '60%',
-    paddingTop: 50,
-    paddingVertical: 20,
-    paddingHorizontal: 20
-
-
-  }
+  item1:{
+    top:40,
+   
+  },
+  item2:{
+    top:100,
+    left:10,
+  },
+  item3:{
+    top:30,
+   left:10
+  },
 
 });

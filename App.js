@@ -1,6 +1,8 @@
 import React, { Component, useState } from 'react';
+import {View, StyleSheet,Dimensions,Image,TouchableOpacity,Platform,Text,} from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
+import {createDrawerNavigator} from 'react-navigation-drawer';
 import LoginScreen from './screens/LoginScreen';
 import ForgotPassword from './screens/ForgotPassword';
 import Pic from './screens/Pic';
@@ -31,6 +33,7 @@ console.warn = message => {
     _console.warn(message);
   }
 };
+
 //add fonts to the app
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -89,4 +92,5 @@ export default function App() {
     <Na/>
   );
 }
+
 
