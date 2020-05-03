@@ -251,6 +251,7 @@ export default class FindNeighboor extends Component {
                     callFetch={(id) => {
                     id!==this.state.intrestId&&this.fetchSearchNeiByInterest(id)
                     }}
+                    cleanUserName={()=>this.setState({searchName: ''})}
                     isMulti={false}
                 />
                 <Text>{'\n'}</Text>

@@ -48,11 +48,9 @@ export default class RegistrationExtra extends Component {
     }
 
     getUser() {
-        //let userJSON = await AsyncStorage.getItem('user');
-        //const userObj = await JSON.parse(userJSON);
-
         AsyncStorage.getItem('user', (ERR, userJSON) => {
             let userObj = JSON.parse(userJSON);
+            let jobName = userObj.JobTitle!= null ? userObj.JobTitle.JobName : '';
             console.log("fromuser", userObj, "JSON", userJSON);
             this.setState({
                 user: userObj,
@@ -61,7 +59,7 @@ export default class RegistrationExtra extends Component {
                 familyStatus: userObj.FamilyStatus,
                 numOfKids: userObj.NumOfChildren,
                 kidsYearOfBirth: userObj.Kids,
-                nameJob: userObj.JobTitle,
+                nameJob: jobName,
                 initialInterest: userObj.Intrests,
                 finished: true
 
@@ -85,6 +83,7 @@ export default class RegistrationExtra extends Component {
         });
 
     }
+
     //fetch -get all intrests to search by
     fetchGetAllIntrests() {
         return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Intrests', {
@@ -109,8 +108,6 @@ export default class RegistrationExtra extends Component {
     }
 
     fetchSubInterest = () => {
-        //console.log(this.state.mainI);
-        // console.log(this.state.searchName+this.state.user.CityName);
         return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Intrests/Sub?mainI=' + this.state.mainI, {
             method: 'GET',
             headers: new Headers({
@@ -294,8 +291,8 @@ export default class RegistrationExtra extends Component {
                             hideResults={this.state.hideResults}
                             autoCorrect={false}
                             defaultValue={this.state.query}
-                            placeholder='הזנ/י מקצוע'
-                            //placeholder={this.state.JobName !== null ? (this.state.nameJob) + "" : 'בחר/י תחום עבודה'}
+                            //placeholder='הזנ/י מקצוע'
+                            placeholder={this.state.nameJob !== '' ? (this.state.nameJob) + "" : 'הזנ/י מקצוע'}
                             data={jobs}
                             style={styles.autoComplete}
                             onChangeText={text => this.setState({ query: text, hideResults: false })}
@@ -320,8 +317,8 @@ export default class RegistrationExtra extends Component {
                             hideResults={this.state.hideCityResults}//close the results
                             autoCorrect={false}
                             defaultValue={this.state.queryCity}
-                            placeholder='הזנ/י את מיקום העבודה'
-                            //placeholder={this.state.jobArea !== null ? (this.state.jobArea) + "" : 'בחר/י מקום עבודה'}
+                            //placeholder='הזנ/י את מיקום העבודה'
+                            placeholder={this.state.jobArea !== null ? (this.state.jobArea) + "" : 'בחר/י את מיקום העבודה'}
                             style={styles.autoComplete}
                             onChangeText={text => this.setState({ queryCity: text, hideCityResults: false })}
                             renderItem={({ item }) => (
@@ -352,7 +349,7 @@ export default class RegistrationExtra extends Component {
                                 });
                                 console.log("family=", this.state.familyStatus);
                             }}
-                            itemTextStyle={{ textAlign: "right", fontFamily: 'rubik-regular' }}
+                            itemTextStyle={{ textAlign: "center", fontFamily: 'rubik-regular' }}
                             containerStyle={{ width: '90%' }}
                             labelTextStyle={{ fontFamily: 'rubik-regular', textAlign: "center" }}
                         />
@@ -376,8 +373,8 @@ export default class RegistrationExtra extends Component {
                         ///מספר ילדים
                         value={this.state.numOfKids}
                         label='מספר ילדים'
-                        placeholder='הזנ/י את מספר ילדיך'
-                        //placeholder={(this.state.user.NumOfChildren !== null) ? (this.state.user.NumOfChildren) + "" : 'כתוב/י מספר..'}
+                        //placeholder='הזנ/י את מספר ילדיך'
+                        placeholder={(this.state.user.NumOfChildren !== null) ? (this.state.user.NumOfChildren) + "" : 'כתוב/י מספר..'}
                         onChangeText={(numOfKids) => this.handleNumOfKids(numOfKids)}
                         multiline={true}
                         placeholderTextColor={'#D1D3D4'}
@@ -422,6 +419,7 @@ export default class RegistrationExtra extends Component {
                             subInArray={this.state.subInArray}
                             callFetch={(iArray) => this.setState({ choosenInterests: iArray })}
                             isMulti={true}
+                            clean
                             initialInterest={this.state.initialInterest ? this.state.initialInterest : []}
                         />}
 

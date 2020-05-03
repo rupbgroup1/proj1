@@ -12,7 +12,7 @@ const Interest = (props) => {
     const [selectedMultiSub, setSelectedMultiSub] = useState();
     //set initial value to multi (from user data)
     useEffect(() => {
-        console.log("effect", props.initialInterest);
+        //console.log("effect", props.initialInterest);
         props.isMulti&& 
         setSelectedMultiSub(props.initialInterest)
     }, [] 
@@ -20,7 +20,7 @@ const Interest = (props) => {
 
     //pass the updated interests selected (array) for multi only
      useEffect(() => {
-        console.log("selected=",selectedMultiSub);
+        //console.log("selected=",selectedMultiSub);
         props.isMulti&& props.callFetch(selectedMultiSub)
     }, [selectedMultiSub] 
     
@@ -29,7 +29,7 @@ const Interest = (props) => {
      subInterestPressedTwice=(interestId)=>{
         
         const check = selectedMultiSub.filter(e => e.Id===interestId);
-        console.log("check=",check);
+        //console.log("check=",check);
         return check.length;
      }
     //when i is pressed it checks wether it's multi/single and updates the value
@@ -44,6 +44,7 @@ const Interest = (props) => {
             else {
                 //add to array
                 setSelectedMultiSub(selectedMultiSub => [...selectedMultiSub, iObj]);
+                
             }
         }
         else {
@@ -51,6 +52,7 @@ const Interest = (props) => {
             //update state
             selectedSub===interestId? setSelectedSub(0) : setSelectedSub(interestId);
             //update parent
+            props.cleanUserName();
             selectedSub===interestId? props.callFetch(0) :props.callFetch(interestId);
         }
 
