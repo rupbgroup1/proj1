@@ -62,7 +62,7 @@ const navigator = createStackNavigator({
   Feed:Feed,
   Param:Param,
   Profile:Profile,
-  ProfileEdit:ProfileEdit
+  ProfileEdit: ProfileEdit,
   
   }, {
         initialRouteName: 'LoginScreen',

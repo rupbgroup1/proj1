@@ -21,7 +21,7 @@ export default class ProfileEdit extends Component {
 
         this.state = {
             // להצגת הפרופיל
-            editing: true,
+            editing: false,
             
             fName:'',
             aboutMe:null,
@@ -88,22 +88,12 @@ export default class ProfileEdit extends Component {
                 finished: true,
                 fName:userObj.FirstName,
 
-            aboutMe: userObj.AboutMe,
-            cityName: userObj.CityName,
-            neighborhoodName:userObj.NeighborhoodName,
-            familyStatus: userObj.FamilyStatus,
-            image: userObj.Image,
-            intrests: userObj.Intrests,
-            EnameJob:userObj.JobTitle.JobName,
-            kidsYearOfBirth:userObj.Kids, 
-            lName: userObj.LastName,
-            EjobArea: userObj.WorkPlace,
-            yearOfBirth: userObj.Year,
-            numOfKids: userObj.NumOfChildren,
+                jobName: userObj.JobTitle.JobName,
+                intrests: userObj.Intrests,
 
-            vFName:userObj.FirstName,
-            vLName: userObj.LastName,
-            gender: userObj.Gender
+            
+
+            gender: userObj.Gender,
 
             }, () => {
                 this.fetchGetAllIntrests();
@@ -257,10 +247,6 @@ export default class ProfileEdit extends Component {
     fetchUpdateUser() {
         const user = {
             UserId: this.state.user.UserId,
-            FirstName: this.state.vFName,
-            LastName: this.state.vLName,
-            Gender: this.state.gender,
-            YearOfBirth: this.state.yearOfBirth,
             JobTitleId: this.state.jobType,
             WorkPlace: this.state.jobArea,
             FamilyStatus: this.state.familyStatus,
@@ -273,7 +259,7 @@ export default class ProfileEdit extends Component {
         console.log("userFetch", user);
 
 
-        fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/User/Put', {
+        fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/User/Extra', {
             method: 'PUT',
             body: JSON.stringify(user),
             headers: new Headers({
@@ -347,12 +333,12 @@ export default class ProfileEdit extends Component {
                        <View style={styles.screen}>
                             <Text style={styles.subTitle}>הפרופיל שלי</Text>
                             <Image style={styles.avatar}
-                                    source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}/>
+                                    source={{uri: this.state.user.Image}}/>
     
                             <View style={styles.center}>
-                                <Text style={styles.note,{fontSize:30,}}>{this.state.fName} {this.state.lName}</Text>
-                                <Text style={styles.note}>{this.state.familyStatus}, {this.state.yearOfBirth}</Text>
-                                <Text style={styles.note}>{this.state.EnameJob}, {this.state.EjobArea}</Text>
+                                <Text style={styles.note}>{this.state.user.FirstName}{this.state.user.LastName}</Text>
+                                <Text style={styles.note}>{this.state.user.FamilyStatus}, {this.state.user.YearOfBirth}</Text>
+                                <Text style={styles.note}>{this.state.jobName}, {this.state.jobArea}</Text>
                                 <Text style={styles.title}>על עצמי</Text>
                                 <Text style={styles.note}>{this.state.aboutMe}</Text>
                                 <Text style={styles.title}>תחומי עניין</Text>
@@ -403,7 +389,7 @@ export default class ProfileEdit extends Component {
 
                     />
 
-                    <Text style={styles.text} >מגדר</Text>
+    <Text style={styles.text} >מגדר</Text>
                     <View style={styles.genderView}>
                         <OurButton style={styles.genderButton} onPress={() => this.setState({ gender: 0 })}><SimpleLineIcons name="user" size={40} color="black" /></OurButton>
                         <OurButton style={styles.genderButton} onPress={() => this.setState({ gender: 1 })} ><SimpleLineIcons name="user-female" size={40} color="black" /></OurButton>
@@ -428,13 +414,13 @@ export default class ProfileEdit extends Component {
 
                   
                    <View style={styles.workPart}>
-                   <Text style={styles.text}>מקצוע</Text>
-                        <Autocomplete
+                       <Text style={styles.text}>מקצוע</Text>
+                       <Autocomplete
                             //מקצוע
 
-                            listContainerStyle={{ alignItems: "flex-start", alignItems: 'stretch' }}
-                            listStyle={{ position: "relative", borderColor: 'white', borderRadius: 8 }}
-                            inputContainerStyle={{ borderColor: colors.reeBackgrouond }}
+                            listContainerStyle={{ alignItems: "flex-start", alignItems:'stretch' }}
+                            listStyle={{position:"relative", borderColor:'white', borderRadius:8,  alignItems:'stretch' }}
+                            inputContainerStyle={{borderColor:colors.reeBackgrouond}}
                             hideResults={this.state.hideResults}
                             autoCorrect={false}
                             defaultValue={this.state.query}
@@ -452,7 +438,7 @@ export default class ProfileEdit extends Component {
                             )}
 
                         />
-                    </View>
+                   </View>
                    <View style={styles.workPart}>
                        <Text style={styles.text}>מקום עבודה</Text>
                        <Autocomplete
@@ -569,27 +555,13 @@ export default class ProfileEdit extends Component {
                            initialInterest={this.state.initialInterest ? this.state.initialInterest : []}
                        />}
 
-<View style={styles.row}>
-                        <Button
-                            style={styles.item}
-                            title={'סיום'}
-                            onPress= {()=> this.fetchUpdateUser()   }
-                            
-                            
-                        />
-                        <Button
-                          style={styles.item}
-                            title={'ביטול'} onPress={() => {
-                                this.setState({
-                                    vFName: this.state.fName,
-                                    vLName: this.state.lName,
-                                    vImage: this.state.image,
-                                    vYearOfBirth: this.state.yearOfBirth,
-                                    vGender: this.state.gender,    
-                                })
-                            }}
-                        />
-                    </View>
+                   <View style={styles.button}>
+                       <Button
+                           title={'המשך'} onPress={() => {
+                               this.fetchUpdateUser()
+                           }}
+                       />
+                   </View>
                </ScrollView>
 
                 )}
@@ -619,8 +591,8 @@ export default class ProfileEdit extends Component {
        
          
           avatar: {
-            width: '50%',
-            height: '30%',
+            width: '40%',
+            height: '20%',
             borderWidth: 4,
             borderColor: "white",
             alignSelf:"center",
@@ -738,7 +710,7 @@ export default class ProfileEdit extends Component {
             alignSelf: "center",
             
         },
-        row: {
+        /*row: {
             flexDirection: 'row',
             justifyContent:'space-between',
             paddingHorizontal: 10,
@@ -749,7 +721,7 @@ export default class ProfileEdit extends Component {
             justifyContent: 'space-around',
             marginHorizontal: 5,
             
-          },
+          },*/
           kidsYear: {
             flexDirection: 'row', 
             flexWrap: 'wrap', 
