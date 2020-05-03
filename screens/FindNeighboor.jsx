@@ -13,11 +13,8 @@ export default class FindNeighboor extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selected:false,
-            RandomUser:10,
-            randomArray :[1,2,3],
             searchName: '',
-            MatchUsers:[],
+            MatchUsers: [],
             region: {
                 latitudeDelta: 0.009,
                 longitudeDelta: 0.009,
@@ -29,14 +26,14 @@ export default class FindNeighboor extends Component {
             searchData: [],
             subInArray: [],
             mainI: '',
-            selectedInterest:0,
+            selectedInterest: 0,
         };
     }
 
     componentDidMount() {
         this.fetchGetAllIntrests();
         this.getUser();
-       // console.log(this.state.searchData)
+        // console.log(this.state.searchData)
     }
 
     async getUser() {
@@ -48,19 +45,16 @@ export default class FindNeighboor extends Component {
                 latitude: userObj.Lat,
                 longitude: userObj.Lan
             },
-            
+            user: userObj,
+            NeighborhoodName: userObj.NeighborhoodName
         });
-        
-        this.fetchGetMatches(userObj.UserId);
-        console.log(userJSON);
-        console.log("lala" + this.state.searchData);
-        this.setState({ user: userObj, NeighborhoodName:userObj.NeighborhoodName });
 
+        this.fetchGetMatches(userObj.UserId);
     }
 
     //fetch - get match users
     fetchGetMatches(userId) {
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Neighboors/Match?userId='+userId, {
+        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Neighboors/Match?userId=' + userId, {
 
             method: 'GET',
             headers: new Headers({
@@ -74,10 +68,10 @@ export default class FindNeighboor extends Component {
                 (result) => {
                     if (result.length > 0) {
                         console.log("matcch", result);
-                        this.setState({ MatchUsers : result })
+                        this.setState({ MatchUsers: result })
                     }
                     else
-                        Alert.alert(" matchמצטערים, אנו נסו שנית!");
+                        Alert.alert(" מצטערים, אנו נסו שנית!");
                 },
                 (error) => {
                     console.log("err post=", error);
@@ -85,7 +79,7 @@ export default class FindNeighboor extends Component {
                 }
             );
     }
-    
+
     //fetch -get all intrests to search by
     fetchGetAllIntrests() {
         return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Intrests', {
@@ -122,10 +116,11 @@ export default class FindNeighboor extends Component {
         const searchKeys = {
             FirstName: this.state.searchName,
             NeighborhoodName: this.state.NeighborhoodName
-            
+
         }
 
-        console.log("neiii==", this.state.NeighborhoodName);
+        //console.log("neiii==", this.state.NeighborhoodName);
+
         return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Neighboors/userName', {
             method: 'POST',
             body: JSON.stringify(searchKeys),
@@ -133,6 +128,7 @@ export default class FindNeighboor extends Component {
                 'Content-type': 'application/json; charset=UTF-8'
             })
         })
+
             .then(res => {
                 //console.log('SEARCHDATA');
                 return res.json();
@@ -140,9 +136,12 @@ export default class FindNeighboor extends Component {
             })
             .then(
                 (result) => {
-                    console.log("fetch result= ", result);
-                    this.setState({ searchData: result });
-
+                    if (result.length > 0) {
+                        console.log("fetch result= ", result);
+                        this.setState({ searchData: result });
+                    }
+                    else
+                        Alert.alert("לא נמצא שכן");
                 },
                 (error) => {
                     console.log("err post=", error);
@@ -211,18 +210,18 @@ export default class FindNeighboor extends Component {
         console.log(region);
     }
 
-    handleMainChange(mainI) {
-        this.setState({ mainI: mainI }, () => {
+    handleMainChange(main) {
+        this.setState({ mainI: main }, () => {
             this.fetchSubInterest();
         });
 
     }
 
-   
 
-    
+
+
     render() {
-        
+
         return (
             <View style={styles.screen}>
                 <Header />
@@ -230,7 +229,7 @@ export default class FindNeighboor extends Component {
                 <Text style={styles.text} >
                     חיפוש לפי שם של שכן
                    </Text>
-                   <TextInput
+                <TextInput
                     value={this.state.searchName}
                     onChangeText={(text) => this.setState({ searchName: text })}
                     placeholder={'הזנ/י שם של שכן'}
@@ -249,37 +248,38 @@ export default class FindNeighboor extends Component {
                     handleMainChange={(mainI) => this.handleMainChange(mainI)}
                     subInArray={this.state.subInArray}
                     callFetch={(id) => {
-                    id!==this.state.intrestId&&this.fetchSearchNeiByInterest(id)
+                        id !== this.state.intrestId && this.fetchSearchNeiByInterest(id)
                     }}
+                    cleanUserName={() => this.setState({ searchName: '' })}
                     isMulti={false}
                 />
                 <Text>{'\n'}</Text>
                 <View style={styles.textHeadBackground}>
-                
+
                     <Text style={styles.textHead} >
-                    שכנים שכדאי לך להכיר
+                        שכנים שכדאי לך להכיר
                     </Text>
-                   
-                   
+
+
                 </View>
-               
+
                 <View style={styles.mapView}>
                     <MapComponent
                         region={this.state.region}
                         onRegionChange={(reg) => this.onMapRegionChange(reg)}
                         //checking - show match or search result
-                        searchData={(!this.state.searchName&&this.state.selectedInterest<1) ?this.state.MatchUsers:this.state.searchData}
+                        searchData={(!this.state.searchName && this.state.selectedInterest < 1) ? this.state.MatchUsers : this.state.searchData}
                         style={{ flex: 1, height: '100%', width: '100%', borderRadius: 10 }}
 
                     />
- <TouchableOpacity
-         onPress={() => this.props.navigation.navigate('Param')}
-       >
-         <Text>מרוצה מההתאמה? עזור לנו להשתפר עבורך</Text>
- </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => this.props.navigation.navigate('Param')}
+                    >
+                        <Text>מרוצה מההתאמה? עזור לנו להשתפר עבורך</Text>
+                    </TouchableOpacity>
                 </View>
-               
-            
+
+
             </View>
         );
     }
@@ -302,7 +302,7 @@ const styles = StyleSheet.create({
         margin: 3,
         paddingHorizontal: 5,
         paddingVertical: 5,
-        borderColor:'white'
+        borderColor: 'white'
     },
     mapView: {
         flex: 1,
@@ -321,7 +321,7 @@ const styles = StyleSheet.create({
         paddingTop: 10,
         color: 'black',
     },
-    textHead:{
+    textHead: {
         fontFamily: 'rubik-regular',
         marginVertical: 1,
         fontSize: 20,
@@ -330,11 +330,11 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
 
     },
-    textHeadBackground:{
-        width:'100%',
-        justifyContent: 'space-between', 
+    textHeadBackground: {
+        width: '100%',
+        justifyContent: 'space-between',
         //backgroundColor:'#F36B74'
-        backgroundColor:'#6c2147'
+        backgroundColor: '#6c2147'
 
     },
     screen: {
@@ -352,8 +352,8 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         textAlign: 'right',
         backgroundColor: 'white',
-        borderRadius:10,
-        paddingVertical:10
+        borderRadius: 10,
+        paddingVertical: 10
     },
     buttonSearch: {
         width: '100%'
