@@ -21,7 +21,7 @@ export default class Profile extends Component {
         super (props);
         this.state = {
             //משתנים להצגת הפרופיל
-            editing: true,
+            editing: false,
             query: '',
             hideResults: false,
             fName:'',
@@ -153,8 +153,8 @@ export default class Profile extends Component {
             );
     }
 
-     //filter job array
-     findJob(query) {
+    //filter job array
+    findJob(query) {
         if (query === '') {
             return [];
         }
@@ -301,7 +301,7 @@ export default class Profile extends Component {
                      <ScrollView >
                    <Text style={styles.subTitle}>עריכת פרופיל</Text>
                    
-                   <View style={{alignItems:"center",  }}>
+                   <View style={{alignItems:"center"}}>
                    <Text style={styles.text}>מקצוע</Text>
 
                    <View style={styles.workPart}>
@@ -482,48 +482,14 @@ export default class Profile extends Component {
                                 })
                             }}
                         />
-                    </View>
-
-
-                 
-
-
-
+                    </View>   
                     
-                    
-
-                    
-                    
-                </View>
-
-
-                       
-
-                     
-
-
-
-                        
-                    
+                </View>   
                 </ScrollView>
-                     </View>
-                
+                </View>   
             )}
-
-
-                
-
-
             </View>
-
-
-
-
         </View>
-
-
-
-
         );
     }
 }
@@ -543,8 +509,6 @@ const styles = StyleSheet.create({
         borderColor: "white",
         alignSelf:"center",
         borderRadius: 160
-
-        
       }, 
       screen: {
         flex: 1,
@@ -642,20 +606,8 @@ const styles = StyleSheet.create({
         marginLeft: 35,
         fontWeight: 'bold'
     },
-    
-     genderNoteSelected: {
-        fontFamily: 'rubik-regular',
-        fontWeight: 'bold',
-        marginVertical: 1,
-        marginBottom: 10,
-        fontSize: 20,
-        color: colors.subTitle,
-        marginRight: 35,
-        marginLeft: 35,
-        fontWeight: 'bold'
-    },
-
-     picker: {
+  
+    picker: {
         width: 90, 
         fontFamily: 'rubik-regular', 
         paddingHorizontal: 15,
@@ -680,8 +632,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         marginHorizontal: 5,
         
-      },
-      kidsYear: {
+    },
+    kidsYear: {
         flexDirection: 'row', 
         flexWrap: 'wrap', 
         alignSelf: "center" 

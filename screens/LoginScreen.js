@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Button, TextInput, View, StyleSheet, Text } from 'react-native';
+import { Alert, Button, TextInput, View, StyleSheet, Text, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import RememberMe from '../components/RememberMe';
 import { AsyncStorage } from 'react-native';
 import Background from '../components/Background'
@@ -72,6 +72,7 @@ export default class LoginScreen extends Component {
 
   render() {
     return (
+      <TouchableWithoutFeedback>
       <Background >
 
         <Text style={styles.titleText} >
@@ -106,6 +107,9 @@ export default class LoginScreen extends Component {
               this.state.usernameValid ? this.fetchOnLogin() : Alert.alert("שם משתמש לא תקין")
             }
             }
+            onPressIn={() => {
+              Keyboard.dismiss;
+            }}
           />
 
         </View>
@@ -122,6 +126,7 @@ export default class LoginScreen extends Component {
         </View>
 
       </Background>
+      </TouchableWithoutFeedback>
     );
   }
 }
