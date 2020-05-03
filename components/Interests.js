@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
         margin: 3,
         paddingHorizontal: 5,
         paddingVertical: 5,
-        borderColor: 'black',
+        borderColor: colors.turkiz,
         borderBottomWidth: 1,
         borderTopWidth: 1,
         borderRightWidth: 1,

@@ -51,15 +51,15 @@ const MapComponent = (props) => {
                 searchData={props.searchData}
                 fitToSuppliedMarkers={(["10M","1M","2M","3M","4M","5M","6M","7M","8M","9M"], {
                         edgePadding:
-                        {
-                            top: 5,
-                            right: 5,
-                            bottom: 5,
-                            left: 5
-                        }, animated:true
+                         {
+                             top: 5,
+                             right: 5,
+                             bottom: 5,
+                             left: 5
+                         }
 
-                    })
-                }
+                     })
+                 }
             >
                 {props.searchData.length > 0 && props.searchData.map((user, i) => {
                     if (user.Lat && user.Lan) {

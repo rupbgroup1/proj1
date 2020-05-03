@@ -21,7 +21,7 @@ export default class ProfileEdit extends Component {
 
         this.state = {
             // להצגת הפרופיל
-            editing: true,
+            editing: false,
 
             fName: '',
             aboutMe: null,
@@ -98,7 +98,7 @@ export default class ProfileEdit extends Component {
                 kidsYearOfBirth: userObj.Kids,
                 lName: userObj.LastName,
                 EjobArea: userObj.WorkPlace,
-                yearOfBirth: userObj.Year,
+                yearOfBirth: userObj.YearOfBirth,
                 numOfKids: userObj.NumOfChildren,
 
                 vFName: userObj.FirstName,
@@ -415,8 +415,8 @@ export default class ProfileEdit extends Component {
                             <Picker
                                 mode="dialog"
                                 style={styles.picker}
-                                selectedValue={this.state.vYearOfBirth}
-                                onValueChange={(value) => this.setState({ vYearOfBirth: value })}>
+                                selectedValue={this.state.YearOfBirth}
+                                onValueChange={(value) => this.setState({ YearOfBirth: value })}>
                                 {years.map((item, index) => {
                                     return (<Picker.Item label={item} value={item} key={index} />);
                                 })}
