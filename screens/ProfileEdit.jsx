@@ -305,7 +305,7 @@ export default class ProfileEdit extends Component {
 
     render() {
         const intrests = this.state.intrests.map((buttonIntersts) =>(
-            <Text style={styles.note}>{buttonIntersts.Subintrest} </Text>
+            <Text style={styles.note}>{buttonIntersts.Subintrest}, </Text>
         ));
 
         // להציג שנות לידה
@@ -356,7 +356,7 @@ export default class ProfileEdit extends Component {
                                 <Text style={styles.title}>על עצמי</Text>
                                 <Text style={styles.note}>{this.state.aboutMe}</Text>
                                 <Text style={styles.title}>תחומי עניין</Text>
-                                <Text>{intrests}</Text>
+                                <Text style={styles.note}>{intrests}</Text>
                                 
                                 <Text style={styles.title}>ילדים</Text>
                                 <Text>{kids}</Text>

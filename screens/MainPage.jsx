@@ -6,6 +6,7 @@ import Header from '../components/Header';
 import PagesNav from '../components/PagesNav';
 import OurButton from '../components/OurButton';
 import firebaseSvc from '../FirebaseSvc';
+import ProfileButton from '../components/ProfileButton';
 
 
 export default class MainPage extends Component {
@@ -29,6 +30,7 @@ export default class MainPage extends Component {
     return (
       <View style={{ flex: 1, alignItems: 'center' }}>
         <Header />
+        <ProfileButton onPress={() => navigation.navigate('Profile')} />
         <Text style={styles.header}>מה חדש בשכונה?</Text>
         <View style={{ width: '100%', height: '50%' }}>
           <Feed />

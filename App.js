@@ -31,6 +31,7 @@ console.warn = message => {
     _console.warn(message);
   }
 };
+
 //add fonts to the app
 const fetchFonts = () => {
   return Font.loadAsync({
