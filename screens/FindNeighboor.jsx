@@ -249,7 +249,7 @@ export default class FindNeighboor extends Component {
                     handleMainChange={(mainI) => this.handleMainChange(mainI)}
                     subInArray={this.state.subInArray}
                     callFetch={(id) => {
-                        id!==this.state.intrestId&&this.fetchSearchNeiByInterest(id)
+                    id!==this.state.intrestId&&this.fetchSearchNeiByInterest(id)
                     }}
                     isMulti={false}
                 />
