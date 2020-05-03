@@ -35,7 +35,7 @@ export default class RegistrationExtra extends Component {
             CityArray: [],
             hideCityResults: false,
             choosenInterests: [],
-            finished: false
+            finished: false,
         };
 
     }
@@ -43,7 +43,8 @@ export default class RegistrationExtra extends Component {
     componentDidMount = () => {
         this.getUser();
 
-        //console.log(this.state.kidsYearOfBirth);
+        
+        console.log(this.state.editing);
 
     }
 
@@ -260,6 +261,7 @@ export default class RegistrationExtra extends Component {
     }
 
     render() {
+        
         const thisYear = (new Date()).getFullYear();
         const years = Array.from(new Array(60), (val, index) => (thisYear - index).toString());
         const status = [{ label: 'רווק/ה' }, { label: 'נשוי/אה' }, { label: 'אלמן/ה' }, { label: 'גרוש/ה' }];
@@ -276,9 +278,13 @@ export default class RegistrationExtra extends Component {
                 <BackButton goBack={() => navigation.navigate('MainPage')} />
                 <ScrollView style={styles.container}
                     keyboardShouldPersistTaps={"handled"}>
+                        
+                    
                     <Text style={styles.subTitle} >
                         פרטים נוספים
                    </Text>
+
+                  
                     <Text style={{ textAlign: 'center' }}>
                         על מנת לשפר את חוזק הפרופיל, אנא מלא/י כמה שיותר פרטים
                    </Text>

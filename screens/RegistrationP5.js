@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Button, View, StyleSheet, Text, Image } from 'react-native';
 import colors from '../assets/constant/colors';
-import ProgressCircle from 'react-native-progress-circle';
 
 
 const RegistrationIntroduction = ({ navigation }) => {
