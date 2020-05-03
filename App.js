@@ -28,6 +28,7 @@ import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 import { YellowBox } from 'react-native';
 import _ from 'lodash';
+import ProfileEdit from './screens/ProfileEdit';
 
 //cancel the timer error
 YellowBox.ignoreWarnings(['Setting a timer']);
@@ -72,8 +73,8 @@ const navigator = createStackNavigator({
   MyFindings:MyFindings,
   MyEvents:MyEvents,
   MyBusinesses:MyBusinesses,
-  MyChat:MyChat
-
+  MyChat:MyChat,
+  ProfileEdit:ProfileEdit
   
   }, {
         initialRouteName: 'MainPage',

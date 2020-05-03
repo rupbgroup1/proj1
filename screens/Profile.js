@@ -1,5 +1,5 @@
 import React, { Component, createElement } from 'react';
-import { Button, View, StyleSheet, Text,  Image , Alert, AsyncStorage , TouchableOpacity, Picker, SafeAreaView} from 'react-native';
+import { Button, View, StyleSheet, Text,  Image , Alert, AsyncStorage , TouchableOpacity, Picker, SafeAreaView, ScrollView} from 'react-native';
 import Header from '../components/Header';
 import colors from '../assets/constant/colors';
 import BackButton from '../components/BackButton';
@@ -12,7 +12,7 @@ import {
     FontAwesome5
 } from '@expo/vector-icons';
 
-import { ScrollView } from 'react-native-gesture-handler';
+//import { ScrollView } from 'react-native-gesture-handler';
 
 
 export default class Profile extends Component {
@@ -33,7 +33,7 @@ export default class Profile extends Component {
             nameJob:'',
             kidsYearOfBirth:[],
             lName:'',
-            jobArea:'',
+            EjobArea:'',
             yearOfBirth:'',
             gender:'',
             //משתנים לעריכת פרופיל
@@ -52,7 +52,13 @@ export default class Profile extends Component {
             hideResults: false,
             CityArray: [],
             hideCityResults: false,
-            choosenInterests: []
+            choosenInterests: [],
+
+
+            //תחומי עניין
+            IntrestsArray: [],
+            subInArray: [],
+            mainI: '',
         }
 
 
@@ -78,10 +84,10 @@ export default class Profile extends Component {
             familyStatus: userObj.FamilyStatus,
             image: userObj.Image,
             intrests: userObj.Intrests,
-            nameJob:userObj.JobTitle.JobName,
+            EnameJob:userObj.JobTitle.JobName,
             kidsYearOfBirth:userObj.Kids, 
             lName: userObj.LastName,
-            jobArea: userObj.WorkPlace,
+            EjobArea: userObj.WorkPlace,
             yearOfBirth: userObj.YearOfBirth,
             gender: userObj.Gender,
 
@@ -89,9 +95,73 @@ export default class Profile extends Component {
             vLName: userObj.LastName,
             vImage: userObj.Image,
             vYearOfBirth: userObj.YearOfBirth,
-            vGender: userObj.Gender,    
+            vGender: userObj.Gender, 
+            vAboutMe : userObj.AboutMe,
+            vFamilyStatus: userObj.FamilyStatus,
+            numOfKids: userObj.NumOfChildren,
+            nameJob:userObj.JobTitle.JobName,
         })
     }) 
+    }
+
+    
+    onSelectedItemsChange = selectedYears => {
+        this.setState({ selectedYears });
+    }
+
+    //when main I is selected - this func fetch all the sub interests
+    handleMainChange(mainI) {
+        this.setState({ mainI: mainI }, () => {
+            this.fetchSubInterest();
+        });
+
+    }
+    //fetch -get all intrests to search by
+    fetchGetAllIntrests() {
+        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Intrests', {
+
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'application/json; charset=UTF-8',
+            })
+        })
+            .then(res => {
+                return res.json();
+            })
+            .then(
+                (result) => {
+                    this.setState({ IntrestsArray: result })
+                },
+                (error) => {
+                    console.log("err post=", error);
+                    Alert.alert("מצטערים, אנו נסו שנית!");
+                }
+            );
+    }
+
+    fetchSubInterest = () => {
+        //console.log(this.state.mainI);
+        // console.log(this.state.searchName+this.state.user.CityName);
+        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Intrests/Sub?mainI=' + this.state.mainI, {
+            method: 'GET',
+            headers: new Headers({
+                'Content-type': 'application/json; charset=UTF-8'
+            })
+        })
+            .then(res => {
+                return res.json();
+            })
+
+            .then(
+                (result) => {
+                    //console.log("fetch result= ", result[0]);
+                    this.setState({ subInArray: result });
+
+                },
+                (error) => {
+                    console.log("err post=", error);
+                });
+
     }
 
       //create array when num of kids 
@@ -274,7 +344,7 @@ export default class Profile extends Component {
                 </TouchableOpacity>
 
             {!this.state.editing && (
-                    <View style={styles.screen}>
+                   <View style={styles.screen}>
                         <Text style={styles.subTitle}>הפרופיל שלי</Text>
                         <Image style={styles.avatar}
                                 source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}/>
@@ -282,7 +352,7 @@ export default class Profile extends Component {
                         <View style={styles.center}>
                             <Text style={styles.note,{fontSize:30,}}>{this.state.fName} {this.state.lName}</Text>
                             <Text style={styles.note}>{this.state.familyStatus}, {this.state.yearOfBirth}</Text>
-                            <Text style={styles.note}>{this.state.nameJob}, {this.state.jobArea}</Text>
+                            <Text style={styles.note}>{this.state.EnameJob}, {this.state.EjobArea}</Text>
                             <Text style={styles.title}>על עצמי</Text>
                             <Text style={styles.note}>{this.state.aboutMe}</Text>
                             <Text style={styles.title}>תחומי עניין</Text>
@@ -297,6 +367,8 @@ export default class Profile extends Component {
 
 
             {this.state.editing && (
+
+                 //this.props.navigation.navigate('RegistrationExtra', {edit: true})
                  <View style={styles.screen}>
                      <ScrollView >
                    <Text style={styles.subTitle}>עריכת פרופיל</Text>
@@ -315,8 +387,8 @@ export default class Profile extends Component {
                             hideResults={this.state.hideResults}
                             autoCorrect={false}
                             defaultValue={this.state.query}
-                            placeholder='הזנ/י מקצוע'
-                            //placeholder={this.state.JobName !== null ? (this.state.nameJob) + "" : 'בחר/י תחום עבודה'}
+                            //placeholder='הזנ/י מקצוע'
+                            placeholder={this.state.JobName !== null ? (this.state.nameJob) + "" : 'בחר/י תחום עבודה'}
                             data={jobs}
                             style={styles.autoComplete}
                             onChangeText={text => this.setState({ query: text, hideResults: false })}
@@ -324,6 +396,33 @@ export default class Profile extends Component {
                                 <TouchableOpacity style={styles.list} onPress={() => this.setState({ query: item.JobName, hideResults: true, jobType: item.JobCode, nameJob: item.JobName })}>
                                     <Text style={styles.itemText}>
                                         {item.JobName}
+                                    </Text>
+                                </TouchableOpacity>
+                            )}
+
+                        />
+                    </View>
+
+                    <View style={styles.workPart}>
+                        <Text style={styles.titles}>מקום עבודה</Text>
+                        <Autocomplete
+                            //מקום עבודה
+                            listContainerStyle={{ alignItems: "flex-start", alignItems: 'stretch' }}
+                            listStyle={{ position: "relative", borderColor: 'white', borderRadius: 8 }}
+                            inputContainerStyle={{ borderColor: colors.reeBackgrouond }}
+                            data={cities}
+                            hideResults={this.state.hideCityResults}//close the results
+                            autoCorrect={false}
+                            defaultValue={this.state.queryCity}
+                            //placeholder='הזנ/י את מיקום '
+                            placeholder={this.state.jobArea !== null ? (this.state.jobArea) + "" : 'בחר/י מקום עבודה'}
+                            style={styles.autoComplete}
+                            onChangeText={text => this.setState({ queryCity: text, hideCityResults: false })}
+                            renderItem={({ item }) => (
+                                //the view
+                                <TouchableOpacity onPress={() => this.setState({ queryCity: item.CityName, hideCityResults: true, jobArea: item.CityName, CityName: item.CityName })}>
+                                    <Text style={styles.itemText}>
+                                        {item.CityName}
                                     </Text>
                                 </TouchableOpacity>
                             )}
@@ -390,7 +489,7 @@ export default class Profile extends Component {
                     //קצת על עצמי 
                         value={this.state.vAboutMe}
                         label='קצת על עצמי'
-                        placeholder={this.state.vAboutMe === null ? 'כתוב/י מספר..'  : (this.state.aboutMe)}
+                        placeholder={this.state.vAboutMe === null ? 'כתוב/י מספר..'  : (this.state.vAboutMe)}
                         onChangeText={(vAboutMe) => this.setState({ vAboutMe })}
                         multiline={true}
                         placeholderTextColor={'black'}
@@ -428,7 +527,8 @@ export default class Profile extends Component {
                         ///מספר ילדים
                         value={this.state.numOfKids}
                         label='מספר ילדים'
-                        placeholder='הזנ/י את מספר ילדיך'
+                        placeholder={'הזנ/י את מספר ילדיך'}
+                        //placeholder={(this.state.numOfKids === 0) ? 'הזנ/י את מספר ילדיך' : (this.state.numOfKids)}
                         //placeholder={(this.state.user.NumOfChildren !== null) ? (this.state.user.NumOfChildren) + "" : 'כתוב/י מספר..'}
                         onChangeText={(numOfKids) => this.handleNumOfKids(numOfKids)}
                         multiline={true}
@@ -441,6 +541,7 @@ export default class Profile extends Component {
 
 {(this.state.kidsYearOfBirth.length > 0) && <Text style={styles.text}>שנות לידה ילדים</Text>}
                     <View style={styles.kidsYear}>
+                        
                         
                         {this.state.kidsYearOfBirth.length > 0 && this.state.kidsYearOfBirth.map((age, index) => {
                             return (<Picker //שנת לידה ילדים
@@ -464,6 +565,20 @@ export default class Profile extends Component {
 
                         
                     </View>
+
+
+                    <Text style={styles.text}>
+                        בחר/י תחומי עניין
+                    </Text>
+                    {this.state.finished &&
+                        <Interests
+                            IntrestsArray={this.state.IntrestsArray}
+                            handleMainChange={(mainI) => this.handleMainChange(mainI)}
+                            subInArray={this.state.subInArray}
+                            callFetch={(iArray) => this.setState({ choosenInterests: iArray })}
+                            isMulti={true}
+                            initialInterest={this.state.initialInterest ? this.state.initialInterest : []}
+                        />}
 
                     <View style={styles.row}>
                         <Button
@@ -613,7 +728,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         paddingVertical: 15, 
         backgroundColor: 'white', 
-        borderColor: 'gray'
+        borderColor: 'gray',
     },
     button: {
         width: '90%',
@@ -686,5 +801,11 @@ const styles = StyleSheet.create({
 
     workPart: { 
         padding: 10, fontFamily: 'rubik-regular' 
+    },
+
+    itemText: {
+        fontSize: 15,
+        margin: 2,
+        color: 'black'
     },
   });
