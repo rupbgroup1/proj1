@@ -776,7 +776,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         paddingVertical: 15, 
         backgroundColor: 'white', 
-        borderColor: 'gray'
+        borderColor: 'gray',
     },
     button: {
         width: '90%',

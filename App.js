@@ -65,7 +65,7 @@ const navigator = createStackNavigator({
   ProfileEdit:ProfileEdit
   
   }, {
-        initialRouteName: 'ProfileEdit',
+        initialRouteName: 'LoginScreen',
         defaultNavigationOptions: {
         headerShown: false
      }

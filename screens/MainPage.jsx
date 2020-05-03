@@ -47,7 +47,7 @@ export default class MainPage extends Component {
           />
 
           <Button
-            onPress={() => navigation.navigate('Profile')}
+            onPress={() => navigation.navigate('ProfileEdit')}
             style={styles.item}
             title={'פרופיל'}
           />

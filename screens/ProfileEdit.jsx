@@ -8,6 +8,11 @@ import { Dropdown } from 'react-native-material-dropdown';
 import Autocomplete from 'react-native-autocomplete-input';
 import { ScrollView } from 'react-native-gesture-handler';
 import BackButton from '../components/BackButton';
+import OurButton from '../components/OurButton';
+import {
+    SimpleLineIcons,
+    FontAwesome5
+} from '@expo/vector-icons';
 
 
 export default class ProfileEdit extends Component {
@@ -94,7 +99,11 @@ export default class ProfileEdit extends Component {
             lName: userObj.LastName,
             EjobArea: userObj.WorkPlace,
             yearOfBirth: userObj.Year,
-            numOfKids: userObj.NumOfChildren
+            numOfKids: userObj.NumOfChildren,
+
+            vFName:userObj.FirstName,
+            vLName: userObj.LastName,
+            gender: userObj.Gender
 
             }, () => {
                 this.fetchGetAllIntrests();
@@ -248,6 +257,10 @@ export default class ProfileEdit extends Component {
     fetchUpdateUser() {
         const user = {
             UserId: this.state.user.UserId,
+            FirstName: this.state.vFName,
+            LastName: this.state.vLName,
+            Gender: this.state.gender,
+            YearOfBirth: this.state.yearOfBirth,
             JobTitleId: this.state.jobType,
             WorkPlace: this.state.jobArea,
             FamilyStatus: this.state.familyStatus,
@@ -260,7 +273,7 @@ export default class ProfileEdit extends Component {
         console.log("userFetch", user);
 
 
-        fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/User/Extra', {
+        fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/User/Put', {
             method: 'PUT',
             body: JSON.stringify(user),
             headers: new Headers({
@@ -362,32 +375,84 @@ export default class ProfileEdit extends Component {
                        עריכת פרופיל
                   </Text>
 
+                  <Input
+                    //שם פרטי 
+                        value={this.state.vFName}
+                        label='שם פרטי'
+                        placeholder={this.state.vFName === null ? 'כתוב/י מספר..'  : (this.state.vFName)}
+                        onChangeText={(vFName) => this.setState({ vFName })}
+                        multiline={true}
+                        placeholderTextColor={'black'}
+                        containerStyle={styles.inputContainerStyle}
+                        inputStyle={styles.inputInputStyle}
+                        labelStyle={styles.inputLabelStyle}
+
+                    />
+
+                    <Input
+                    //שם משפחה 
+                        value={this.state.vLName}
+                        label='שם משפחה'
+                        placeholder={this.state.vFName === null ? 'כתוב/י מספר..'  : (this.state.aboutMe)}
+                        onChangeText={(vLName) => this.setState({ vLName })}
+                        multiline={true}
+                        placeholderTextColor={'black'}
+                        containerStyle={styles.inputContainerStyle}
+                        inputStyle={styles.inputInputStyle}
+                        labelStyle={styles.inputLabelStyle}
+
+                    />
+
+                    <Text style={styles.text} >מגדר</Text>
+                    <View style={styles.genderView}>
+                        <OurButton style={styles.genderButton} onPress={() => this.setState({ gender: 0 })}><SimpleLineIcons name="user" size={40} color="black" /></OurButton>
+                        <OurButton style={styles.genderButton} onPress={() => this.setState({ gender: 1 })} ><SimpleLineIcons name="user-female" size={40} color="black" /></OurButton>
+                        <OurButton style={styles.genderButton} onPress={() => this.setState({ gender: 2 })}><SimpleLineIcons name="user-follow" size={40} color="black" /></OurButton>
+                    </View>
+                    <View style={styles.genderView}>
+                        <Text style={this.state.gender === 0 ? styles.genderNoteSelected : styles.genderNote} >גבר </Text>
+                        <Text style={this.state.gender === 1 ? styles.genderNoteSelected : styles.genderNote}  >אישה </Text>
+                        <Text style={this.state.gender === 2 ? styles.genderNoteSelected : styles.genderNote}  >אחר </Text>
+                    </View>
+
+                    <Text style={styles.text} >שנת לידה</Text>
+                    <Picker
+                        mode="dialog"
+                        style={styles.picker}
+                        selectedValue={this.state.vYearOfBirth}
+                        onValueChange={(value) => this.setState({ vYearOfBirth: value })}>
+                        {years.map((item, index) => {
+                            return (<Picker.Item label={item} value={item} key={index} />);
+                        })}
+                    </Picker>
+
                   
                    <View style={styles.workPart}>
-                       <Text style={styles.text}>מקצוע</Text>
-                       <Autocomplete
-                           //מקצוע
+                   <Text style={styles.text}>מקצוע</Text>
+                        <Autocomplete
+                            //מקצוע
 
-                           listContainerStyle={{ alignItems: "center", alignItems: 'stretch' }}
-                           listStyle={{ position: "relative", borderColor: 'white', borderRadius: 8 }}
-                           inputContainerStyle={{ borderColor: colors.reeBackgrouond }}
-                           hideResults={this.state.hideResults}
-                           autoCorrect={false}
-                           defaultValue={this.state.query}
-                           //placeholder='הזנ/י מקצוע'
-                           placeholder={this.state.nameJob !== null ? (this.state.nameJob) + "" : 'בחר/י תחום עבודה'}
-                           style={styles.autoComplete}
-                           onChangeText={text => this.setState({ query: text, hideResults: false })}
-                           renderItem={({ item }) => (
-                               <TouchableOpacity style={styles.list} onPress={() => this.setState({ query: item.JobName, hideResults: true, jobType: item.JobCode, nameJob: item.JobName })}>
-                                   <Text style={styles.itemText}>
-                                       {item.JobName}
-                                   </Text>
-                               </TouchableOpacity>
-                           )}
+                            listContainerStyle={{ alignItems: "flex-start", alignItems: 'stretch' }}
+                            listStyle={{ position: "relative", borderColor: 'white', borderRadius: 8 }}
+                            inputContainerStyle={{ borderColor: colors.reeBackgrouond }}
+                            hideResults={this.state.hideResults}
+                            autoCorrect={false}
+                            defaultValue={this.state.query}
+                            //placeholder='הזנ/י מקצוע'
+                            placeholder={this.state.JobName !== null ? (this.state.nameJob) + "" : 'בחר/י תחום עבודה'}
+                            data={jobs}
+                            style={styles.autoComplete}
+                            onChangeText={text => this.setState({ query: text, hideResults: false })}
+                            renderItem={({ item }) => (
+                                <TouchableOpacity style={styles.list} onPress={() => this.setState({ query: item.JobName, hideResults: true, jobType: item.JobCode, nameJob: item.JobName })}>
+                                    <Text style={styles.itemText}>
+                                        {item.JobName}
+                                    </Text>
+                                </TouchableOpacity>
+                            )}
 
-                       />
-                   </View>
+                        />
+                    </View>
                    <View style={styles.workPart}>
                        <Text style={styles.text}>מקום עבודה</Text>
                        <Autocomplete
@@ -504,13 +569,27 @@ export default class ProfileEdit extends Component {
                            initialInterest={this.state.initialInterest ? this.state.initialInterest : []}
                        />}
 
-                   <View style={styles.button}>
-                       <Button
-                           title={'המשך'} onPress={() => {
-                               this.fetchUpdateUser()
-                           }}
-                       />
-                   </View>
+<View style={styles.row}>
+                        <Button
+                            style={styles.item}
+                            title={'סיום'}
+                            onPress= {()=> this.fetchUpdateUser()   }
+                            
+                            
+                        />
+                        <Button
+                          style={styles.item}
+                            title={'ביטול'} onPress={() => {
+                                this.setState({
+                                    vFName: this.state.fName,
+                                    vLName: this.state.lName,
+                                    vImage: this.state.image,
+                                    vYearOfBirth: this.state.yearOfBirth,
+                                    vGender: this.state.gender,    
+                                })
+                            }}
+                        />
+                    </View>
                </ScrollView>
 
                 )}
@@ -650,7 +729,8 @@ export default class ProfileEdit extends Component {
             paddingHorizontal: 15,
             paddingVertical: 15, 
             backgroundColor: 'white', 
-            borderColor: 'gray'
+            borderColor: 'gray',
+            alignSelf:"center"
         },
         button: {
             width: '90%',
@@ -658,7 +738,7 @@ export default class ProfileEdit extends Component {
             alignSelf: "center",
             
         },
-        /*row: {
+        row: {
             flexDirection: 'row',
             justifyContent:'space-between',
             paddingHorizontal: 10,
@@ -669,7 +749,7 @@ export default class ProfileEdit extends Component {
             justifyContent: 'space-around',
             marginHorizontal: 5,
             
-          },*/
+          },
           kidsYear: {
             flexDirection: 'row', 
             flexWrap: 'wrap', 
@@ -718,5 +798,17 @@ export default class ProfileEdit extends Component {
             fontSize: 15,
             margin: 2,
             color: 'black'
+        },
+        inputContainerStyle :{
+            alignItems:"center", paddingLeft:'5%', paddingRight:'5%',  padding: 10
+        },
+    
+        inputInputStyle:{
+            fontFamily: 'rubik-regular', textAlign:"right"
+        },
+    
+        inputLabelStyle:{
+            fontFamily: 'rubik-regular', fontSize:20, color:'#708090'
+    
         },
       });
