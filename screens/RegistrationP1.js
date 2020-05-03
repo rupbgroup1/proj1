@@ -119,7 +119,6 @@ export default class RegistrationP1 extends Component {
                         placeholder={'סיסמה'}
                         style={styles.input}
                         secureTextEntry
-                        keyboardType='visible-password'
                         onEndEditing={() => this.checkPassIsValid()}
                     />
                     {!this.state.ValidPass && (

@@ -309,7 +309,7 @@ const styles = StyleSheet.create({
         flex: 1,
         zIndex: -1,
         borderWidth: 1,
-        borderColor: 'black',
+        borderColor: 'white',
         overflow: 'hidden',
         alignItems: 'center',
         justifyContent: 'center'
@@ -335,7 +335,7 @@ const styles = StyleSheet.create({
         width: '100%',
         justifyContent: 'space-between',
         //backgroundColor:'#F36B74'
-        backgroundColor: '#6c2147'
+        backgroundColor: '#0fb9b1'
 
     },
     screen: {

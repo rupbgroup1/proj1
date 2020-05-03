@@ -169,11 +169,11 @@ const styles = StyleSheet.create({
   },
   createUser: {
     fontFamily: 'rubik-regular',
-    flexDirection: 'row-reverse',
+    flexDirection: 'row',
     fontFamily: 'varela'
   },
   RememberMe: {
-    flexDirection: 'row-reverse',
+    flexDirection: 'row',
     marginRight: 145,
     paddingBottom: 20
   },

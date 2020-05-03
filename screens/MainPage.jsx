@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
+import { Button, View, StyleSheet, Text, TouchableOpacity, Image,TouchableWithoutFeedback } from 'react-native';
 import colors from '../assets/constant/colors';
 import Feed from '../components/Feed';
 import Header from '../components/Header';
@@ -9,6 +9,7 @@ import firebaseSvc from '../FirebaseSvc';
 import BusinessesBTN from '../components/BusinessesButton';
 import NeiButton from '../components/NeighboorsButton';
 import EventsBTN from '../components/EventsButton';
+
 
 export default class MainPage extends Component {
   constructor(props) {
@@ -29,6 +30,7 @@ export default class MainPage extends Component {
   render() {
     const { navigation } = this.props;
     return (
+      <TouchableWithoutFeedback>
       <View style={{ flex: 1, alignItems: 'center' }}>
         <Header />
         <Text style={styles.header}>מה חדש בשכונה?</Text>
@@ -72,7 +74,7 @@ export default class MainPage extends Component {
 
           <View style={styles.item3} >
           <BusinessesBTN
-            onPress={() => navigation.navigate('Profile')}>
+            onPress={() => navigation.navigate('ProfileEdit')}>
             פרופיל
           </BusinessesBTN>
           </View>
@@ -80,6 +82,7 @@ export default class MainPage extends Component {
 
 
       </View>
+      </TouchableWithoutFeedback>
     );
   }
 }
