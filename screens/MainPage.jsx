@@ -6,12 +6,9 @@ import Header from '../components/Header';
 import PagesNav from '../components/PagesNav';
 import OurButton from '../components/OurButton';
 import firebaseSvc from '../FirebaseSvc';
-import ProfileButton from '../components/ProfileButton';
+import BusinessesBTN from '../components/BusinessesButton';
 import NeiButton from '../components/NeighboorsButton';
 import EventsBTN from '../components/EventsButton';
-import BusinessesBTN from '../components/BusinessesButton';
-import MenuNavigator from '../components/SideBarMenu';
-
 
 export default class MainPage extends Component {
   constructor(props) {
@@ -32,17 +29,33 @@ export default class MainPage extends Component {
   render() {
     const { navigation } = this.props;
     return (
-      <View style={styles.screen}>
-        <Header style={{flex:1}} />
-        <View style={styles.header}>
-        <Text>מה חדש בשכונה?</Text>
-        <MenuNavigator></MenuNavigator>
-        </View>
-        
+      <View style={{ flex: 1, alignItems: 'center' }}>
+        <Header />
+        <Text style={styles.header}>מה חדש בשכונה?</Text>
         <View style={{ width: '100%', height: '50%' }}>
           <Feed />
         </View>
+        {/* <View style={styles.row}>
+
+          <Button
+            onPress={() => navigation.navigate('FindNeighboor')}
+            style={styles.item}
+            title={'הכר את שכניך'}
+          />
+          <Button
+            onPress={() => navigation.navigate('RegistrationExtra')}
+            style={styles.item}
+            title={'המשך הרשמה'}
+          />
+
+          <Button
+            onPress={() => navigation.navigate('ProfileEdit')}
+            style={styles.item}
+            title={'פרופיל'}
+          />
+        </View> */}
         <View style={styles.row}>
+          
           <View style={styles.item1}>
           <NeiButton
             onPress={() => navigation.navigate('FindNeighboor')}>
@@ -57,7 +70,7 @@ export default class MainPage extends Component {
           </EventsBTN>
           </View>
 
-          <View style={styles.item3}>
+          <View style={styles.item3} >
           <BusinessesBTN
             onPress={() => navigation.navigate('Profile')}>
             פרופיל
@@ -94,22 +107,20 @@ const styles = StyleSheet.create({
   },
   row: {
     flex:3,
-    flexDirection: 'column',
+    flexDirection: 'row',
+    justifyContent:'space-evenly'
   },
   item1:{
-    position: 'absolute',
-    bottom:10,
-    left:10,
+    top:40,
+   
   },
   item2:{
-    position: 'absolute',
-    bottom:80,
-    left:120,
+    top:100,
+    left:10,
   },
   item3:{
-    position: 'absolute',
-    bottom:30,
-    left:220,
+    top:30,
+   left:10
   },
 
 });

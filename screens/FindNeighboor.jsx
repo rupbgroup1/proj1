@@ -274,8 +274,9 @@ export default class FindNeighboor extends Component {
                     />
                     <TouchableOpacity
                         onPress={() => this.props.navigation.navigate('Param')}
+                        style={{paddingVertical:15}}
                     >
-                        <Text>מרוצה מההתאמה? עזור לנו להשתפר עבורך</Text>
+                        <Text style={{fontFamily: 'rubik-regular', fontSize:16}}>מרוצה מההתאמה? עזור לנו להשתפר עבורך</Text>
                     </TouchableOpacity>
                 </View>
 

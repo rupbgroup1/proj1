@@ -89,8 +89,8 @@ export default class Param extends Component{
          < View style={styles.container}>
                 <ScrollView style={styles.container} >
 
-                <View style={{paddingLeft:'5%', paddingTop:80}}>
-             <OurButton onPress={() => this.props.navigation.navigate('FindNeighboor')}><SimpleLineIcons name="close" size={40} color="black" /></OurButton>
+                <View style={{paddingHorizontal:10, paddingTop:60}}>
+             <OurButton onPress={() => this.props.navigation.navigate('FindNeighboor')}><SimpleLineIcons name="close" size={40} color="grey" /></OurButton>
     
              </View>
     
@@ -154,10 +154,10 @@ const styles = StyleSheet.create({
   subTitle: {
     fontFamily: 'rubik-regular',
     marginVertical: 1,
-    fontSize: 30,
-    fontWeight: 'bold',
+    fontSize: 26,
     color: colors.subTitle,
     paddingTop: 25,
+    paddingHorizontal:20,
     textAlign:"center",
 
 },
@@ -169,5 +169,3 @@ button: {
 
  
 });
-
-

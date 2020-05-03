@@ -24,7 +24,9 @@ const styles = StyleSheet.create({
         elevation:20,
         height: 120,
         width: 120,
-        borderRadius:400
+        borderRadius:400,
+        textShadowOffset: { width: 1, height: 1 },
+        textShadowRadius: 5,
     },
     buttonText:{
         color:'white',

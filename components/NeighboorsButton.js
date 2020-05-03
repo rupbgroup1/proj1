@@ -25,6 +25,8 @@ const styles = StyleSheet.create({
         height: 100,
         width: 100,
         borderRadius:400,
+        textShadowOffset: { width: 1, height: 1 },
+        textShadowRadius: 5,
     },
     buttonText:{
         color:'white',
