@@ -24,6 +24,7 @@ import { AppLoading } from 'expo';
 import { YellowBox } from 'react-native';
 import _ from 'lodash';
 import ProfileEdit from './screens/ProfileEdit';
+import GeneralEvents from './screens/Events/GeneralEvents';
 
 //cancel the timer error
 YellowBox.ignoreWarnings(['Setting a timer']);
@@ -65,7 +66,8 @@ const navigator = createStackNavigator({
   Feed:Feed,
   Param:Param,
   Profile:Profile,
-  ProfileEdit:ProfileEdit
+  ProfileEdit:ProfileEdit,
+  GeneralEvents:GeneralEvents
   
   }, {
         initialRouteName: 'LoginScreen',

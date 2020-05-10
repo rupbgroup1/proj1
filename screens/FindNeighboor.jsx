@@ -18,9 +18,6 @@ export default class FindNeighboor extends Component {
             region: {
                 latitudeDelta: 0.009,
                 longitudeDelta: 0.009,
-                //for now: **delete**
-                //longitude:34.121212,
-                //latitude:34.121212
             },
             IntrestsArray: [],
             searchData: [],
@@ -33,7 +30,6 @@ export default class FindNeighboor extends Component {
     componentDidMount() {
         this.fetchGetAllIntrests();
         this.getUser();
-        // console.log(this.state.searchData)
     }
 
     async getUser() {
@@ -181,7 +177,7 @@ export default class FindNeighboor extends Component {
 
         this.setState({ selectedInterest: Id });
         const intrestId = Id;
-        const NeighborhoodName = 'תל מונד';
+        const NeighborhoodName = this.user.NeighborhoodName;
 
         return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Neighboors/Intrest/' + NeighborhoodName + '/' + intrestId, {
             method: 'GET',
@@ -237,7 +233,6 @@ export default class FindNeighboor extends Component {
                     leftIcon={{ type: 'EvilIcons', name: 'search' }}
                     onEndEditing={() => this.fetchSearchNeiByName()}
 
-                //placeholderTextColor="black"
 
                 />
                 <Text style={styles.text} >

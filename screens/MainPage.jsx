@@ -38,8 +38,8 @@ export default class MainPage extends Component {
 
           <View style={styles.item2}>
           <EventsBTN
-            onPress={() => navigation.navigate('RegistrationExtra')}>
-            המשך הרשמה
+            onPress={() => navigation.navigate('GeneralEvents')}>
+           אירועים
           </EventsBTN>
           </View>
 
