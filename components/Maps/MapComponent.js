@@ -1,11 +1,18 @@
 import React, { useState, Component, useCallback, useEffect } from 'react';
-import { Dimensions, TouchableOpacity, AsyncStorage, Text, Image } from 'react-native';
+import { Dimensions, TouchableOpacity, AsyncStorage, Text, Image, Alert } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
+import Overlay from 'react-native-modal-overlay';
 
 
 
 const MapComponent = (props) => {
     const [selectedLocation, setSelectedLocation] = useState();
+
+    const [visible, setVisible] = useState(false);
+
+    const toggleOverlay = () => {
+        setVisible(!visible);
+    };
     //const blueMarker ="#0C2C33";
     // //const pinkMarker ="#703D57";
      const blueImage = require('./MarkerIcons/location-icon-m.jpg');
@@ -23,6 +30,7 @@ const MapComponent = (props) => {
         });
     };
 
+
     let markerCoordinates;
     if (selectedLocation) {
         markerCoordinates = {
@@ -34,6 +42,8 @@ const MapComponent = (props) => {
         };
         AsyncStorage.mergeItem('user', JSON.stringify(selectedLocation));
     }
+
+    
  
     return (
         <TouchableOpacity style={{ flex: 1 }} onPress={props.onPress}>
@@ -76,6 +86,9 @@ const MapComponent = (props) => {
                             }
                             identifier={i+"M"}
                             title={user.FirstName + ", " + age + about}
+                            onPress={()=>
+                                 Alert.alert(user.FirstName  +("\n") + age )
+                                }
                         >
                             {/* <Text style={{color:'black'}}>{user.MatchRate}%</Text> */}
                             {user.Gender !== 1 ?

@@ -133,7 +133,6 @@ export default class RegistrationP1 extends Component {
                         placeholder={'הזן שוב את הסיסמה לאישור'}
                         style={styles.input}
                         secureTextEntry
-                        keyboardType='visible-password'
                         onEndEditing={() => this.checkPass()}
                     />
                     {!!this.state.passError && (

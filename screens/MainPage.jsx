@@ -16,17 +16,6 @@ export default class MainPage extends Component {
     super(props);
   }
 
-  // componentDidMount() {
-  //   this.getUser();
-  // }
-
-  // async getUser() {
-  //   let userJSON = await AsyncStorage.getItem('user');
-  //   const userObj = await JSON.parse(userJSON);
-  //   //this.setState({ neiName: userObj.NeighborhoodName});
-  //   //firebaseSvc.getNei(userObj.NeighborhoodName);
-  // }
-
   render() {
     const { navigation } = this.props;
     return (
@@ -37,25 +26,7 @@ export default class MainPage extends Component {
         <View style={{ width: '100%', height: '50%' }}>
           <Feed />
         </View>
-        {/* <View style={styles.row}>
-
-          <Button
-            onPress={() => navigation.navigate('FindNeighboor')}
-            style={styles.item}
-            title={'הכר את שכניך'}
-          />
-          <Button
-            onPress={() => navigation.navigate('RegistrationExtra')}
-            style={styles.item}
-            title={'המשך הרשמה'}
-          />
-
-          <Button
-            onPress={() => navigation.navigate('ProfileEdit')}
-            style={styles.item}
-            title={'פרופיל'}
-          />
-        </View> */}
+        
         <View style={styles.row}>
           
           <View style={styles.item1}>
@@ -67,8 +38,8 @@ export default class MainPage extends Component {
 
           <View style={styles.item2}>
           <EventsBTN
-            onPress={() => navigation.navigate('RegistrationExtra')}>
-            המשך הרשמה
+            onPress={() => navigation.navigate('GeneralEvents')}>
+           אירועים
           </EventsBTN>
           </View>
 

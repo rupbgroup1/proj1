@@ -76,6 +76,7 @@ export default class ProfileEdit extends Component {
         AsyncStorage.getItem('user', (ERR, userJSON) => {
             let userObj = JSON.parse(userJSON);
             console.log("fromuser", userObj, "JSON", userJSON);
+            let jobName = userObj.JobTitle!= null ? userObj.JobTitle.JobName : '';
             this.setState({
                 user: userObj,
                 jobArea: userObj.WorkPlace,
@@ -83,7 +84,7 @@ export default class ProfileEdit extends Component {
                 familyStatus: userObj.FamilyStatus,
                 numOfKids: userObj.NumOfChildren,
                 kidsYearOfBirth: userObj.Kids,
-                nameJob: userObj.JobTitle.JobName,
+                nameJob: jobName,
                 initialInterest: userObj.Intrests,
                 finished: true,
                 fName: userObj.FirstName,
@@ -94,7 +95,7 @@ export default class ProfileEdit extends Component {
                 familyStatus: userObj.FamilyStatus,
                 image: userObj.Image,
                 intrests: userObj.Intrests,
-                EnameJob: userObj.JobTitle.JobName,
+                EnameJob: jobName,
                 kidsYearOfBirth: userObj.Kids,
                 lName: userObj.LastName,
                 EjobArea: userObj.WorkPlace,
@@ -224,7 +225,7 @@ export default class ProfileEdit extends Component {
     //create array when num of kids 
     handleNumOfKids(num) {
         this.state.kidsYearOfBirth = [];
-        this.setState({ NumOfChildren: num });
+        this.setState({ NumOfKids: num });
         if (parseInt(num) > 0) {
             for (let index = 0; index < parseInt(num); index++) {
                 this.state.kidsYearOfBirth.push({ Id: this.state.user.UserId, YearOfBirth: 2020 });
@@ -260,7 +261,7 @@ export default class ProfileEdit extends Component {
             JobTitleId: this.state.jobType,
             WorkPlace: this.state.jobArea,
             FamilyStatus: this.state.familyStatus,
-            NumOfChildren: this.state.NumOfChildren,
+            NumOfChildren: this.state.numOfKids,
             AboutMe: this.state.aboutMe,
             Kids: this.state.kidsYearOfBirth,
             Intrests: this.state.choosenInterests
@@ -301,16 +302,16 @@ export default class ProfileEdit extends Component {
 
     render() {
         const intrests = this.state.intrests.map((buttonIntersts) => (
-            <Text style={styles.note}>{buttonIntersts.Subintrest}, </Text>
+            <Text style={styles.note}> {buttonIntersts.Subintrest},  </Text>
         ));
 
         // להציג שנות לידה
         const kids = this.state.kidsYearOfBirth.map((buttonKids) => (
-            <Text style={styles.note}>{buttonKids.YearOfBirth} </Text>
+            <Text style={styles.note}> {new Date().getFullYear() - buttonKids.YearOfBirth}  </Text>
         ));
 
         const editing = this.state.editing;
-
+        let age = new Date().getFullYear() - this.state.yearOfBirth;
         const thisYear = (new Date()).getFullYear();
         const years = Array.from(new Array(60), (val, index) => (thisYear - index).toString());
         const status = [{ label: 'רווק/ה' }, { label: 'נשוי/אה' }, { label: 'אלמן/ה' }, { label: 'גרוש/ה' }];
@@ -343,18 +344,19 @@ export default class ProfileEdit extends Component {
                         <View style={styles.screen}>
                             <Text style={styles.subTitle}>הפרופיל שלי</Text>
                             <Image style={styles.avatar}
-                                source={{ uri: 'https://bootdey.com/img/Content/avatar/avatar6.png' }} />
+                                source={{ uri: this.state.user.Imaged }} />
 
                             <View style={styles.center}>
                                 <Text style={styles.note, { fontSize: 30, }}>{this.state.fName} {this.state.lName}</Text>
-                                <Text style={styles.note}>{this.state.familyStatus}, {this.state.yearOfBirth}</Text>
-                                <Text style={styles.note}>{this.state.EnameJob}, {this.state.EjobArea}</Text>
+                                <Text style={styles.note}>{this.state.familyStatus}, {age}</Text>
+                                <Text style={styles.note}>{this.state.EnameJob}</Text>
+                                <Text style={styles.note}>          עובד/ת ב{this.state.EjobArea}</Text>
                                 <Text style={styles.title}>על עצמי</Text>
                                 <Text style={styles.note}>{this.state.aboutMe}</Text>
                                 <Text style={styles.title}>תחומי עניין</Text>
                                 <Text style={styles.note}>{intrests}</Text>
 
-                                <Text style={styles.title}>ילדים</Text>
+                                <Text style={styles.title}>גילאי ילדים</Text>
                                 <Text>{kids}</Text>
 
                             </View>
@@ -517,7 +519,7 @@ export default class ProfileEdit extends Component {
                                 value={this.state.numOfKids}
                                 label='מספר ילדים'
                                 //placeholder='הזנ/י את מספר ילדיך'
-                                placeholder={(this.state.user.NumOfChildren !== null) ? (this.state.user.NumOfChildren) + "" : 'כתוב/י מספר..'}
+                                placeholder={(this.state.user.numOfKids !== null) ? (this.state.user.numOfKids) + "" : 'כתוב/י מספר..'}
                                 onChangeText={(numOfKids) => this.handleNumOfKids(numOfKids)}
                                 multiline={true}
                                 placeholderTextColor={'black'}
@@ -577,6 +579,7 @@ export default class ProfileEdit extends Component {
                                     style={styles.item}
                                     title={'ביטול'} onPress={() => {
                                         this.setState({
+                                            editing:false,
                                             vFName: this.state.fName,
                                             vLName: this.state.lName,
                                             vImage: this.state.image,
@@ -631,7 +634,7 @@ const styles = StyleSheet.create({
 
     note: {
         fontFamily: 'rubik-regular',
-        marginVertical: 1,
+        //marginVertical: 1,
         fontSize: 20,
         color: 'black',
         //justifyContent:"center",
@@ -661,7 +664,7 @@ const styles = StyleSheet.create({
     },
 
     center: {
-        alignItems: "center"
+        alignItems: "center",
     },
 
     text: {

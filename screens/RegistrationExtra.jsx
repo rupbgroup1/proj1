@@ -182,7 +182,7 @@ export default class RegistrationExtra extends Component {
     //create array when num of kids 
     handleNumOfKids(num) {
         this.state.kidsYearOfBirth = [];
-        this.setState({ NumOfChildren: num });
+        this.setState({ numOfKids: num });
         if (parseInt(num) > 0) {
             for (let index = 0; index < parseInt(num); index++) {
                 this.state.kidsYearOfBirth.push({ Id: this.state.user.UserId, YearOfBirth: 2020 });
@@ -242,9 +242,9 @@ export default class RegistrationExtra extends Component {
                 (result) => {
                     console.log("fetch POST= ", result);
                     if (result === 1) {
-                        AsyncStorage.mergeItem('user', JSON.stringify(user));
                         Alert.alert("הפרטים נשמרו בהצלחה");
-                        this.props.navigation.navigate('MainPage');
+                        AsyncStorage.mergeItem('user', JSON.stringify(user),()=>
+                        this.props.navigation.navigate('MainPage'));
                     }
                     else {
                         Alert.alert("אנא נסו שנית");
@@ -324,7 +324,7 @@ export default class RegistrationExtra extends Component {
                             autoCorrect={false}
                             defaultValue={this.state.queryCity}
                             //placeholder='הזנ/י את מיקום העבודה'
-                            placeholder={this.state.jobArea !== null ? (this.state.jobArea) + "" : 'בחר/י את מיקום העבודה'}
+                            placeholder={this.state.jobArea !== undefined ? (this.state.jobArea) + "" : 'בחר/י את מיקום העבודה'}
                             style={styles.autoComplete}
                             onChangeText={text => this.setState({ queryCity: text, hideCityResults: false })}
                             renderItem={({ item }) => (
@@ -366,7 +366,7 @@ export default class RegistrationExtra extends Component {
                         value={this.state.aboutMe}
                         label='קצת על עצמי'
                         //placeholder='הזנ/י עד 255 תווים אודות עצמך'
-                        placeholder={this.state.user.AboutMe !== null ? (this.state.user.AboutMe) + "" : 'כתוב/י מספר..'}
+                        placeholder={this.state.user.AboutMe !== undefined ? (this.state.user.AboutMe) + "" : 'כתוב/י מספר..'}
                         onChangeText={(aboutMe) => this.setState({ aboutMe })}
                         multiline={true}
                         placeholderTextColor={'#D1D3D4'}
@@ -380,7 +380,7 @@ export default class RegistrationExtra extends Component {
                         value={this.state.numOfKids}
                         label='מספר ילדים'
                         //placeholder='הזנ/י את מספר ילדיך'
-                        placeholder={(this.state.user.NumOfChildren !== null) ? (this.state.user.NumOfChildren) + "" : 'כתוב/י מספר..'}
+                        placeholder={(this.state.user.numOfKids !== undefined) ? (this.state.user.numOfKids) + "" : 'כתוב/י מספר..'}
                         onChangeText={(numOfKids) => this.handleNumOfKids(numOfKids)}
                         multiline={true}
                         placeholderTextColor={'black'}
