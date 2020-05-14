@@ -169,12 +169,9 @@ class GeneralEvents extends React.Component {
                 </View>
                 <View style={styles.row}>
                     <SearchBar
-                        round
-                        searchIcon={{ size: 24 }}
                         placeholder="חפש/י.."
-                        onChangeText={text => this.SearchFilterFunction(text)}
-                        onClear={text => this.SearchFilterFunction('')}
-                        value={this.state.text}
+                        onChangeText={this.updateSearch}
+                        value={search}
                         lightTheme={true}
                         inputContainerStyle={{ backgroundColor: 'white' }}
                         containerStyle={{ width: '100%', backgroundColor: colors.reeBackgrouond }}

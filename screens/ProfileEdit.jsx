@@ -258,10 +258,6 @@ export default class ProfileEdit extends Component {
     fetchUpdateUser() {
         const user = {
             UserId: this.state.user.UserId,
-            FirstName: this.state.vFName,
-            LastName: this.state.vLName,
-            Gender: this.state.gender,
-            YearOfBirth: this.state.yearOfBirth,
             JobTitleId: this.state.jobType,
             WorkPlace: this.state.jobArea,
             FamilyStatus: this.state.familyStatus,
@@ -274,7 +270,7 @@ export default class ProfileEdit extends Component {
         console.log("userFetch", user);
 
 
-        fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/User/Put', {
+        fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/User/Extra', {
             method: 'PUT',
             body: JSON.stringify(user),
             headers: new Headers({
@@ -348,7 +344,7 @@ export default class ProfileEdit extends Component {
                         <View style={styles.screen}>
                             <Text style={styles.subTitle}>הפרופיל שלי</Text>
                             <Image style={styles.avatar}
-                                source={{ uri: 'https://bootdey.com/img/Content/avatar/avatar6.png' }} />
+                                source={{ uri: this.state.user.Imaged }} />
 
                             <View style={styles.center}>
                                 <Text style={styles.note, { fontSize: 30, }}>{this.state.fName} {this.state.lName}</Text>
