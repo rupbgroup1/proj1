@@ -8,7 +8,7 @@ import MyEvents from './MyEvents';
 import Header from '../../components/Header';
 import BackButton from '../../components/BackButton';
 import colors from '../../assets/constant/colors';
-import { SearchBar, Card, Button } from 'react-native-elements';
+import { SearchBar, Card, Button, Overlay  } from 'react-native-elements';
 import OurButton from '../../components/OurButton';
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -20,15 +20,19 @@ class GeneralEvents extends React.Component {
             allEvents: {},
             isLoading: true,
             text: '',
-            filteredArray: []
+            filteredArray: [],
+            visible:false
+            
         };
         this.arrayholder = [];
         this.catArray = [];
+
+       
     }
 
     componentDidMount() {
         this.getUser();
-        //this.fetchGetAllCategories();
+        this.fetchGetAllCategories();
     }
 
     getUser() {
@@ -100,9 +104,9 @@ class GeneralEvents extends React.Component {
     }
 
 
-    SearchFilterFunction(text) {
-        //passing the inserted text in textinput
 
+    //filter the events by text
+    SearchFilterFunction(text) {
         const newData = this.arrayholder.filter(function (item) {
             //applying filter for the inserted text in search bar
             const itemData = item.Name;
@@ -113,7 +117,6 @@ class GeneralEvents extends React.Component {
         text != '' ?
             this.setState({
                 //setting the filtered newData on datasource
-                //After setting the data it will automatically re-render the view
                 filteredArray: newData,
                 text: text,
             })
@@ -121,14 +124,37 @@ class GeneralEvents extends React.Component {
     }
 
 
+
+    //filter the events by selected category 
+    filterByCat(catId) {
+        const newData = this.arrayholder.filter(function (item) {
+            //applying filter for the inserted text in search bar
+            const itemData = item.CategoryId;
+            return itemData == catId;
+        });
+        this.setState({
+            filteredArray: newData
+        });
+        console.log(this.state.filteredArray)
+    }
+
+
+    //press on plus
     createNewEvent() {
         console.log("hi");
     }
 
+    toggleOverlay() {
+        this.setState({visible:false});
+      }
+    
+
+
     render() {
         const { search } = this.state;
+        const vis = false;
         return (
-            <View style={{ flex: 1, alignItems: 'center' }}>
+            <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
 
                 <Header />
                 {/* <BackButton goBack={() => navigation.navigate('MainPage')}/> */}
@@ -138,7 +164,7 @@ class GeneralEvents extends React.Component {
                         title='add'
                         key='add'
                         onPress={() => this.createNewEvent()}>
-                        <MaterialIcons name="add-circle" size={40} color={colors.turkiz} style={styles.addIcon} />
+                        <MaterialIcons name="add-circle" size={30} color={colors.turkiz} style={styles.addIcon} />
                     </OurButton>
                 </View>
                 <View style={styles.row}>
@@ -155,16 +181,28 @@ class GeneralEvents extends React.Component {
                     />
 
                 </View>
-                <ScrollView horizontal={true}>
-
-                </ScrollView>
+                <View style={{ height: 40 }}>
+                    <ScrollView horizontal={true}>
+                        {this.catArray.map((c) => {
+                            return (
+                                <Button
+                                    type="outline"
+                                    title={c.CategoryName}
+                                    key={c.CategoryId}
+                                    onPress={cat => this.filterByCat(c.CategoryId)}
+                                    raised={true}
+                                >
+                                </Button>)
+                        })}
+                    </ScrollView>
+                </View>
                 <ScrollView>
                     {
                         this.state.filteredArray.length > 0 &&
                         this.state.filteredArray.map((e) => {
                             console.log(e.Image);
                             return (
-                                
+
                                 <Card
                                     key={e.Id}
                                     title={e.Name}
@@ -177,31 +215,32 @@ class GeneralEvents extends React.Component {
                                         <MaterialIcons name="date-range" size={20} color={'black'}></MaterialIcons>
                                         <Text style={{ color: 'black', marginRight: 20 }}>{new Date(e.StartDate).toLocaleDateString()}</Text>
                                     </View>
-                                    <Button title='ראה פרטים' buttonStyle={{ borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0 }}></Button>
+                                    <Button
+                                        title='ראה פרטים'
+                                        buttonStyle={{ borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0 }}
+                                        onPress={()=>this.setState({visible:true})}
+                                    ></Button>
+                                     <Overlay isVisible={this.state.visible} onBackdropPress={()=>this.toggleOverlay()}>
+                                     <Card
+                                    key={e.Id}
+                                    title={e.Name}
+                                    image={{ uri: e.Image }}
+                                    style={{ marginLeft: 0, marginRight: 0 }}
+                                >
+
+                                    <Text style={{ marginBottom: 10 }}>{e.Desc}</Text>
+                                    <View style={{ alignItems: "flex-end", direction: 'rtl', flexDirection: 'row' }}>
+                                        <MaterialIcons name="date-range" size={20} color={'black'}></MaterialIcons>
+                                        <Text style={{ color: 'black', marginRight: 20 }}>{new Date(e.StartDate).toLocaleDateString()}</Text>
+                                    </View>
+                                    </Card>
+                                        </Overlay>
 
                                 </Card>
 
                             )
                         }
                         )}
-                    {this.state.filteredArray.length < 1 && this.state.text != '' ?
-                        this.arrayholder.map((e) => {
-                            return (
-                                <Card
-                                    key={e.Id}
-                                    title={e.Name}
-
-                                    image={{ uri: e.Image }}
-                                    style={{ marginLeft: 0, marginRight: 0 }}
-                                >
-                                    <Text style={{ marginBottom: 10 }}>{e.Desc}</Text>
-                                    <Button title='ראה פרטים' buttonStyle={{ borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0 }}></Button>
-
-                                </Card>
-
-                            )
-                        }
-                        ) : null}
                 </ScrollView>
             </View>
         );
@@ -209,15 +248,13 @@ class GeneralEvents extends React.Component {
 };
 const styles = StyleSheet.create({
     imageCard: {
-
         resizeMode: 'cover'
     },
     title: {
         alignItems: 'center',
-        fontSize: 32,
+        fontSize: 24,
         color: colors.turkiz,
-        fontFamily: 'rubik-regular',
-        fontWeight: 'bold'
+        fontFamily: 'rubik-regular'
     },
     row: {
         flexDirection: 'row',
