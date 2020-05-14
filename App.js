@@ -28,6 +28,7 @@ import GeneralEvents from './screens/Events/GeneralEvents';
 
 //cancel the timer error
 YellowBox.ignoreWarnings(['Setting a timer']);
+console.disableYellowBox = true;
 const _console = _.clone(console);
 console.warn = message => {
   if (message.indexOf('Setting a timer') <= -1) {

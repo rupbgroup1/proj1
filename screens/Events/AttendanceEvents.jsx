@@ -7,7 +7,7 @@ class AttendanceEvents extends React.Component {
       render() {
         return (
             <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
-            <Text style={{alignItems:'center', fontSize:40}}>A</Text>
+            <Text style={{alignItems:'center', fontSize:40}}>אירועים שאגיע אליהם</Text>
         </View>
         );
       }

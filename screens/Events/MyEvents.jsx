@@ -7,7 +7,7 @@ class MyEvents extends React.Component {
       render() {
         return (
          <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
-             <Text style={{alignItems:'center', fontSize:40}}>m</Text>
+             <Text style={{alignItems:'center', fontSize:40}}>האירועים שלי</Text>
          </View>
         );
       }
