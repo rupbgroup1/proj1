@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { createButtomTabNavigator, createAppContainer } from 'react-navigation';
-import { View, Text, StyleSheet, AsyncStorage, Image, ScrollView, Alert } from 'react-native';
+import { View, Text, StyleSheet, AsyncStorage, Image, ScrollView, Alert, Dimensions, TouchableOpacity } from 'react-native';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import { Icon } from 'react-native-elements';
 import AttendanceEvents from './AttendanceEvents';
@@ -8,7 +8,7 @@ import MyEvents from './MyEvents';
 import Header from '../../components/Header';
 import BackButton from '../../components/BackButton';
 import colors from '../../assets/constant/colors';
-import { SearchBar, Card, Button, Overlay  } from 'react-native-elements';
+import { SearchBar, Card, Button, Overlay } from 'react-native-elements';
 import OurButton from '../../components/OurButton';
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -21,13 +21,15 @@ class GeneralEvents extends React.Component {
             isLoading: true,
             text: '',
             filteredArray: [],
-            visible:false
-            
+            visible: false,
+            selectedCat: 0,
+            selectedCard:{},
+            selectedOwner:{}
         };
         this.arrayholder = [];
         this.catArray = [];
 
-       
+
     }
 
     componentDidMount() {
@@ -127,15 +129,21 @@ class GeneralEvents extends React.Component {
 
     //filter the events by selected category 
     filterByCat(catId) {
-        const newData = this.arrayholder.filter(function (item) {
-            //applying filter for the inserted text in search bar
-            const itemData = item.CategoryId;
-            return itemData == catId;
-        });
-        this.setState({
-            filteredArray: newData
-        });
-        console.log(this.state.filteredArray)
+        if (catId == this.state.selectedCat) {
+            this.setState({ filteredArray: this.arrayholder })
+        }
+        else {
+            const newData = this.arrayholder.filter(function (item) {
+                //applying filter for the inserted text in search bar
+                const itemData = item.CategoryId;
+                return itemData == catId;
+            });
+            this.setState({
+                filteredArray: newData,
+                selectedCat: catId
+            });
+            console.log(this.state.filteredArray)
+        }
     }
 
 
@@ -145,38 +153,38 @@ class GeneralEvents extends React.Component {
     }
 
     toggleOverlay() {
-        this.setState({visible:false});
-      }
-    
+        this.setState({ visible: false });
+    }
 
+    attendToEvent(eventId) {
+        console.log(eventId);
+    }
 
     render() {
         const { search } = this.state;
-        const vis = false;
+
         return (
             <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
 
                 <Header />
                 {/* <BackButton goBack={() => navigation.navigate('MainPage')}/> */}
+
                 <View style={styles.row}>
-                    <Text style={styles.title}>אירועים בשכונה</Text>
+                    <SearchBar
+                        placeholder="חפש/י אירועים בשכונה.."
+                        onChangeText={text => this.SearchFilterFunction(text)}
+                        onClear={text => this.SearchFilterFunction('')}
+                        value={this.state.text}
+                        lightTheme={true}
+                        inputContainerStyle={{ backgroundColor: 'white' }}
+                        containerStyle={{ width: '90%', backgroundColor: colors.reeBackgrouond }}
+                    />
                     <OurButton
                         title='add'
                         key='add'
                         onPress={() => this.createNewEvent()}>
                         <MaterialIcons name="add-circle" size={30} color={colors.turkiz} style={styles.addIcon} />
                     </OurButton>
-                </View>
-                <View style={styles.row}>
-                    <SearchBar
-                        placeholder="חפש/י.."
-                        onChangeText={this.updateSearch}
-                        value={search}
-                        lightTheme={true}
-                        inputContainerStyle={{ backgroundColor: 'white' }}
-                        containerStyle={{ width: '100%', backgroundColor: colors.reeBackgrouond }}
-                    />
-
                 </View>
                 <View style={{ height: 40 }}>
                     <ScrollView horizontal={true}>
@@ -197,7 +205,7 @@ class GeneralEvents extends React.Component {
                     {
                         this.state.filteredArray.length > 0 &&
                         this.state.filteredArray.map((e) => {
-                            console.log(e.Image);
+
                             return (
 
                                 <Card
@@ -205,6 +213,7 @@ class GeneralEvents extends React.Component {
                                     title={e.Name}
                                     image={{ uri: e.Image }}
                                     style={{ marginLeft: 0, marginRight: 0 }}
+                                    containerStyle={{ width: Dimensions.get('window').width - 20 }}
                                 >
 
                                     <Text style={{ marginBottom: 10 }}>{e.Desc}</Text>
@@ -215,23 +224,41 @@ class GeneralEvents extends React.Component {
                                     <Button
                                         title='ראה פרטים'
                                         buttonStyle={{ borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0 }}
-                                        onPress={()=>this.setState({visible:true})}
+                                        onPress={() => this.setState({ visible: true , selectedCard:e, selectedOwner:e.Admin})}
                                     ></Button>
-                                     <Overlay isVisible={this.state.visible} onBackdropPress={()=>this.toggleOverlay()}>
-                                     <Card
-                                    key={e.Id}
-                                    title={e.Name}
-                                    image={{ uri: e.Image }}
-                                    style={{ marginLeft: 0, marginRight: 0 }}
-                                >
+                                    <Overlay isVisible={this.state.visible} onBackdropPress={() => this.toggleOverlay()}>
+                                        <Card
+                                            key={this.state.selectedCard.Id}
+                                            image={{ uri: this.state.selectedCard.Image }}
+                                            title={this.state.selectedCard.Name}
+                                            style={{ marginLeft: 0, marginRight: 0 }}
+                                        >
 
-                                    <Text style={{ marginBottom: 10 }}>{e.Desc}</Text>
-                                    <View style={{ alignItems: "flex-end", direction: 'rtl', flexDirection: 'row' }}>
-                                        <MaterialIcons name="date-range" size={20} color={'black'}></MaterialIcons>
-                                        <Text style={{ color: 'black', marginRight: 20 }}>{new Date(e.StartDate).toLocaleDateString()}</Text>
-                                    </View>
-                                    </Card>
-                                        </Overlay>
+                                            <Text style={{ marginBottom: 10 }}>{this.state.selectedCard.Desc}</Text>
+                                            <View style={{ alignItems: "flex-end", direction: 'rtl', flexDirection: 'row' }}>
+                                                <MaterialIcons name="date-range" size={20} color={'black'}></MaterialIcons>
+                                                <Text style={{ color: 'black', marginRight: 20 }}>{new Date(this.state.selectedCard.StartDate).toLocaleDateString()} - </Text>
+                                                <Text style={{ color: 'black', marginRight: 20 }}>{new Date(this.state.selectedCard.EndDate).toLocaleDateString()}</Text>
+                                            </View>
+                                            <Text>מספר משתתפים: {this.state.selectedCard.NumOfParticipants}</Text>
+                                            <Text>מחיר: {this.state.selectedCard.Price}</Text>
+                                            <Text>מארגן האירוע: {this.state.selectedOwner.FirstName + ' ' + this.state.selectedOwner.LastName}</Text>
+                                            <Text>טווח גילאים: {this.state.selectedCard.ToAge + ' - ' + this.state.selectedCard.FromAge}</Text>
+                                            <TouchableOpacity
+
+                                                onPress={() => this.setState({ visible: false })}>
+                                                {/* nav to map */}
+                                                <Text>לחץ לצפייה במיקום האירוע</Text>
+                                            </TouchableOpacity>
+                                            <Button
+                                                type="outline"
+                                                raised={true}
+                                                title='מעוניינ/ת'
+                                                onPress={() => this.attendToEvent(this.state.selectedCard.Id)}
+                                            > </Button>
+                                        </Card>
+
+                                    </Overlay>
 
                                 </Card>
 
@@ -257,7 +284,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignContent: 'stretch',
-        marginTop: 15,
+
         marginLeft: 0,
         marginRight: 0
     },

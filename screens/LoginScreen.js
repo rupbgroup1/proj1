@@ -78,23 +78,6 @@ export default class LoginScreen extends Component {
         <Text style={styles.titleText} >
           {this.state.titleText}{'\n'}
         </Text>
-        <View style={styles.button}>
-          <Button
-            fontFamily='rubik-regular'
-            color='#0d7d96'
-            title={'לחץ כאן'}
-            titleText={{fontSize:26, color:'#f0a500'}}
-            titleStyle={{}}
-            onPress={() => {
-              this.props.navigation.navigate('OverlyFN');
-            }
-            }
-            onPressIn={() => {
-              Keyboard.dismiss;
-            }}
-          />
-
-        </View>
         <TextInput
           value={this.state.username}
           onChangeText={(username) => this.setState({ username })}

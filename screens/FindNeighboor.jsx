@@ -3,10 +3,8 @@ import { Button, View, StyleSheet, Text, ActivityIndicator, TextInput, AsyncStor
 import Header from '../components/Header';
 import colors from '../assets/constant/colors';
 import MapComponent from '../components/Maps/MapComponent';
-import { Input, Divider } from 'react-native-elements';
 import Interests from '../components/Interests';
 import BackButton from '../components/BackButton';
-import { Dropdown } from 'react-native-material-dropdown';
 
 
 export default class FindNeighboor extends Component {

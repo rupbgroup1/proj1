@@ -3,9 +3,6 @@ import { Button, View, StyleSheet, Text, TouchableOpacity, Image,TouchableWithou
 import colors from '../assets/constant/colors';
 import Feed from '../components/Feed';
 import Header from '../components/Header';
-import PagesNav from '../components/PagesNav';
-import OurButton from '../components/OurButton';
-import firebaseSvc from '../FirebaseSvc';
 import BusinessesBTN from '../components/BusinessesButton';
 import NeiButton from '../components/NeighboorsButton';
 import EventsBTN from '../components/EventsButton';

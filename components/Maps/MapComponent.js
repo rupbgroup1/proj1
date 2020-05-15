@@ -97,24 +97,29 @@ const MapComponent = (props) => {
                 })
                 }
 
-                {markerCoordinates ? <Marker title='המיקום שלי' coordinate={markerCoordinates}></Marker> : <Marker title='המיקום שלי' coordinate={props.region}></Marker>}
+                {/* {markerCoordinates ? <Marker title='המיקום שלי' coordinate={markerCoordinates}></Marker> : <Marker title='המיקום שלי' coordinate={props.region}></Marker>} */}
                 <Marker
-                    coordinate={props.region}
+                    coordinate={{
+                        latitude: 32.258049726540236,
+                         longitude: 34.92328489199281,
+                         latitudeDelta: 0.009,
+                         longitudeDelta: 0.009
+                    }}
                 >
                     <Callout
-                        onPress={e => {
-                            
-                            Alert.alert('callout pressed');
-                        }}>
-                        <View>
-                            <Text>This is a plain view</Text>
-                        </View>
+                    onPress={() => {
 
-                    </Callout>
+                        Alert.alert('callout pressed');
+                    }}>
+                    <View>
+                        <Text>This is a plain view</Text>
+                    </View>
+
+                </Callout>
                 </Marker>
             </MapView>
 
-        </TouchableOpacity>
+        </TouchableOpacity >
     )
 }
 
