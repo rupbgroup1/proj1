@@ -161,13 +161,12 @@ class GeneralEvents extends React.Component {
     }
 
     render() {
-        const { search } = this.state;
-
+        const { navigation } = this.props;
         return (
             <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
 
                 <Header />
-                {/* <BackButton goBack={() => navigation.navigate('MainPage')}/> */}
+                <BackButton goBack={() => navigation.navigate('MainPage')}/>
 
                 <View style={styles.row}>
                     <SearchBar
