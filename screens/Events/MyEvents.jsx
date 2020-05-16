@@ -37,15 +37,15 @@ export default class MyEvents extends React.Component {
       const userObj = JSON.parse(userJSON);
       //console.log("obj==", userObj);
       this.setState({ user: userObj }, () =>
-        this.fetchGetAllEvents(userObj.NeighborhoodName));
+        this.fetchGetMyEvents(userObj.UserId));
     }
     );
 
   }
   //I'm the owner
-  fetchGetAllEvents(userNei) {
+  fetchGetMyEvents(userId) {
     console.log("in fetch");
-    return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Events/All?neiName=' + userNei, {
+    return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Events/My?userId=' + userId, {
 
       method: 'GET',
       headers: new Headers({

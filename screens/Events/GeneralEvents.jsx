@@ -42,15 +42,16 @@ class GeneralEvents extends React.Component {
             const userObj = JSON.parse(userJSON);
             //console.log("obj==", userObj);
             this.setState({ user: userObj }, () =>
-                this.fetchGetAllEvents(userObj.NeighborhoodName));
+                this.fetchGetAllEvents(userObj.NeighborhoodName, userObj.UserId));
         }
         );
 
     }
 
-    fetchGetAllEvents(userNei) {
+    //*fetch */
+    fetchGetAllEvents(userNei, userId) {
         console.log("in fetch");
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Events/All?neiName=' + userNei, {
+        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Events/All/'+userId+'/' + userNei, {
 
             method: 'GET',
             headers: new Headers({
@@ -105,8 +106,73 @@ class GeneralEvents extends React.Component {
             );
     }
 
+    fetchPostAttend() {
+        //console.log("in fetch");
+        const att={
+            Id: this.state.selectedCard,
+            Attandance: [{UserId: this.state.user.UserId}]
+        }
+        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Event/PostAtt', {
 
+            method: 'POST',
+            body: JSON.stringify(att),
+            headers: new Headers({
+                'Content-type': 'application/json; charset=UTF-8'
+            })
+        })
+            .then(res => {
+                //console.log('res=', res);
+                return res.json()
+            })
+            .then(
+                (result) => {
+                    console.log("fetch POST att = ", result);
+                    if (result === 1)
+                    Alert.alert("השתתפותך נרשמה, תהנה באירוע!");
+                    else {
+                        Alert.alert("אירעה שגיאה, אנא נסה שנית");
+                    }
+                },
+                (error) => {
+                    console.log("err post=", error);
+                    Alert.alert("אנא נסה שנית");
+                }
+            );
+    }
 
+    fetchDeleteAttend() {
+        //console.log("in fetch");
+        const att={
+            Id: this.state.selectedCard,
+            Attandance: [{UserId: this.state.user.UserId}]
+        }
+        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Event/DeleteAtt', {
+
+            method: 'DELETE',
+            body: JSON.stringify(att),
+            headers: new Headers({
+                'Content-type': 'application/json; charset=UTF-8'
+            })
+        })
+            .then(res => {
+                //console.log('res=', res);
+                return res.json()
+            })
+            .then(
+                (result) => {
+                    console.log("fetch delete = ", result);
+                    if (result === 1)
+                    Alert.alert("השתתפותך בוטלה");
+                    else {
+                        Alert.alert("אירעה שגיאה, אנא נסה שנית");
+                    }
+                },
+                (error) => {
+                    console.log("err post=", error);
+                    Alert.alert("אנא נסה שנית");
+                }
+            );
+    }
     //filter the events by text
     SearchFilterFunction(text) {
         const newData = this.arrayholder.filter(function (item) {
@@ -124,8 +190,6 @@ class GeneralEvents extends React.Component {
             })
             : this.setState({ filteredArray: this.arrayholder, text: text });
     }
-
-
 
     //filter the events by selected category 
     filterByCat(catId) {
@@ -156,8 +220,9 @@ class GeneralEvents extends React.Component {
         this.setState({ visible: false });
     }
 
-    attendToEvent(eventId) {
-        console.log(eventId);
+    attendToEvent() {
+       this.fetchPostAttend();
+       
     }
 
     render() {
@@ -249,12 +314,21 @@ class GeneralEvents extends React.Component {
                                                 {/* nav to map */}
                                                 <Text>לחץ לצפייה במיקום האירוע</Text>
                                             </TouchableOpacity>
+                                            {this.state.selectedCard.Attend!=1?
                                             <Button
                                                 type="outline"
                                                 raised={true}
                                                 title='מעוניינ/ת'
-                                                onPress={() => this.attendToEvent(this.state.selectedCard.Id)}
+                                                onPress={() => this.fetchPostAttend()}
                                             > </Button>
+                                            :
+                                            <Button
+                                                type="outline"
+                                                raised={true}
+                                                title='ביטול הגעה'
+                                                onPress={() => this.fetchDeleteAttend()}
+                                            > </Button>
+                                            }
                                         </Card>
 
                                     </Overlay>
