@@ -8,9 +8,8 @@ const GoogleAPIAutoComplete=(props) =>{
     return (
 
         <GooglePlacesAutocomplete
-            placeholder='חפש'
+            placeholder='חפש/י מיקום'
             minLength={2} // minimum length of text to search
-            autoFocus={true}
             returnKeyType={'search'} // Can be left out for default return key 
             listViewDisplayed={false}    // true/false/undefined
             fetchDetails={true}
