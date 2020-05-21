@@ -1,5 +1,5 @@
 import React, { Component} from 'react';
-import Overlay from 'react-native-modal-overlay';
+import Overlay from 'react-native-elements';
 import colors from '../assets/constant/colors';
 import { Button, View, StyleSheet, Text, ActivityIndicator, TextInput, AsyncStorage, Alert, TouchableOpacity } from 'react-native';
  
@@ -25,7 +25,7 @@ export default class OverlayExample extends Component {
         <Text style={styles.note}> {buttonIntersts},  </Text>
     ));
     return (
-        <Overlay visible={this.state.modalVisible} onClose={this.onClose} closeOnTouchOutside>
+        <Overlay visible={this.state.modalVisible} >
           <View>
               <Text style={styles.subTitle}>שם פרטי + משפחה</Text>
               <Text style={styles.note}>גיל: (משתנה גיל) </Text>

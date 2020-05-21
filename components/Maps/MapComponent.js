@@ -107,7 +107,7 @@ const MapComponent = (props) => {
                     }}
                 >
                     <Callout
-                    onPress={()=> {
+                    onPress={() => {
 
                         Alert.alert('callout pressed');
                     }}>

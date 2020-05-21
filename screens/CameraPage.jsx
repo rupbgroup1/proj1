@@ -28,13 +28,18 @@ export default class CameraPage extends React.Component {
     if (this.camera) {
       let photo = await this.camera.takePictureAsync({ quality: 0.1, base64:true});
      
-      this.setState({ photoUri: photo.uri },()=>
+      this.setState({ 
+        pic64base: photo.base64,
+        picName64base: 'image1_' + new Date().getTime() + '.jpg',
+        photoUri:'data:image/gif;base64,'+this.state.pic64base,
+        //photoUri: photo.uri 
+      },()=>
       
       Alert.alert(
         'האם תרצה לשמור את התמונה?',
         '',
         [
-          {text: 'כן', onPress: () => this.props.navigation.navigate('Pic', {photoUri: photo.uri})},
+          {text: 'כן', onPress: () => this.props.navigation.navigate('Pic', {photoUri: this.state.photoUri})},
           {
             text: 'לא',
             style: 'cancel',
@@ -49,7 +54,7 @@ export default class CameraPage extends React.Component {
 
   btnUpload = () => {
     let img = this.state.photoUri;
-    let imgName = 'imgProfile.jpg';
+    let imgName = this.state.picName64base;
     this.imageUpload(img, imgName);
   };
 

@@ -79,6 +79,7 @@ export default class ProfileEdit extends Component {
             let jobName = userObj.JobTitle!= null ? userObj.JobTitle.JobName : '';
             this.setState({
                 user: userObj,
+                jobName: jobName,
                 jobArea: userObj.WorkPlace,
                 aboutMe: userObj.AboutMe,
                 familyStatus: userObj.FamilyStatus,
@@ -87,7 +88,6 @@ export default class ProfileEdit extends Component {
                 nameJob: jobName,
                 initialInterest: userObj.Intrests,
                 finished: true,
-                fName: userObj.FirstName,
 
                 aboutMe: userObj.AboutMe,
                 cityName: userObj.CityName,
@@ -97,7 +97,6 @@ export default class ProfileEdit extends Component {
                 intrests: userObj.Intrests,
                 EnameJob: jobName,
                 kidsYearOfBirth: userObj.Kids,
-                lName: userObj.LastName,
                 EjobArea: userObj.WorkPlace,
                 yearOfBirth: userObj.YearOfBirth,
                 numOfKids: userObj.NumOfChildren,
@@ -301,9 +300,14 @@ export default class ProfileEdit extends Component {
     }
 
     render() {
+        // const intrests = this.state.intrests.map((buttonIntersts) => (
+        //     <Text style={styles.note}>{buttonIntersts.Subintrest}   |   </Text>
+        // ));
+        //const intrests = intrests1.slice(0,-1);
+        //const intrests = intrestsTemp;
         const intrests = this.state.intrests.map((buttonIntersts) => (
-            <Text style={styles.note}> {buttonIntersts.Subintrest},  </Text>
-        ));
+            buttonIntersts.Subintrest.slice(0, -1)));
+        
 
         // להציג שנות לידה
         const kids = this.state.kidsYearOfBirth.map((buttonKids) => (
@@ -316,7 +320,6 @@ export default class ProfileEdit extends Component {
         const years = Array.from(new Array(60), (val, index) => (thisYear - index).toString());
         const status = [{ label: 'רווק/ה' }, { label: 'נשוי/אה' }, { label: 'אלמן/ה' }, { label: 'גרוש/ה' }];
 
-        const { navigation } = this.props;
         //return the filtered array according the query from the input
         const jobs = this.findJob(this.state.query);
         const cities = this.findCity(this.state.queryCity);
@@ -347,12 +350,12 @@ export default class ProfileEdit extends Component {
                                 source={{ uri: this.state.user.Imaged }} />
 
                             <View style={styles.center}>
-                                <Text style={styles.note, { fontSize: 30, }}>{this.state.fName} {this.state.lName}</Text>
-                                <Text style={styles.note}>{this.state.familyStatus}, {age}</Text>
-                                <Text style={styles.note}>{this.state.EnameJob}</Text>
-                                <Text style={styles.note}>          עובד/ת ב{this.state.EjobArea}</Text>
+                                <Text style={styles.note, { fontSize: 30, }}>{this.state.user.FirstName} {this.state.user.LastName}</Text>
+                                <Text style={styles.note}>{this.state.user.FamilyStatus}, {age}</Text>
+                                <Text style={styles.note}>{this.state.jobName}</Text>
+                                <Text style={styles.note}> עובד/ת ב{this.state.user.WorkPlace}</Text>
                                 <Text style={styles.title}>על עצמי</Text>
-                                <Text style={styles.note}>{this.state.aboutMe}</Text>
+                                <Text style={styles.note}>{this.state.user.AboutMe}</Text>
                                 <Text style={styles.title}>תחומי עניין</Text>
                                 <Text style={styles.note}>{intrests}</Text>
 
@@ -638,7 +641,9 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: 'black',
         //justifyContent:"center",
-        textAlign: "center"
+        textAlign: "center",
+        marginRight:5,
+        marginLeft:5
     },
 
     subTitle: {

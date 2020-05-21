@@ -1,5 +1,6 @@
 import React, { Component, createElement } from 'react';
 import { Alert, Button, TextInput, View, StyleSheet, Text } from 'react-native';
+
 import Header from '../components/Header';
 import colors from '../assets/constant/colors';
 import {
