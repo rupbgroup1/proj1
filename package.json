@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-community/datetimepicker": "2.1.0",
     "@react-native-community/masked-view": "0.1.5",
     "@react-navigation/material-bottom-tabs": "^5.2.1",
     "@react-navigation/native": "^5.1.1",
@@ -18,6 +19,7 @@
     "expo-image-picker": "~8.0.1",
     "expo-linear-gradient": "~8.0.0",
     "firebase": "^7.14.0",
+    "moment": "^2.25.3",
     "native-base": "^2.13.8",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",

@@ -213,7 +213,7 @@ class GeneralEvents extends React.Component {
 
     //press on plus
     createNewEvent() {
-        console.log("hi");
+     // navigation.navigate('CreateEvent');
     }
 
     toggleOverlay() {
@@ -246,7 +246,7 @@ class GeneralEvents extends React.Component {
                     <OurButton
                         title='add'
                         key='add'
-                        onPress={() => this.createNewEvent()}>
+                        onPress={() => navigation.navigate('CreateEvent')}>
                         <MaterialIcons name="add-circle" size={30} color={colors.turkiz} style={styles.addIcon} />
                     </OurButton>
                 </View>
