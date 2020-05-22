@@ -73,7 +73,7 @@ const navigator = createStackNavigator({
   CreateEvent:CreateEvent
   
   }, {
-        initialRouteName: 'LoginScreen',
+        initialRouteName: 'GeneralEvents',
         defaultNavigationOptions: {
         headerShown: false
      }
