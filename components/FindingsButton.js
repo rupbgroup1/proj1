@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
-const EventsBTN = props => {
+const NeiButton = props => {
     return(
         <TouchableOpacity activeOpacity={0.5} onPress={props.onPress}>
             <View style={styles.button}>
@@ -13,17 +13,15 @@ const EventsBTN = props => {
 
 const styles = StyleSheet.create({
     button:{
-        backgroundColor: '#1dd1a1',
-        paddingVertical:0,
-        paddingHorizontal:10,
-        borderColor: '#1dd1a1',
-        shadowColor: '#1dd1a1',
+        backgroundColor: '#48CFAF',
+        borderColor: '#48CFAF',
+        shadowColor: '#48CFAF',
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.8,
         shadowRadius: 8,
         elevation:20,
-        height: 80,
-        width: 80,
+        height: 100,
+        width: 100,
         borderRadius:400,
         textShadowOffset: { width: 1, height: 1 },
         textShadowRadius: 5,
@@ -31,13 +29,13 @@ const styles = StyleSheet.create({
     buttonText:{
         color:'white',
         fontFamily: 'rubik-regular',
-        fontSize:18,
+        fontSize:20,
         textAlign:'center',
-        paddingVertical:30,
+        paddingVertical:24,
         textShadowOffset: { width: 1, height: 3 },
         textShadowRadius: 10,
         textShadowColor:'#f7f1e3'
     }
 });
 
-export default EventsBTN;
+export default NeiButton;

@@ -6,6 +6,7 @@ import Header from '../components/Header';
 import BusinessesBTN from '../components/BusinessesButton';
 import NeiButton from '../components/NeighboorsButton';
 import EventsBTN from '../components/EventsButton';
+import FindingsButton from '../components/FindingsButton';
 import { Card, Text } from 'react-native-elements';
 
 
@@ -39,25 +40,31 @@ export default class MainPage extends Component {
               <NeiButton
                 onPress={() => navigation.navigate('FindNeighboor')}>
                 הכר את שכניך
-          </NeiButton>
+              </NeiButton>
             </View>
 
             <View style={styles.item2}>
               <EventsBTN
                 onPress={() => navigation.navigate('GeneralEvents')}>
                 אירועים
-          </EventsBTN>
+              </EventsBTN>
             </View>
 
-            <View style={styles.item3} >
+            <View style={styles.item3}>
               <BusinessesBTN
                 onPress={() => navigation.navigate('ProfileEdit')}>
                 פרופיל
-          </BusinessesBTN>
+              </BusinessesBTN>
             </View>
+
           </View>
 
-
+          <View style={styles.item4}>
+            <FindingsButton>
+            {/* onPress={() => navigation.navigate('ProfileEdit')}> */}
+            נמצא בשכונה
+            </FindingsButton>
+          </View>
         </View>
       </TouchableWithoutFeedback>
     );
@@ -73,7 +80,7 @@ const styles = StyleSheet.create({
   },
   header: {
     //flex:1,
-    textAlign: 'left',
+    textAlign: 'center',
     fontFamily: 'rubik-regular',
     marginVertical: 1,
     fontSize: 20,
@@ -86,21 +93,25 @@ const styles = StyleSheet.create({
     width: '95%'
   },
   row: {
-    flex: 3,
+    flex: 4,
     flexDirection: 'row',
     justifyContent: 'space-evenly'
   },
   item1: {
-    top: 40,
-
+    top: 20,
+    left:-40
   },
   item2: {
     top: 100,
-    left: 10,
+    left: -45,
   },
   item3: {
-    top: 30,
-    left: 10
+    top: 20,
+    left: -60
   },
+  item4: {
+    top: -15,
+    right:-110
+  }
 
 });

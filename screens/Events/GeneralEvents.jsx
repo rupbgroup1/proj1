@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { createButtomTabNavigator, createAppContainer } from 'react-navigation';
 import { View, Text, StyleSheet, AsyncStorage, Image, ScrollView, Alert, Dimensions, TouchableOpacity } from 'react-native';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
-import { Icon } from 'react-native-elements';
+//import { Icon } from 'react-native-elements';
 import AttendanceEvents from './AttendanceEvents';
 import MyEvents from './MyEvents';
 import Header from '../../components/Header';
@@ -10,7 +10,11 @@ import BackButton from '../../components/BackButton';
 import colors from '../../assets/constant/colors';
 import { SearchBar, Card, Button, Overlay } from 'react-native-elements';
 import OurButton from '../../components/OurButton';
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, FontAwesome5, FontAwesome } from '@expo/vector-icons';
+
+// import { AccessAlarm, ThreeDRotation } from '@material-ui/icons';
+// import home from '@material-ui/icons/DeleteRounded';
+//import home from '@material-ui/icons';
 
 class GeneralEvents extends React.Component {
     constructor(props) {
@@ -28,7 +32,6 @@ class GeneralEvents extends React.Component {
         };
         this.arrayholder = [];
         this.catArray = [];
-
 
     }
 
@@ -363,6 +366,9 @@ const styles = StyleSheet.create({
     },
     addIcon: {
         marginTop: 15,
+    },
+    bottomIcons:{
+        paddingBottom:2
     }
 });
 
@@ -372,13 +378,14 @@ const TabNavigator = createMaterialBottomTabNavigator(
             screen: GeneralEvents,
             navigationOptions: {
                 tabBarLabel: 'כללי',
+                containerStyle: {paddingVertical:5},
                 activeColor: colors.turkiz,
                 inactiveColor: 'black',
                 barStyle: { backgroundColor: 'white' },
 
                 tabBarIcon: () => (
                     <View>
-                        <Icon name={'home'} size={25} style={{ color: 'black' }} />
+                        <FontAwesome5 name={'home'} size={23} color={'grey'} />
                     </View>
                 )
 
@@ -393,7 +400,7 @@ const TabNavigator = createMaterialBottomTabNavigator(
                 barStyle: { backgroundColor: 'white' },
                 tabBarIcon: () => (
                     <View>
-                        <Icon name={'person'} size={25} style={{ color: 'black' }} />
+                        <FontAwesome5 name={'user-alt'} size={24} color={'grey'}/>
                     </View>
                 )
 
@@ -408,7 +415,7 @@ const TabNavigator = createMaterialBottomTabNavigator(
                 barStyle: { backgroundColor: 'white' },
                 tabBarIcon: () => (
                     <View>
-                        <Icon name={'star'} size={25} style={{ color: 'black' }} />
+                        <FontAwesome name={'heart'} size={23} color={'grey'} />
                     </View>
                 )
 

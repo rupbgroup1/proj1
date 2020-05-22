@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, AsyncStorage, Image, ScrollView, Alert, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, AsyncStorage, Image, ScrollView, Alert, Dimensions, TouchableOpacity, Button } from 'react-native';
 import { Icon } from 'react-native-elements';
 import Header from '../../components/Header';
 import BackButton from '../../components/BackButton';
 import colors from '../../assets/constant/colors';
-import { SearchBar, Card, Button, Overlay } from 'react-native-elements';
+import { SearchBar, Card, Overlay } from 'react-native-elements';
 import OurButton from '../../components/OurButton';
 import { MaterialIcons } from '@expo/vector-icons';
-import ProfileButton from '../../components/ProfileButton';
+import ProfileButton from '../../components/FindingsButton';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 export default class MyEvents extends React.Component {
   constructor(props) {
@@ -117,12 +118,14 @@ export default class MyEvents extends React.Component {
             inputContainerStyle={{ backgroundColor: 'white' }}
             containerStyle={{ width: '90%', backgroundColor: colors.reeBackgrouond }}
           />
+          <View style={{paddingVertical:5}}>
           <OurButton
             title='add'
             key='add'
             onPress={() => this.createNewEvent()}>
-            <MaterialIcons name="add-circle" size={30} color={colors.turkiz} style={styles.addIcon} />
+            <MaterialIcons name="add-circle" size={30} color={colors.turkiz} />
           </OurButton>
+          </View>
         </View>
 
         <ScrollView>
@@ -147,9 +150,10 @@ export default class MyEvents extends React.Component {
                   </View>
                   <Button
                     title='ראה פרטים'
-                    buttonStyle={{ borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0 }}
                     onPress={() => this.setState({ visible: true })}
-                  ></Button>
+                    containerStyle={{ backgroundColor: colors.turkiz, borderRadius:20 }}
+                  > 
+                  </Button>
                   <Overlay isVisible={this.state.visible} onBackdropPress={() => this.toggleOverlay()}>
                     <Card
                       key={e.Id}
@@ -213,7 +217,10 @@ const styles = StyleSheet.create({
     marginRight: 0
   },
   addIcon: {
-    marginTop: 15,
+    paddingVertical: 30,
+  },
+  detailsButton:{
+    backgroundColor:colors.turkiz
   }
 });
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Alert, Button, TextInput, View, StyleSheet, Text, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import RememberMe from '../components/RememberMe';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, I18nManager } from 'react-native';
 import Background from '../components/Background'
 
 
@@ -17,7 +17,14 @@ export default class LoginScreen extends Component {
       usernameValid: true
     };
 
+    // if(I18nManager.isRTL != true){ 
+    //   I18nManager.forceRTL(true); 
+    //   RNRestart.Restart(); 
+    // }
+
   }
+
+  
 
 
   //Search for the userDetails in DB
@@ -174,14 +181,15 @@ const styles = StyleSheet.create({
   },
   RememberMe: {
     flexDirection: 'row',
-    marginRight: 145,
+    marginRight: 190,
     paddingBottom: 20
   },
   noUser:{
     color: 'white',
     fontSize: 18,
     fontFamily: 'rubik-regular', 
-    paddingLeft:10
+    paddingLeft:10,
+    paddingRight:10
   },
   pressToReg:{
     fontFamily: 'rubik-regular',

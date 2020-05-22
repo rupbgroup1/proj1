@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     button: {
         fontFamily: 'rubik-regular',
         width: '80%',
-        paddingTop: 20,
+        paddingBottom:20
     },
     createUser: {
         padding: 30,
