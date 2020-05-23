@@ -166,7 +166,6 @@ export default class MyEvents extends React.Component {
                       </View>
                       <Text>מספר משתתפים: {e.NumOfParticipants}</Text>
                       <Text>מחיר: {e.Price}</Text>
-                      <Text>מארגן האירוע: {e.Admin.FirstName + ' ' + e.Admin.LastName}</Text>
                       <Text>טווח גילאים: {e.ToAge + ' - ' + e.FromAge}</Text>
                       <TouchableOpacity
 
@@ -177,8 +176,11 @@ export default class MyEvents extends React.Component {
                       <Button
                         type="outline"
                         raised={true}
-                        title='מעוניינ/ת'
-                        onPress={() => this.setState({ visible: true })}
+                        title='עריכה'
+                        onPress={() =>
+                          this.setState({visible:false},()=>
+                          navigation.navigate('CreateEvent', {edit: true, eventDetails: e}))
+                        }
                       > </Button>
                     </Card>
 
