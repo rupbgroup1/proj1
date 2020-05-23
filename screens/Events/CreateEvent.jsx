@@ -42,14 +42,22 @@ export default class CreateEvent extends React.Component {
             showEnd: ''
         };
         this.catArray = [];
+        this.editMode=false;
+        this.eventDetails={};
 
 
     }
 
     componentDidMount() {
+        this.editMode = this.props.navigation.getParam('edit');
+        this.editMode&&
+        this.setState({newEvent:this.props.navigation.getParam('eventDetails')});
         this.getUser();
         this.fetchGetAllCategories();
         this.fetchGetAllIntrests();
+        this.editMode = this.props.navigation.getParam('edit');
+        
+        console.log(this.editMode, this.eventDetails );
 
     }
     fetchGetAllCategories() {
@@ -227,10 +235,11 @@ export default class CreateEvent extends React.Component {
                     if (result == 1) {
                         Alert.alert(" האירוע נשמר בהצלחה");
                         console.log(result);
+                        this.navigation.navigate('GeneralEvents');
                     }
                     else
                         Alert.alert(" מצטערים, אנו נסו שנית!");
-                        console.log(result);
+                    console.log(result);
                 },
                 (error) => {
                     console.log("err post=", error);
@@ -238,7 +247,40 @@ export default class CreateEvent extends React.Component {
                 }
             );
     }
+    
+    fetchUpdateEvent() {
 
+        console.log("in fetch=", this.state.newEvent);
+
+        console.log("in new event=", this.state.newEvent);
+        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Events/Update', {
+
+            method: 'PUT',
+            body: JSON.stringify(this.state.newEvent),
+            headers: new Headers({
+                'Content-Type': 'application/json; charset=UTF-8',
+            })
+        })
+            .then(res => {
+                return res.json();
+            })
+            .then(
+                (result) => {
+                    if (result == 1) {
+                        Alert.alert(" האירוע נשמר בהצלחה");
+                        console.log(result);
+                        this.navigation.navigate('GeneralEvents');
+                    }
+                    else
+                        Alert.alert(" מצטערים, אנו נסו שנית!");
+                    console.log(result);
+                },
+                (error) => {
+                    console.log("err post=", error);
+                    Alert.alert("מצטערים, אנו נסו שנית!");
+                }
+            );
+    }
     handleMainChange(mainI) {
         this.setState({ mainI: mainI }, () => {
             this.fetchSubInterest();
@@ -353,13 +395,13 @@ export default class CreateEvent extends React.Component {
                         underlineColorAndroid={this.state.isFocus ? blue : grey}
                         onFocus={this.handleFocus}
                         onBlur={this.handleBlur}
+                        value={newEvent.Name}
                         onChangeText={text => this.setState(prevState => ({
                             newEvent: {
                                 ...prevState.newEvent,
                                 Name: text
                             }
                         }))}
-                        value={this.state.edit ? eventDetails.Name : ''}
                     ></TextInput>
                     <View style={{ flexDirection: "row", alignContent: "space-between" }}>
                         <MaterialIcons name="access-time" size={22} color={colors.turkiz}></MaterialIcons>
@@ -376,7 +418,7 @@ export default class CreateEvent extends React.Component {
                                </Text>
                         </TouchableOpacity>
                     </View>
-                    <Text style={{ textAlign: "center", fontFamily: 'rubik-regular', fontSize: 20 }}>{moment(this.state.dateStart).format("DD/MM/YYYY")}, {moment(this.state.timeStart).format("HH:mm")}</Text>
+                    <Text style={{ textAlign: "center", fontFamily: 'rubik-regular', fontSize: 20 }}>{moment(newEvent.StartDate).format("DD/MM/YYYY")}, {moment(newEvent.StartHour).format("HH:mm")}</Text>
                     <View style={{ flexDirection: "row", alignContent: "space-around" }}>
                         <MaterialIcons name="access-time" size={22} color={colors.turkiz}></MaterialIcons>
                         <TouchableOpacity onPress={this.showDatepicker2}>
@@ -391,7 +433,7 @@ export default class CreateEvent extends React.Component {
                                </Text>
                         </TouchableOpacity>
                     </View>
-                    <Text style={{ textAlign: "center", fontFamily: 'rubik-regular', fontSize: 20 }}>{moment(this.state.dateEnd).format("DD/MM/YYYY")}, {moment(this.state.timeEnd).format("HH:mm")}</Text>
+                    <Text style={{ textAlign: "center", fontFamily: 'rubik-regular', fontSize: 20 }}>{moment(newEvent.EndDate).format("DD/MM/YYYY")}, {moment(newEvent.EndHour).format("HH:mm")}</Text>
                     <TextInput
                         style={styles.input}
                         placeholder="תיאור"
@@ -406,7 +448,7 @@ export default class CreateEvent extends React.Component {
                                 Desc: text
                             }
                         }))}
-                        value={this.state.edit ? eventDetails.Desc : ''}
+                        value={newEvent.Desc}
                     ></TextInput>
                     <TextInput
                         style={styles.input}
@@ -423,7 +465,7 @@ export default class CreateEvent extends React.Component {
                                 NumOfParticipants: text
                             }
                         }))}
-                        value={this.state.edit ? eventDetails.NumOfParticipants : ''}
+                        value={newEvent.NumOfParticipants+""}
                     ></TextInput>
                     <TextInput
                         style={styles.input}
@@ -439,7 +481,7 @@ export default class CreateEvent extends React.Component {
                                 FromAge: text
                             }
                         }))}
-                        value={this.state.edit ? eventDetails.FromAge : ''}
+                        value={newEvent.FromAge+""}
                     ></TextInput>
                     <TextInput
                         style={styles.input}
@@ -456,7 +498,7 @@ export default class CreateEvent extends React.Component {
                                 ToAge: text
                             }
                         }))}
-                        value={this.state.edit ? eventDetails.ToAge : ''}
+                        value={newEvent.ToAge+""}
                     ></TextInput>
                     <TextInput
                         style={styles.input}
@@ -473,7 +515,7 @@ export default class CreateEvent extends React.Component {
                                 Price: text
                             }
                         }))}
-                        value={this.state.edit ? eventDetails.Price : ''}
+                        value={newEvent.Price+""}
                     ></TextInput>
 
                     {/* <Text style={{ fontFamily: 'rubik-regular', fontSize: 22, color: colors.turkiz, textAlign: 'left' }}> מיקום האירוע</Text>
@@ -497,6 +539,7 @@ export default class CreateEvent extends React.Component {
                         <View style={styles.dropDown}>
                             <Dropdown
                                 label='בחר קטגוריה'
+                                value={newEvent.CategoryId}
                                 valueExtractor={({ CategoryId }) => CategoryId}
                                 labelExtractor={({ CategoryName }) => CategoryName}
                                 data={this.catArray}
@@ -508,7 +551,7 @@ export default class CreateEvent extends React.Component {
                                     }
                                 }))
                                 }
-                                value={this.state.edit ? eventDetails.CategoryId : ''}
+                        
                             />
                         </View>
                     </View>
@@ -532,10 +575,10 @@ export default class CreateEvent extends React.Component {
                     )}
                 </ScrollView>
                 <Button
-                    title="צור אירוע"
+                    title={this.editMode?"עדכן":"צור אירוע"}
                     buttonStyle={{ borderRadius: 5, marginLeft: 20, marginRight: 20 }}
                     containerStyle={{ marginTop: 1 }}
-                    onPress={ () => this.fetchCreatEvent()}
+                    onPress={() =>this.editMode?this.fetchUpdateEvent(): this.fetchCreatEvent()}
                 ></Button>
             </View>
         );
