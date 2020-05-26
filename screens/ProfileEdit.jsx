@@ -128,7 +128,7 @@ export default class ProfileEdit extends Component {
     }
     //fetch -get all intrests to search by
     fetchGetAllIntrests() {
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Intrests', {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Intrests', {
 
             method: 'GET',
             headers: new Headers({
@@ -152,7 +152,7 @@ export default class ProfileEdit extends Component {
     fetchSubInterest = () => {
         //console.log(this.state.mainI);
         // console.log(this.state.searchName+this.state.user.CityName);
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Intrests/Sub?mainI=' + this.state.mainI, {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Intrests/Sub?mainI=' + this.state.mainI, {
             method: 'GET',
             headers: new Headers({
                 'Content-type': 'application/json; charset=UTF-8'
@@ -176,7 +176,7 @@ export default class ProfileEdit extends Component {
 
     //fetch -get all JOB TITLE to search by - problem
     fetchGetAllJobTitle() {
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/JobTitle', {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/JobTitle', {
 
             method: 'GET',
             headers: new Headers({
@@ -200,7 +200,7 @@ export default class ProfileEdit extends Component {
     }
     //fetch -getCity to search by - problem
     fetchGetCity() {
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/City', {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/City', {
 
             method: 'GET',
             headers: new Headers({
@@ -270,7 +270,7 @@ export default class ProfileEdit extends Component {
         console.log("userFetch", user);
 
 
-        fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/User/Extra', {
+        fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/User/Extra', {
             method: 'PUT',
             body: JSON.stringify(user),
             headers: new Headers({

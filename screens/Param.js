@@ -22,7 +22,7 @@ export default class Param extends Component{
     }
 
     fetchGetParams() {
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Param', {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Param', {
 
             method: 'GET',
             headers: new Headers({
@@ -51,7 +51,7 @@ export default class Param extends Component{
         let param={
             CategoryId: this.state.paramId
         }
-        fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Votes' , {
+        fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Votes' , {
             method: 'PUT',
             body: JSON.stringify(param),
             headers: new Headers({

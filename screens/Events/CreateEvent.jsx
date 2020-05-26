@@ -62,7 +62,7 @@ export default class CreateEvent extends React.Component {
     }
     fetchGetAllCategories() {
         //console.log("in fetch");
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Category/All', {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Category/All', {
 
             method: 'GET',
             headers: new Headers({
@@ -107,7 +107,7 @@ export default class CreateEvent extends React.Component {
     }
     fetchGetAllCategories() {
         //console.log("in fetch");
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Category/All', {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Category/All', {
 
             method: 'GET',
             headers: new Headers({
@@ -219,7 +219,7 @@ export default class CreateEvent extends React.Component {
         console.log("in fetch=", this.state.newEvent);
 
         console.log("in new event=", this.state.newEvent);
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Events/New', {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Events/New', {
 
             method: 'POST',
             body: JSON.stringify(this.state.newEvent),
@@ -250,10 +250,7 @@ export default class CreateEvent extends React.Component {
     
     fetchUpdateEvent() {
 
-        console.log("in fetch=", this.state.newEvent);
-
-        console.log("in new event=", this.state.newEvent);
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Events/Update', {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Events/Update', {
 
             method: 'PUT',
             body: JSON.stringify(this.state.newEvent),
@@ -269,7 +266,7 @@ export default class CreateEvent extends React.Component {
                     if (result == 1) {
                         Alert.alert(" האירוע נשמר בהצלחה");
                         console.log(result);
-                        this.navigation.navigate('GeneralEvents');
+                        this.navigation.navigate('MyEvents');
                     }
                     else
                         Alert.alert(" מצטערים, אנו נסו שנית!");
@@ -289,7 +286,7 @@ export default class CreateEvent extends React.Component {
     }
     //fetch -get all intrests to search by
     fetchGetAllIntrests() {
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Intrests', {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Intrests', {
 
             method: 'GET',
             headers: new Headers({
@@ -313,7 +310,7 @@ export default class CreateEvent extends React.Component {
     fetchSubInterest = () => {
         //console.log(this.state.mainI);
         // console.log(this.state.searchName+this.state.user.CityName);
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Intrests/Sub?mainI=' + this.state.mainI, {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Intrests/Sub?mainI=' + this.state.mainI, {
             method: 'GET',
             headers: new Headers({
                 'Content-type': 'application/json; charset=UTF-8'

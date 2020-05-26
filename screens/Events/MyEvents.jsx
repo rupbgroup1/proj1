@@ -45,7 +45,7 @@ export default class MyEvents extends React.Component {
   //I'm the owner
   fetchGetMyEvents(userId) {
     console.log("in fetch");
-    return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Events/My?userId=' + userId, {
+    return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Events/My?userId=' + userId, {
 
       method: 'GET',
       headers: new Headers({

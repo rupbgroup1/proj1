@@ -19,7 +19,9 @@ export default class LoginScreen extends Component {
 
   }
 
-
+componentDidMount(){
+  this.fetchtest();
+}
   //Search for the userDetails in DB
   fetchOnLogin = () => {
     const email = this.state.username;
@@ -35,7 +37,7 @@ export default class LoginScreen extends Component {
       return Alert.alert("אנא מלא שם משתמש וסיסמה");
     }
 
-    fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/User/login', {
+    fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/User/login', {
       method: 'POST',
       body: JSON.stringify(loginDetails),
       headers: new Headers({
@@ -68,6 +70,30 @@ export default class LoginScreen extends Component {
 
   }
   
+  //test
+  fetchtest() {
+    
+    fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Events/test', {
+      method: 'GET',
+      headers: new Headers({
+        'Content-type': 'application/json; charset=UTF-8'
+      })
+    })
+      .then(res => {
+        //console.log('res=', res);
+        return res.json()
+      })
+      .then(
+        (result) => {
+          console.log("TEST = ", result);
+        },
+        (error) => {
+          console.log("test=", error);
+          Alert.alert("איראה שגיאה, אנא נסה שנית");
+        });
+
+
+  }
 
 
   render() {

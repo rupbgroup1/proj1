@@ -51,7 +51,7 @@ class GeneralEvents extends React.Component {
     //*fetch */
     fetchGetAllEvents(userNei, userId) {
         console.log("in fetch");
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Events/All/'+userId+'/' + userNei, {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Events/All/'+userId+'/' + userNei, {
 
             method: 'GET',
             headers: new Headers({
@@ -80,7 +80,7 @@ class GeneralEvents extends React.Component {
 
     fetchGetAllCategories() {
         //console.log("in fetch");
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Category/All', {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Category/All', {
 
             method: 'GET',
             headers: new Headers({
@@ -112,7 +112,7 @@ class GeneralEvents extends React.Component {
             Id: this.state.selectedCard,
             Attandance: [{UserId: this.state.user.UserId}]
         }
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Event/PostAtt', {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Event/PostAtt', {
 
             method: 'POST',
             body: JSON.stringify(att),
@@ -146,7 +146,7 @@ class GeneralEvents extends React.Component {
             Id: this.state.selectedCard,
             Attandance: [{UserId: this.state.user.UserId}]
         }
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Event/DeleteAtt', {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Event/DeleteAtt', {
 
             method: 'DELETE',
             body: JSON.stringify(att),

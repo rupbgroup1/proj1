@@ -29,7 +29,7 @@ export default class ForgotPassword extends Component {
     //serach for the email in DB
     //בדיקה האם המייל קיים כבר בשרת
     checkUserEmailIsValid = () => {
-        fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/User/?username=' + this.state.Email, {
+        fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/User/?username=' + this.state.Email, {
             method: 'GET',
             headers: new Headers({
                 'Content-Type': 'application/json; charset=UTF-8',
@@ -90,7 +90,7 @@ export default class ForgotPassword extends Component {
             Email: this.state.Email,
             Password: this.state.Password
         }
-        fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/User/Pass', {
+        fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/User/Pass', {
             method: 'PUT',
             body: JSON.stringify(user),
             headers: new Headers({
