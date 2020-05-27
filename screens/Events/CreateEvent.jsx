@@ -462,7 +462,7 @@ export default class CreateEvent extends React.Component {
                                 NumOfParticipants: text
                             }
                         }))}
-                        value={newEvent.NumOfParticipants+""}
+                        value={newEvent.NumOfParticipants!=null&&newEvent.NumOfParticipants+""}
                     ></TextInput>
                     <TextInput
                         style={styles.input}
@@ -478,7 +478,7 @@ export default class CreateEvent extends React.Component {
                                 FromAge: text
                             }
                         }))}
-                        value={newEvent.FromAge+""}
+                        value={newEvent.FromAge!=null&&newEvent.FromAge+""}
                     ></TextInput>
                     <TextInput
                         style={styles.input}
@@ -495,7 +495,7 @@ export default class CreateEvent extends React.Component {
                                 ToAge: text
                             }
                         }))}
-                        value={newEvent.ToAge+""}
+                        value={newEvent.ToAge!=null&&newEvent.ToAge+""}
                     ></TextInput>
                     <TextInput
                         style={styles.input}
@@ -512,7 +512,7 @@ export default class CreateEvent extends React.Component {
                                 Price: text
                             }
                         }))}
-                        value={newEvent.Price+""}
+                        value={newEvent.Price!=null&&newEvent.Price+""}
                     ></TextInput>
 
                     {/* <Text style={{ fontFamily: 'rubik-regular', fontSize: 22, color: colors.turkiz, textAlign: 'left' }}> מיקום האירוע</Text>

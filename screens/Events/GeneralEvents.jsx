@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { createButtomTabNavigator, createAppContainer } from 'react-navigation';
-import { View, Text, StyleSheet, AsyncStorage, Image, ScrollView, Alert, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, AsyncStorage, Image, ScrollView, Alert, Dimensions, TouchableOpacity, TouchableHighlight } from 'react-native';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
-import { Icon } from 'react-native-elements';
+//import { Icon } from 'react-native-elements';
 import AttendanceEvents from './AttendanceEvents';
 import MyEvents from './MyEvents';
 import Header from '../../components/Header';
@@ -10,7 +10,12 @@ import BackButton from '../../components/BackButton';
 import colors from '../../assets/constant/colors';
 import { SearchBar, Card, Button, Overlay } from 'react-native-elements';
 import OurButton from '../../components/OurButton';
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, FontAwesome5, FontAwesome } from '@expo/vector-icons';
+import moment from "moment";
+
+// import { AccessAlarm, ThreeDRotation } from '@material-ui/icons';
+// import home from '@material-ui/icons/DeleteRounded';
+//import home from '@material-ui/icons';
 
 class GeneralEvents extends React.Component {
     constructor(props) {
@@ -23,12 +28,11 @@ class GeneralEvents extends React.Component {
             filteredArray: [],
             visible: false,
             selectedCat: 0,
-            selectedCard:{},
-            selectedOwner:{}
+            selectedCard: {},
+            selectedOwner: {}
         };
         this.arrayholder = [];
         this.catArray = [];
-
 
     }
 
@@ -51,7 +55,7 @@ class GeneralEvents extends React.Component {
     //*fetch */
     fetchGetAllEvents(userNei, userId) {
         console.log("in fetch");
-        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Events/All/'+userId+'/' + userNei, {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Events/All/' + userId + '/' + userNei, {
 
             method: 'GET',
             headers: new Headers({
@@ -108,11 +112,11 @@ class GeneralEvents extends React.Component {
 
     fetchPostAttend() {
         //console.log("in fetch");
-        const att={
+        const att = {
             Id: this.state.selectedCard,
-            Attandance: [{UserId: this.state.user.UserId}]
+            Attandance: [{ UserId: this.state.user.UserId }]
         }
-        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Event/PostAtt', {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Events/PostAtt', {
 
             method: 'POST',
             body: JSON.stringify(att),
@@ -128,7 +132,7 @@ class GeneralEvents extends React.Component {
                 (result) => {
                     console.log("fetch POST att = ", result);
                     if (result === 1)
-                    Alert.alert("השתתפותך נרשמה, תהנה באירוע!");
+                        Alert.alert("השתתפותך נרשמה, תהנה באירוע!");
                     else {
                         Alert.alert("אירעה שגיאה, אנא נסה שנית");
                     }
@@ -142,11 +146,11 @@ class GeneralEvents extends React.Component {
 
     fetchDeleteAttend() {
         //console.log("in fetch");
-        const att={
+        const att = {
             Id: this.state.selectedCard,
-            Attandance: [{UserId: this.state.user.UserId}]
+            Attandance: [{ UserId: this.state.user.UserId }]
         }
-        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Event/DeleteAtt', {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Events/DeleteAtt', {
 
             method: 'DELETE',
             body: JSON.stringify(att),
@@ -162,7 +166,7 @@ class GeneralEvents extends React.Component {
                 (result) => {
                     console.log("fetch delete = ", result);
                     if (result === 1)
-                    Alert.alert("השתתפותך בוטלה");
+                        Alert.alert("השתתפותך בוטלה");
                     else {
                         Alert.alert("אירעה שגיאה, אנא נסה שנית");
                     }
@@ -213,7 +217,7 @@ class GeneralEvents extends React.Component {
 
     //press on plus
     createNewEvent() {
-     // navigation.navigate('CreateEvent');
+        // navigation.navigate('CreateEvent');
     }
 
     toggleOverlay() {
@@ -221,8 +225,8 @@ class GeneralEvents extends React.Component {
     }
 
     attendToEvent() {
-       this.fetchPostAttend();
-       
+        this.fetchPostAttend();
+
     }
 
     render() {
@@ -231,37 +235,46 @@ class GeneralEvents extends React.Component {
             <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
 
                 <Header />
-                <BackButton goBack={() => navigation.navigate('MainPage')}/>
+                <BackButton goBack={() => navigation.navigate('MainPage')} />
 
                 <View style={styles.row}>
-                    <SearchBar
-                        placeholder="חפש/י אירועים בשכונה.."
-                        onChangeText={text => this.SearchFilterFunction(text)}
-                        onClear={text => this.SearchFilterFunction('')}
-                        value={this.state.text}
-                        lightTheme={true}
-                        inputContainerStyle={{ backgroundColor: 'white' }}
-                        containerStyle={{ width: '90%', backgroundColor: colors.reeBackgrouond }}
-                    />
-                    <OurButton
-                        title='add'
-                        key='add'
-                        onPress={() => navigation.navigate('CreateEvent')}>
-                        <MaterialIcons name="add-circle" size={30} color={colors.turkiz} style={styles.addIcon} />
-                    </OurButton>
+                    <View style={styles.search}>
+                        <SearchBar
+                            placeholder="חפש/י אירועים בשכונה.."
+                            onChangeText={text => this.SearchFilterFunction(text)}
+                            onClear={text => this.SearchFilterFunction('')}
+                            value={this.state.text}
+                            lightTheme={true}
+                            inputContainerStyle={{ backgroundColor: 'white', direction: 'rtl' }}
+                            containerStyle={styles.searchContainer}
+                        />
+                    </View>
+                    <View style={styles.addButton}>
+                        <OurButton
+                            title='add'
+                            key='add'
+                            onPress={() => navigation.navigate('CreateEvent')}>
+                            <MaterialIcons name="add" size={40} color={colors.header} />
+                        </OurButton>
+                    </View>
                 </View>
-                <View style={{ height: 40 }}>
+                <View style={{ height: 40, }}>
                     <ScrollView horizontal={true}>
                         {this.catArray.map((c) => {
                             return (
-                                <Button
-                                    type="outline"
-                                    title={c.CategoryName}
-                                    key={c.CategoryId}
-                                    onPress={cat => this.filterByCat(c.CategoryId)}
-                                    raised={true}
-                                >
-                                </Button>)
+                                <View style={{ paddingHorizontal: 1 }}>
+                                    <Button
+                                        type="outline"
+                                        title={c.CategoryName}
+                                        titleStyle={{ color: colors.turkiz, fontFamily:'rubik-regular' }}
+                                        key={c.CategoryId}
+                                        onPress={cat => this.filterByCat(c.CategoryId)}
+                                        raised={true}
+                                        buttonStyle={styles.categories}
+                                    >
+                                    </Button>
+                                </View>
+                            )
                         })}
                     </ScrollView>
                 </View>
@@ -272,68 +285,99 @@ class GeneralEvents extends React.Component {
 
                             return (
 
-                                <Card
-                                    key={e.Id}
-                                    title={e.Name}
-                                    image={{ uri: e.Image }}
-                                    style={{ marginLeft: 0, marginRight: 0 }}
-                                    containerStyle={{ width: Dimensions.get('window').width - 20 }}
-                                >
+                                <View style={{ right: 5 }}>
+                                    <Card
+                                        key={e.Id}
+                                        //title={e.Name}
+                                        titleStyle={styles.cardTitle}
+                                        image={{ uri: e.Image }}
+                                        containerStyle={styles.cardContainer}
+                                    >
+                                        <Text style={styles.cardTitleText}>{e.Name}</Text>
+                                        <View style={{ flexDirection: 'row' }}>
 
-                                    <Text style={{ marginBottom: 10 }}>{e.Desc}</Text>
-                                    <View style={{ alignItems: "flex-end", direction: 'rtl', flexDirection: 'row' }}>
-                                        <MaterialIcons name="date-range" size={20} color={'black'}></MaterialIcons>
-                                        <Text style={{ color: 'black', marginRight: 20 }}>{new Date(e.StartDate).toLocaleDateString()}</Text>
-                                    </View>
-                                    <Button
-                                        title='ראה פרטים'
-                                        buttonStyle={{ borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0 }}
-                                        onPress={() => this.setState({ visible: true , selectedCard:e, selectedOwner:e.Admin})}
-                                    ></Button>
-                                    <Overlay isVisible={this.state.visible} onBackdropPress={() => this.toggleOverlay()}>
-                                        <Card
-                                            key={this.state.selectedCard.Id}
-                                            image={{ uri: this.state.selectedCard.Image }}
-                                            title={this.state.selectedCard.Name}
-                                            style={{ marginLeft: 0, marginRight: 0 }}
-                                        >
-
-                                            <Text style={{ marginBottom: 10 }}>{this.state.selectedCard.Desc}</Text>
-                                            <View style={{ alignItems: "flex-end", direction: 'rtl', flexDirection: 'row' }}>
-                                                <MaterialIcons name="date-range" size={20} color={'black'}></MaterialIcons>
-                                                <Text style={{ color: 'black', marginRight: 20 }}>{new Date(this.state.selectedCard.StartDate).toLocaleDateString()} - </Text>
-                                                <Text style={{ color: 'black', marginRight: 20 }}>{new Date(this.state.selectedCard.EndDate).toLocaleDateString()}</Text>
+                                            <Text style={styles.cardText}>{e.Desc}</Text>
+                                        </View>
+                                        <View style={{ flexDirection: 'row', }}>
+                                            <View style={styles.cardIcons}>
+                                                <FontAwesome5 name="calendar-alt" size={22}></FontAwesome5>
+                                                <Text style={styles.cardIconsText}>{moment(e.StartDate).format("DD/MM/YYYY")}</Text>
                                             </View>
-                                            <Text>מספר משתתפים: {this.state.selectedCard.NumOfParticipants}</Text>
-                                            <Text>מחיר: {this.state.selectedCard.Price}</Text>
-                                            <Text>מארגן האירוע: {this.state.selectedOwner.FirstName + ' ' + this.state.selectedOwner.LastName}</Text>
-                                            <Text>טווח גילאים: {this.state.selectedCard.ToAge + ' - ' + this.state.selectedCard.FromAge}</Text>
-                                            <TouchableOpacity
+                                            <View style={styles.cardIcons}>
+                                                <FontAwesome5 name="users" size={22} ></FontAwesome5>
+                                                <Text style={styles.cardIconsText}>{e.NumOfParticipants}</Text>
+                                            </View>
+                                            <View style={styles.cardIcons}>
+                                                <FontAwesome5 name="dollar-sign" size={22}></FontAwesome5>
+                                                <Text style={styles.cardIconsText}> {e.Price + '  ש"ח'}</Text>
+                                            </View>
 
-                                                onPress={() => this.setState({ visible: false })}>
-                                                {/* nav to map */}
-                                                <Text>לחץ לצפייה במיקום האירוע</Text>
-                                            </TouchableOpacity>
-                                            {this.state.selectedCard.Attend!=1?
+                                        </View>
+                                        <View style={{ paddingVertical: 10 }}>
                                             <Button
-                                                type="outline"
-                                                raised={true}
-                                                title='מעוניינ/ת'
-                                                onPress={() => this.fetchPostAttend()}
-                                            > </Button>
-                                            :
-                                            <Button
-                                                type="outline"
-                                                raised={true}
-                                                title='ביטול הגעה'
-                                                onPress={() => this.fetchDeleteAttend()}
-                                            > </Button>
-                                            }
-                                        </Card>
+                                                title='ראה פרטים'
+                                                buttonStyle={styles.cardButton}
+                                                titleStyle={styles.cardButtonText}
+                                                onPress={() => this.setState({ visible: true, selectedCard: e, selectedOwner: e.Admin })}
+                                            >
+                                            </Button>
+                                        </View>
+                                        <Overlay overlayStyle={{ backgroundColor: 'rgba(52, 52, 52, 0)' }} isVisible={this.state.visible} onBackdropPress={() => this.toggleOverlay()}>
+                                            <Card
+                                                key={this.state.selectedCard.Id}
+                                                image={{ uri: this.state.selectedCard.Image }}
+                                                containerStyle={styles.innerCardContainer}
+                                            >
+                                                <Text style={styles.cardTitleText} >{this.state.selectedCard.Name}</Text>
+                                                <Text >{this.state.selectedCard.Desc}</Text>
+                                                <View style={styles.cardIcons}>
+                                                    <FontAwesome5 name="calendar-alt" size={20}></FontAwesome5>
+                                                    <Text style={styles.cardIconsText}>{moment(this.state.selectedCard.StartDate).format("DD/MM/YYYY")} עד </Text>
+                                                    <Text style={styles.cardIconsText}>{moment(this.state.selectedCard.EndDate).format("DD/MM/YYYY")}</Text>
+                                                </View>
+                                                <View style={styles.cardIcons}>
+                                                    <FontAwesome5 name="users" size={22}></FontAwesome5>
+                                                    <Text style={styles.cardIconsText}> {this.state.selectedCard.NumOfParticipants + '  משתתפים'}</Text>
+                                                </View>
+                                                <View style={styles.cardIcons}>
+                                                    <FontAwesome5 name="dollar-sign" size={22}></FontAwesome5>
+                                                    <Text style={styles.cardIconsText}> {this.state.selectedCard.Price + '  ש"ח'}</Text>
+                                                </View>
+                                                <View style={styles.cardIcons}>
+                                                    <FontAwesome name="user" size={22}></FontAwesome>
+                                                    <Text style={styles.cardIconsText}> {this.state.selectedOwner.FirstName + ' ' + this.state.selectedOwner.LastName}</Text>
+                                                </View>
+                                                <View style={styles.cardIcons}>
+                                                    <FontAwesome5 name="id-card" size={22}></FontAwesome5>
+                                                    <Text style={styles.cardIconsText}> {'מיועד לגילאים  ' + this.state.selectedCard.ToAge + ' - ' + this.state.selectedCard.FromAge}</Text>
+                                                </View>
+                                                <TouchableOpacity
+                                                    style={{ paddingVertical: 20, alignSelf: 'center' }}
+                                                    onPress={() => this.setState({ visible: false })}>
+                                                    {/* nav to map */}
+                                                    <Text style={styles.locationText}>לחץ לצפייה במיקום האירוע</Text>
+                                                </TouchableOpacity>
+                                                {this.state.selectedCard.Attend != 1 ?
+                                                    <Button
+                                                        title='מעוניינ/ת'
+                                                        buttonStyle={styles.cardButton}
+                                                        titleStyle={styles.cardButtonText}
+                                                        onPress={() => this.fetchPostAttend()}
+                                                    > </Button>
+                                                    :
+                                                    <Button
+                                                        title='ביטול הגעה'
+                                                        buttonStyle={styles.cardButton}
+                                                        titleStyle={styles.cardButtonText}
+                                                        onPress={() => this.fetchDeleteAttend()}
+                                                    > </Button>
+                                                }
+                                            </Card>
 
-                                    </Overlay>
+                                        </Overlay>
 
-                                </Card>
+                                    </Card>
+                                </View>
 
                             )
                         }
@@ -347,22 +391,95 @@ const styles = StyleSheet.create({
     imageCard: {
         resizeMode: 'cover'
     },
-    title: {
-        alignItems: 'center',
-        fontSize: 24,
-        color: colors.turkiz,
-        fontFamily: 'rubik-regular'
-    },
     row: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignContent: 'stretch',
-
-        marginLeft: 0,
-        marginRight: 0
     },
-    addIcon: {
-        marginTop: 15,
+    addButton: {
+        flexDirection: 'row',
+        right: 15,
+        top: 15
+    },
+    search: {
+        flexDirection: 'row',
+        width: '95%',
+        paddingVertical: 5,
+        left: 15
+    },
+    searchContainer: {
+        width: '90%',
+        backgroundColor: 'white',
+        borderRadius: 30,
+        borderWidth: 0.5,
+        borderColor: '#D1D3D4',
+        height: '85%',
+        marginVertical: 5
+    },
+    bottomIcons: {
+        paddingBottom: 2
+    },
+    categories: {
+        backgroundColor: 'white',
+        borderRadius: 0,
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+        borderColor: '#D1D3D4',
+        shadowColor: '#D1D3D4'
+    },
+    cardContainer: {
+        width: Dimensions.get('window').width - 20,
+        borderRadius: 5,
+        borderColor: '#D1D3D4',
+        shadowRadius: 5
+    },
+    innerCardContainer: {
+        paddingHorizontal: 40,
+        paddingVertical: 20,
+        width: 300,
+        alignSelf: 'center'
+    },
+    cardTitle: {
+        fontSize: 26,
+        color: "black",
+        fontFamily: 'rubik-regular'
+    },
+    cardTitleText: {
+        fontSize: 26,
+        color: "black",
+        fontFamily: 'rubik-regular'
+    },
+    cardIcons: {
+        alignItems: "flex-end",
+        direction: 'rtl',
+        flexDirection: 'row',
+        paddingVertical: 5,
+        paddingHorizontal: 10
+    },
+    cardIconsText: {
+        right: -10,
+        left: 10,
+        fontFamily: 'rubik-regular'
+    },
+    cardText: {
+        marginBottom: 10,
+        fontFamily: 'rubik-regular',
+        fontSize: 16,
+        textAlign: 'left'
+    },
+    cardButton: {
+        borderRadius: 30,
+        marginBottom: 0,
+        width: '60%',
+        alignSelf: 'center',
+        backgroundColor: colors.turkiz
+    },
+    cardButtonText: {
+        fontSize: 20,
+        fontFamily: 'rubik-regular'
+    },
+    locationText: {
+        fontFamily: 'rubik-regular',
+        fontSize: 16,
+        color: colors.turkiz
     }
 });
 
@@ -378,7 +495,7 @@ const TabNavigator = createMaterialBottomTabNavigator(
 
                 tabBarIcon: () => (
                     <View>
-                        <Icon name={'home'} size={25} style={{ color: 'black' }} />
+                        <FontAwesome5 name={'home'} size={23} color={'black'} />
                     </View>
                 )
 
@@ -393,7 +510,7 @@ const TabNavigator = createMaterialBottomTabNavigator(
                 barStyle: { backgroundColor: 'white' },
                 tabBarIcon: () => (
                     <View>
-                        <Icon name={'person'} size={25} style={{ color: 'black' }} />
+                        <FontAwesome5 name={'user-alt'} size={24} color={'black'} />
                     </View>
                 )
 
@@ -408,7 +525,7 @@ const TabNavigator = createMaterialBottomTabNavigator(
                 barStyle: { backgroundColor: 'white' },
                 tabBarIcon: () => (
                     <View>
-                        <Icon name={'star'} size={25} style={{ color: 'black' }} />
+                        <FontAwesome name={'heart'} size={23} color={'black'} />
                     </View>
                 )
 
