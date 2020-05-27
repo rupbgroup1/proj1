@@ -426,8 +426,8 @@ const styles = StyleSheet.create({
         shadowColor: '#D1D3D4'
     },
     cardContainer: {
-        width: Dimensions.get('window').width - 20,
-        borderRadius: 5,
+        width: Dimensions.get('window').width - 24,
+        borderRadius: 6,
         borderColor: '#D1D3D4',
         shadowRadius: 5
     },
