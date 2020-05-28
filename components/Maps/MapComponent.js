@@ -1,6 +1,7 @@
 import React, { useState, Component, useCallback, useEffect } from 'react';
 import { Dimensions, TouchableOpacity, AsyncStorage, Text, Image, Alert, View } from 'react-native';
 import MapView, { Marker, Callout } from 'react-native-maps';
+import OverlayExample from '../OverlayExample';
 
 
 
@@ -76,7 +77,7 @@ const MapComponent = (props) => {
                                 }}
                                 identifier={i + "M"}
                                 title={user.FirstName + ", " + age + about}
-                                onPress={() => { Alert.alert(user.FirstName + ("\n") + age) }}
+                                onPress={() => {<OverlayExample user={user} /> }}
 
                             >
                                 {/* <Text style={{color:'black'}}>{user.MatchRate}%</Text> */}

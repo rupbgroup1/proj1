@@ -9,7 +9,10 @@ export default class OverlayExample extends Component {
         this.state = {
             modalVisible: true, 
             kidsYearOfBirth:[2007,2008],
-            intrests:["כדורעף", "שחייה"]          }
+            intrests:["כדורעף", "שחייה"],
+            user: this.props.user
+            
+        }
     }
   
   onClose = () => this.setState({ modalVisible: false});
@@ -24,18 +27,19 @@ export default class OverlayExample extends Component {
     const intrests = this.state.intrests.map((buttonIntersts) => (
         <Text style={styles.note}> {buttonIntersts},  </Text>
     ));
+    const age = new Date().getFullYear() - this.state.user.YearOfBirth;
+    const jobName = userObj.JobTitle!= null ? userObj.JobTitle.JobName : '';
     return (
         <Overlay visible={this.state.modalVisible} >
           <View>
-              <Text style={styles.subTitle}>שם פרטי + משפחה</Text>
-              <Text style={styles.note}>גיל: (משתנה גיל) </Text>
+              <Text style={styles.subTitle}>{this.state.user.FirstName} {this.state.user.LastName}</Text>
+              <Text style={styles.note}>גיל: {age} </Text>
               <Text style={styles.note}>מגדר: (משתנה מגדר) </Text>
-              <Text style={styles.note}> מצב משפחתי: (משתנה מצב משפחתי)</Text>
-              <Text style={styles.note}> מקצוע: (משתנה מקצוע)</Text>
-              <Text style={styles.note}> מקום עבודה: (משתנה מקום עבודה)</Text>
-              <Text style={styles.note}> על עצמי: (משתנה על עצמי)</Text>
-              <Text style={styles.note}> מספר ילדים: (משתנה מספר ילדים)</Text>
-                <Text style={styles.note}>גילאי ילדים: {kids}</Text>
+              <Text style={styles.note}> מצב משפחתי: {this.state.user.FamilyStatus} </Text>
+              <Text style={styles.note}> מקצוע: {jobName}</Text>
+              <Text style={styles.note}> מקום עבודה: {this.state.user.WorkPlace}</Text>
+              <Text style={styles.note}> על עצמי: {this.state.user.AboutMe}</Text>
+              <Text style={styles.note}>גילאי ילדים: {kids}</Text>
               <Text style={styles.note}>תחומי עניין: {intrests} </Text>
               <Text style={styles.note}>אירועים</Text>
               <Text style={styles.note}>עסק</Text>
@@ -55,6 +59,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: colors.subTitle,
         textAlign: "center",
+        
 
     },
 

@@ -10,6 +10,8 @@ import {createStackNavigator,createAppContainer,withNavigation} from 'react-navi
 import BackButton from '../components/BackButton';
 
 
+
+
 export default class Pic extends Component {
     
     constructor(props) {

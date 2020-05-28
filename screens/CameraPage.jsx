@@ -25,13 +25,15 @@ export default class CameraPage extends React.Component {
   }
 
   btnSnap = async () => {
+    const {goBack} = this.props.navigation;
+    //const {params} = this.props.navigation;
+
     if (this.camera) {
-      let photo = await this.camera.takePictureAsync({ quality: 0.1, base64:true});
+      let photo = await this.camera.takePictureAsync({ quality: 0.2});
      
       this.setState({ 
-        pic64base: photo.base64,
-        picName64base: 'image1_' + new Date().getTime() + '.jpg',
-        photoUri:'data:image/gif;base64,'+this.state.pic64base,
+        photoName: 'image1_' + new Date().getTime() + '.jpg',
+        photoUri:photo.uri,
         //photoUri: photo.uri 
       },()=>
       
@@ -39,7 +41,7 @@ export default class CameraPage extends React.Component {
         'האם תרצה לשמור את התמונה?',
         '',
         [
-          {text: 'כן', onPress: () => this.props.navigation.navigate('Pic', {photoUri: this.state.photoUri})},
+          {text: 'כן', onPress: () => {goBack()}},
           {
             text: 'לא',
             style: 'cancel',

@@ -338,31 +338,27 @@ export default class CreateEvent extends React.Component {
     getCoordsFromName(loc) {
         console.log(loc);
 
-        this.setState(prevState => ({
-            newEvent: {
-                ...prevState.newEvent,
-                Location: loc
-            },
+        this.setState({
+            mapVisible: true,
             region: {
                 latitude: loc.lat,
                 longitude: loc.lng,
                 longitudeDelta: 0.003,
                 latitudeDelta: 0.003
-            },
-            CityName: loc
-        }));
+            }
+        });
     }
 
 
-    handleCityName(name) {
-        this.setState(prevState => ({
-            newEvent: {
-                ...prevState.newEvent,
-                Location: name
-            },
-            CityName: name
-        }));
-    };
+    // handleCityName(name) {
+    //     this.setState(prevState => ({
+    //         newEvent: {
+    //             ...prevState.newEvent,
+    //             Location: name
+    //         },
+    //         CityName: name
+    //     }));
+    // };
 
     render() {
         const { navigation } = this.props;
@@ -403,6 +399,9 @@ export default class CreateEvent extends React.Component {
                             }
                         }))}
                     ></TextInput>
+                    <Text style={{ fontFamily: 'rubik-regular', fontSize: 22, color: colors.turkiz, textAlign: 'left' }}> מיקום האירוע</Text>
+                    <GoogleAPIAutoComplete style={styles.API} notifyChange={(loc) => this.getCoordsFromName(loc)} CityName={(name) => this.handleCityName(name)} /> 
+
                     <View style={{ flexDirection: "row", alignContent: "space-between" }}>
                         <MaterialIcons name="access-time" size={22} color={colors.turkiz}></MaterialIcons>
                         <TouchableOpacity onPress={this.showDatepicker1}>
@@ -518,9 +517,7 @@ export default class CreateEvent extends React.Component {
                         value={newEvent.Price+""}
                     ></TextInput>
 
-                    {/* <Text style={{ fontFamily: 'rubik-regular', fontSize: 22, color: colors.turkiz, textAlign: 'left' }}> מיקום האירוע</Text>
-                    <GoogleAPIAutoComplete style={styles.API} notifyChange={(loc) => this.getCoordsFromName(loc)} CityName={(name) => this.handleCityName(name)} /> */}
-
+                    
                     <Text style={{ fontFamily: 'rubik-regular', fontSize: 22, color: colors.turkiz, textAlign: 'left' }}>תחומי עניין  </Text>
                     <View style={{ paddingBottom: 200 }}>
                         <Interests
