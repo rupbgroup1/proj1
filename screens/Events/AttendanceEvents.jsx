@@ -34,29 +34,29 @@ export default class AttendanceEvents extends React.Component {
 
     componentDidMount() {
         this.getUser();
-        this.fetchGetAllCategories();
     }
 
     getUser() {
         AsyncStorage.getItem('user', (err, userJSON) => {
             const userObj = JSON.parse(userJSON);
             //console.log("obj==", userObj);
-            this.setState({ user: userObj }, () =>
-                this.fetchGetAllEvents(userObj.NeighborhoodName, userObj.UserId));
+            this.setState({ user: userObj });
+            this.fetchGetEvents(userObj.UserId);
         }
         );
 
     }
 
-    //*fetch */
-    fetchGetAllEvents(userNei, userId) {
+    //*I'm going to  */
+    fetchGetEvents(userId) {
         console.log("in fetch");
-        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Events/All/' + userId + '/' + userNei, {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Events/Att?userId=' + userId, {
 
             method: 'GET',
-            headers: new Headers({
-                'Content-Type': 'application/json; charset=UTF-8',
-            })
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            }
         })
             .then(res => {
                 return res.json();
@@ -74,68 +74,6 @@ export default class AttendanceEvents extends React.Component {
                 (error) => {
                     console.log("err post=", error);
                     Alert.alert("מצטערים, אנו נסו שנית!");
-                }
-            );
-    }
-
-    fetchGetAllCategories() {
-        //console.log("in fetch");
-        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Category/All', {
-
-            method: 'GET',
-            headers: new Headers({
-                'Content-Type': 'application/json; charset=UTF-8',
-            })
-        })
-            .then(res => {
-                return res.json();
-            })
-            .then(
-                (result) => {
-                    if (result.length > 0) {
-                        console.log("Cat = ", result);
-                        this.catArray = result;
-                    }
-                    else
-                        Alert.alert(" מצטערים, אנו נסו שנית!");
-                },
-                (error) => {
-                    console.log("err post=", error);
-                    Alert.alert("מצטערים, אנו נסו שנית!");
-                }
-            );
-    }
-
-    fetchPostAttend() {
-        //console.log("in fetch");
-        const att = {
-            Id: this.state.selectedCard,
-            Attandance: [{ UserId: this.state.user.UserId }]
-        }
-        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Events/PostAtt', {
-
-            method: 'POST',
-            body: JSON.stringify(att),
-            headers: new Headers({
-                'Content-type': 'application/json; charset=UTF-8'
-            })
-        })
-            .then(res => {
-                //console.log('res=', res);
-                return res.json()
-            })
-            .then(
-                (result) => {
-                    console.log("fetch POST att = ", result);
-                    if (result === 1)
-                        Alert.alert("השתתפותך נרשמה, תהנה באירוע!");
-                    else {
-                        Alert.alert("אירעה שגיאה, אנא נסה שנית");
-                    }
-                },
-                (error) => {
-                    console.log("err post=", error);
-                    Alert.alert("אנא נסה שנית");
                 }
             );
     }
@@ -191,31 +129,7 @@ export default class AttendanceEvents extends React.Component {
             : this.setState({ filteredArray: this.arrayholder, text: text });
     }
 
-    //filter the events by selected category 
-    filterByCat(catId) {
-        if (catId == this.state.selectedCat) {
-            this.setState({ filteredArray: this.arrayholder })
-        }
-        else {
-            const newData = this.arrayholder.filter(function (item) {
-                //applying filter for the inserted text in search bar
-                const itemData = item.CategoryId;
-                return itemData == catId;
-            });
-            this.setState({
-                filteredArray: newData,
-                selectedCat: catId
-            });
-            console.log(this.state.filteredArray)
-        }
-    }
-
-
-    //press on plus
-    createNewEvent() {
-        // navigation.navigate('CreateEvent');
-    }
-
+   
     toggleOverlay() {
         this.setState({ visible: false });
     }
@@ -254,26 +168,7 @@ export default class AttendanceEvents extends React.Component {
                         </OurButton>
                     </View>
                 </View>
-                <View style={{ height: 40, }}>
-                    <ScrollView horizontal={true}>
-                        {this.catArray.map((c) => {
-                            return (
-                                <View style={{ paddingHorizontal: 1 }}>
-                                    <Button
-                                        type="outline"
-                                        title={c.CategoryName}
-                                        titleStyle={{ color: colors.turkiz, fontFamily:'rubik-regular' }}
-                                        key={c.CategoryId}
-                                        onPress={cat => this.filterByCat(c.CategoryId)}
-                                        raised={true}
-                                        buttonStyle={styles.categories}
-                                    >
-                                    </Button>
-                                </View>
-                            )
-                        })}
-                    </ScrollView>
-                </View>
+               
                 <ScrollView>
                     {
                         this.state.filteredArray.length > 0 &&
@@ -353,33 +248,25 @@ export default class AttendanceEvents extends React.Component {
                                                     {/* nav to map */}
                                                     <Text style={styles.locationText}>לחץ לצפייה במיקום האירוע</Text>
                                                 </TouchableOpacity>
-                                                {this.state.selectedCard.Attend != 1 ?
-                                                    <Button
-                                                        title='מעוניינ/ת'
-                                                        buttonStyle={styles.cardButton}
-                                                        titleStyle={styles.cardButtonText}
-                                                        onPress={() => this.fetchPostAttend()}
-                                                    > </Button>
-                                                    :
-                                                    <Button
+                                                <Button
                                                         title='ביטול הגעה'
                                                         buttonStyle={styles.cardButton}
                                                         titleStyle={styles.cardButtonText}
                                                         onPress={() => this.fetchDeleteAttend()}
                                                     > </Button>
-                                                }
-                                            </Card>
+                                               
+                                  </Card>
 
-                                        </Overlay>
+                                </Overlay>
 
-                                    </Card>
-                                </View>
+                              </Card>
+                            </View>
 
-                            )
+                          )
                         }
-                        )}
-                </ScrollView>
-            </View>
+                )}
+            </ScrollView>
+          </View>
         );
     }
 };

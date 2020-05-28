@@ -97,7 +97,11 @@ export default class CreateEvent extends React.Component {
                 newEvent: {
                     ...prevState.newEvent,
                     OpenedBy: userObj.UserId,
-                    NeiCode: userObj.NeighborhoodName
+                    NeiCode: userObj.NeighborhoodName,
+                    Admin:userObj,
+                    Attandance: [userObj],
+                    Location: "רחוב הזויתן 1",
+                    
                 }
             }));
 
@@ -249,23 +253,44 @@ export default class CreateEvent extends React.Component {
     }
     
     fetchUpdateEvent() {
+        console.log("in update!!");
+        const e = this.state.newEvent;
+        let eventToUpdate = {
+            CategoryId: e.CategoryId,
+            Desc: e.Desc,
+            EndDate: moment(e.EndDate).format('YYYY-MM-DDThh:mm:ss'),
+            EndHour: moment(e.EndHour).format('YYYY-MM-DDThh:mm:ss'),
+            StartDate: moment(e.StartDate).format('YYYY-MM-DDThh:mm:ss'),
+            StartHour: moment(e.StartHour).format('YYYY-MM-DDThh:mm:ss'),
+            FromAge: e.FromAge,
+            Id: e.Id,
+            Image: e.Image,
+            Name: e.Name,
+            NeiCode: e.NeiCode,
+            NumOfParticipants: e.NumOfParticipants,
+            OpenedBy: e.OpenedBy,
+            Price: e.Price,
+            ToAge: e.ToAge,
+        }
+        console.log( "e t o ", eventToUpdate);
 
         return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Events/Update', {
 
             method: 'PUT',
-            body: JSON.stringify(this.state.newEvent),
-            headers: new Headers({
-                'Content-Type': 'application/json; charset=UTF-8',
-            })
+            body: JSON.stringify(eventToUpdate),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+              }
         })
             .then(res => {
                 return res.json();
             })
             .then(
                 (result) => {
-                    if (result == 1) {
+                    if (result === 1) {
                         Alert.alert(" האירוע נשמר בהצלחה");
-                        console.log(result);
+                        //console.log(result);
                         this.navigation.navigate('MyEvents');
                     }
                     else
@@ -278,6 +303,7 @@ export default class CreateEvent extends React.Component {
                 }
             );
     }
+    
     handleMainChange(mainI) {
         this.setState({ mainI: mainI }, () => {
             this.fetchSubInterest();
