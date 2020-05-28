@@ -46,7 +46,7 @@ export default class RegistraionP4 extends Component {
     fetchPostNewUser = (user) => {
         console.log("fetch user:",user);
 
-        fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/User', {
+        fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/User', {
             method: 'POST',
             body: JSON.stringify(user),
             headers: new Headers({
@@ -79,7 +79,7 @@ export default class RegistraionP4 extends Component {
     fetcGetUserId = (email) => {
         console.log("in fetch 2");
         const upload = this.state.user.ImagePath ? true : false;
-        fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/User?username=' + email, {
+        fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/User?username=' + email, {
             method: 'GET',
             headers: new Headers({
                 'Content-type': 'application/json; charset=UTF-8'
@@ -112,7 +112,7 @@ export default class RegistraionP4 extends Component {
     }
 
     fetcGetNeigborhood = (name) => {
-        fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Neighboorhoods?cityName=' + name, {
+        fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Neighboorhoods?cityName=' + name, {
             method: 'GET',
             headers: new Headers({
                 'Content-type': 'application/json; charset=UTF-8'

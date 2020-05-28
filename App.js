@@ -26,6 +26,7 @@ import _ from 'lodash';
 import ProfileEdit from './screens/ProfileEdit';
 import GeneralEvents from './screens/Events/GeneralEvents';
 import CreateEvent from './screens/Events/CreateEvent';
+import MyEvents from './screens/Events/MyEvents';
 
 //cancel the timer error
 YellowBox.ignoreWarnings(['Setting a timer']);
@@ -70,7 +71,8 @@ const navigator = createStackNavigator({
   Profile:Profile,
   ProfileEdit:ProfileEdit,
   GeneralEvents:GeneralEvents,
-  CreateEvent:CreateEvent
+  CreateEvent:CreateEvent,
+  MyEvents:MyEvents
   
   }, {
         initialRouteName: 'LoginScreen',

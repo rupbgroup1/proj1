@@ -48,7 +48,7 @@ export default class FindNeighboor extends Component {
 
     //fetch - get match users
     fetchGetMatches(userId) {
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Neighboors/Match?userId=' + userId, {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Neighboors/Match?userId=' + userId, {
 
             method: 'GET',
             headers: new Headers({
@@ -76,7 +76,7 @@ export default class FindNeighboor extends Component {
 
     //fetch -get all intrests to search by
     fetchGetAllIntrests() {
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Intrests', {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Intrests', {
 
             method: 'GET',
             headers: new Headers({
@@ -115,7 +115,7 @@ export default class FindNeighboor extends Component {
 
         //console.log("neiii==", this.state.NeighborhoodName);
 
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Neighboors/userName', {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Neighboors/userName', {
             method: 'POST',
             body: JSON.stringify(searchKeys),
             headers: new Headers({
@@ -148,7 +148,7 @@ export default class FindNeighboor extends Component {
     fetchSubInterest = () => {
         console.log(this.state.mainI);
         // console.log(this.state.searchName+this.state.user.CityName);
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Intrests/Sub?mainI=' + this.state.mainI, {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Intrests/Sub?mainI=' + this.state.mainI, {
             method: 'GET',
             headers: new Headers({
                 'Content-type': 'application/json; charset=UTF-8'
@@ -177,7 +177,7 @@ export default class FindNeighboor extends Component {
         const intrestId = Id;
         const NeighborhoodName = this.user.NeighborhoodName;
 
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Neighboors/Intrest/' + NeighborhoodName + '/' + intrestId, {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Neighboors/Intrest/' + NeighborhoodName + '/' + intrestId, {
             method: 'GET',
             headers: new Headers({
                 'Content-type': 'application/json; charset=UTF-8'

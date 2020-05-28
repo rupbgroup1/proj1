@@ -62,7 +62,7 @@ export default class CreateEvent extends React.Component {
     }
     fetchGetAllCategories() {
         //console.log("in fetch");
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Category/All', {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Category/All', {
 
             method: 'GET',
             headers: new Headers({
@@ -97,7 +97,11 @@ export default class CreateEvent extends React.Component {
                 newEvent: {
                     ...prevState.newEvent,
                     OpenedBy: userObj.UserId,
-                    NeiCode: userObj.NeighborhoodName
+                    NeiCode: userObj.NeighborhoodName,
+                    Admin:userObj,
+                    Attandance: [userObj],
+                    Location: "רחוב הזויתן 1",
+                    
                 }
             }));
 
@@ -107,7 +111,7 @@ export default class CreateEvent extends React.Component {
     }
     fetchGetAllCategories() {
         //console.log("in fetch");
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Category/All', {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Category/All', {
 
             method: 'GET',
             headers: new Headers({
@@ -219,7 +223,7 @@ export default class CreateEvent extends React.Component {
         console.log("in fetch=", this.state.newEvent);
 
         console.log("in new event=", this.state.newEvent);
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Events/New', {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Events/New', {
 
             method: 'POST',
             body: JSON.stringify(this.state.newEvent),
@@ -249,27 +253,45 @@ export default class CreateEvent extends React.Component {
     }
     
     fetchUpdateEvent() {
+        console.log("in update!!");
+        const e = this.state.newEvent;
+        let eventToUpdate = {
+            CategoryId: e.CategoryId,
+            Desc: e.Desc,
+            EndDate: moment(e.EndDate).format('YYYY-MM-DDThh:mm:ss'),
+            EndHour: moment(e.EndHour).format('YYYY-MM-DDThh:mm:ss'),
+            StartDate: moment(e.StartDate).format('YYYY-MM-DDThh:mm:ss'),
+            StartHour: moment(e.StartHour).format('YYYY-MM-DDThh:mm:ss'),
+            FromAge: e.FromAge,
+            Id: e.Id,
+            Image: e.Image,
+            Name: e.Name,
+            NeiCode: e.NeiCode,
+            NumOfParticipants: e.NumOfParticipants,
+            OpenedBy: e.OpenedBy,
+            Price: e.Price,
+            ToAge: e.ToAge,
+        }
+        console.log( "e t o ", eventToUpdate);
 
-        console.log("in fetch=", this.state.newEvent);
-
-        console.log("in new event=", this.state.newEvent);
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Events/Update', {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Events/Update', {
 
             method: 'PUT',
-            body: JSON.stringify(this.state.newEvent),
-            headers: new Headers({
-                'Content-Type': 'application/json; charset=UTF-8',
-            })
+            body: JSON.stringify(eventToUpdate),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+              }
         })
             .then(res => {
                 return res.json();
             })
             .then(
                 (result) => {
-                    if (result == 1) {
+                    if (result === 1) {
                         Alert.alert(" האירוע נשמר בהצלחה");
-                        console.log(result);
-                        this.navigation.navigate('GeneralEvents');
+                        //console.log(result);
+                        this.navigation.navigate('MyEvents');
                     }
                     else
                         Alert.alert(" מצטערים, אנו נסו שנית!");
@@ -281,6 +303,7 @@ export default class CreateEvent extends React.Component {
                 }
             );
     }
+    
     handleMainChange(mainI) {
         this.setState({ mainI: mainI }, () => {
             this.fetchSubInterest();
@@ -289,7 +312,7 @@ export default class CreateEvent extends React.Component {
     }
     //fetch -get all intrests to search by
     fetchGetAllIntrests() {
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Intrests', {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Intrests', {
 
             method: 'GET',
             headers: new Headers({
@@ -313,7 +336,7 @@ export default class CreateEvent extends React.Component {
     fetchSubInterest = () => {
         //console.log(this.state.mainI);
         // console.log(this.state.searchName+this.state.user.CityName);
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Intrests/Sub?mainI=' + this.state.mainI, {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Intrests/Sub?mainI=' + this.state.mainI, {
             method: 'GET',
             headers: new Headers({
                 'Content-type': 'application/json; charset=UTF-8'
@@ -464,7 +487,7 @@ export default class CreateEvent extends React.Component {
                                 NumOfParticipants: text
                             }
                         }))}
-                        value={newEvent.NumOfParticipants+""}
+                        value={newEvent.NumOfParticipants!=null&&newEvent.NumOfParticipants+""}
                     ></TextInput>
                     <TextInput
                         style={styles.input}
@@ -480,7 +503,7 @@ export default class CreateEvent extends React.Component {
                                 FromAge: text
                             }
                         }))}
-                        value={newEvent.FromAge+""}
+                        value={newEvent.FromAge!=null&&newEvent.FromAge+""}
                     ></TextInput>
                     <TextInput
                         style={styles.input}
@@ -497,7 +520,7 @@ export default class CreateEvent extends React.Component {
                                 ToAge: text
                             }
                         }))}
-                        value={newEvent.ToAge+""}
+                        value={newEvent.ToAge!=null&&newEvent.ToAge+""}
                     ></TextInput>
                     <TextInput
                         style={styles.input}
@@ -514,7 +537,7 @@ export default class CreateEvent extends React.Component {
                                 Price: text
                             }
                         }))}
-                        value={newEvent.Price+""}
+                        value={newEvent.Price!=null&&newEvent.Price+""}
                     ></TextInput>
 
                     
