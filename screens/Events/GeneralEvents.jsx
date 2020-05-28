@@ -12,6 +12,7 @@ import { SearchBar, Card, Button, Overlay } from 'react-native-elements';
 import OurButton from '../../components/OurButton';
 import { MaterialIcons, FontAwesome5, FontAwesome } from '@expo/vector-icons';
 import moment from "moment";
+import MapView,{ Marker } from 'react-native-maps';
 
 // import { AccessAlarm, ThreeDRotation } from '@material-ui/icons';
 // import home from '@material-ui/icons/DeleteRounded';
@@ -29,7 +30,8 @@ class GeneralEvents extends React.Component {
             visible: false,
             selectedCat: 0,
             selectedCard: {},
-            selectedOwner: {}
+            selectedOwner: {},
+            mapVisible:false,
         };
         this.arrayholder = [];
         this.catArray = [];
@@ -223,6 +225,9 @@ class GeneralEvents extends React.Component {
     toggleOverlay() {
         this.setState({ visible: false });
     }
+    toggleMapOverlay() {
+        this.setState({ mapVisible: false });
+    }
 
     attendToEvent() {
         this.fetchPostAttend();
@@ -353,10 +358,34 @@ class GeneralEvents extends React.Component {
                                                 </View>
                                                 <TouchableOpacity
                                                     style={{ paddingVertical: 20, alignSelf: 'center' }}
-                                                    onPress={() => this.setState({ visible: false })}>
+                                                    onPress={() => this.setState({ mapVisible: true })}>
                                                     {/* nav to map */}
                                                     <Text style={styles.locationText}>לחץ לצפייה במיקום האירוע</Text>
                                                 </TouchableOpacity>
+                                                <Overlay isVisible={this.state.mapVisible} onBackdropPress={() => this.toggleMapOverlay()}>
+                                                    <MapView
+                                                        style={{
+                                                            width: "100%",
+                                                            height:"100%"
+                                                        }}
+                                                        region={{
+                                                            latitude: this.state.selectedCard.Lat,
+                                                            longitude: this.state.selectedCard.Lan,
+                                                            latitudeDelta: 0.09,
+                                                            longitudeDelta: 0.09,
+                                                          }}>
+                                                              <Marker
+                                                            coordinate={{
+                                                                latitude: this.state.selectedCard.Lat,
+                                                                longitude: this.state.selectedCard.Lan,
+                                                                latitudeDelta: 0.009,
+                                                                longitudeDelta: 0.009,
+                                                              }}
+                                                            title={this.state.selectedCard.Location}
+                                                        />
+
+                                                        </MapView>
+                                                </Overlay>
                                                 {this.state.selectedCard.Attend != 1 ?
                                                     <Button
                                                         title='מעוניינ/ת'

@@ -39,7 +39,8 @@ export default class CreateEvent extends React.Component {
             eventDetails: {},
             //formated date
             showStart: '',
-            showEnd: ''
+            showEnd: '',
+            setLoc:false
         };
         this.catArray = [];
         this.editMode=false;
@@ -55,7 +56,16 @@ export default class CreateEvent extends React.Component {
         this.getUser();
         this.fetchGetAllCategories();
         this.fetchGetAllIntrests();
-        this.editMode = this.props.navigation.getParam('edit');
+        
+        const locationCoords = this.state.setLoc?this.props.navigation.getParam('region'):"";
+        this.state.setLoc&&this.setState(prevState => ({
+            newEvent: {
+                ...prevState.newEvent,
+                Location: this.props.navigation.getParam('Location'), 
+                Lat: locationCoords.latitude, 
+                Lan: locationCoords.longitude, 
+            },
+        }));
         
         console.log(this.editMode, this.eventDetails );
 
@@ -99,9 +109,6 @@ export default class CreateEvent extends React.Component {
                     OpenedBy: userObj.UserId,
                     NeiCode: userObj.NeighborhoodName,
                     Admin:userObj,
-                    Attandance: [userObj],
-                    Location: "רחוב הזויתן 1",
-                    
                 }
             }));
 
@@ -239,7 +246,7 @@ export default class CreateEvent extends React.Component {
                     if (result == 1) {
                         Alert.alert(" האירוע נשמר בהצלחה");
                         console.log(result);
-                        this.navigation.navigate('GeneralEvents');
+                        this.props.navigation.navigate('GeneralEvents');
                     }
                     else
                         Alert.alert(" מצטערים, אנו נסו שנית!");
@@ -271,6 +278,9 @@ export default class CreateEvent extends React.Component {
             OpenedBy: e.OpenedBy,
             Price: e.Price,
             ToAge: e.ToAge,
+            Location: e.Location,
+            Lat: e.Lat,
+            Lan: e.Lan
         }
         console.log( "e t o ", eventToUpdate);
 
@@ -291,7 +301,7 @@ export default class CreateEvent extends React.Component {
                     if (result === 1) {
                         Alert.alert(" האירוע נשמר בהצלחה");
                         //console.log(result);
-                        this.navigation.navigate('MyEvents');
+                        this.props.navigation.navigate('MyEvents');
                     }
                     else
                         Alert.alert(" מצטערים, אנו נסו שנית!");
@@ -303,7 +313,7 @@ export default class CreateEvent extends React.Component {
                 }
             );
     }
-    
+
     handleMainChange(mainI) {
         this.setState({ mainI: mainI }, () => {
             this.fetchSubInterest();
@@ -358,34 +368,7 @@ export default class CreateEvent extends React.Component {
 
     }
 
-    getCoordsFromName(loc) {
-        console.log(loc);
-
-        this.setState(prevState => ({
-            newEvent: {
-                ...prevState.newEvent,
-                Location: loc
-            },
-            region: {
-                latitude: loc.lat,
-                longitude: loc.lng,
-                longitudeDelta: 0.003,
-                latitudeDelta: 0.003
-            },
-            CityName: loc
-        }));
-    }
-
-
-    handleCityName(name) {
-        this.setState(prevState => ({
-            newEvent: {
-                ...prevState.newEvent,
-                Location: name
-            },
-            CityName: name
-        }));
-    };
+    
 
     render() {
         const { navigation } = this.props;
@@ -540,12 +523,15 @@ export default class CreateEvent extends React.Component {
                         }))}
                         value={newEvent.Price!=null&&newEvent.Price+""}
                     ></TextInput>
-
-                    {/* <Text style={{ fontFamily: 'rubik-regular', fontSize: 22, color: colors.turkiz, textAlign: 'left' }}> מיקום האירוע</Text>
-                    <GoogleAPIAutoComplete style={styles.API} notifyChange={(loc) => this.getCoordsFromName(loc)} CityName={(name) => this.handleCityName(name)} /> */}
-
-                    <Text style={{ fontFamily: 'rubik-regular', fontSize: 22, color: colors.turkiz, textAlign: 'left' }}>תחומי עניין  </Text>
+                    <TouchableOpacity onPress={()=>{
+                       this.setState({setLoc:true},()=> navigation.navigate('EventLocation'));
+                    }}>
+                    <Text style={{ fontFamily: 'rubik-regular', fontSize: 22, color: colors.turkiz, textAlign: 'left' }}> מיקום האירוע </Text>
+                    </TouchableOpacity>
+                    {!this.editMode &&
+                        <Text style={{ fontFamily: 'rubik-regular', fontSize: 22, color: colors.turkiz, textAlign: 'left' }}>יעניין שכנים עם תחומי העניין הבאים </Text>}  
                     <View style={{ paddingBottom: 200 }}>
+                        {!this.editMode&&
                         <Interests
                             IntrestsArray={this.state.IntrestsArray}
                             handleMainChange={(mainI) => this.handleMainChange(mainI)}
@@ -558,9 +544,10 @@ export default class CreateEvent extends React.Component {
                             }))}
                             isMulti={true}
                             initialInterest={this.state.initialInterest ? this.state.initialInterest : []}
-                        />
+                        />}
                         <View style={styles.dropDown}>
                             <Dropdown
+                                key={1}
                                 label='בחר קטגוריה'
                                 value={newEvent.CategoryId}
                                 valueExtractor={({ CategoryId }) => CategoryId}
