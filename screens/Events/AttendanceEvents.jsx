@@ -81,16 +81,15 @@ export default class AttendanceEvents extends React.Component {
     fetchDeleteAttend() {
         //console.log("in fetch");
         const att = {
-            Id: this.state.selectedCard,
+          Id: this.state.selectedCard.Id,
             Attandance: [{ UserId: this.state.user.UserId }]
         }
+        console.log(att)
         return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Events/DeleteAtt', {
 
             method: 'DELETE',
             body: JSON.stringify(att),
-            headers: new Headers({
-                'Content-type': 'application/json; charset=UTF-8'
-            })
+            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json',}
         })
             .then(res => {
                 //console.log('res=', res);

@@ -115,9 +115,10 @@ class GeneralEvents extends React.Component {
     fetchPostAttend() {
         //console.log("in fetch");
         const att = {
-            Id: this.state.selectedCard,
+            Id: this.state.selectedCard.Id,
             Attandance: [{ UserId: this.state.user.UserId }]
         }
+        console.log("**att**", att);
         return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Events/PostAtt', {
 
             method: 'POST',
@@ -149,7 +150,7 @@ class GeneralEvents extends React.Component {
     fetchDeleteAttend() {
         //console.log("in fetch");
         const att = {
-            Id: this.state.selectedCard,
+            Id: this.state.selectedCard.Id,
             Attandance: [{ UserId: this.state.user.UserId }]
         }
         return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Events/DeleteAtt', {

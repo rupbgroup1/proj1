@@ -56,16 +56,7 @@ export default class CreateEvent extends React.Component {
         this.getUser();
         this.fetchGetAllCategories();
         this.fetchGetAllIntrests();
-        
-        const locationCoords = this.state.setLoc?this.props.navigation.getParam('region'):"";
-        this.state.setLoc&&this.setState(prevState => ({
-            newEvent: {
-                ...prevState.newEvent,
-                Location: this.props.navigation.getParam('Location'), 
-                Lat: locationCoords.latitude, 
-                Lan: locationCoords.longitude, 
-            },
-        }));
+        console.log("new event= ", this.state.newEvent, this.state.setLoc);
         
         console.log(this.editMode, this.eventDetails );
 
@@ -262,6 +253,7 @@ export default class CreateEvent extends React.Component {
     fetchUpdateEvent() {
         console.log("in update!!");
         const e = this.state.newEvent;
+        const locationCoords = this.state.setLoc?this.props.navigation.getParam('region'):"";
         let eventToUpdate = {
             CategoryId: e.CategoryId,
             Desc: e.Desc,
@@ -278,9 +270,9 @@ export default class CreateEvent extends React.Component {
             OpenedBy: e.OpenedBy,
             Price: e.Price,
             ToAge: e.ToAge,
-            Location: e.Location,
-            Lat: e.Lat,
-            Lan: e.Lan
+            Location: this.props.navigation.getParam('Location'),
+            Lat: locationCoords.latitude, 
+            Lan: locationCoords.longitude, 
         }
         console.log( "e t o ", eventToUpdate);
 
