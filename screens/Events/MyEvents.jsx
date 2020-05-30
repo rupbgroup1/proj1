@@ -9,6 +9,7 @@ import OurButton from '../../components/OurButton';
 import ProfileButton from '../../components/ProfileButton';
 import { MaterialIcons, FontAwesome5, FontAwesome } from '@expo/vector-icons';
 import moment from "moment";
+import MapView,{ Marker } from 'react-native-maps';
 
 export default class MyEvents extends React.Component {
   constructor(props) {
@@ -22,7 +23,8 @@ export default class MyEvents extends React.Component {
       visible: false,
       selectedCat: 0,
       selectedCard: {},
-      selectedOwner: {}
+      selectedOwner: {},
+      mapVisible:false
 
     };
     this.arrayholder = [];
@@ -96,6 +98,11 @@ export default class MyEvents extends React.Component {
   toggleOverlay() {
     this.setState({ visible: false });
   }
+
+  toggleMapOverlay() {
+    this.setState({ mapVisible: false });
+  }
+
 
 
 
@@ -201,17 +208,42 @@ export default class MyEvents extends React.Component {
                                                 </View>
                                                 <TouchableOpacity
                                                     style={{ paddingVertical: 20, alignSelf: 'center' }}
-                                                    onPress={() => this.setState({ visible: false })}>
+                                                    onPress={() => this.setState({ mapVisible: true })}>
                                                     {/* nav to map */}
                                                     <Text style={styles.locationText}>לחץ לצפייה במיקום האירוע</Text>
                                                 </TouchableOpacity>
+                                                <Overlay isVisible={this.state.mapVisible} onBackdropPress={() => this.toggleMapOverlay()}>
+                                                    <MapView
+                                                        style={{
+                                                            width: "100%",
+                                                            height:"100%"
+                                                        }}
+                                                        region={{
+                                                            latitude: this.state.selectedCard.Lat,
+                                                            longitude: this.state.selectedCard.Lan,
+                                                            latitudeDelta: 0.003,
+                                                            longitudeDelta: 0.003,
+                                                          }}>
+                                                              <Marker
+                                                            coordinate={{
+                                                                latitude: this.state.selectedCard.Lat,
+                                                                longitude: this.state.selectedCard.Lan,
+                                                                latitudeDelta: 0.009,
+                                                                longitudeDelta: 0.009,
+                                                              }}
+                                                            title={this.state.selectedCard.Location}
+                                                        />
+
+                                                        </MapView>
+                                      </Overlay>
                                                     <Button
                                                         title='עריכה'
                                                         buttonStyle={styles.cardButton}
                                                         titleStyle={styles.cardButtonText}
-                                                        onPress={() =>
-                                                          this.setState({visible:false},()=>
-                                                          navigation.navigate('CreateEvent', {edit: true, eventDetails: e}))
+                                                        onPress={()=>{
+                                                          this.setState({ visible: false });
+                                                           navigation.navigate('CreateEvent', { edit: true, eventDetails: this.state.selectedCard });
+                                                          }
                                                         }
                                                     > </Button>
                                             </Card>
