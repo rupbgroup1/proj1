@@ -39,7 +39,8 @@ export default class CreateEvent extends React.Component {
             eventDetails: {},
             //formated date
             showStart: '',
-            showEnd: ''
+            showEnd: '',
+            setLoc:false
         };
         this.catArray = [];
         this.editMode=false;
@@ -55,14 +56,14 @@ export default class CreateEvent extends React.Component {
         this.getUser();
         this.fetchGetAllCategories();
         this.fetchGetAllIntrests();
-        this.editMode = this.props.navigation.getParam('edit');
+        console.log("new event= ", this.state.newEvent, this.state.setLoc);
         
         console.log(this.editMode, this.eventDetails );
 
     }
     fetchGetAllCategories() {
         //console.log("in fetch");
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Category/All', {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Category/All', {
 
             method: 'GET',
             headers: new Headers({
@@ -97,7 +98,8 @@ export default class CreateEvent extends React.Component {
                 newEvent: {
                     ...prevState.newEvent,
                     OpenedBy: userObj.UserId,
-                    NeiCode: userObj.NeighborhoodName
+                    NeiCode: userObj.NeighborhoodName,
+                    Admin:userObj,
                 }
             }));
 
@@ -107,7 +109,7 @@ export default class CreateEvent extends React.Component {
     }
     fetchGetAllCategories() {
         //console.log("in fetch");
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Category/All', {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Category/All', {
 
             method: 'GET',
             headers: new Headers({
@@ -219,7 +221,7 @@ export default class CreateEvent extends React.Component {
         console.log("in fetch=", this.state.newEvent);
 
         console.log("in new event=", this.state.newEvent);
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Events/New', {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Events/New', {
 
             method: 'POST',
             body: JSON.stringify(this.state.newEvent),
@@ -235,7 +237,7 @@ export default class CreateEvent extends React.Component {
                     if (result == 1) {
                         Alert.alert(" האירוע נשמר בהצלחה");
                         console.log(result);
-                        this.navigation.navigate('GeneralEvents');
+                        this.props.navigation.navigate('GeneralEvents');
                     }
                     else
                         Alert.alert(" מצטערים, אנו נסו שנית!");
@@ -249,27 +251,49 @@ export default class CreateEvent extends React.Component {
     }
     
     fetchUpdateEvent() {
+        console.log("in update!!");
+        const e = this.state.newEvent;
+        const locationCoords = this.state.setLoc?this.props.navigation.getParam('region'):"";
+        let eventToUpdate = {
+            CategoryId: e.CategoryId,
+            Desc: e.Desc,
+            EndDate: moment(e.EndDate).format('YYYY-MM-DDThh:mm:ss'),
+            EndHour: moment(e.EndHour).format('YYYY-MM-DDThh:mm:ss'),
+            StartDate: moment(e.StartDate).format('YYYY-MM-DDThh:mm:ss'),
+            StartHour: moment(e.StartHour).format('YYYY-MM-DDThh:mm:ss'),
+            FromAge: e.FromAge,
+            Id: e.Id,
+            Image: e.Image,
+            Name: e.Name,
+            NeiCode: e.NeiCode,
+            NumOfParticipants: e.NumOfParticipants,
+            OpenedBy: e.OpenedBy,
+            Price: e.Price,
+            ToAge: e.ToAge,
+            Location: this.props.navigation.getParam('Location'),
+            Lat: locationCoords.latitude, 
+            Lan: locationCoords.longitude, 
+        }
+        console.log( "e t o ", eventToUpdate);
 
-        console.log("in fetch=", this.state.newEvent);
-
-        console.log("in new event=", this.state.newEvent);
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Events/Update', {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Events/Update', {
 
             method: 'PUT',
-            body: JSON.stringify(this.state.newEvent),
-            headers: new Headers({
-                'Content-Type': 'application/json; charset=UTF-8',
-            })
+            body: JSON.stringify(eventToUpdate),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+              }
         })
             .then(res => {
                 return res.json();
             })
             .then(
                 (result) => {
-                    if (result == 1) {
+                    if (result === 1) {
                         Alert.alert(" האירוע נשמר בהצלחה");
-                        console.log(result);
-                        this.navigation.navigate('GeneralEvents');
+                        //console.log(result);
+                        this.props.navigation.navigate('MyEvents');
                     }
                     else
                         Alert.alert(" מצטערים, אנו נסו שנית!");
@@ -281,6 +305,7 @@ export default class CreateEvent extends React.Component {
                 }
             );
     }
+
     handleMainChange(mainI) {
         this.setState({ mainI: mainI }, () => {
             this.fetchSubInterest();
@@ -289,7 +314,7 @@ export default class CreateEvent extends React.Component {
     }
     //fetch -get all intrests to search by
     fetchGetAllIntrests() {
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Intrests', {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Intrests', {
 
             method: 'GET',
             headers: new Headers({
@@ -313,7 +338,7 @@ export default class CreateEvent extends React.Component {
     fetchSubInterest = () => {
         //console.log(this.state.mainI);
         // console.log(this.state.searchName+this.state.user.CityName);
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Intrests/Sub?mainI=' + this.state.mainI, {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Intrests/Sub?mainI=' + this.state.mainI, {
             method: 'GET',
             headers: new Headers({
                 'Content-type': 'application/json; charset=UTF-8'
@@ -335,34 +360,7 @@ export default class CreateEvent extends React.Component {
 
     }
 
-    getCoordsFromName(loc) {
-        console.log(loc);
-
-        this.setState(prevState => ({
-            newEvent: {
-                ...prevState.newEvent,
-                Location: loc
-            },
-            region: {
-                latitude: loc.lat,
-                longitude: loc.lng,
-                longitudeDelta: 0.003,
-                latitudeDelta: 0.003
-            },
-            CityName: loc
-        }));
-    }
-
-
-    handleCityName(name) {
-        this.setState(prevState => ({
-            newEvent: {
-                ...prevState.newEvent,
-                Location: name
-            },
-            CityName: name
-        }));
-    };
+    
 
     render() {
         const { navigation } = this.props;
@@ -465,7 +463,7 @@ export default class CreateEvent extends React.Component {
                                 NumOfParticipants: text
                             }
                         }))}
-                        value={newEvent.NumOfParticipants+""}
+                        value={newEvent.NumOfParticipants!=null&&newEvent.NumOfParticipants+""}
                     ></TextInput>
                     <TextInput
                         style={styles.input}
@@ -481,7 +479,7 @@ export default class CreateEvent extends React.Component {
                                 FromAge: text
                             }
                         }))}
-                        value={newEvent.FromAge+""}
+                        value={newEvent.FromAge!=null&&newEvent.FromAge+""}
                     ></TextInput>
                     <TextInput
                         style={styles.input}
@@ -498,7 +496,7 @@ export default class CreateEvent extends React.Component {
                                 ToAge: text
                             }
                         }))}
-                        value={newEvent.ToAge+""}
+                        value={newEvent.ToAge!=null&&newEvent.ToAge+""}
                     ></TextInput>
                     <TextInput
                         style={styles.input}
@@ -515,14 +513,17 @@ export default class CreateEvent extends React.Component {
                                 Price: text
                             }
                         }))}
-                        value={newEvent.Price+""}
+                        value={newEvent.Price!=null&&newEvent.Price+""}
                     ></TextInput>
-
-                    {/* <Text style={{ fontFamily: 'rubik-regular', fontSize: 22, color: colors.turkiz, textAlign: 'left' }}> מיקום האירוע</Text>
-                    <GoogleAPIAutoComplete style={styles.API} notifyChange={(loc) => this.getCoordsFromName(loc)} CityName={(name) => this.handleCityName(name)} /> */}
-
-                    <Text style={{ fontFamily: 'rubik-regular', fontSize: 22, color: colors.turkiz, textAlign: 'left' }}>תחומי עניין  </Text>
+                    <TouchableOpacity onPress={()=>{
+                       this.setState({setLoc:true},()=> navigation.navigate('EventLocation'));
+                    }}>
+                    <Text style={{ fontFamily: 'rubik-regular', fontSize: 22, color: colors.turkiz, textAlign: 'left' }}> מיקום האירוע </Text>
+                    </TouchableOpacity>
+                    {!this.editMode &&
+                        <Text style={{ fontFamily: 'rubik-regular', fontSize: 22, color: colors.turkiz, textAlign: 'left' }}>יעניין שכנים עם תחומי העניין הבאים </Text>}  
                     <View style={{ paddingBottom: 200 }}>
+                        {!this.editMode&&
                         <Interests
                             IntrestsArray={this.state.IntrestsArray}
                             handleMainChange={(mainI) => this.handleMainChange(mainI)}
@@ -535,9 +536,10 @@ export default class CreateEvent extends React.Component {
                             }))}
                             isMulti={true}
                             initialInterest={this.state.initialInterest ? this.state.initialInterest : []}
-                        />
+                        />}
                         <View style={styles.dropDown}>
                             <Dropdown
+                                key={1}
                                 label='בחר קטגוריה'
                                 value={newEvent.CategoryId}
                                 valueExtractor={({ CategoryId }) => CategoryId}

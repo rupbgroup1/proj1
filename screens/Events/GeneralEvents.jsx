@@ -11,6 +11,8 @@ import colors from '../../assets/constant/colors';
 import { SearchBar, Card, Button, Overlay } from 'react-native-elements';
 import OurButton from '../../components/OurButton';
 import { MaterialIcons, FontAwesome5, FontAwesome } from '@expo/vector-icons';
+import moment from "moment";
+import MapView,{ Marker } from 'react-native-maps';
 
 // import { AccessAlarm, ThreeDRotation } from '@material-ui/icons';
 // import home from '@material-ui/icons/DeleteRounded';
@@ -28,7 +30,8 @@ class GeneralEvents extends React.Component {
             visible: false,
             selectedCat: 0,
             selectedCard: {},
-            selectedOwner: {}
+            selectedOwner: {},
+            mapVisible:false,
         };
         this.arrayholder = [];
         this.catArray = [];
@@ -54,7 +57,7 @@ class GeneralEvents extends React.Component {
     //*fetch */
     fetchGetAllEvents(userNei, userId) {
         console.log("in fetch");
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Events/All/' + userId + '/' + userNei, {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Events/All/' + userId + '/' + userNei, {
 
             method: 'GET',
             headers: new Headers({
@@ -83,7 +86,7 @@ class GeneralEvents extends React.Component {
 
     fetchGetAllCategories() {
         //console.log("in fetch");
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Category/All', {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Category/All', {
 
             method: 'GET',
             headers: new Headers({
@@ -112,10 +115,11 @@ class GeneralEvents extends React.Component {
     fetchPostAttend() {
         //console.log("in fetch");
         const att = {
-            Id: this.state.selectedCard,
+            Id: this.state.selectedCard.Id,
             Attandance: [{ UserId: this.state.user.UserId }]
         }
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Event/PostAtt', {
+        console.log("**att**", att);
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Events/PostAtt', {
 
             method: 'POST',
             body: JSON.stringify(att),
@@ -146,10 +150,10 @@ class GeneralEvents extends React.Component {
     fetchDeleteAttend() {
         //console.log("in fetch");
         const att = {
-            Id: this.state.selectedCard,
+            Id: this.state.selectedCard.Id,
             Attandance: [{ UserId: this.state.user.UserId }]
         }
-        return fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/Event/DeleteAtt', {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Events/DeleteAtt', {
 
             method: 'DELETE',
             body: JSON.stringify(att),
@@ -222,6 +226,9 @@ class GeneralEvents extends React.Component {
     toggleOverlay() {
         this.setState({ visible: false });
     }
+    toggleMapOverlay() {
+        this.setState({ mapVisible: false });
+    }
 
     attendToEvent() {
         this.fetchPostAttend();
@@ -253,7 +260,7 @@ class GeneralEvents extends React.Component {
                             title='add'
                             key='add'
                             onPress={() => navigation.navigate('CreateEvent')}>
-                            <MaterialIcons name="add-circle" size={40} color={colors.turkiz} />
+                            <MaterialIcons name="add" size={40} color={colors.header} />
                         </OurButton>
                     </View>
                 </View>
@@ -261,11 +268,11 @@ class GeneralEvents extends React.Component {
                     <ScrollView horizontal={true}>
                         {this.catArray.map((c) => {
                             return (
-                                <View style={{ paddingHorizontal: 2 }}>
+                                <View style={{ paddingHorizontal: 1 }}>
                                     <Button
                                         type="outline"
                                         title={c.CategoryName}
-                                        titleStyle={{ color: colors.turkiz }}
+                                        titleStyle={{ color: colors.turkiz, fontFamily:'rubik-regular' }}
                                         key={c.CategoryId}
                                         onPress={cat => this.filterByCat(c.CategoryId)}
                                         raised={true}
@@ -287,24 +294,30 @@ class GeneralEvents extends React.Component {
                                 <View style={{ right: 5 }}>
                                     <Card
                                         key={e.Id}
-                                        title={e.Name}
+                                        //title={e.Name}
                                         titleStyle={styles.cardTitle}
                                         image={{ uri: e.Image }}
                                         containerStyle={styles.cardContainer}
                                     >
+                                        <Text style={styles.cardTitleText}>{e.Name}</Text>
+                                        <View style={{ flexDirection: 'row' }}>
 
-                                        <View style={{ flexDirection: 'row'}}>
                                             <Text style={styles.cardText}>{e.Desc}</Text>
                                         </View>
                                         <View style={{ flexDirection: 'row', }}>
                                             <View style={styles.cardIcons}>
                                                 <FontAwesome5 name="calendar-alt" size={22}></FontAwesome5>
-                                                <Text style={styles.cardIconsText}>{new Date(e.StartDate).toLocaleDateString()}</Text>
+                                                <Text style={styles.cardIconsText}>{moment(e.StartDate).format("DD/MM/YYYY")}</Text>
                                             </View>
                                             <View style={styles.cardIcons}>
                                                 <FontAwesome5 name="users" size={22} ></FontAwesome5>
-                                                <Text style={styles.cardIconsText}>{this.state.selectedCard.NumOfParticipants}</Text>
+                                                <Text style={styles.cardIconsText}>{e.NumOfParticipants}</Text>
                                             </View>
+                                            <View style={styles.cardIcons}>
+                                                <FontAwesome5 name="dollar-sign" size={22}></FontAwesome5>
+                                                <Text style={styles.cardIconsText}> {e.Price + '  ש"ח'}</Text>
+                                            </View>
+
                                         </View>
                                         <View style={{ paddingVertical: 10 }}>
                                             <Button
@@ -315,20 +328,18 @@ class GeneralEvents extends React.Component {
                                             >
                                             </Button>
                                         </View>
-                                        <Overlay overlayStyle={{backgroundColor:'rgba(52, 52, 52, 0)'} } isVisible={this.state.visible} onBackdropPress={() => this.toggleOverlay()}>
+                                        <Overlay overlayStyle={{ backgroundColor: 'rgba(52, 52, 52, 0)' }} isVisible={this.state.visible} onBackdropPress={() => this.toggleOverlay()}>
                                             <Card
                                                 key={this.state.selectedCard.Id}
                                                 image={{ uri: this.state.selectedCard.Image }}
-                                                title={this.state.selectedCard.Name}
-                                                titleStyle={styles.cardTitle}
                                                 containerStyle={styles.innerCardContainer}
                                             >
-
+                                                <Text style={styles.cardTitleText} >{this.state.selectedCard.Name}</Text>
                                                 <Text >{this.state.selectedCard.Desc}</Text>
                                                 <View style={styles.cardIcons}>
                                                     <FontAwesome5 name="calendar-alt" size={20}></FontAwesome5>
-                                                    <Text style={styles.cardIconsText}>{new Date(this.state.selectedCard.StartDate).toLocaleDateString()} עד </Text>
-                                                    <Text style={styles.cardIconsText}>{new Date(this.state.selectedCard.EndDate).toLocaleDateString()}</Text>
+                                                    <Text style={styles.cardIconsText}>{moment(this.state.selectedCard.StartDate).format("DD/MM/YYYY")} עד </Text>
+                                                    <Text style={styles.cardIconsText}>{moment(this.state.selectedCard.EndDate).format("DD/MM/YYYY")}</Text>
                                                 </View>
                                                 <View style={styles.cardIcons}>
                                                     <FontAwesome5 name="users" size={22}></FontAwesome5>
@@ -348,10 +359,34 @@ class GeneralEvents extends React.Component {
                                                 </View>
                                                 <TouchableOpacity
                                                     style={{ paddingVertical: 20, alignSelf: 'center' }}
-                                                    onPress={() => this.setState({ visible: false })}>
+                                                    onPress={() => this.setState({ mapVisible: true })}>
                                                     {/* nav to map */}
                                                     <Text style={styles.locationText}>לחץ לצפייה במיקום האירוע</Text>
                                                 </TouchableOpacity>
+                                                <Overlay isVisible={this.state.mapVisible} onBackdropPress={() => this.toggleMapOverlay()}>
+                                                    <MapView
+                                                        style={{
+                                                            width: "100%",
+                                                            height:"100%"
+                                                        }}
+                                                        region={{
+                                                            latitude: this.state.selectedCard.Lat,
+                                                            longitude: this.state.selectedCard.Lan,
+                                                            latitudeDelta: 0.09,
+                                                            longitudeDelta: 0.09,
+                                                          }}>
+                                                              <Marker
+                                                            coordinate={{
+                                                                latitude: this.state.selectedCard.Lat,
+                                                                longitude: this.state.selectedCard.Lan,
+                                                                latitudeDelta: 0.009,
+                                                                longitudeDelta: 0.009,
+                                                              }}
+                                                            title={this.state.selectedCard.Location}
+                                                        />
+
+                                                        </MapView>
+                                                </Overlay>
                                                 {this.state.selectedCard.Attend != 1 ?
                                                     <Button
                                                         title='מעוניינ/ת'
@@ -421,20 +456,25 @@ const styles = StyleSheet.create({
         shadowColor: '#D1D3D4'
     },
     cardContainer: {
-        width: Dimensions.get('window').width - 20,
-        borderRadius: 5,
+        width: Dimensions.get('window').width - 24,
+        borderRadius: 6,
         borderColor: '#D1D3D4',
         shadowRadius: 5
     },
-    innerCardContainer: { 
-        paddingHorizontal:40, 
-        paddingVertical:20, 
-        width:300, 
-        alignSelf:'center' 
+    innerCardContainer: {
+        paddingHorizontal: 40,
+        paddingVertical: 20,
+        width: 300,
+        alignSelf: 'center'
     },
     cardTitle: {
         fontSize: 26,
-        color: colors.turkiz,
+        color: "black",
+        fontFamily: 'rubik-regular'
+    },
+    cardTitleText: {
+        fontSize: 26,
+        color: "black",
         fontFamily: 'rubik-regular'
     },
     cardIcons: {
@@ -442,7 +482,7 @@ const styles = StyleSheet.create({
         direction: 'rtl',
         flexDirection: 'row',
         paddingVertical: 5,
-        paddingHorizontal:10
+        paddingHorizontal: 10
     },
     cardIconsText: {
         right: -10,

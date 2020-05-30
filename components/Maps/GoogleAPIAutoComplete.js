@@ -16,6 +16,8 @@ const GoogleAPIAutoComplete=(props) =>{
             onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
                 props.notifyChange(details.geometry.location);
                 props.CityName(details.name);
+                props.FullAddress(details.formatted_address);
+                console.log(details.formatted_address);
             }}
             query={{
                 key: ApiKey.id,

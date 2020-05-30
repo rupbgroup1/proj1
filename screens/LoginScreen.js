@@ -24,9 +24,6 @@ export default class LoginScreen extends Component {
 
   }
 
-  
-
-
   //Search for the userDetails in DB
   fetchOnLogin = () => {
     const email = this.state.username;
@@ -42,7 +39,7 @@ export default class LoginScreen extends Component {
       return Alert.alert("אנא מלא שם משתמש וסיסמה");
     }
 
-    fetch('http://proj.ruppin.ac.il/bgroup1/prod/api/User/login', {
+    fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/User/login', {
       method: 'POST',
       body: JSON.stringify(loginDetails),
       headers: new Headers({
@@ -71,9 +68,8 @@ export default class LoginScreen extends Component {
           console.log("err post=", error);
           Alert.alert("איראה שגיאה, אנא נסה שנית");
         });
-
-
   }
+  
   
 
 
