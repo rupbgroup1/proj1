@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet,Alert, Text, View, Dimensions, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet,Alert, Text, View, Dimensions, Image, TouchableOpacity, AsyncStorage} from 'react-native';
 import { Camera } from 'expo-camera';
 
 export default class CameraPage extends React.Component {
@@ -41,7 +41,17 @@ export default class CameraPage extends React.Component {
         'האם תרצה לשמור את התמונה?',
         '',
         [
-          {text: 'כן', onPress: () => {goBack()}},
+          {text: 'כן', onPress: () => {
+            let cameraDetails={
+              photoName: this.state.photoName,
+              photoUri: this.state.photoUri
+            };
+            //console.log(cameraDetails);
+            
+            AsyncStorage.mergeItem('cameraDetails', JSON.stringify(cameraDetails),()=>
+          goBack()
+          );
+          }},
           {
             text: 'לא',
             style: 'cancel',

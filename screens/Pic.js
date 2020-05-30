@@ -23,15 +23,26 @@ export default class Pic extends Component {
 
  
   componentDidMount ()  {
-      const {navigation} = this.props;
+    //let cameraDetailsJSON =  AsyncStorage.getItem('cameraDetails');
+    //const cameraDetailsObj =  JSON.parse(cameraDetailsJSON);
+    
+    const {navigation} = this.props;
     this._unsubscribe = navigation.addListener('didFocus', () => {
-        this.setState({ picUri: this.props.navigation.getParam('photoUri')})
+        AsyncStorage.getItem('cameraDetails', (err, cameraDetailsJSON) => {
+            const cameraDetailsObj = JSON.parse(cameraDetailsJSON);
+            this.setState({picUri:cameraDetailsObj.photoUri, picName: cameraDetailsObj.photoName});
+            console.log(cameraDetailsObj);
+        })
+        
     });
-  }
+    
+ 
+}
 
-  componentWillUnmount  ()  {
-    this._unsubscribe();
-  }
+
+    componentWillUnmount  ()  {
+      this._unsubscribe();
+    }
 
   
 
