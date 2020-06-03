@@ -52,7 +52,7 @@ export default class MainPage extends Component {
 
             <View style={styles.item3}>
               <BusinessesBTN
-                onPress={() => navigation.navigate('ProfileEdit')}>
+                onPress={() => navigation.navigate('GeneralServices')}>
                 פרופיל
               </BusinessesBTN>
             </View>

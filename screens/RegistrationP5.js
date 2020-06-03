@@ -5,7 +5,6 @@ import colors from '../assets/constant/colors';
 
 const RegistrationIntroduction = ({ navigation }) => {
   const upload = navigation.getParam('uploadImage');
-  const Per40 = require('../assets/Icons/icon-40-percent.png');
   const com = require('../assets/Icons/completed.png');
   return (
     <View style={styles.container}>

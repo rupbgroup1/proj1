@@ -189,6 +189,10 @@ export default class RegistraionP4 extends Component {
         this.setState({ CityName: name });
         this.fetcGetNeigborhood(name);
     };
+    
+    handleFullName(name) {
+        console.log(name);
+    };
 
 
     render() {
@@ -206,7 +210,7 @@ export default class RegistraionP4 extends Component {
                     </Text>
                 </View>
                 <View style={styles.middlePage}>
-                    <GoogleAPIAutoComplete style={styles.API} notifyChange={(loc) => this.getCoordsFromName(loc)} CityName={(name) => this.handleCityName(name)} />
+                    <GoogleAPIAutoComplete style={styles.API} notifyChange={(loc) => this.getCoordsFromName(loc)} CityName={(name) => this.handleCityName(name)} FullAddress={(name)=>this.handleFullName(name)}/>
 
                     {this.state.ShowDropDown &&
                         <Text style={{ fontFamily: 'rubik-regular', textAlign: 'center', marginBottom: 10 }}>אנא בחר/י שכונת מגורים אליה תשתייכ/י </Text>

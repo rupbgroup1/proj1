@@ -77,7 +77,7 @@ const MapComponent = (props) => {
                                 }}
                                 identifier={i + "M"}
                                 title={user.FirstName + ", " + age + about}
-                                onPress={() => { Alert.alert(user.FirstName + ("\n") + age) }}
+                                // onPress={() => { Alert.alert(user.FirstName + ("\n") + age) }}
 
                             >
                                 {/* <Text style={{color:'black'}}>{user.MatchRate}%</Text> */}
@@ -98,19 +98,19 @@ const MapComponent = (props) => {
                 })
                 }
 
-                {/* {markerCoordinates ? <Marker title='המיקום שלי' coordinate={markerCoordinates}></Marker> : <Marker title='המיקום שלי' coordinate={props.region}></Marker>} */}
+                {/* {markerCoordinates!=null ? <Marker title='המיקום שלי' coordinate={markerCoordinates}></Marker> : <Marker title='המיקום שלי' coordinate={props.region}></Marker>} */}
                 <Marker
                     coordinate={{
-                        latitude: 32.258049726540236,
-                         longitude: 34.92328489199281,
+                        latitude: 32.258049736540236,
+                         longitude: 34.92328689199281,
                          latitudeDelta: 0.009,
                          longitudeDelta: 0.009
                     }}
                 >
                     <Callout
                     onPress={() => {
-
-                        Alert.alert('callout pressed');
+                      
+                      Alert.alert("knlk");
                     }}>
                     <View>
                         <Text>This is a plain view</Text>
@@ -119,6 +119,7 @@ const MapComponent = (props) => {
                 </Callout>
                 </Marker>
             </MapView>
+            {/* <OverlayExample style={{position: 'absolute', bottom: 50}}/> */}
 
         </TouchableOpacity >
     )

@@ -1,32 +1,14 @@
 import React, { Component} from 'react';
-import Overlay from 'react-native-elements';
 import colors from '../assets/constant/colors';
 import { Button, View, StyleSheet, Text, ActivityIndicator, TextInput, AsyncStorage, Alert, TouchableOpacity } from 'react-native';
+
+import Overlay from 'react-native-elements';
  
-export default class OverlayExample extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            modalVisible: true, 
-            kidsYearOfBirth:[2007,2008],
-            intrests:["כדורעף", "שחייה"]          }
-    }
-  
-  onClose = () => this.setState({ modalVisible: false});
-  
-  render() {
-
-    // להציג שנות לידה
-    const kids = this.state.kidsYearOfBirth.map((buttonKids) => (
-        <Text style={styles.note}> {new Date().getFullYear() - buttonKids}  </Text>
-    ));
-
-    const intrests = this.state.intrests.map((buttonIntersts) => (
-        <Text style={styles.note}> {buttonIntersts},  </Text>
-    ));
+const OverlayExample = props=>{
     return (
-        <Overlay visible={this.state.modalVisible} >
-          <View>
+        <View>
+        <Overlay isVisible={true} >
+         
               <Text style={styles.subTitle}>שם פרטי + משפחה</Text>
               <Text style={styles.note}>גיל: (משתנה גיל) </Text>
               <Text style={styles.note}>מגדר: (משתנה מגדר) </Text>
@@ -35,18 +17,17 @@ export default class OverlayExample extends Component {
               <Text style={styles.note}> מקום עבודה: (משתנה מקום עבודה)</Text>
               <Text style={styles.note}> על עצמי: (משתנה על עצמי)</Text>
               <Text style={styles.note}> מספר ילדים: (משתנה מספר ילדים)</Text>
-                <Text style={styles.note}>גילאי ילדים: {kids}</Text>
-              <Text style={styles.note}>תחומי עניין: {intrests} </Text>
               <Text style={styles.note}>אירועים</Text>
               <Text style={styles.note}>עסק</Text>
               <Text style={styles.note}></Text>
               
               
-          </View>
+         
         </Overlay>
+        </View>
     );
   }
-}
+
 
 const styles = StyleSheet.create({
     subTitle: {
@@ -70,3 +51,4 @@ const styles = StyleSheet.create({
 
 
 })
+export default OverlayExample;
