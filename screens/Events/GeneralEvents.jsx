@@ -32,6 +32,7 @@ class GeneralEvents extends React.Component {
             selectedCard: {},
             selectedOwner: {},
             mapVisible:false,
+            selectedEvent:0
         };
         this.arrayholder = [];
         this.catArray = [];
@@ -201,7 +202,7 @@ class GeneralEvents extends React.Component {
     //filter the events by selected category 
     filterByCat(catId) {
         if (catId == this.state.selectedCat) {
-            this.setState({ filteredArray: this.arrayholder })
+            this.setState({ filteredArray: this.arrayholder, selectedCat:0 })
         }
         else {
             const newData = this.arrayholder.filter(function (item) {
@@ -276,7 +277,7 @@ class GeneralEvents extends React.Component {
                                         key={c.CategoryId}
                                         onPress={cat => this.filterByCat(c.CategoryId)}
                                         raised={true}
-                                        buttonStyle={styles.categories}
+                                        buttonStyle={c.CategoryId===this.state.selectedCat?styles.selectedCategory: styles.categories}
                                     >
                                     </Button>
                                 </View>
@@ -455,6 +456,15 @@ const styles = StyleSheet.create({
         borderColor: '#D1D3D4',
         shadowColor: '#D1D3D4'
     },
+    selectedCategory:{
+        backgroundColor: "#D1D3D4",
+        borderRadius: 0,
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+        borderColor: '#D1D3D4',
+        shadowColor: '#D1D3D4'
+    },
+
     cardContainer: {
         width: Dimensions.get('window').width - 24,
         borderRadius: 6,
