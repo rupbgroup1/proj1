@@ -32,6 +32,7 @@ class GeneralEvents extends React.Component {
             selectedCard: {},
             selectedOwner: {},
             mapVisible:false,
+            pressStatus: false
         };
         this.arrayholder = [];
         this.catArray = [];
@@ -201,7 +202,7 @@ class GeneralEvents extends React.Component {
     //filter the events by selected category 
     filterByCat(catId) {
         if (catId == this.state.selectedCat) {
-            this.setState({ filteredArray: this.arrayholder })
+            this.setState({ filteredArray: this.arrayholder, pressStatus: false })
         }
         else {
             const newData = this.arrayholder.filter(function (item) {
@@ -211,7 +212,8 @@ class GeneralEvents extends React.Component {
             });
             this.setState({
                 filteredArray: newData,
-                selectedCat: catId
+                selectedCat: catId,
+                pressStatus: true
             });
             console.log(this.state.filteredArray)
         }
@@ -272,11 +274,15 @@ class GeneralEvents extends React.Component {
                                     <Button
                                         type="outline"
                                         title={c.CategoryName}
-                                        titleStyle={{ color: colors.turkiz, fontFamily:'rubik-regular' }}
+                                        titleStyle={this.state.pressStatus
+                                            ? styles.coloredTitleCat
+                                            : styles.titleCat}
                                         key={c.CategoryId}
                                         onPress={cat => this.filterByCat(c.CategoryId)}
                                         raised={true}
-                                        buttonStyle={styles.categories}
+                                        buttonStyle={this.state.pressStatus
+                                            ? styles.coloredCategories
+                                            : styles.categories}
                                     >
                                     </Button>
                                 </View>
@@ -332,6 +338,7 @@ class GeneralEvents extends React.Component {
                                             <Card
                                                 key={this.state.selectedCard.Id}
                                                 image={{ uri: this.state.selectedCard.Image }}
+                                                imageStyle={styles.innerCardImage}
                                                 containerStyle={styles.innerCardContainer}
                                             >
                                                 <Text style={styles.cardTitleText} >{this.state.selectedCard.Name}</Text>
@@ -455,6 +462,22 @@ const styles = StyleSheet.create({
         borderColor: '#D1D3D4',
         shadowColor: '#D1D3D4'
     },
+    coloredCategories: {
+        backgroundColor: colors.turkiz,
+        borderRadius: 0,
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+        borderColor: '#D1D3D4',
+        shadowColor: '#D1D3D4'
+    },
+    titleCat: { 
+        color: colors.turkiz, 
+        fontFamily:'rubik-regular' 
+    },
+    coloredTitleCat: { 
+        color: 'white', 
+        fontFamily:'rubik-bold' 
+    },
     cardContainer: {
         width: Dimensions.get('window').width - 24,
         borderRadius: 6,
@@ -462,8 +485,6 @@ const styles = StyleSheet.create({
         shadowRadius: 5
     },
     innerCardContainer: {
-        paddingHorizontal: 40,
-        paddingVertical: 20,
         width: 300,
         alignSelf: 'center'
     },
@@ -473,6 +494,7 @@ const styles = StyleSheet.create({
         fontFamily: 'rubik-regular'
     },
     cardTitleText: {
+        alignSelf:'center',
         fontSize: 26,
         color: "black",
         fontFamily: 'rubik-regular'
@@ -510,7 +532,12 @@ const styles = StyleSheet.create({
         fontFamily: 'rubik-regular',
         fontSize: 16,
         color: colors.turkiz
-    }
+    },
+    innerCardImage: {
+        height:200, 
+        marginLeft:0, 
+        marginRight:0
+    } 
 });
 
 const TabNavigator = createMaterialBottomTabNavigator(
