@@ -31,9 +31,9 @@ const styles = StyleSheet.create({
     buttonText:{
         color:'white',
         fontFamily: 'rubik-regular',
-        fontSize:18,
+        fontSize:17,
         textAlign:'center',
-        paddingVertical:30,
+        paddingVertical:18,
         textShadowOffset: { width: 1, height: 3 },
         textShadowRadius: 10,
         textShadowColor:'#f7f1e3'

@@ -274,7 +274,7 @@ class GeneralEvents extends React.Component {
                                     <Button
                                         type="outline"
                                         title={c.CategoryName}
-                                        titleStyle={this.state.pressStatus
+                                        titleStyle={c.CategoryId===this.state.selectedCat
                                             ? styles.coloredTitleCat
                                             : styles.titleCat}
                                         key={c.CategoryId}
@@ -455,15 +455,15 @@ const styles = StyleSheet.create({
     categories: {
         backgroundColor: 'white',
         borderRadius: 0,
-        paddingVertical: 10,
+        paddingVertical: 5,
         paddingHorizontal: 10,
         borderColor: '#D1D3D4',
         shadowColor: '#D1D3D4'
     },
     selectedCategory:{
-        backgroundColor: "#D1D3D4",
+        backgroundColor: colors.turkiz,
         borderRadius: 0,
-        paddingVertical: 10,
+        paddingVertical: 5,
         paddingHorizontal: 10,
         borderColor: '#D1D3D4',
         shadowColor: '#D1D3D4'

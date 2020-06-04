@@ -46,22 +46,22 @@ export default class MainPage extends Component {
             <View style={styles.item2}>
               <EventsBTN
                 onPress={() => navigation.navigate('GeneralEvents')}>
-                אירועים
+                אירועים בקהילה
               </EventsBTN>
             </View>
 
             <View style={styles.item3}>
               <BusinessesBTN
                 onPress={() => navigation.navigate('GeneralServices')}>
-                פרופיל
+                עסקים בקהילה
               </BusinessesBTN>
             </View>
 
           </View>
 
           <View style={styles.item4}>
-            <FindingsButton>
-            {/* onPress={() => navigation.navigate('ProfileEdit')}> */}
+            <FindingsButton
+            onPress={() => navigation.navigate('ProfileEdit')}>
             נמצא בשכונה
             </FindingsButton>
           </View>

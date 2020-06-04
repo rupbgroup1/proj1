@@ -319,7 +319,8 @@ const styles = StyleSheet.create({
     cardTitleText: {
         fontSize: 26,
         color: "black",
-        fontFamily: 'rubik-regular'
+        fontFamily: 'rubik-regular',
+        alignSelf: 'center'
     },
     cardIcons: {
         alignItems: "flex-end",
