@@ -32,7 +32,7 @@ class GeneralEvents extends React.Component {
             selectedCard: {},
             selectedOwner: {},
             mapVisible:false,
-            pressStatus: false
+            selectedEvent:0
         };
         this.arrayholder = [];
         this.catArray = [];
@@ -202,7 +202,7 @@ class GeneralEvents extends React.Component {
     //filter the events by selected category 
     filterByCat(catId) {
         if (catId == this.state.selectedCat) {
-            this.setState({ filteredArray: this.arrayholder, pressStatus: false })
+            this.setState({ filteredArray: this.arrayholder, selectedCat:0 })
         }
         else {
             const newData = this.arrayholder.filter(function (item) {
@@ -280,9 +280,7 @@ class GeneralEvents extends React.Component {
                                         key={c.CategoryId}
                                         onPress={cat => this.filterByCat(c.CategoryId)}
                                         raised={true}
-                                        buttonStyle={this.state.pressStatus//this.selectedCat === c.CategoryId
-                                            ? styles.coloredCategories
-                                            : styles.categories}
+                                        buttonStyle={c.CategoryId===this.state.selectedCat?styles.selectedCategory: styles.categories}
                                     >
                                     </Button>
                                 </View>
@@ -462,8 +460,8 @@ const styles = StyleSheet.create({
         borderColor: '#D1D3D4',
         shadowColor: '#D1D3D4'
     },
-    coloredCategories: {
-        backgroundColor: colors.turkiz,
+    selectedCategory:{
+        backgroundColor: "#D1D3D4",
         borderRadius: 0,
         paddingVertical: 10,
         paddingHorizontal: 10,
@@ -478,6 +476,7 @@ const styles = StyleSheet.create({
         color: 'white', 
         fontFamily:'rubik-bold' 
     },
+
     cardContainer: {
         width: Dimensions.get('window').width - 24,
         borderRadius: 6,
