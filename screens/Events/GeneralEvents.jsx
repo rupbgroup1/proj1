@@ -280,7 +280,7 @@ class GeneralEvents extends React.Component {
                                         key={c.CategoryId}
                                         onPress={cat => this.filterByCat(c.CategoryId)}
                                         raised={true}
-                                        buttonStyle={this.state.pressStatus
+                                        buttonStyle={this.state.pressStatus//this.selectedCat === c.CategoryId
                                             ? styles.coloredCategories
                                             : styles.categories}
                                     >
