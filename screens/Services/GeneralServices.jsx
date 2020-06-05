@@ -12,10 +12,6 @@ import { MaterialIcons, FontAwesome5, FontAwesome } from '@expo/vector-icons';
 import moment from "moment";
 import MapView,{ Marker } from 'react-native-maps';
 
-// import { AccessAlarm, ThreeDRotation } from '@material-ui/icons';
-// import home from '@material-ui/icons/DeleteRounded';
-//import home from '@material-ui/icons';
-
 class GeneralServices extends React.Component {
     constructor(props) {
         super(props);
@@ -132,7 +128,7 @@ class GeneralServices extends React.Component {
     //filter the events by selected category 
     filterByCat(catId) {
         if (catId == this.state.selectedCat) {
-            this.setState({ filteredArray: this.arrayholder })
+            this.setState({ filteredArray: this.arrayholder, selectedCat:0  })
         }
         else {
             const newData = this.arrayholder.filter(function (item) {
@@ -156,6 +152,7 @@ class GeneralServices extends React.Component {
     toggleOverlay() {
         this.setState({ visible: false });
     }
+
     toggleMapOverlay() {
         this.setState({ mapVisible: false });
     }
@@ -201,7 +198,7 @@ class GeneralServices extends React.Component {
                                         key={c.CategoryId}
                                         onPress={cat => this.filterByCat(c.CategoryId)}
                                         raised={true}
-                                        buttonStyle={styles.categories}
+                                        buttonStyle={c.CategoryId===this.state.selectedCat?styles.selectedCategory: styles.categories}
                                     >
                                     </Button>
                                 </View>
@@ -332,6 +329,14 @@ const styles = StyleSheet.create({
     },
     categories: {
         backgroundColor: 'white',
+        borderRadius: 0,
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+        borderColor: '#D1D3D4',
+        shadowColor: '#D1D3D4'
+    },
+    selectedCategory:{
+        backgroundColor: "#D1D3D4",
         borderRadius: 0,
         paddingVertical: 10,
         paddingHorizontal: 10,

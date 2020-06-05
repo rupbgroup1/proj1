@@ -56,6 +56,7 @@ export default class MainPage extends Component {
           </BusinessesBTN>
             </View>
           </View>
+          <Button onPress={() => navigation.navigate('Chat', {userCode:1})} title="בדיקה צאט"/>
 
 
         </View>

@@ -377,7 +377,6 @@ export default class CreateEvent extends React.Component {
                 <BackButton goBack={() => navigation.navigate('MainPage')} />
                 <ScrollView>
                     <Card containerStyle={{ backgroundColor: 'grey', height: '20%', width: Dimensions.get('window').width, justifyContent: 'center' }}>
-
                         <View style={{ flexDirection: 'row', borderColor: 'white', borderWidth: 1, borderRadius: 15, justifyContent: 'center', alignItems: "center" }}>
                             <Text style={styles.textOr}>הוספת תמונה  </Text>
                             <OurButton onPress={() => this.props.navigation.navigate('CameraPage')}><SimpleLineIcons name="camera" size={30} color="black" /></OurButton>

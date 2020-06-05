@@ -31,6 +31,7 @@ import EventLocation from './screens/Events/EventLocation';
 import GeneralServices from './screens/Services/GeneralServices';
 import MyServices from './screens/Services/MyServices';
 import { Notifications } from 'expo';
+import Chat from './screens/Chat';
 import registerForPushNotificationsAsync from './components/registerForPushNotificationsAsync';
 
 //cancel the timer error
@@ -81,6 +82,7 @@ const navigator = createStackNavigator({
   EventLocation:EventLocation,
   GeneralServices:GeneralServices,
   MyServices:MyServices,
+  Chat:Chat,
   }, {
         initialRouteName: 'LoginScreen',
         defaultNavigationOptions: {

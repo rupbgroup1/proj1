@@ -373,8 +373,8 @@ class GeneralEvents extends React.Component {
                                                         region={{
                                                             latitude: this.state.selectedCard.Lat,
                                                             longitude: this.state.selectedCard.Lan,
-                                                            latitudeDelta: 0.09,
-                                                            longitudeDelta: 0.09,
+                                                            latitudeDelta: 0.003,
+                                                            longitudeDelta: 0.003,
                                                           }}>
                                                               <Marker
                                                             coordinate={{
