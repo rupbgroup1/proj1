@@ -212,7 +212,8 @@ class GeneralEvents extends React.Component {
             });
             this.setState({
                 filteredArray: newData,
-                selectedCat: catId
+                selectedCat: catId,
+                pressStatus: true
             });
             console.log(this.state.filteredArray)
         }
@@ -273,7 +274,9 @@ class GeneralEvents extends React.Component {
                                     <Button
                                         type="outline"
                                         title={c.CategoryName}
-                                        titleStyle={{ color: colors.turkiz, fontFamily:'rubik-regular' }}
+                                        titleStyle={c.CategoryId===this.state.selectedCat
+                                            ? styles.coloredTitleCat
+                                            : styles.titleCat}
                                         key={c.CategoryId}
                                         onPress={cat => this.filterByCat(c.CategoryId)}
                                         raised={true}
@@ -333,6 +336,7 @@ class GeneralEvents extends React.Component {
                                             <Card
                                                 key={this.state.selectedCard.Id}
                                                 image={{ uri: this.state.selectedCard.Image }}
+                                                imageStyle={styles.innerCardImage}
                                                 containerStyle={styles.innerCardContainer}
                                             >
                                                 <Text style={styles.cardTitleText} >{this.state.selectedCard.Name}</Text>
@@ -451,18 +455,26 @@ const styles = StyleSheet.create({
     categories: {
         backgroundColor: 'white',
         borderRadius: 0,
-        paddingVertical: 10,
+        paddingVertical: 5,
         paddingHorizontal: 10,
         borderColor: '#D1D3D4',
         shadowColor: '#D1D3D4'
     },
     selectedCategory:{
-        backgroundColor: "#D1D3D4",
+        backgroundColor: colors.turkiz,
         borderRadius: 0,
-        paddingVertical: 10,
+        paddingVertical: 5,
         paddingHorizontal: 10,
         borderColor: '#D1D3D4',
         shadowColor: '#D1D3D4'
+    },
+    titleCat: { 
+        color: colors.turkiz, 
+        fontFamily:'rubik-regular' 
+    },
+    coloredTitleCat: { 
+        color: 'white', 
+        fontFamily:'rubik-bold' 
     },
 
     cardContainer: {
@@ -472,8 +484,6 @@ const styles = StyleSheet.create({
         shadowRadius: 5
     },
     innerCardContainer: {
-        paddingHorizontal: 40,
-        paddingVertical: 20,
         width: 300,
         alignSelf: 'center'
     },
@@ -483,6 +493,7 @@ const styles = StyleSheet.create({
         fontFamily: 'rubik-regular'
     },
     cardTitleText: {
+        alignSelf:'center',
         fontSize: 26,
         color: "black",
         fontFamily: 'rubik-regular'
@@ -503,7 +514,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         fontFamily: 'rubik-regular',
         fontSize: 16,
-        textAlign: 'left'
+        textAlign:'left'
     },
     cardButton: {
         borderRadius: 30,
@@ -520,7 +531,12 @@ const styles = StyleSheet.create({
         fontFamily: 'rubik-regular',
         fontSize: 16,
         color: colors.turkiz
-    }
+    },
+    innerCardImage: {
+        height:200, 
+        marginLeft:0, 
+        marginRight:0
+    } 
 });
 
 const TabNavigator = createMaterialBottomTabNavigator(

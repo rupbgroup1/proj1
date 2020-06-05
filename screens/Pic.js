@@ -17,7 +17,12 @@ export default class Pic extends Component {
         this.state = {isChecked: true, 
             picUri:'https://cdn1.iconfinder.com/data/icons/business-users/512/circle-512.png'};
         this.handleChecked = this.handleChecked.bind(this); // set this, because you need get methods from CheckBox 
+    
   }
+
+//   componentWillUnmount  ()  {
+//     this._unsubscribe();
+//   }
 
  
   componentDidMount ()  {
@@ -27,9 +32,7 @@ export default class Pic extends Component {
     });
   }
 
-  componentWillUnmount  ()  {
-    this._unsubscribe();
-  }
+  
 
   
 
@@ -64,7 +67,7 @@ export default class Pic extends Component {
                         style={{ alignSelf: 'center', width: 300, height: 250 }}
                         source={{uri: this.state.picUri}} />
         
-                    <View style={{width:'80%',marginTop:0}}>
+                    <View style={{width:'80%',paddingBottom:20}}>
                         <Button
                             title={'המשך'}  onPress={() => {
                                 let userDetails={

@@ -366,13 +366,13 @@ export default class RegistrationExtra extends Component {
                         value={this.state.aboutMe}
                         label='קצת על עצמי'
                         //placeholder='הזנ/י עד 255 תווים אודות עצמך'
-                        placeholder={this.state.user.AboutMe !== undefined ? (this.state.user.AboutMe) + "" : 'כתוב/י מספר..'}
+                        placeholder={this.state.user.AboutMe !== undefined ? (this.state.user.AboutMe) + "" : 'הוסף/י תיאור..'}
                         onChangeText={(aboutMe) => this.setState({ aboutMe })}
                         multiline={true}
                         placeholderTextColor={'#D1D3D4'}
                         containerStyle={{ padding: 10, alignItems: "center", fontFamily: 'rubik-regular', paddingLeft: '5%', paddingRight: '5%' }}
                         labelStyle={{ fontSize: 20, fontFamily: 'rubik-regular' }}
-                        inputStyle={{ fontFamily: 'rubik-regular', textAlign: "right" }}
+                        inputStyle={{ fontFamily: 'rubik-regular', textAlign: "right", paddingTop:20 }}
 
                     />
                     <Input
@@ -380,13 +380,13 @@ export default class RegistrationExtra extends Component {
                         value={this.state.numOfKids}
                         label='מספר ילדים'
                         //placeholder='הזנ/י את מספר ילדיך'
-                        placeholder={(this.state.user.numOfKids !== undefined) ? (this.state.user.numOfKids) + "" : 'כתוב/י מספר..'}
+                        placeholder={(this.state.user.numOfKids !== undefined) ? (this.state.user.numOfKids) + "" : 'הזנ/י מספר..'}
                         onChangeText={(numOfKids) => this.handleNumOfKids(numOfKids)}
                         multiline={true}
                         placeholderTextColor={'black'}
                         containerStyle={{ padding: 10, alignItems: "center", fontFamily: 'rubik-regular', paddingLeft: '5%', paddingRight: '5%' }}
                         labelStyle={{ fontSize: 20, fontFamily: 'rubik-regular', }}
-                        inputStyle={{ fontFamily: 'rubik-regular', textAlign: "right" }}
+                        inputStyle={{ fontFamily: 'rubik-regular', textAlign: "right", paddingTop:20 }}
 
                     />
 
@@ -494,7 +494,7 @@ const styles = StyleSheet.create({
 
     button: {
         width: '90%',
-        paddingTop: 40,
+        paddingBottom: 10,
         alignSelf: "center"
     },
     workPart: {
@@ -505,7 +505,7 @@ const styles = StyleSheet.create({
         fontFamily: 'rubik-regular',
         fontSize: 20,
         color: '#778899',
-        paddingBottom: 10
+        paddingVertical: 10
     },
     familyStatus: {
         fontFamily: 'rubik-regular',

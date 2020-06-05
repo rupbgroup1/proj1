@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, AsyncStorage, Image, ScrollView, Alert, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, AsyncStorage, Image, ScrollView, Alert, Dimensions, TouchableOpacity, Button } from 'react-native';
 import { Icon } from 'react-native-elements';
 import Header from '../../components/Header';
 import BackButton from '../../components/BackButton';
 import colors from '../../assets/constant/colors';
-import { SearchBar, Card, Button, Overlay } from 'react-native-elements';
+import { SearchBar, Card, Overlay } from 'react-native-elements';
 import OurButton from '../../components/OurButton';
 import ProfileButton from '../../components/ProfileButton';
 import { MaterialIcons, FontAwesome5, FontAwesome } from '@expo/vector-icons';
@@ -319,7 +319,8 @@ const styles = StyleSheet.create({
     cardTitleText: {
         fontSize: 26,
         color: "black",
-        fontFamily: 'rubik-regular'
+        fontFamily: 'rubik-regular',
+        alignSelf: 'center'
     },
     cardIcons: {
         alignItems: "flex-end",

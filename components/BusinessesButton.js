@@ -22,8 +22,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.8,
         shadowRadius: 8,
         elevation:20,
-        height: 120,
-        width: 120,
+        height: 75,
+        width: 75,
         borderRadius:400,
         textShadowOffset: { width: 1, height: 1 },
         textShadowRadius: 5,
@@ -31,9 +31,9 @@ const styles = StyleSheet.create({
     buttonText:{
         color:'white',
         fontFamily: 'rubik-regular',
-        fontSize:26,
+        fontSize:16,
         textAlign:'center',
-        paddingVertical:45,
+        paddingVertical:15,
         textShadowOffset: { width: 1, height: 3 },
         textShadowRadius: 10,
         textShadowColor:'#f7f1e3'

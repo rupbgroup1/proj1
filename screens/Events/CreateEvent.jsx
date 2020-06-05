@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react';
-import { View, TextInput, Text, StyleSheet, AsyncStorage, Image, ScrollView, Alert, Dimensions, TouchableOpacity, Platform } from 'react-native';
+import { View, TextInput, Text, StyleSheet, AsyncStorage, Image, ScrollView, Alert, Dimensions, TouchableOpacity, Platform, Keyboard } from 'react-native';
 import Header from '../../components/Header';
 import BackButton from '../../components/BackButton';
 import { SearchBar, Card, Button, Overlay } from 'react-native-elements';
@@ -40,25 +40,25 @@ export default class CreateEvent extends React.Component {
             //formated date
             showStart: '',
             showEnd: '',
-            setLoc:false
+            setLoc: false
         };
         this.catArray = [];
-        this.editMode=false;
-        this.eventDetails={};
+        this.editMode = false;
+        this.eventDetails = {};
 
 
     }
 
     componentDidMount() {
         this.editMode = this.props.navigation.getParam('edit');
-        this.editMode&&
-        this.setState({newEvent:this.props.navigation.getParam('eventDetails')});
+        this.editMode &&
+            this.setState({ newEvent: this.props.navigation.getParam('eventDetails') });
         this.getUser();
         this.fetchGetAllCategories();
         this.fetchGetAllIntrests();
         console.log("new event= ", this.state.newEvent, this.state.setLoc);
-        
-        console.log(this.editMode, this.eventDetails );
+
+        console.log(this.editMode, this.eventDetails);
 
     }
     fetchGetAllCategories() {
@@ -99,7 +99,7 @@ export default class CreateEvent extends React.Component {
                     ...prevState.newEvent,
                     OpenedBy: userObj.UserId,
                     NeiCode: userObj.NeighborhoodName,
-                    Admin:userObj,
+                    Admin: userObj,
                 }
             }));
 
@@ -249,11 +249,11 @@ export default class CreateEvent extends React.Component {
                 }
             );
     }
-    
+
     fetchUpdateEvent() {
         console.log("in update!!");
         const e = this.state.newEvent;
-        const locationCoords = this.state.setLoc?this.props.navigation.getParam('region'):"";
+        const locationCoords = this.state.setLoc ? this.props.navigation.getParam('region') : "";
         let eventToUpdate = {
             CategoryId: e.CategoryId,
             Desc: e.Desc,
@@ -271,10 +271,10 @@ export default class CreateEvent extends React.Component {
             Price: e.Price,
             ToAge: e.ToAge,
             Location: this.props.navigation.getParam('Location'),
-            Lat: locationCoords.latitude, 
-            Lan: locationCoords.longitude, 
+            Lat: locationCoords.latitude,
+            Lan: locationCoords.longitude,
         }
-        console.log( "e t o ", eventToUpdate);
+        console.log("e t o ", eventToUpdate);
 
         return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Events/Update', {
 
@@ -283,7 +283,7 @@ export default class CreateEvent extends React.Component {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-              }
+            }
         })
             .then(res => {
                 return res.json();
@@ -360,7 +360,7 @@ export default class CreateEvent extends React.Component {
 
     }
 
-    
+
 
     render() {
         const { navigation } = this.props;
@@ -372,10 +372,10 @@ export default class CreateEvent extends React.Component {
         //console.log(this.state.CityName);
         return (
             <View style={{ flex: 1, backgroundColor: 'white', justifyContent: "flex-start" }}>
-
                 <Header />
-                <BackButton goBack={() => navigation.navigate('MainPage')} />
+                <BackButton goBack={() => navigation.navigate('GeneralEvents')} />
                 <ScrollView>
+                    
                     <Card containerStyle={{ backgroundColor: 'grey', height: '20%', width: Dimensions.get('window').width, justifyContent: 'center' }}>
                         <View style={{ flexDirection: 'row', borderColor: 'white', borderWidth: 1, borderRadius: 15, justifyContent: 'center', alignItems: "center" }}>
                             <Text style={styles.textOr}>הוספת תמונה  </Text>
@@ -431,22 +431,24 @@ export default class CreateEvent extends React.Component {
                         </TouchableOpacity>
                     </View>
                     <Text style={{ textAlign: "center", fontFamily: 'rubik-regular', fontSize: 20 }}>{moment(newEvent.EndDate).format("DD/MM/YYYY")}, {moment(newEvent.EndHour).format("HH:mm")}</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="תיאור"
-                        placeholderTextColor={colors.turkiz}
-                        selectionColor={blue}
-                        underlineColorAndroid={this.state.isFocus ? blue : grey}
-                        onFocus={this.handleFocus}
-                        onBlur={this.handleBlur}
-                        onChangeText={text => this.setState(prevState => ({
-                            newEvent: {
-                                ...prevState.newEvent,
-                                Desc: text
-                            }
-                        }))}
-                        value={newEvent.Desc}
-                    ></TextInput>
+                    <View>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="תיאור"
+                            placeholderTextColor={colors.turkiz}
+                            selectionColor={blue}
+                            underlineColorAndroid={this.state.isFocus ? blue : grey}
+                            onFocus={this.handleFocus}
+                            onBlur={this.handleBlur}
+                            onChangeText={text => this.setState(prevState => ({
+                                newEvent: {
+                                    ...prevState.newEvent,
+                                    Desc: text
+                                }
+                            }))}
+                            value={newEvent.Desc}
+                        ></TextInput>
+                    </View>
                     <TextInput
                         style={styles.input}
                         placeholder="מספר משתתפים"
@@ -462,7 +464,7 @@ export default class CreateEvent extends React.Component {
                                 NumOfParticipants: text
                             }
                         }))}
-                        value={newEvent.NumOfParticipants!=null&&newEvent.NumOfParticipants+""}
+                        value={newEvent.NumOfParticipants != null && newEvent.NumOfParticipants + ""}
                     ></TextInput>
                     <TextInput
                         style={styles.input}
@@ -478,7 +480,7 @@ export default class CreateEvent extends React.Component {
                                 FromAge: text
                             }
                         }))}
-                        value={newEvent.FromAge!=null&&newEvent.FromAge+""}
+                        value={newEvent.FromAge != null && newEvent.FromAge + ""}
                     ></TextInput>
                     <TextInput
                         style={styles.input}
@@ -495,7 +497,7 @@ export default class CreateEvent extends React.Component {
                                 ToAge: text
                             }
                         }))}
-                        value={newEvent.ToAge!=null&&newEvent.ToAge+""}
+                        value={newEvent.ToAge != null && newEvent.ToAge + ""}
                     ></TextInput>
                     <TextInput
                         style={styles.input}
@@ -512,30 +514,30 @@ export default class CreateEvent extends React.Component {
                                 Price: text
                             }
                         }))}
-                        value={newEvent.Price!=null&&newEvent.Price+""}
+                        value={newEvent.Price != null && newEvent.Price + ""}
                     ></TextInput>
-                    <TouchableOpacity onPress={()=>{
-                       this.setState({setLoc:true},()=> navigation.navigate('EventLocation'));
+                    <TouchableOpacity onPress={() => {
+                        this.setState({ setLoc: true }, () => navigation.navigate('EventLocation'));
                     }}>
-                    <Text style={{ fontFamily: 'rubik-regular', fontSize: 22, color: colors.turkiz, textAlign: 'left' }}> מיקום האירוע </Text>
+                        <Text style={{ fontFamily: 'rubik-regular', fontSize: 22, color: colors.turkiz, textAlign: 'left' }}> מיקום האירוע </Text>
                     </TouchableOpacity>
                     {!this.editMode &&
-                        <Text style={{ fontFamily: 'rubik-regular', fontSize: 22, color: colors.turkiz, textAlign: 'left' }}>יעניין שכנים עם תחומי העניין הבאים </Text>}  
+                        <Text style={{ fontFamily: 'rubik-regular', fontSize: 22, color: colors.turkiz, textAlign: 'left' }}>יעניין שכנים עם תחומי העניין הבאים </Text>}
                     <View style={{ paddingBottom: 200 }}>
-                        {!this.editMode&&
-                        <Interests
-                            IntrestsArray={this.state.IntrestsArray}
-                            handleMainChange={(mainI) => this.handleMainChange(mainI)}
-                            subInArray={this.state.subInArray}
-                            callFetch={(iArray) => this.setState(prevState => ({
-                                newEvent: {
-                                    ...prevState.newEvent,
-                                    Intrests: iArray
-                                }
-                            }))}
-                            isMulti={true}
-                            initialInterest={this.state.initialInterest ? this.state.initialInterest : []}
-                        />}
+                        {!this.editMode &&
+                            <Interests
+                                IntrestsArray={this.state.IntrestsArray}
+                                handleMainChange={(mainI) => this.handleMainChange(mainI)}
+                                subInArray={this.state.subInArray}
+                                callFetch={(iArray) => this.setState(prevState => ({
+                                    newEvent: {
+                                        ...prevState.newEvent,
+                                        Intrests: iArray
+                                    }
+                                }))}
+                                isMulti={true}
+                                initialInterest={this.state.initialInterest ? this.state.initialInterest : []}
+                            />}
                         <View style={styles.dropDown}>
                             <Dropdown
                                 key={1}
@@ -552,7 +554,7 @@ export default class CreateEvent extends React.Component {
                                     }
                                 }))
                                 }
-                        
+
                             />
                         </View>
                     </View>
@@ -576,10 +578,10 @@ export default class CreateEvent extends React.Component {
                     )}
                 </ScrollView>
                 <Button
-                    title={this.editMode?"עדכן":"צור אירוע"}
+                    title={this.editMode ? "עדכן" : "צור אירוע"}
                     buttonStyle={{ borderRadius: 5, marginLeft: 20, marginRight: 20 }}
                     containerStyle={{ marginTop: 1 }}
-                    onPress={() =>this.editMode?this.fetchUpdateEvent(): this.fetchCreatEvent()}
+                    onPress={() => this.editMode ? this.fetchUpdateEvent() : this.fetchCreatEvent()}
                 ></Button>
             </View>
         );
@@ -599,7 +601,7 @@ const styles = StyleSheet.create({
         padding: 5,
         marginBottom: 10,
         textAlign: 'right',
-        fontSize: 22
+        fontSize: 22,
     },
     imageCard: {
         resizeMode: 'cover'
