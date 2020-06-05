@@ -29,9 +29,11 @@ export default class CameraPage extends React.Component {
     //const {params} = this.props.navigation;
 
     if (this.camera) {
-      let photo = await this.camera.takePictureAsync({ quality: 0.2});
+      let photo = await this.camera.takePictureAsync({ quality: 0.2, base64:true,});
      
+      
       this.setState({ 
+        pic64base:photo.base64,
         photoName: 'image1_' + new Date().getTime() + '.jpg',
         photoUri:photo.uri,
         //photoUri: photo.uri 
@@ -43,6 +45,7 @@ export default class CameraPage extends React.Component {
         [
           {text: 'כן', onPress: () => {
             let cameraDetails={
+              pic64base:this.state.pic64base,
               photoName: this.state.photoName,
               photoUri: this.state.photoUri
             };

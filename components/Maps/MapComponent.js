@@ -2,6 +2,7 @@ import React, { useState, Component, useCallback, useEffect } from 'react';
 import { Dimensions, TouchableOpacity, AsyncStorage, Text, Image, Alert, View } from 'react-native';
 import MapView, { Marker, Callout } from 'react-native-maps';
 import OverlayExample from '../OverlayExample';
+import Overlay from 'react-native-elements';
 
 
 
@@ -67,7 +68,7 @@ const MapComponent = (props) => {
                         //console.log("TEST=", user.Lat);
                         let age = new Date().getFullYear() - user.YearOfBirth;
                         let about = (user.AboutMe != null ? ", " + user.AboutMe : '');
-
+                        
                         return (
                             <Marker
                                 key={user.UserId}
@@ -77,9 +78,18 @@ const MapComponent = (props) => {
                                 }}
                                 identifier={i + "M"}
                                 title={user.FirstName + ", " + age + about}
-                                onPress={() => {<OverlayExample user={user} /> }}
+                                onPress={(e) => {
+                                    //e.isPropagationStopped();
+                                    e.stopPropagation();
+                                    let user1 = user.FirstName;
+                                    
+                                    Alert.alert("ללל"+user.FirstName);
+                                }}
 
                             >
+
+                                
+                                
                                 {/* <Text style={{color:'black'}}>{user.MatchRate}%</Text> */}
                                 {user.Gender !== 1 ?
                                     <Image
@@ -108,8 +118,8 @@ const MapComponent = (props) => {
                     }}
                 >
                     <Callout
-                    onPress={() => {
-
+                    onPress={(e) => {
+                        e.stopPropagation();
                         Alert.alert('callout pressed');
                     }}>
                     <View>

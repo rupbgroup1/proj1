@@ -20,35 +20,29 @@ export default class ProfileEdit extends Component {
         super(props);
 
         this.state = {
-            // להצגת הפרופיל
+            
             editing: false,
 
             fName: '',
+            lName: '',
             aboutMe: null,
-            cityName: '',
             familyStatus: '',
             image: '',
             intrests: [],
             nameJob: '',
             kidsYearOfBirth: [],
-            lName: '',
-            EjobArea: '',
+            
             yearOfBirth: '',
             gender: '',
 
             jobType: '',
             jobArea: '',
-            aboutMe: '',
-            familyStatus: '',
             numOfKids: 0,
-            intresrs: '',
-            acceptInvitations: true,
             selectedYears: [],
             user: {},
             IntrestsArray: [],
             subInArray: [],
             mainI: '',
-            kidsYearOfBirth: [],
             JobArray: [],
             query: '',
             queryCity: '',
@@ -89,21 +83,17 @@ export default class ProfileEdit extends Component {
                 initialInterest: userObj.Intrests,
                 finished: true,
 
-                aboutMe: userObj.AboutMe,
-                cityName: userObj.CityName,
-                neighborhoodName: userObj.NeighborhoodName,
-                familyStatus: userObj.FamilyStatus,
+                
+               
                 image: userObj.Image,
                 intrests: userObj.Intrests,
-                EnameJob: jobName,
-                kidsYearOfBirth: userObj.Kids,
-                EjobArea: userObj.WorkPlace,
                 yearOfBirth: userObj.YearOfBirth,
-                numOfKids: userObj.NumOfChildren,
 
                 vFName: userObj.FirstName,
                 vLName: userObj.LastName,
-                gender: userObj.Gender
+                gender: userObj.Gender,
+                JobName: jobName,
+                jobType: userObj.JobTitle.JobCode
 
             }, () => {
                 this.fetchGetAllIntrests();
@@ -257,13 +247,19 @@ export default class ProfileEdit extends Component {
     fetchUpdateUser() {
         const user = {
             UserId: this.state.user.UserId,
+           
             JobTitleId: this.state.jobType,
             WorkPlace: this.state.jobArea,
             FamilyStatus: this.state.familyStatus,
             NumOfChildren: this.state.numOfKids,
             AboutMe: this.state.aboutMe,
             Kids: this.state.kidsYearOfBirth,
-            Intrests: this.state.choosenInterests
+            Intrests: this.state.choosenInterests,
+            //להוסיף בשרת
+            Gender:this.state.gender,
+            YearOfBirth:this.state.yearOfBirth,
+            FirstName: this.state.vFName,
+            LastName: this.state.lName,
 
         }
         console.log("userFetch", user);
@@ -284,9 +280,13 @@ export default class ProfileEdit extends Component {
                 (result) => {
                     console.log("fetch POST= ", result);
                     if (result === 1) {
-                        AsyncStorage.mergeItem('user', JSON.stringify(user));
-                        Alert.alert("הפרטים נשמרו בהצלחה");
-                        this.props.navigation.navigate('MainPage');
+                        AsyncStorage.mergeItem('user', JSON.stringify(user),()=>
+                        {
+                            Alert.alert("הפרטים נשמרו בהצלחה");
+                            this.props.navigation.navigate('MainPage');
+                        }
+                        );
+                        
                     }
                     else {
                         Alert.alert("אנא נסו שנית");
@@ -522,7 +522,7 @@ export default class ProfileEdit extends Component {
                                 value={this.state.numOfKids}
                                 label='מספר ילדים'
                                 //placeholder='הזנ/י את מספר ילדיך'
-                                placeholder={(this.state.user.numOfKids !== null) ? (this.state.user.numOfKids) + "" : 'כתוב/י מספר..'}
+                                placeholder={(this.state.user.numOfKids !== null) ? this.state.user.NumOfChildren + "" : 'כתוב/י מספר..'}
                                 onChangeText={(numOfKids) => this.handleNumOfKids(numOfKids)}
                                 multiline={true}
                                 placeholderTextColor={'black'}

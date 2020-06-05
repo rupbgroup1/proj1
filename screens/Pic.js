@@ -37,12 +37,63 @@ export default class Pic extends Component {
     });
     
  
-}
-
-
+  }
     componentWillUnmount  ()  {
       this._unsubscribe();
     }
+
+    btnUpload = () => {
+        let img = this.state.picUri;
+        let imgName = this.state.picName;
+        this.imageUpload(img, imgName);
+      };
+    
+      imageUpload = (imgUri, picName) => {
+        let urlAPI = "http://proj.ruppin.ac.il/bgroup29/prod/api/uploadpicture";
+        let dataI = new FormData();
+        dataI.append('picture', {
+          uri: imgUri,
+          name: picName,
+          type: 'image/jpg'
+        });
+        const config = {
+          method: 'POST',
+          body: dataI,
+        };
+    
+    
+        fetch(urlAPI, config)
+          .then((res) => {
+            console.log('res.status=', res.status);
+            if (res.status == 201) {
+              return res.json();
+            }
+            else {
+              console.log('error uploding ...');
+              return "err";
+            }
+          })
+          .then((responseData) => {
+            console.log(responseData);
+            if (responseData != "err") {
+              let picNameWOExt = picName.substring(0, picName.indexOf("."));
+              let imageNameWithGUID = responseData.substring(responseData.indexOf(picNameWOExt), responseData.indexOf(".jpg") + 4);
+              this.setState({
+                uplodedPicUri: { uri: this.uplodedPicPath + imageNameWithGUID },
+              });
+              console.log("img uploaded successfully!");
+            }
+            else {
+              console.log('error uploding ...');
+              alert('error uploding ...');
+            }
+          })
+          .catch(err => {
+            alert('err upload= ' + err);
+          });
+      }
+
+
 
   
 
