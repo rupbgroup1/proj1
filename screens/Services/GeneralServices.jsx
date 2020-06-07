@@ -11,6 +11,8 @@ import OurButton from '../../components/OurButton';
 import { MaterialIcons, FontAwesome5, FontAwesome } from '@expo/vector-icons';
 import moment from "moment";
 import MapView,{ Marker } from 'react-native-maps';
+import { getDistance } from 'geolib';
+//import geolib from 'geolib';
 
 class GeneralServices extends React.Component {
     constructor(props) {
@@ -157,6 +159,8 @@ class GeneralServices extends React.Component {
         this.setState({ mapVisible: false });
     }
 
+    
+
     render() {
         const { navigation } = this.props;
         return (
@@ -212,7 +216,10 @@ class GeneralServices extends React.Component {
                     {
                         this.state.filteredArray.length > 0 &&
                         this.state.filteredArray.map((s) => {
-
+                            const distance = getDistance(
+                                { latitude:s.Lat, longitude:s.Lan },
+                                { latitude: this.state.user.Lat, longitude: this.state.user.Lan }
+                              );
                             return (
 
                                 <View style={{ right: 3.5 }}>
@@ -228,7 +235,42 @@ class GeneralServices extends React.Component {
 
                                             <Text style={styles.cardText}>{s.Description}</Text>
                                         </View>
-                                        
+                                        <TouchableOpacity
+                                            style={styles.locationButton}
+                                            onPress={() => this.setState({ mapVisible: true , selectedS:s})}>
+                                            {distance < 1000 ?
+                                                <Text style={styles.cardText}> {distance} מטר ממיקומך</Text> :
+                                                <Text style={styles.cardText}> {distance / 1000} ק"מ ממיקומך</Text>
+                                            }
+                                        </TouchableOpacity>
+                                        {this.state.selectedS!=null&&
+                                        <Overlay isVisible={this.state.mapVisible} onBackdropPress={() => this.toggleMapOverlay()}>
+                                                    <MapView
+                                                        style={{
+                                                            width: "100%",
+                                                            height:"100%"
+                                                        }}
+                                                        region={{
+                                                            latitude: this.state.selectedS.Lat,
+                                                            longitude: this.state.selectedS.Lan,
+                                                            latitudeDelta: 0.003,
+                                                            longitudeDelta: 0.003,
+                                                          }}>
+                                                              <Marker
+                                                            coordinate={{
+                                                                latitude: this.state.selectedS.Lat,
+                                                                longitude: this.state.selectedS.Lan,
+                                                                latitudeDelta: 0.003,
+                                                                longitudeDelta: 0.003,
+                                                              }}
+                                                            title={this.state.selectedCard.ServiceAddress}
+                                                        />
+
+                                                        </MapView>
+                                                </Overlay>
+                        }
+                            
+
                                         <View style={{ paddingVertical: 10 }}>
                                             <Button
                                                 title='פרטים נוספים'
@@ -250,37 +292,8 @@ class GeneralServices extends React.Component {
                                                 <Text> פתוח בימי:  {this.state.selectedCard.OpenDays}</Text>
                                                 <Text> בין השעות {this.state.selectedCard.OpenHoursStart}-{this.state.selectedCard.OpenHoursEnds}</Text>
                                                 <Text> כתובת {this.state.selectedCard.ServiceAddress}</Text>
-                                                <TouchableOpacity
-                                                    style={{ paddingVertical: 20, alignSelf: 'center' }}
-                                                    onPress={() => this.setState({ mapVisible: true })}>
-                                                    {/* nav to map */}
-                                                    <Text style={styles.locationText}>לחץ לצפייה במיקום העסק</Text>
-                                                </TouchableOpacity>
-                                                <Overlay isVisible={this.state.mapVisible} onBackdropPress={() => this.toggleMapOverlay()}>
-                                                    <MapView
-                                                        style={{
-                                                            width: "100%",
-                                                            height:"100%"
-                                                        }}
-                                                        region={{
-                                                            latitude: this.state.selectedCard.Lat,
-                                                            longitude: this.state.selectedCard.Lan,
-                                                            latitudeDelta: 0.009,
-                                                            longitudeDelta: 0.009,
-                                                          }}>
-                                                              <Marker
-                                                            coordinate={{
-                                                                latitude: this.state.selectedCard.Lat,
-                                                                longitude: this.state.selectedCard.Lan,
-                                                                latitudeDelta: 0.009,
-                                                                longitudeDelta: 0.009,
-                                                              }}
-                                                            title={this.state.selectedCard.ServiceAddress}
-                                                        />
-
-                                                        </MapView>
-                                                </Overlay>
-                                                    <Button
+                                                
+                                                                       <Button
                                                         title='צור קשר'
                                                         buttonStyle={styles.cardButton}
                                                         titleStyle={styles.cardButtonText}
@@ -312,6 +325,12 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
+    },
+    locationButton:{
+        borderRadius: 30,
+        alignSelf: 'flex-start',
+        color: 'grey',
+        
     },
     addButton: {
         flexDirection: 'row',

@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react';
-import { View, TextInput, Text, StyleSheet, AsyncStorage, Image, ScrollView, Alert, Dimensions, TouchableOpacity, Platform, Keyboard } from 'react-native';
+import { View, TextInput, Text, StyleSheet, AsyncStorage, ImageBackground, ScrollView, Alert, Dimensions, TouchableOpacity, Platform, Keyboard } from 'react-native';
 import Header from '../../components/Header';
 import BackButton from '../../components/BackButton';
 import { SearchBar, Card, Button, Overlay } from 'react-native-elements';
@@ -376,13 +376,14 @@ export default class CreateEvent extends React.Component {
                 <BackButton goBack={() => navigation.navigate('GeneralEvents')} />
                 <ScrollView>
                     
-                    <Card containerStyle={{ backgroundColor: 'grey', height: '20%', width: Dimensions.get('window').width, justifyContent: 'center' }}>
+                    
                         <View style={{ flexDirection: 'row', borderColor: 'white', borderWidth: 1, borderRadius: 15, justifyContent: 'center', alignItems: "center" }}>
-                            <Text style={styles.textOr}>הוספת תמונה  </Text>
+                           <ImageBackground source={{uri:newEvent.Image}} style={{flex: 1,resizeMode: "cover",justifyContent: "center"}}>
+                           <Text style={styles.textOr}>הוספת תמונה  </Text>
                             <OurButton onPress={() => this.props.navigation.navigate('CameraPage')}><SimpleLineIcons name="camera" size={30} color="black" /></OurButton>
                             <OurButton onPress={() => this.props.navigation.navigate('ImageGallery')}><SimpleLineIcons name="picture" size={30} color="black" /></OurButton>
+                            </ImageBackground>
                         </View>
-                    </Card>
                     <TextInput
                         style={styles.input}
                         autoFocus={true}
@@ -630,7 +631,8 @@ const styles = StyleSheet.create({
     },
     textOr: {
         fontFamily: 'rubik-regular',
-        fontSize: 24
+        fontSize: 24,
+        
 
     },
     API: {
