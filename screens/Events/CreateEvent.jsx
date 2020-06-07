@@ -517,7 +517,7 @@ export default class CreateEvent extends React.Component {
                         value={newEvent.Price != null && newEvent.Price + ""}
                     ></TextInput>
                     <TouchableOpacity onPress={() => {
-                        this.setState({ setLoc: true }, () => navigation.navigate('EventLocation'));
+                        this.setState({ setLoc: true }, () => navigation.navigate('EventLocation',{type:"e"}));
                     }}>
                         <Text style={{ fontFamily: 'rubik-regular', fontSize: 22, color: colors.turkiz, textAlign: 'left' }}> מיקום האירוע </Text>
                     </TouchableOpacity>

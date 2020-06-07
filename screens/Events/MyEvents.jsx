@@ -140,7 +140,7 @@ export default class MyEvents extends React.Component {
 
                             return (
 
-                                <View style={{ right: 5 }}>
+                                <View style={{ right: 3.5 }}>
                                     <Card
                                         key={e.Id}
                                         //title={e.Name}
@@ -345,7 +345,7 @@ const styles = StyleSheet.create({
         marginBottom: 0,
         width: '60%',
         alignSelf: 'center',
-        backgroundColor: colors.turkiz
+        backgroundColor: "#D1D3D4"
     },
     cardButtonText: {
         fontSize: 20,

@@ -112,7 +112,7 @@ const MapComponent = (props) => {
                 }
 
                 {markerCoordinates!=null ? <Marker title='המיקום שלי' coordinate={markerCoordinates}></Marker> : <Marker title='המיקום שלי' coordinate={props.region}></Marker>}
-                {<Marker
+                {/* {<Marker
                     coordinate={{
                         latitude: 32.358049736540236,
                          longitude: 34.92328689199281,
@@ -128,7 +128,7 @@ const MapComponent = (props) => {
                         <Text>This is a plain view</Text>
                     </View>
                 </Callout>
-                </Marker>}
+                </Marker>} */}
             </MapView>
 
         </TouchableOpacity >

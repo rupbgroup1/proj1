@@ -181,7 +181,7 @@ class GeneralServices extends React.Component {
                         <OurButton
                             title='add'
                             key='add'
-                            onPress={() => navigation.navigate('CreateEvent')}>
+                            onPress={() => navigation.navigate('CreateService')}>
                             <MaterialIcons name="add" size={40} color={colors.header} />
                         </OurButton>
                     </View>
@@ -191,10 +191,12 @@ class GeneralServices extends React.Component {
                         {this.catArray.map((c) => {
                             return (
                                 <View style={{ paddingHorizontal: 1 }}>
-                                    <Button
+                                     <Button
                                         type="outline"
                                         title={c.CategoryName}
-                                        titleStyle={{ color: colors.turkiz, fontFamily:'rubik-regular' }}
+                                        titleStyle={c.CategoryId===this.state.selectedCat
+                                            ? styles.coloredTitleCat
+                                            : styles.titleCat}
                                         key={c.CategoryId}
                                         onPress={cat => this.filterByCat(c.CategoryId)}
                                         raised={true}
@@ -213,7 +215,7 @@ class GeneralServices extends React.Component {
 
                             return (
 
-                                <View style={{ right: 5 }}>
+                                <View style={{ right: 3.5 }}>
                                     <Card
                                         key={s.ServiceId}
                                         //title={e.Name}
@@ -243,12 +245,16 @@ class GeneralServices extends React.Component {
                                                 containerStyle={styles.innerCardContainer}
                                             >
                                                 <Text style={styles.cardTitleText} >{this.state.selectedCard.ServiceName}</Text>
-                                                <Text >{this.state.selectedCard.Description}</Text>
+                                                <Text>{this.state.selectedCard.Description}</Text>
+                                                <Text> דירוג העסק {this.state.selectedCard.Rate}</Text>
+                                                <Text> פתוח בימי:  {this.state.selectedCard.OpenDays}</Text>
+                                                <Text> בין השעות {this.state.selectedCard.OpenHoursStart}-{this.state.selectedCard.OpenHoursEnds}</Text>
+                                                <Text> כתובת {this.state.selectedCard.ServiceAddress}</Text>
                                                 <TouchableOpacity
                                                     style={{ paddingVertical: 20, alignSelf: 'center' }}
                                                     onPress={() => this.setState({ mapVisible: true })}>
                                                     {/* nav to map */}
-                                                    <Text style={styles.locationText}>לחץ לצפייה במיקום האירוע</Text>
+                                                    <Text style={styles.locationText}>לחץ לצפייה במיקום העסק</Text>
                                                 </TouchableOpacity>
                                                 <Overlay isVisible={this.state.mapVisible} onBackdropPress={() => this.toggleMapOverlay()}>
                                                     <MapView
@@ -259,8 +265,8 @@ class GeneralServices extends React.Component {
                                                         region={{
                                                             latitude: this.state.selectedCard.Lat,
                                                             longitude: this.state.selectedCard.Lan,
-                                                            latitudeDelta: 0.09,
-                                                            longitudeDelta: 0.09,
+                                                            latitudeDelta: 0.009,
+                                                            longitudeDelta: 0.009,
                                                           }}>
                                                               <Marker
                                                             coordinate={{
@@ -278,7 +284,10 @@ class GeneralServices extends React.Component {
                                                         title='צור קשר'
                                                         buttonStyle={styles.cardButton}
                                                         titleStyle={styles.cardButtonText}
-                                                        onPress={() => this.buildFunc()}
+                                                        onPress={() => {
+                                                            this.setState({visible:false},()=>
+                                                            navigation.navigate('Chat', {userCode:this.state.selectedCard.Owner}));
+                                                        }}
                                                     > </Button>
                                                     
                                                
@@ -330,19 +339,28 @@ const styles = StyleSheet.create({
     categories: {
         backgroundColor: 'white',
         borderRadius: 0,
-        paddingVertical: 10,
+        paddingVertical: 5,
         paddingHorizontal: 10,
         borderColor: '#D1D3D4',
         shadowColor: '#D1D3D4'
     },
     selectedCategory:{
-        backgroundColor: "#D1D3D4",
+        backgroundColor: colors.turkiz,
         borderRadius: 0,
-        paddingVertical: 10,
+        paddingVertical: 5,
         paddingHorizontal: 10,
         borderColor: '#D1D3D4',
         shadowColor: '#D1D3D4'
     },
+    titleCat: { 
+        color: colors.turkiz, 
+        fontFamily:'rubik-regular' 
+    },
+    coloredTitleCat: { 
+        color: 'white', 
+        fontFamily:'rubik-bold' 
+    },
+
     cardContainer: {
         width: Dimensions.get('window').width - 24,
         borderRadius: 6,
@@ -350,8 +368,6 @@ const styles = StyleSheet.create({
         shadowRadius: 5
     },
     innerCardContainer: {
-        paddingHorizontal: 40,
-        paddingVertical: 20,
         width: 300,
         alignSelf: 'center'
     },
@@ -361,6 +377,7 @@ const styles = StyleSheet.create({
         fontFamily: 'rubik-regular'
     },
     cardTitleText: {
+        alignSelf:'center',
         fontSize: 26,
         color: "black",
         fontFamily: 'rubik-regular'
@@ -381,24 +398,30 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         fontFamily: 'rubik-regular',
         fontSize: 16,
-        textAlign: 'left'
+        textAlign:'left'
     },
     cardButton: {
         borderRadius: 30,
         marginBottom: 0,
         width: '60%',
         alignSelf: 'center',
-        backgroundColor: colors.turkiz
+        backgroundColor: colors.turkiz,
+        elevation: 4
     },
     cardButtonText: {
-        fontSize: 20,
+        fontSize: 16,
         fontFamily: 'rubik-regular'
     },
     locationText: {
         fontFamily: 'rubik-regular',
         fontSize: 16,
         color: colors.turkiz
-    }
+    },
+    innerCardImage: {
+        height:200, 
+        marginLeft:0, 
+        marginRight:0
+    } 
 });
 
 const TabNavigator = createMaterialBottomTabNavigator(
