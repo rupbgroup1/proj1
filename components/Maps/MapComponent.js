@@ -1,7 +1,8 @@
 import React, { useState, Component, useCallback, useEffect } from 'react';
 import { Dimensions, TouchableOpacity, AsyncStorage, Text, Image, Alert, View } from 'react-native';
 import MapView, { Marker, Callout } from 'react-native-maps';
-import OverlayExample from '../OverlayExample';
+// import OverlayExample from '../../components/OverlayExample';
+// import Overlay from 'react-native-elements';
 
 
 
@@ -67,7 +68,7 @@ const MapComponent = (props) => {
                         //console.log("TEST=", user.Lat);
                         let age = new Date().getFullYear() - user.YearOfBirth;
                         let about = (user.AboutMe != null ? ", " + user.AboutMe : '');
-
+                        
                         return (
                             <Marker
                                 key={user.UserId}
@@ -77,9 +78,52 @@ const MapComponent = (props) => {
                                 }}
                                 identifier={i + "M"}
                                 title={user.FirstName + ", " + age + about}
-                                // onPress={() => { Alert.alert(user.FirstName + ("\n") + age) }}
+                                onPress={(e) => {
+                                    console.log('hey');
+                                    //e.isPropagationStopped();
+                                    e.stopPropagation();
+                                    let user1 = user.FirstName;
+
+                                    //overlay example
+                                    // let modalVisible = true;
+                                    // <Overlay visible={modalVisible} >
+                                    //     <View>
+                                    //         <Text >{user.FirstName} {user.LastName}</Text>
+                                    //         <Text >גיל: {age} </Text>
+
+
+                                    //     </View>
+                                    // </Overlay>
+                                    
+                                    //alert example
+                                    Alert.alert(
+                                        'llaa',
+                                        '',
+                                        [
+                                          {text: 'כן', onPress: () => {
+                                            let cameraDetails={
+                                              pic64base:this.state.pic64base,
+                                              photoName: this.state.photoName,
+                                              photoUri: this.state.photoUri
+                                            };
+                                            //console.log(cameraDetails);
+                                            
+                                            AsyncStorage.mergeItem('cameraDetails', JSON.stringify(cameraDetails),()=>
+                                          goBack()
+                                          );
+                                          }},
+                                          {
+                                            text: 'לא',
+                                            style: 'cancel',
+                                          }],
+                                       
+                                      );
+                                }}
 
                             >
+
+                                
+                                
                                 {/* <Text style={{color:'black'}}>{user.MatchRate}%</Text> */}
                                 {user.Gender !== 1 ?
                                     <Image
@@ -98,19 +142,19 @@ const MapComponent = (props) => {
                 })
                 }
 
-                {/* {markerCoordinates!=null ? <Marker title='המיקום שלי' coordinate={markerCoordinates}></Marker> : <Marker title='המיקום שלי' coordinate={props.region}></Marker>} */}
+                {/* {markerCoordinates ? <Marker title='המיקום שלי' coordinate={markerCoordinates}></Marker> : <Marker title='המיקום שלי' coordinate={props.region}></Marker>} */}
                 <Marker
                     coordinate={{
-                        latitude: 32.258049736540236,
-                         longitude: 34.92328689199281,
+                        latitude: 32.258049726540236,
+                         longitude: 34.92328489199281,
                          latitudeDelta: 0.009,
                          longitudeDelta: 0.009
                     }}
                 >
                     <Callout
                     onPress={() => {
-                      
-                      Alert.alert("knlk");
+
+                        Alert.alert('callout pressed');
                     }}>
                     <View>
                         <Text>This is a plain view</Text>
@@ -119,7 +163,6 @@ const MapComponent = (props) => {
                 </Callout>
                 </Marker>
             </MapView>
-            {/* <OverlayExample style={{position: 'absolute', bottom: 50}}/> */}
 
         </TouchableOpacity >
     )

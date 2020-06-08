@@ -82,7 +82,7 @@ const navigator = createStackNavigator({
   GeneralServices:GeneralServices,
   MyServices:MyServices,
   }, {
-        initialRouteName: 'LoginScreen',
+        initialRouteName: 'CreateEvent',
         defaultNavigationOptions: {
         headerShown: false
      }
