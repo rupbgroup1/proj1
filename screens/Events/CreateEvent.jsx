@@ -5,7 +5,7 @@ import BackButton from '../../components/BackButton';
 import { SearchBar, Card, Button, Overlay } from 'react-native-elements';
 import OurButton from '../../components/OurButton';
 import { MaterialIcons } from '@expo/vector-icons';
-import { SimpleLineIcons } from '@expo/vector-icons';
+//import { SimpleLineIcons } from '@expo/vector-icons';
 import colors from '../../assets/constant/colors';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import GoogleAPIAutoComplete from '../../components/Maps/GoogleAPIAutoComplete';
@@ -369,7 +369,7 @@ export default class CreateEvent extends React.Component {
         const newEvent = this.state.newEvent;
         const eventDetails = this.state.eventDetails;
         console.log("event", newEvent)
-        Keyboard.dismiss();
+        //Keyboard.dismiss();
         //console.log(this.state.CityName);
         return (
             <View style={{ flex: 1, backgroundColor: 'white', justifyContent: "flex-start", paddingBottom:20 }}>
@@ -388,11 +388,13 @@ export default class CreateEvent extends React.Component {
                 <ScrollView>
                     
                     
-                        <View style={{ flexDirection: 'row', borderColor: 'white', borderWidth: 1, borderRadius: 15, justifyContent: 'center', alignItems: "center" }}>
+                        <View style={{ flexDirection: 'row', borderColor: 'white', borderWidth: 1, borderRadius: 15, justifyContent: 'center', alignItems: "center", height:'20%' }}>
                            <ImageBackground source={{uri:newEvent.Image}} style={{flex: 1,resizeMode: "cover",justifyContent: "center"}}>
-                           <Text style={styles.textOr}>הוספת תמונה  </Text>
-                            <OurButton onPress={() => this.props.navigation.navigate('CameraPage')}><SimpleLineIcons name="camera" size={30} color="black" /></OurButton>
-                            <OurButton onPress={() => this.props.navigation.navigate('ImageGallery')}><SimpleLineIcons name="picture" size={30} color="black" /></OurButton>
+                           
+                           <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+                                <OurButton onPress={() => this.props.navigation.navigate('CameraPage')} style={{ paddingHorizontal: 20 }}><MaterialIcons name="camera-alt" size={40} color={colors.turkiz}/></OurButton>
+                                <OurButton onPress={() => this.props.navigation.navigate('ImageGallery')} style={{ paddingHorizontal: 20 }}><MaterialIcons name="photo" size={40} color={colors.turkiz}/></OurButton>
+                            </View>
                             </ImageBackground>
                         </View>
                     <TextInput
@@ -494,6 +496,7 @@ export default class CreateEvent extends React.Component {
                             placeholder="תיאור"
                             placeholderTextColor={'grey'}
                             selectionColor={blue}
+                            multiline={true}
                             onFocus={this.handleFocus}
                             onBlur={this.handleBlur}
                             onChangeText={text => this.setState(prevState => ({
@@ -572,10 +575,11 @@ export default class CreateEvent extends React.Component {
                     <TouchableOpacity onPress={() => {
                         this.setState({ setLoc: true }, () => navigation.navigate('EventLocation',{type:"e"}));
                     }}>
-                        <Text style={{ fontFamily: 'rubik-regular', fontSize: 22, color: colors.turkiz, textAlign: 'left' }}> מיקום האירוע </Text>
+                        <Text style={{ fontFamily: 'rubik-regular', fontSize: 22, color: colors.turkiz, textAlign: 'left', paddingLeft:10 }}> לחץ/י להזנת מיקום האירוע </Text>
                     </TouchableOpacity>
                     {!this.editMode &&
-                        <Text style={{ fontFamily: 'rubik-regular', fontSize: 22, color: colors.turkiz, textAlign: 'left', paddingLeft:10, paddingVertical:20 }}>יעניין שכנים עם תחומי העניין הבאים </Text>}
+                        <Text style={{ fontFamily: 'rubik-regular', fontSize: 22, color: 'grey', textAlign: 'center', paddingTop:30, paddingBottom:5 }}>תחומי עניין </Text>}
+                        <Text style={{ fontFamily: 'rubik-regular', fontSize: 15, color: 'grey', textAlign: 'center', paddingBottom:20 }}>בחירת תחומי העניין תסייע להתאמת האירוע לחברי הקהילה </Text>
                     <View style={{ paddingBottom: 200 }}>
                         {!this.editMode &&
                             <Interests
@@ -609,6 +613,8 @@ export default class CreateEvent extends React.Component {
                                 }
 
                             />
+                            <Text style={{ fontFamily: 'rubik-regular', fontSize: 22, color: 'grey', textAlign: 'center', paddingTop:30, paddingBottom:5 }}>קטגוריית האירוע</Text>
+                            
                         </View>
                     </View>
                     
@@ -644,6 +650,20 @@ const styles = StyleSheet.create({
         borderRadius:10, 
         fontSize:18
     },
+    // description: {
+    //     fontFamily: 'rubik-regular',
+    //     width: '90%',
+    //     height: 64,
+    //     paddingLeft: 10,
+    //     borderWidth: 1,
+    //     borderColor: '#F1F2F2',
+    //     marginVertical: 15,
+    //     marginHorizontal:15,
+    //     textAlign: 'right',
+    //     backgroundColor: 'white',
+    //     borderRadius:10, 
+    //     fontSize:18
+    // },
     imageCard: {
         resizeMode: 'cover'
     },
@@ -672,9 +692,9 @@ const styles = StyleSheet.create({
     textOr: {
         fontFamily: 'rubik-regular',
         fontSize: 24,
-        // paddingRight: 10,
-        // color: 'white',
-        // paddingBottom: 10
+        paddingRight: 10,
+        color: 'white',
+        paddingBottom: 10
 
     },
     API: {
