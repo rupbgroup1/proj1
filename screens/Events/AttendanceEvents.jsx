@@ -175,10 +175,9 @@ export default class AttendanceEvents extends React.Component {
 
                             return (
 
-                                <View style={{ right: 5 }}>
+                                <View style={{ right: 3.5 }}>
                                     <Card
                                         key={e.Id}
-                                        //title={e.Name}
                                         titleStyle={styles.cardTitle}
                                         image={{ uri: e.Image }}
                                         containerStyle={styles.cardContainer}

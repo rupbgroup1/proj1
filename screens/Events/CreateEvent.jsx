@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react';
-import { View, TextInput, Text, StyleSheet, AsyncStorage, Image, ScrollView, Alert, Dimensions, TouchableOpacity, Platform, Keyboard } from 'react-native';
+import { View, TextInput, Text, StyleSheet, AsyncStorage, ImageBackground, ScrollView, Alert, Dimensions, TouchableOpacity, Platform, Keyboard } from 'react-native';
 import Header from '../../components/Header';
 import BackButton from '../../components/BackButton';
 import { SearchBar, Card, Button, Overlay } from 'react-native-elements';
@@ -375,7 +375,8 @@ export default class CreateEvent extends React.Component {
             <View style={{ flex: 1, backgroundColor: 'white', justifyContent: "flex-start", paddingBottom:20 }}>
                 <Header />
                 <BackButton goBack={() => navigation.navigate('GeneralEvents')} />
-                <ScrollView style={{top:-15}}>
+                {/* My design:
+                 <ScrollView style={{top:-15}}>
 
                     <Card containerStyle={{ backgroundColor: '#F1F2F2', height: '25%', width: Dimensions.get('window').width, alignSelf: 'center' }}>
 
@@ -383,9 +384,17 @@ export default class CreateEvent extends React.Component {
                             <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
                                 <OurButton onPress={() => this.props.navigation.navigate('CameraPage')} style={{ paddingHorizontal: 20 }}><SimpleLineIcons name="camera" size={40} color="grey" /></OurButton>
                                 <OurButton onPress={() => this.props.navigation.navigate('ImageGallery')} style={{ paddingHorizontal: 20 }}><SimpleLineIcons name="picture" size={40} color="grey" /></OurButton>
-                            </View>
+                            </View> */}
+                <ScrollView>
+                    
+                    
+                        <View style={{ flexDirection: 'row', borderColor: 'white', borderWidth: 1, borderRadius: 15, justifyContent: 'center', alignItems: "center" }}>
+                           <ImageBackground source={{uri:newEvent.Image}} style={{flex: 1,resizeMode: "cover",justifyContent: "center"}}>
+                           <Text style={styles.textOr}>הוספת תמונה  </Text>
+                            <OurButton onPress={() => this.props.navigation.navigate('CameraPage')}><SimpleLineIcons name="camera" size={30} color="black" /></OurButton>
+                            <OurButton onPress={() => this.props.navigation.navigate('ImageGallery')}><SimpleLineIcons name="picture" size={30} color="black" /></OurButton>
+                            </ImageBackground>
                         </View>
-                    </Card>
                     <TextInput
                         style={styles.input}
                         autoFocus={true}
@@ -561,7 +570,7 @@ export default class CreateEvent extends React.Component {
                         value={newEvent.Price != null && newEvent.Price + ""}
                     ></TextInput>
                     <TouchableOpacity onPress={() => {
-                        this.setState({ setLoc: true }, () => navigation.navigate('EventLocation'));
+                        this.setState({ setLoc: true }, () => navigation.navigate('EventLocation',{type:"e"}));
                     }}>
                         <Text style={{ fontFamily: 'rubik-regular', fontSize: 22, color: colors.turkiz, textAlign: 'left' }}> מיקום האירוע </Text>
                     </TouchableOpacity>
@@ -663,9 +672,9 @@ const styles = StyleSheet.create({
     textOr: {
         fontFamily: 'rubik-regular',
         fontSize: 24,
-        paddingRight: 10,
-        color: 'white',
-        paddingBottom: 10
+        // paddingRight: 10,
+        // color: 'white',
+        // paddingBottom: 10
 
     },
     API: {

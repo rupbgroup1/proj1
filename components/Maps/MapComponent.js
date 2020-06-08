@@ -65,7 +65,7 @@ const MapComponent = (props) => {
             >
                 {props.searchData.length > 0 && props.searchData.map((user, i) => {
                     if (user.Lat && user.Lan) {
-                        //console.log("TEST=", user.Lat);
+                        console.log("TEST=", props.searchData);
                         let age = new Date().getFullYear() - user.YearOfBirth;
                         let about = (user.AboutMe != null ? ", " + user.AboutMe : '');
                         
@@ -78,53 +78,14 @@ const MapComponent = (props) => {
                                 }}
                                 identifier={i + "M"}
                                 title={user.FirstName + ", " + age + about}
-                                onPress={(e) => {
-                                    console.log('hey');
-                                    //e.isPropagationStopped();
-                                    e.stopPropagation();
-                                    let user1 = user.FirstName;
-
-                                    //overlay example
-                                    // let modalVisible = true;
-                                    // <Overlay visible={modalVisible} >
-                                    //     <View>
-                                    //         <Text >{user.FirstName} {user.LastName}</Text>
-                                    //         <Text >גיל: {age} </Text>
-
-
-                                    //     </View>
-                                    // </Overlay>
-                                    
-                                    //alert example
-                                    Alert.alert(
-                                        'llaa',
-                                        '',
-                                        [
-                                          {text: 'כן', onPress: () => {
-                                            let cameraDetails={
-                                              pic64base:this.state.pic64base,
-                                              photoName: this.state.photoName,
-                                              photoUri: this.state.photoUri
-                                            };
-                                            //console.log(cameraDetails);
-                                            
-                                            AsyncStorage.mergeItem('cameraDetails', JSON.stringify(cameraDetails),()=>
-                                          goBack()
-                                          );
-                                          }},
-                                          {
-                                            text: 'לא',
-                                            style: 'cancel',
-                                          }],
-                                       
-                                      );
-                                }}
+                                // onPress={(e) => {
+                                //     //e.isPropagationStopped();
+                                //     e.stopPropagation();
+                                //     Alert.alert("ללל"+user.FirstName);
+                                // }}
 
                             >
 
-                                
-                                
-                                {/* <Text style={{color:'black'}}>{user.MatchRate}%</Text> */}
                                 {user.Gender !== 1 ?
                                     <Image
                                         source={blueImage}
@@ -135,33 +96,40 @@ const MapComponent = (props) => {
                                         style={{ height: 36, width: 26 }}
                                     />
                                 }
+                                <Callout
+                                    onPress={(e) => {
+                                        //e.stopPropagation();
+                                        Alert.alert("knlk"+user.FirstName);
+                                    }}>
+                                    <View>
+                                        <Text>{user.FirstName + ", " + age + about}</Text>
+                                    </View>
 
+                                </Callout>
                             </Marker>
                         )
                     }
                 })
                 }
 
-                {/* {markerCoordinates ? <Marker title='המיקום שלי' coordinate={markerCoordinates}></Marker> : <Marker title='המיקום שלי' coordinate={props.region}></Marker>} */}
-                <Marker
+                {markerCoordinates!=null ? <Marker title='המיקום שלי' coordinate={markerCoordinates}></Marker> : <Marker title='המיקום שלי' coordinate={props.region}></Marker>}
+                {/* {<Marker
                     coordinate={{
-                        latitude: 32.258049726540236,
-                         longitude: 34.92328489199281,
+                        latitude: 32.358049736540236,
+                         longitude: 34.92328689199281,
                          latitudeDelta: 0.009,
                          longitudeDelta: 0.009
                     }}
                 >
                     <Callout
                     onPress={() => {
-
-                        Alert.alert('callout pressed');
+                      Alert.alert("knlk");
                     }}>
                     <View>
                         <Text>This is a plain view</Text>
                     </View>
-
                 </Callout>
-                </Marker>
+                </Marker>} */}
             </MapView>
 
         </TouchableOpacity >

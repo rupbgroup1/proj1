@@ -9,110 +9,112 @@ import OurButton from '../../components/OurButton';
 import ProfileButton from '../../components/ProfileButton';
 import { MaterialIcons, FontAwesome5, FontAwesome } from '@expo/vector-icons';
 import moment from "moment";
-import MapView,{ Marker } from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 
 export default class MyServices extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      search: '',
-      allEvents: {},
-      isLoading: true,
-      text: '',
-      filteredArray: [],
-      visible: false,
-      selectedCat: 0,
-      selectedCard: {},
-      selectedOwner: {},
-      mapVisible:false
+    constructor(props) {
+        super(props);
+        this.state = {
+            search: '',
+            allEvents: {},
+            isLoading: true,
+            text: '',
+            filteredArray: [],
+            visible: false,
+            selectedCat: 0,
+            selectedCard: {},
+            selectedOwner: {},
+            mapVisible: false
 
-    };
-    this.arrayholder = [];
-    this.catArray = [];
+        };
+        this.arrayholder = [];
+        this.catArray = [];
 
 
-  }
-
-  componentDidMount() {
-    this.getUser();
-  }
-
-  getUser() {
-    AsyncStorage.getItem('user', (err, userJSON) => {
-      const userObj = JSON.parse(userJSON);
-      //console.log("obj==", userObj);
-      this.setState({ user: userObj }, () =>
-        this.fetchGetMyEvents(userObj.UserId));
     }
-    );
 
-  }
-  //I'm the owner
-  fetchGetMyEvents(userId) {
-    console.log("in fetch");
-    return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Events/My?userId=' + userId, {
+    componentDidMount() {
+        this.getUser();
+    }
 
-      method: 'GET',
-      headers: new Headers({
-        'Content-Type': 'application/json; charset=UTF-8',
-      })
-    })
-      .then(res => {
-        return res.json();
-      })
-      .then(
-        (result) => {
-          if (result.length > 0) {
-            console.log("Events = ", result);
-            this.arrayholder = result;
-            this.setState({ filteredArray: result })
-          }
-          else
-            Alert.alert(" מצטערים, אנו נסו שנית!");
-        },
-        (error) => {
-          console.log("err post=", error);
-          Alert.alert("מצטערים, אנו נסו שנית!");
+    getUser() {
+        AsyncStorage.getItem('user', (err, userJSON) => {
+            const userObj = JSON.parse(userJSON);
+            //console.log("obj==", userObj);
+            this.setState({ user: userObj }, () =>
+                this.fetchGetMyServices(userObj.UserId));
         }
-      );
-  }
+        );
 
-  //filter the events by text
-  SearchFilterFunction(text) {
-    const newData = this.arrayholder.filter(function (item) {
-      //applying filter for the inserted text in search bar
-      const itemData = item.Name;
-      return itemData.indexOf(text) > -1;
-    });
-    console.log("filter==", newData);
-    newData.length < 1 && Alert.alert("לא נמצאו תוצאות");
-    text != '' ?
-      this.setState({
-        //setting the filtered newData on datasource
-        filteredArray: newData,
-        text: text,
-      })
-      : this.setState({ filteredArray: this.arrayholder, text: text });
-  }
+    }
+    //I'm the owner
+    fetchGetMyServices(userId) {
+        console.log("in fetch");
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Services/My?userId=' + userId, {
 
-  toggleOverlay() {
-    this.setState({ visible: false });
-  }
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'application/json; charset=UTF-8',
+            })
+        })
+            .then(res => {
+                return res.json();
+            })
+            .then(
+                (result) => {
+                    if (result.length > 0) {
+                        console.log("Events = ", result);
+                        this.arrayholder = result;
+                        this.setState({ filteredArray: result })
+                    }
+                    else
+                        Alert.alert(" מצטערים, אנו נסו שנית!");
+                },
+                (error) => {
+                    console.log("err post=", error);
+                    Alert.alert("מצטערים, אנו נסו שנית!");
+                }
+            );
+    }
 
-  toggleMapOverlay() {
-    this.setState({ mapVisible: false });
-  }
+    //filter the events by text
+    SearchFilterFunction(text) {
+        const newData = this.arrayholder.filter(function (item) {
+            //applying filter for the inserted text in search bar
+            const itemData = item.Name;
+            return itemData.indexOf(text) > -1;
+        });
+        console.log("filter==", newData);
+        newData.length < 1 && Alert.alert("לא נמצאו תוצאות");
+        text != '' ?
+            this.setState({
+                //setting the filtered newData on datasource
+                filteredArray: newData,
+                text: text,
+            })
+            : this.setState({ filteredArray: this.arrayholder, text: text });
+    }
+
+    toggleOverlay() {
+        this.setState({ visible: false });
+    }
+
+    toggleMapOverlay() {
+        this.setState({ mapVisible: false });
+    }
+
+   
 
 
 
 
-  render() {
-    const { navigation } = this.props;
-    return (
-      <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
-        <Header />
-        <BackButton goBack={() => navigation.navigate('MainPage')} />
-        <View style={styles.row}>
+    render() {
+        const { navigation } = this.props;
+        return (
+            <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
+                <Header />
+                <BackButton goBack={() => navigation.navigate('MainPage')} />
+                <View style={styles.row}>
                     <View style={styles.search}>
                         <SearchBar
                             placeholder="חפש/י אירועים בשכונה.."
@@ -128,7 +130,7 @@ export default class MyServices extends React.Component {
                         <OurButton
                             title='add'
                             key='add'
-                            onPress={() => navigation.navigate('CreateEvent')}>
+                            onPress={() => navigation.navigate('CreateService')}>
                             <MaterialIcons name="add" size={40} color={colors.header} />
                         </OurButton>
                     </View>
@@ -136,116 +138,85 @@ export default class MyServices extends React.Component {
                 <ScrollView>
                     {
                         this.state.filteredArray.length > 0 &&
-                        this.state.filteredArray.map((e) => {
+                        this.state.filteredArray.map((s) => {
 
                             return (
 
-                                <View style={{ right: 5 }}>
+                                <View style={{ right:  3.5 }}>
                                     <Card
-                                        key={e.Id}
-                                        //title={e.Name}
+                                        key={s.ServiceId}
                                         titleStyle={styles.cardTitle}
-                                        image={{ uri: e.Image }}
+                                        image={{ uri: s.ImageGallery }}
                                         containerStyle={styles.cardContainer}
                                     >
-                                        <Text style={styles.cardTitleText}>{e.Name}</Text>
+                                        <Text style={styles.cardTitleText}>{s.ServiceName}</Text>
                                         <View style={{ flexDirection: 'row' }}>
 
-                                            <Text style={styles.cardText}>{e.Desc}</Text>
+                                            <Text style={styles.cardText}>{s.Description}</Text>
                                         </View>
-                                        <View style={{ flexDirection: 'row', }}>
-                                            <View style={styles.cardIcons}>
-                                                <FontAwesome5 name="calendar-alt" size={22}></FontAwesome5>
-                                                <Text style={styles.cardIconsText}>{moment(e.StartDate).format("DD/MM/YYYY")}</Text>
-                                            </View>
-                                            <View style={styles.cardIcons}>
-                                                <FontAwesome5 name="users" size={22} ></FontAwesome5>
-                                                <Text style={styles.cardIconsText}>{e.NumOfParticipants}</Text>
-                                            </View>
-                                            <View style={styles.cardIcons}>
-                                                <FontAwesome5 name="dollar-sign" size={22}></FontAwesome5>
-                                                <Text style={styles.cardIconsText}> {e.Price + '  ש"ח'}</Text>
-                                            </View>
 
-                                        </View>
                                         <View style={{ paddingVertical: 10 }}>
                                             <Button
-                                                title='ראה פרטים'
+                                                title='פרטים נוספים'
                                                 buttonStyle={styles.cardButton}
                                                 titleStyle={styles.cardButtonText}
-                                                onPress={() => this.setState({ visible: true, selectedCard: e, selectedOwner: e.Admin })}
+                                                onPress={() => this.setState({ visible: true, selectedCard: s, selectedOwner: s.Owner })}
                                             >
                                             </Button>
                                         </View>
                                         <Overlay overlayStyle={{ backgroundColor: 'rgba(52, 52, 52, 0)' }} isVisible={this.state.visible} onBackdropPress={() => this.toggleOverlay()}>
                                             <Card
-                                                key={this.state.selectedCard.Id}
-                                                image={{ uri: this.state.selectedCard.Image }}
+                                                key={this.state.selectedCard.ServiceId}
+                                                image={{ uri: this.state.selectedCard.ImageGallery }}
                                                 containerStyle={styles.innerCardContainer}
                                             >
-                                                <Text style={styles.cardTitleText} >{this.state.selectedCard.Name}</Text>
-                                                <Text >{this.state.selectedCard.Desc}</Text>
-                                                <View style={styles.cardIcons}>
-                                                    <FontAwesome5 name="calendar-alt" size={20}></FontAwesome5>
-                                                    <Text style={styles.cardIconsText}>{moment(this.state.selectedCard.StartDate).format("DD/MM/YYYY")} עד </Text>
-                                                    <Text style={styles.cardIconsText}>{moment(this.state.selectedCard.EndDate).format("DD/MM/YYYY")}</Text>
-                                                </View>
-                                                <View style={styles.cardIcons}>
-                                                    <FontAwesome5 name="users" size={22}></FontAwesome5>
-                                                    <Text style={styles.cardIconsText}> {this.state.selectedCard.NumOfParticipants + '  משתתפים'}</Text>
-                                                </View>
-                                                <View style={styles.cardIcons}>
-                                                    <FontAwesome5 name="dollar-sign" size={22}></FontAwesome5>
-                                                    <Text style={styles.cardIconsText}> {this.state.selectedCard.Price + '  ש"ח'}</Text>
-                                                </View>
-                                                <View style={styles.cardIcons}>
-                                                    <FontAwesome name="user" size={22}></FontAwesome>
-                                                    <Text style={styles.cardIconsText}> {this.state.user.FirstName + ' ' + this.state.user.LastName}</Text>
-                                                </View>
-                                                <View style={styles.cardIcons}>
-                                                    <FontAwesome5 name="id-card" size={22}></FontAwesome5>
-                                                    <Text style={styles.cardIconsText}> {'מיועד לגילאים  ' + this.state.selectedCard.ToAge + ' - ' + this.state.selectedCard.FromAge}</Text>
-                                                </View>
+                                                <Text style={styles.cardTitleText} >{this.state.selectedCard.ServiceName}</Text>
+                                                <Text>{this.state.selectedCard.Description}</Text>
+                                                <Text> דירוג העסק {this.state.selectedCard.Rate}</Text>
+                                                <Text> פתוח בימי:  {this.state.selectedCard.OpenDays}</Text>
+                                                <Text> בין השעות {this.state.selectedCard.OpenHoursStart}-{this.state.selectedCard.OpenHoursEnds}</Text>
+                                                <Text> כתובת {this.state.selectedCard.ServiceAddress}</Text>
                                                 <TouchableOpacity
                                                     style={{ paddingVertical: 20, alignSelf: 'center' }}
                                                     onPress={() => this.setState({ mapVisible: true })}>
                                                     {/* nav to map */}
-                                                    <Text style={styles.locationText}>לחץ לצפייה במיקום האירוע</Text>
+                                                    <Text style={styles.locationText}>לחץ לצפייה במיקום העסק</Text>
                                                 </TouchableOpacity>
                                                 <Overlay isVisible={this.state.mapVisible} onBackdropPress={() => this.toggleMapOverlay()}>
                                                     <MapView
                                                         style={{
                                                             width: "100%",
-                                                            height:"100%"
+                                                            height: "100%"
                                                         }}
                                                         region={{
                                                             latitude: this.state.selectedCard.Lat,
                                                             longitude: this.state.selectedCard.Lan,
-                                                            latitudeDelta: 0.003,
-                                                            longitudeDelta: 0.003,
-                                                          }}>
-                                                              <Marker
+                                                            latitudeDelta: 0.009,
+                                                            longitudeDelta: 0.009,
+                                                        }}>
+                                                        <Marker
                                                             coordinate={{
                                                                 latitude: this.state.selectedCard.Lat,
                                                                 longitude: this.state.selectedCard.Lan,
                                                                 latitudeDelta: 0.009,
                                                                 longitudeDelta: 0.009,
-                                                              }}
-                                                            title={this.state.selectedCard.Location}
+                                                            }}
+                                                            title={this.state.selectedCard.ServiceAddress}
                                                         />
 
-                                                        </MapView>
-                                      </Overlay>
-                                                    <Button
-                                                        title='עריכה'
-                                                        buttonStyle={styles.cardButton}
-                                                        titleStyle={styles.cardButtonText}
-                                                        onPress={()=>{
-                                                          this.setState({ visible: false });
-                                                           navigation.navigate('CreateEvent', { edit: true, eventDetails: this.state.selectedCard });
-                                                          }
-                                                        }
-                                                    > </Button>
+                                                    </MapView>
+                                                </Overlay>
+                                                <Button
+                                                    title='עריכה'
+                                                    buttonStyle={styles.cardButton}
+                                                    titleStyle={styles.cardButtonText}
+                                                    onPress={() => {
+                                                        this.setState({ visible: false }, () =>
+                                                        navigation.navigate('CreateService', { edit: true, serviceDetails: this.state.selectedCard }));
+                                                    }}
+                                                > </Button>
+
+
                                             </Card>
 
                                         </Overlay>
@@ -294,20 +265,35 @@ const styles = StyleSheet.create({
     categories: {
         backgroundColor: 'white',
         borderRadius: 0,
-        paddingVertical: 10,
+        paddingVertical: 5,
         paddingHorizontal: 10,
         borderColor: '#D1D3D4',
         shadowColor: '#D1D3D4'
     },
+    selectedCategory:{
+        backgroundColor: colors.turkiz,
+        borderRadius: 0,
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        borderColor: '#D1D3D4',
+        shadowColor: '#D1D3D4'
+    },
+    titleCat: { 
+        color: colors.turkiz, 
+        fontFamily:'rubik-regular' 
+    },
+    coloredTitleCat: { 
+        color: 'white', 
+        fontFamily:'rubik-bold' 
+    },
+
     cardContainer: {
-        width: Dimensions.get('window').width - 20,
-        borderRadius: 5,
+        width: Dimensions.get('window').width - 24,
+        borderRadius: 6,
         borderColor: '#D1D3D4',
         shadowRadius: 5
     },
     innerCardContainer: {
-        paddingHorizontal: 40,
-        paddingVertical: 20,
         width: 300,
         alignSelf: 'center'
     },
@@ -317,6 +303,7 @@ const styles = StyleSheet.create({
         fontFamily: 'rubik-regular'
     },
     cardTitleText: {
+        alignSelf:'center',
         fontSize: 26,
         color: "black",
         fontFamily: 'rubik-regular'
@@ -337,23 +324,29 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         fontFamily: 'rubik-regular',
         fontSize: 16,
-        textAlign: 'left'
+        textAlign:'left'
     },
     cardButton: {
         borderRadius: 30,
         marginBottom: 0,
         width: '60%',
         alignSelf: 'center',
-        backgroundColor: colors.turkiz
+        backgroundColor: colors.turkiz,
+        elevation: 4
     },
     cardButtonText: {
-        fontSize: 20,
+        fontSize: 16,
         fontFamily: 'rubik-regular'
     },
     locationText: {
         fontFamily: 'rubik-regular',
         fontSize: 16,
         color: colors.turkiz
-    }
+    },
+    innerCardImage: {
+        height:200, 
+        marginLeft:0, 
+        marginRight:0
+    } 
 });
 

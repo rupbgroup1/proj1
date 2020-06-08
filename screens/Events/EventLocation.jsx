@@ -10,7 +10,12 @@ export default class EventLocation extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            region: {},
+            region: {
+                latitude: 32.358049736540236,
+                 longitude: 34.92328689199281,
+                 latitudeDelta: 0.009,
+                 longitudeDelta: 0.009
+            },
             CityName: '',
             NeiName: '',
             searchData: [],
@@ -21,7 +26,7 @@ export default class EventLocation extends Component {
     }
 
 
-    getInitialState() {
+    componentDidMount() {
         getLocation().then(
             (data) => {
                 console.log(data);
@@ -88,7 +93,9 @@ export default class EventLocation extends Component {
                     />
                     <Button title={'שמור'}
                     onPress={() => {
-                        this.props.navigation.navigate('CreateEvent',{region:this.state.region, Location:this.state.Location})
+                        this.props.navigation.getParam('type')==="e"?
+                        this.props.navigation.navigate('CreateEvent',{region:this.state.region, Location:this.state.Location}) :
+                        this.props.navigation.navigate('CreateService',{region:this.state.region, Location:this.state.Location})
                     }}
                 />
                 </View>
