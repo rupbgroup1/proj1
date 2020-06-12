@@ -62,7 +62,7 @@ export default class MainPage extends Component {
 
           <View style={styles.item4}>
             <FindingsButton
-            onPress={() => navigation.navigate('ProfileEdit')}>
+            onPress={() => navigation.navigate('GeneralLosts')}>
             נמצא בשכונה
             </FindingsButton>
           </View>

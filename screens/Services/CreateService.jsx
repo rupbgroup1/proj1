@@ -41,6 +41,7 @@ export default class CreateEvent extends React.Component {
     }
 
     componentDidMount() {
+       
         this.editMode = this.props.navigation.getParam('edit');
         this.editMode &&
             this.setState({ newS: this.props.navigation.getParam('serviceDetails') });

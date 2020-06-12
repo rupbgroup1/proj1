@@ -50,6 +50,7 @@ export default class CreateEvent extends React.Component {
     }
 
     componentDidMount() {
+        console.log("Nav====", this.props.navigation.getParam('edit'), this.props.navigation.getParam('eventDetails'));
         this.editMode = this.props.navigation.getParam('edit');
         this.editMode &&
             this.setState({ newEvent: this.props.navigation.getParam('eventDetails') });
