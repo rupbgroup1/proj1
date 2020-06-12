@@ -171,10 +171,26 @@ export default class CreateEvent extends React.Component {
     fetchCreateService() {
 
         console.log("in new S=", this.state.newS);
+        const s = this.state.newS;
+        const locationCoords = this.state.setLoc ? this.props.navigation.getParam('region') : "";
+        let serviceToUpdate = {
+            ServiceId: s.ServiceId,
+            ServiceName: s.ServiceName,
+            Description: s.Description,
+            Owner: s.Owner,
+            OpenDays: s.OpenDays,
+            OpenHoursStart: s.OpenHoursStart,
+            OpenHoursEnds: s.OpenHoursEnds,
+            Categories: s.Categories,
+            NeighborhoodId: s.NeighborhoodId,
+            ServiceAddress: this.props.navigation.getParam('Location'),
+            Lat: locationCoords.latitude,
+            Lan: locationCoords.longitude,
+        }
         return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Services/New', {
 
             method: 'POST',
-            body: JSON.stringify(this.state.newS),
+            body: JSON.stringify(serviceToUpdate),
             headers: new Headers({
                 'Content-Type': 'application/json; charset=UTF-8',
             })
@@ -263,7 +279,7 @@ export default class CreateEvent extends React.Component {
                 <Header />
                 <BackButton goBack={() => navigation.navigate('GeneralServices')} />
                 <ScrollView>
-                <View style={{ flexDirection: 'row', borderColor: 'white', borderWidth: 1, borderRadius: 15, justifyContent: 'center', alignItems: "center" }}>
+                        <View style={{ flexDirection: 'row', borderColor: 'white', borderWidth: 1, borderRadius: 15, justifyContent: 'center', alignItems: "center" }}>
                            <ImageBackground source={{uri:newS.ImageGallery}} style={{flex: 1,resizeMode: "cover",justifyContent: "center"}}>
                            <Text style={styles.textOr}>הוספת תמונה  </Text>
                             <OurButton onPress={() => this.props.navigation.navigate('CameraPage')}><SimpleLineIcons name="camera" size={30} color="black" /></OurButton>
