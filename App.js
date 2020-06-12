@@ -86,7 +86,7 @@ const navigator = createStackNavigator({
   Chat:Chat,
   CreateService:CreateService,
   }, {
-        initialRouteName: 'LoginScreen',
+        initialRouteName: 'CreateEvent',
         defaultNavigationOptions: {
         headerShown: false
      }

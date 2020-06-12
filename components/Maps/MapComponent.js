@@ -1,7 +1,8 @@
 import React, { useState, Component, useCallback, useEffect } from 'react';
 import { Dimensions, TouchableOpacity, AsyncStorage, Text, Image, Alert, View } from 'react-native';
 import MapView, { Marker, Callout } from 'react-native-maps';
-import OverlayExample from '../OverlayExample';
+// import OverlayExample from '../../components/OverlayExample';
+// import Overlay from 'react-native-elements';
 
 
 
@@ -67,7 +68,7 @@ const MapComponent = (props) => {
                         console.log("TEST=", props.searchData);
                         let age = new Date().getFullYear() - user.YearOfBirth;
                         let about = (user.AboutMe != null ? ", " + user.AboutMe : '');
-
+                        
                         return (
                             <Marker
                                 key={user.UserId}
