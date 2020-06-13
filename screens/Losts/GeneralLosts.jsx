@@ -307,7 +307,7 @@ const TabNavigator = createMaterialBottomTabNavigator(
                 activeColor: colors.turkiz,
                 inactiveColor: 'black',
                 barStyle: { backgroundColor: 'white' },
-
+                key: 1,
                 tabBarIcon: () => (
                     <View>
                         <FontAwesome5 name={'home'} size={23} color={'black'} />
@@ -323,6 +323,7 @@ const TabNavigator = createMaterialBottomTabNavigator(
                 activeColor: colors.turkiz,
                 inactiveColor: 'black',
                 barStyle: { backgroundColor: 'white' },
+                key:2,
                 tabBarIcon: () => (
                     <View>
                         <FontAwesome5 name={'user-alt'} size={24} color={'black'} />

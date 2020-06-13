@@ -92,7 +92,7 @@ const navigator = createStackNavigator({
   MyLosts:MyLosts,
   CreateLost:CreateLost,
   }, {
-        initialRouteName: 'CreateEvent',
+        initialRouteName: 'LoginScreen',
         defaultNavigationOptions: {
         headerShown: false
      }

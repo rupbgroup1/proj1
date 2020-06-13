@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, View, Button,  Image, KeyboardAvoidingView, StyleSheet } from 'react-native';
+import { Alert, View, Button, Image, KeyboardAvoidingView, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
 export default class ImageGallery extends React.Component {
@@ -9,33 +9,33 @@ export default class ImageGallery extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { 
+        this.state = {
             image: null,
         }
     }
 
     btnOpenGalery = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
-           
-          });
-      
-      
-          if (!result.cancelled) {
+
+        });
+
+
+        if (!result.cancelled) {
             this.setState({ image: result.uri });
-          }
+        }
 
 
-          Alert.alert(
+        Alert.alert(
             'האם תרצה לשמור את התמונה?',
             '',
             [
-              {text: 'כן', onPress: () => this.props.navigation.navigate('Pic', {photoUri: result.uri})},
-              {
-                text: 'לא',
-                style: 'cancel',
-              }],
-           
-          );
+                { text: 'כן', onPress: () => this.props.navigation.navigate('Pic', { photoUri: result.uri }) },
+                {
+                    text: 'לא',
+                    style: 'cancel',
+                }],
+
+        );
     };
 
     render() {
@@ -44,9 +44,9 @@ export default class ImageGallery extends React.Component {
         return (
             <KeyboardAvoidingView behavior="padding"
                 style={styles.container}>
-               
+
                 <View style={styles.Content}>
-                    <View style={{ margin: 20, fontFamily: 'rubik-regular'}}>
+                    <View style={{ margin: 20, fontFamily: 'rubik-regular' }}>
                         <Button
                             title="בחירת תמונה מהגלריה"
                             onPress={this.btnOpenGalery}
@@ -60,19 +60,19 @@ export default class ImageGallery extends React.Component {
     }
 }
 const styles = StyleSheet.create({
-    
+
     Content: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginBottom: 30,
-      
-  },
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: 40
-},
-  })
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 30,
+
+    },
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: 40
+    },
+})

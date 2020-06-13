@@ -31,15 +31,15 @@ export default class MyLosts extends React.Component {
             const userObj = JSON.parse(userJSON);
             //console.log("obj==", userObj);
             this.setState({ user: userObj }, () =>
-                this.fetchGetMyLosts(userObj.userId));
+                this.fetchGetMyLosts(userObj.UserId));
         }
         );
 
     }
 
-    //*fetch */
+    //*fetch GET ALL */
     fetchGetMyLosts(user) {
-        console.log("in fetch");
+        console.log("in fetch", user);
         return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Losts/My?userId=' + user, {
 
             method: 'GET',
@@ -56,6 +56,36 @@ export default class MyLosts extends React.Component {
                         console.log("Losts = ", result);
                         this.arrayholder = result;
                         this.setState({ filteredArray: result })
+                    }
+                    else
+                        Alert.alert(" מצטערים, אנו נסו שנית!");
+                },
+                (error) => {
+                    console.log("err post=", error);
+                    Alert.alert("מצטערים, אנו נסו שנית!");
+                }
+            );
+    }
+
+     //*fetch UPDATE */
+     fetchMarkLostsAsReturned(lost) {
+        console.log("in fetch R", lost);
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Losts/Update', {
+
+            method: 'PUT',
+            body: JSON.stringify(lost),
+            headers: new Headers({
+                'Content-Type': 'application/json; charset=UTF-8',
+            })
+        })
+            .then(res => {
+                return res.json();
+            })
+            .then(
+                (result) => {
+                    if (result === 1) {
+                        Alert.alert("המציאה סומנה כהושבה!");
+                        this.fetchGetMyLosts(this.state.user.UserId);
                     }
                     else
                         Alert.alert(" מצטערים, אנו נסו שנית!");
@@ -138,11 +168,11 @@ export default class MyLosts extends React.Component {
                                         </View>
                                         <View style={{ paddingVertical: 10 }}>
                                             <Button
-                                                title='צור קשר'
+                                                title='סמן כהושבה'
                                                 buttonStyle={styles.cardButton}
                                                 titleStyle={styles.cardButtonText}
                                                 onPress={() => {
-                                                    navigation.navigate('Chat', { userCode: l.WhoFound });
+                                                    this.fetchMarkLostsAsReturned(l);
                                                 }}
                                             > </Button>
                                         </View>
