@@ -220,11 +220,6 @@ class GeneralEvents extends React.Component {
     }
 
 
-    //press on plus
-    createNewEvent() {
-        // navigation.navigate('CreateEvent');
-    }
-
     toggleOverlay() {
         this.setState({ visible: false });
     }

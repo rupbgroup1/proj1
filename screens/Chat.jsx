@@ -56,14 +56,47 @@ export default class Chat extends React.Component {
     firebaseSvc.refOff();
   }
 
+  onSendFunction(messages){
+    firebaseSvc.send(messages);
+    this.notificationPush()
+  }
+
+  notificationPush = () => {
+    console.log("in push!");
+    let per = {
+      to: 'pXKmR0F6aYRFBQ3ViV6BXL',
+      title: 'הודעה חדשה',
+      body: "body from client side",
+      data: { seconds: new Date().getSeconds() }
+    };
+
+    // POST adds a random id to the object sent
+    fetch('https://exp.host/--/api/v2/push/send', {
+      method: 'POST',
+      body: JSON.stringify(per),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8"
+      }
+    })
+      .then(response => response.json())
+      .then(json => {
+        if (json != null) {
+          console.log(`
+              returned from server\n
+              json.data= ${JSON.stringify(json.data)}`);
+
+        } else {
+          alert('err json');
+        }
+      });
+  }
+
 
   render() {
-    const { navigation } = this.props;
     return (
       <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
         <Header />
         <BackButton goBack={() => this.props.navigation.navigate('MainPage')} />
-        
         <View style={{
           width: '95%', height: '80%', borderRadius: 10,
           shadowColor: 'black',
@@ -75,7 +108,7 @@ export default class Chat extends React.Component {
           
           <GiftedChat
             messages={this.state.messages}
-            onSend={firebaseSvc.send}
+            onSend={messages=>this.onSendFunction(messages)}
             user={this.user}
             placeholder='הקלד הודעה'
           />

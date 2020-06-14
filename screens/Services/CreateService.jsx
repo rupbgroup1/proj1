@@ -138,7 +138,7 @@ export default class CreateEvent extends React.Component {
         this.setState(prevState => ({
             newS: {
                 ...prevState.newS,
-                OpenHoursStart: moment(currentDate).format('hh:mm')
+                OpenHoursStart: moment(currentDate).format('HH:mm')
             },
             show1: showVal,
             timeStart: currentDate
@@ -152,7 +152,7 @@ export default class CreateEvent extends React.Component {
         this.setState(prevState => ({
             newS: {
                 ...prevState.newS,
-                OpenHoursEnds: moment(currentDate).format('hh:mm')
+                OpenHoursEnds: moment(currentDate).format('HH:mm')
             },
             show2: showVal,
             timeEnd: currentDate
@@ -220,20 +220,24 @@ export default class CreateEvent extends React.Component {
     fetchUpdateService() {
         console.log("in update!!");
         const s = this.state.newS;
-        const locationCoords = this.state.setLoc ? this.props.navigation.getParam('region') : "";
+        const locationCoords = this.props.navigation.getParam('region');
+        const ServiceAddress= this.state.setLoc ? this.props.navigation.getParam('Location'): s.ServiceAddress;
+        const Lat= this.state.setLoc? locationCoords.latitude : s.Lat;
+        const Lan= this.state.setLoc? locationCoords.longitude: s.Lan;
         let serviceToUpdate = {
             ServiceId: s.ServiceId,
             ServiceName: s.ServiceName,
             Description: s.Description,
+            ImageGallery: s.ImageGallery,
             Owner: s.Owner,
             OpenDays: s.OpenDays,
             OpenHoursStart: s.OpenHoursStart,
             OpenHoursEnds: s.OpenHoursEnds,
             Categories: s.Categories,
             NeighborhoodId: s.NeighborhoodId,
-            ServiceAddress: this.props.navigation.getParam('Location'),
-            Lat: locationCoords.latitude,
-            Lan: locationCoords.longitude,
+            ServiceAddress: ServiceAddress,
+            Lat: Lat,
+            Lan: Lan,
         }
         console.log("s t o ", serviceToUpdate);
 
@@ -375,7 +379,7 @@ export default class CreateEvent extends React.Component {
                         <Dropdown
                             key={1}
                             label='בחר קטגוריה'
-                            value={newS.CategoryId}
+                            value={newS.Categories}
                             valueExtractor={({ CategoryId }) => CategoryId}
                             labelExtractor={({ CategoryName }) => CategoryName}
                             data={this.catArray}
