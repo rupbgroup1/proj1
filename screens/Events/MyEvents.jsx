@@ -160,14 +160,14 @@ export default class MyEvents extends React.Component {
                                             </View>
                                             <View style={styles.cardIcons}>
                                                 <FontAwesome5 name="users" size={22} ></FontAwesome5>
-                                                <Text style={styles.cardIconsText}>{e.NumOfParticipants}</Text>
+                                                <Text style={styles.cardIconsText}>{e.NumOfAttendance} רשומים</Text>
                                             </View>
                                             <View style={styles.cardIcons}>
                                                 <FontAwesome5 name="dollar-sign" size={22}></FontAwesome5>
                                                 <Text style={styles.cardIconsText}> {e.Price + '  ש"ח'}</Text>
                                             </View>
-
                                         </View>
+
                                         <View style={{ paddingVertical: 10 }}>
                                             <Button
                                                 title='ראה פרטים'
@@ -193,6 +193,10 @@ export default class MyEvents extends React.Component {
                                                 <View style={styles.cardIcons}>
                                                     <FontAwesome5 name="users" size={22}></FontAwesome5>
                                                     <Text style={styles.cardIconsText}> {this.state.selectedCard.NumOfParticipants + '  משתתפים'}</Text>
+                                                </View>
+                                                <View style={styles.cardIcons}>
+                                                    <FontAwesome5 name="users" size={22}></FontAwesome5>
+                                                    <Text style={styles.cardIconsText}> {this.state.selectedCard.NumOfAttendance + '  נרשמו לאירוע'}</Text>
                                                 </View>
                                                 <View style={styles.cardIcons}>
                                                     <FontAwesome5 name="dollar-sign" size={22}></FontAwesome5>
@@ -235,7 +239,7 @@ export default class MyEvents extends React.Component {
                                                         />
 
                                                         </MapView>
-                                      </Overlay>
+                                                </Overlay>
                                                     <Button
                                                         title='עריכה'
                                                         buttonStyle={styles.cardButton}
