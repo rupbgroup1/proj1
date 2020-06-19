@@ -32,7 +32,7 @@ import GeneralServices from './screens/Services/GeneralServices';
 import MyServices from './screens/Services/MyServices';
 import { Notifications } from 'expo';
 import Chat from './screens/Chat';
-import CreateService from './screens/Services/CreateService'
+import CreateService from './screens/Services/CreateService';
 import registerForPushNotificationsAsync from './components/registerForPushNotificationsAsync';
 import GeneralLosts from './screens/Losts/GeneralLosts';
 import CreateLost from './screens/Losts/CreateLost';
@@ -109,26 +109,7 @@ export default class App extends React.Component {
     };
   }
 
-  componentDidMount() {
-    registerForPushNotificationsAsync()
-      .then((token) => {
-        console.log('token from app.js=', token);
-        this.setState({ token });
-        console.log('state.token from app.js=', this.state.token);
-      });
-
-
-    // Handle notifications that are received or selected while the app
-    // is open. If the app was closed and then opened by tapping the
-    // notification (rather than just tapping the app icon to open it),
-    // this function will fire on the next tick after the app starts
-    // with the notification data.
-    this._notificationSubscription = Notifications.addListener(this._handleNotification);
-  }
-
-  _handleNotification = (notification) => {
-    this.setState({ notification: notification });
-  };
+ 
 
   //check that the fonts are loaded before the screen
   //const [dataLoaded, setDataLoaded] = useState(false);

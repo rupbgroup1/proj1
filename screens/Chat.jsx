@@ -12,6 +12,7 @@ export default class Chat extends React.Component {
     super(props);
 
   }
+
   static navigationOptions = ({ navigation }) => ({
     title: (navigation.state.params || {}).name || 'Scv Chat!',
   });
@@ -20,7 +21,8 @@ export default class Chat extends React.Component {
     messages: [],
     user: {},
     userCode: 0,
-    Nei: ''
+    Nei: '',
+    //token: 'ExponentPushToken[cQYyeHDo4l_zVTPLg5aq-w]'
   };
 
   get user() {
@@ -64,10 +66,11 @@ export default class Chat extends React.Component {
   notificationPush = () => {
     console.log("in push!");
     let per = {
-      to: 'pXKmR0F6aYRFBQ3ViV6BXL',
-      title: 'הודעה חדשה',
-      body: "body from client side",
-      data: { seconds: new Date().getSeconds() }
+      to: this.props.navigation.getParam('userToken'),
+      title:'Commy',
+      body: 'הודעה חדשה מ'+ this.state.user.FirstName,
+      badge: 3,
+      data: {sender: this.state.user.UserId, navigateTo:"Chat", reciever:this.state.sendTo}
     };
 
     // POST adds a random id to the object sent

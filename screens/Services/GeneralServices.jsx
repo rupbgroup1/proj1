@@ -67,7 +67,7 @@ class GeneralServices extends React.Component {
             .then(
                 (result) => {
                     if (result.length > 0) {
-                        console.log("SERVICES = ", result);
+                        //console.log("SERVICES = ", result);
                         this.arrayholder = result;
                         this.setState({ filteredArray: result })
                     }
@@ -375,7 +375,7 @@ class GeneralServices extends React.Component {
                                                     titleStyle={styles.cardButtonText}
                                                     onPress={() => {
                                                         this.setState({ visible: false }, () =>
-                                                            navigation.navigate('Chat', { userCode: this.state.selectedCard.Owner }));
+                                                            navigation.navigate('Chat', { userCode: this.state.selectedCard.Owner, userToken: this.state.selectedCard.OwnerToken }));
                                                     }}
                                                 > </Button>
 

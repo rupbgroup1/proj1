@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { Alert, Button, TextInput, View, StyleSheet, Text, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import RememberMe from '../components/RememberMe';
 import { AsyncStorage, I18nManager } from 'react-native';
-import Background from '../components/Background'
+import Background from '../components/Background';
+import registerForPushNotificationsAsync from '../components/registerForPushNotificationsAsync';
+import { Notifications } from 'expo';
 
 
 export default class LoginScreen extends Component {
@@ -16,13 +18,31 @@ export default class LoginScreen extends Component {
       user: [],
       usernameValid: true
     };
-
-    // if(I18nManager.isRTL != true){ 
-    //   I18nManager.forceRTL(true); 
-    //   RNRestart.Restart(); 
-    // }
-
   }
+    componentDidMount() {
+      registerForPushNotificationsAsync()
+        .then((token) => {
+          console.log('token from app.js=', token);
+          this.setState({ token });
+          console.log('state.token from app.js=', this.state.token);
+        });
+  
+  
+      // Handle notifications that are received or selected while the app
+      // is open. If the app was closed and then opened by tapping the
+      // notification (rather than just tapping the app icon to open it),
+      // this function will fire on the next tick after the app starts
+      // with the notification data.
+      this._notificationSubscription = Notifications.addListener(this._handleNotification);
+      
+    }
+  
+    _handleNotification = (notification) => {
+      console.log("not= ", notification);
+      console.log("nav To= ",notification.data.navigateTo);
+      this.setState({ notification: notification });
+      //this.props.navigation.navigate(notification.data.navigateTo);
+    };
 
   //Search for the userDetails in DB
   fetchOnLogin = () => {
@@ -31,8 +51,11 @@ export default class LoginScreen extends Component {
     
     const loginDetails = {
       Email: emailLower,
-      Password: this.state.password
+      Password: this.state.password, 
+      Token: this.state.token
     }
+
+    console.log(loginDetails);
 
     //Check that the user name entered is valid
     if (this.state.username == '' || this.state.password == '') {
@@ -52,11 +75,11 @@ export default class LoginScreen extends Component {
       })
       .then(
         (result) => {
-          console.log("fetch = ", result);
+          //console.log("fetch = ", result);
           if (result.UserId > 0) {
             AsyncStorage.setItem("user", JSON.stringify(result), () => {
               this.props.navigation.navigate('MainPage');
-              console.log(result);
+              //console.log(result);
             }); 
           }
           else {
@@ -69,9 +92,6 @@ export default class LoginScreen extends Component {
           Alert.alert("איראה שגיאה, אנא נסה שנית");
         });
   }
-  
-  
-
 
   render() {
     return (
