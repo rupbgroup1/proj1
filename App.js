@@ -28,6 +28,10 @@ import GeneralEvents from './screens/Events/GeneralEvents';
 import CreateEvent from './screens/Events/CreateEvent';
 import MyEvents from './screens/Events/MyEvents';
 import EventLocation from './screens/Events/EventLocation';
+import GeneralServices from './screens/Services/GeneralServices';
+import MyServices from './screens/Services/MyServices';
+import { Notifications } from 'expo';
+import registerForPushNotificationsAsync from './components/registerForPushNotificationsAsync';
 
 //cancel the timer error
 YellowBox.ignoreWarnings(['Setting a timer']);
@@ -74,8 +78,9 @@ const navigator = createStackNavigator({
   GeneralEvents:GeneralEvents,
   CreateEvent:CreateEvent,
   MyEvents:MyEvents,
-  EventLocation:EventLocation
-  
+  EventLocation:EventLocation,
+  GeneralServices:GeneralServices,
+  MyServices:MyServices,
   }, {
         initialRouteName: 'LoginScreen',
         defaultNavigationOptions: {
@@ -85,21 +90,50 @@ const navigator = createStackNavigator({
 const Na = createAppContainer(navigator)
 
 
-export default function App() {
-  //check that the fonts are loaded before the screen
-  const [dataLoaded, setDataLoaded] = useState(false);
-  if (!dataLoaded) {
-    return (
-      <AppLoading
-        startAsync={fetchFonts}
-        onFinish={() => setDataLoaded(true)}
-        onError={(err) => console.log(err)}
-      />
-    );
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      notification: {},
+      dataLoaded: false,
+    };
   }
-  return (
-    <Na/>
-  );
+
+  componentDidMount() {
+    registerForPushNotificationsAsync()
+      .then((token) => {
+        console.log('token from app.js=', token);
+        this.setState({ token });
+        console.log('state.token from app.js=', this.state.token);
+      });
+
+
+    // Handle notifications that are received or selected while the app
+    // is open. If the app was closed and then opened by tapping the
+    // notification (rather than just tapping the app icon to open it),
+    // this function will fire on the next tick after the app starts
+    // with the notification data.
+    this._notificationSubscription = Notifications.addListener(this._handleNotification);
+  }
+
+  _handleNotification = (notification) => {
+    this.setState({ notification: notification });
+  };
+
+  //check that the fonts are loaded before the screen
+  //const [dataLoaded, setDataLoaded] = useState(false);
+  render() {
+    return (
+      !this.state.dataLoaded ?
+        <AppLoading
+          startAsync={fetchFonts}
+          onFinish={() => this.setState({ dataLoaded: true })}
+          onError={(err) => console.log(err)}
+        />
+        :
+        <Na />
+    )
+  }
 }
 
 

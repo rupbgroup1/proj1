@@ -46,10 +46,10 @@ export default class CameraPage extends React.Component {
           {text: 'כן', onPress: () => {
             let cameraDetails={
               pic64base:this.state.pic64base,
-              photoName: this.state.photoName,
-              photoUri: this.state.photoUri
+              picName: this.state.photoName,
+              picUri: this.state.photoUri
             };
-            //console.log(cameraDetails);
+            console.log(cameraDetails.picUri);
             
             AsyncStorage.mergeItem('cameraDetails', JSON.stringify(cameraDetails),()=>
           goBack()

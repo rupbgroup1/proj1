@@ -257,12 +257,14 @@ export default class FindNeighboor extends Component {
                 </View>
 
                 <View style={styles.mapView}>
+                    {console.log('this.props.navigation=' , this.props.navigation)}
                     <MapComponent
                         region={this.state.region}
                         onRegionChange={(reg) => this.onMapRegionChange(reg)}
                         //checking - show match or search result
                         searchData={(!this.state.searchName && this.state.selectedInterest < 1) ? this.state.MatchUsers : this.state.searchData}
                         style={{ flex: 1, height: '100%', width: '100%', borderRadius: 10 }}
+                        nav={this.props.navigation}
 
                     />
                     <TouchableOpacity

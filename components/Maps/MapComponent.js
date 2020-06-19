@@ -1,8 +1,7 @@
 import React, { useState, Component, useCallback, useEffect } from 'react';
 import { Dimensions, TouchableOpacity, AsyncStorage, Text, Image, Alert, View } from 'react-native';
 import MapView, { Marker, Callout } from 'react-native-maps';
-import OverlayExample from '../OverlayExample';
-import Overlay from 'react-native-elements';
+import OverlayExample from '../../screens/OverlayExample';
 
 
 
@@ -13,6 +12,9 @@ const MapComponent = (props) => {
     const blueImage = require('./MarkerIcons/location-icon-m.jpg');
     const pinkImage = require('./MarkerIcons/location-icon-f.jpg');
 
+
+    console.log('props.nav=', props.nav);
+    //const {navigation} = this.props;
     // const blueImage = require('./MarkerIcons/blue-loc.png');
     // const pinkImage = require('./MarkerIcons/red-loc.png');
 
@@ -38,6 +40,7 @@ const MapComponent = (props) => {
     }
 
     return (
+
         <TouchableOpacity style={{ flex: 1 }} onPress={props.onPress}>
             <MapView
                 //ref={map => {this.map = map}}
@@ -65,11 +68,13 @@ const MapComponent = (props) => {
             >
                 {props.searchData.length > 0 && props.searchData.map((user, i) => {
                     if (user.Lat && user.Lan) {
-                        //console.log("TEST=", user.Lat);
+                        //console.log("TEST=", props.searchData);
                         let age = new Date().getFullYear() - user.YearOfBirth;
                         let about = (user.AboutMe != null ? ", " + user.AboutMe : '');
-                        
+
+
                         return (
+
                             <Marker
                                 key={user.UserId}
                                 coordinate={{
@@ -79,18 +84,13 @@ const MapComponent = (props) => {
                                 identifier={i + "M"}
                                 title={user.FirstName + ", " + age + about}
                                 onPress={(e) => {
-                                    //e.isPropagationStopped();
+                                    //     //e.isPropagationStopped();
                                     e.stopPropagation();
-                                    let user1 = user.FirstName;
-                                    
-                                    Alert.alert("ללל"+user.FirstName);
+                                    //     Alert.alert("ללל"+user.FirstName);
                                 }}
 
                             >
 
-                                
-                                
-                                {/* <Text style={{color:'black'}}>{user.MatchRate}%</Text> */}
                                 {user.Gender !== 1 ?
                                     <Image
                                         source={blueImage}
@@ -101,33 +101,83 @@ const MapComponent = (props) => {
                                         style={{ height: 36, width: 26 }}
                                     />
                                 }
+                                <Callout
+                                    onPress={(e) => {
+                                        e.stopPropagation();
+                                        e.isPropagationStopped();
+                                        //console.log('props.navigation=' , props.navigation);
 
+                                        //                       props.navigation.navigate('MainPage');
+                                        Alert.alert(
+                                            'Alert Title',
+                                            'My Alert Msg',
+                                            [
+                                                {
+                                                    text: 'Ask me later',
+                                                    onPress: () => {
+                                                        console.log('Ask me later pressed');
+                                                        props.nav.navigate('MainPage');
+                                                    }
+                                                },
+                                                {
+                                                    text: 'Cancel',
+                                                    onPress: () => console.log('Cancel Pressed'),
+                                                    style: 'cancel'
+                                                },
+                                                { text: 'OK', onPress: () => console.log('OK Pressed') }
+                                            ],
+                                            { cancelable: false }
+                                        );
+
+                                        // Alert.alert(
+                                        //     user.FirstName + " " + user.LastName,
+                                        //     "",
+                                        //     [
+                                        //         {
+                                        //             text: "פרטים נוספים",
+                                        //             onPress: () => console.log("שליחת הודעה")
+                                        //         },
+
+                                        //         {
+                                        //             text: "שליחת הודעה",
+                                        //             onPress: ()=> console.log("שליחת הודעה")
+                                        //         }
+                                        //     ]
+
+
+                                        //     );
+                                    }}>
+                                    <View>
+                                        <Text>{user.FirstName + ", " + age + about}</Text>
+                                    </View>
+
+                                </Callout>
                             </Marker>
                         )
                     }
                 })
                 }
 
-                {/* {markerCoordinates ? <Marker title='המיקום שלי' coordinate={markerCoordinates}></Marker> : <Marker title='המיקום שלי' coordinate={props.region}></Marker>} */}
-                <Marker
+                {markerCoordinates != null ? <Marker title='המיקום שלי' coordinate={markerCoordinates}></Marker> : <Marker title='המיקום שלי' coordinate={props.region}></Marker>}
+                {<Marker
                     coordinate={{
-                        latitude: 32.258049726540236,
-                         longitude: 34.92328489199281,
-                         latitudeDelta: 0.009,
-                         longitudeDelta: 0.009
+                        latitude: 32.358049736540236,
+                        longitude: 34.92328689199281,
+                        latitudeDelta: 0.009,
+                        longitudeDelta: 0.009
                     }}
                 >
                     <Callout
-                    onPress={(e) => {
-                        e.stopPropagation();
-                        Alert.alert('callout pressed');
-                    }}>
-                    <View>
-                        <Text>This is a plain view</Text>
-                    </View>
+                        onPress={() => {
 
-                </Callout>
-                </Marker>
+                            Alert.alert("knlk");
+                        }}>
+                        <View>
+                            <Text>This is a plain view</Text>
+                        </View>
+
+                    </Callout>
+                </Marker>}
             </MapView>
 
         </TouchableOpacity >

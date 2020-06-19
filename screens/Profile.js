@@ -347,7 +347,7 @@ export default class Profile extends Component {
                    <View style={styles.screen}>
                         <Text style={styles.subTitle}>הפרופיל שלי</Text>
                         <Image style={styles.avatar}
-                                source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}/>
+                                source={{uri: this.state.user.ImagePath}}/>
 
                         <View style={styles.center}>
                             <Text style={styles.note,{fontSize:30,}}>{this.state.fName} {this.state.lName}</Text>

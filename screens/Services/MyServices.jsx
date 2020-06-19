@@ -1,152 +1,118 @@
 import React, { Component } from 'react';
-import { createButtomTabNavigator, createAppContainer } from 'react-navigation';
-import { View, Text, StyleSheet, AsyncStorage, Image, ScrollView, Alert, Dimensions, TouchableOpacity, TouchableHighlight } from 'react-native';
+import { View, Text, StyleSheet, AsyncStorage, Image, ScrollView, Alert, Dimensions, TouchableOpacity } from 'react-native';
+import { Icon } from 'react-native-elements';
 import Header from '../../components/Header';
 import BackButton from '../../components/BackButton';
 import colors from '../../assets/constant/colors';
 import { SearchBar, Card, Button, Overlay } from 'react-native-elements';
 import OurButton from '../../components/OurButton';
+import ProfileButton from '../../components/ProfileButton';
 import { MaterialIcons, FontAwesome5, FontAwesome } from '@expo/vector-icons';
 import moment from "moment";
+import MapView,{ Marker } from 'react-native-maps';
 
-// import { AccessAlarm, ThreeDRotation } from '@material-ui/icons';
-// import home from '@material-ui/icons/DeleteRounded';
-//import home from '@material-ui/icons';
+export default class MyServices extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      search: '',
+      allEvents: {},
+      isLoading: true,
+      text: '',
+      filteredArray: [],
+      visible: false,
+      selectedCat: 0,
+      selectedCard: {},
+      selectedOwner: {},
+      mapVisible:false
 
-export default class AttendanceEvents extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            search: '',
-            allEvents: {},
-            isLoading: true,
-            text: '',
-            filteredArray: [],
-            visible: false,
-            selectedCat: 0,
-            selectedCard: {},
-            selectedOwner: {}
-        };
-        this.arrayholder = [];
-        this.catArray = [];
+    };
+    this.arrayholder = [];
+    this.catArray = [];
 
+
+  }
+
+  componentDidMount() {
+    this.getUser();
+  }
+
+  getUser() {
+    AsyncStorage.getItem('user', (err, userJSON) => {
+      const userObj = JSON.parse(userJSON);
+      //console.log("obj==", userObj);
+      this.setState({ user: userObj }, () =>
+        this.fetchGetMyEvents(userObj.UserId));
     }
+    );
 
-    componentDidMount() {
-        this.getUser();
-    }
+  }
+  //I'm the owner
+  fetchGetMyEvents(userId) {
+    console.log("in fetch");
+    return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Events/My?userId=' + userId, {
 
-    getUser() {
-        AsyncStorage.getItem('user', (err, userJSON) => {
-            const userObj = JSON.parse(userJSON);
-            //console.log("obj==", userObj);
-            this.setState({ user: userObj });
-            this.fetchGetEvents(userObj.UserId);
+      method: 'GET',
+      headers: new Headers({
+        'Content-Type': 'application/json; charset=UTF-8',
+      })
+    })
+      .then(res => {
+        return res.json();
+      })
+      .then(
+        (result) => {
+          if (result.length > 0) {
+            console.log("Events = ", result);
+            this.arrayholder = result;
+            this.setState({ filteredArray: result })
+          }
+          else
+            Alert.alert(" מצטערים, אנו נסו שנית!");
+        },
+        (error) => {
+          console.log("err post=", error);
+          Alert.alert("מצטערים, אנו נסו שנית!");
         }
-        );
+      );
+  }
 
-    }
+  //filter the events by text
+  SearchFilterFunction(text) {
+    const newData = this.arrayholder.filter(function (item) {
+      //applying filter for the inserted text in search bar
+      const itemData = item.Name;
+      return itemData.indexOf(text) > -1;
+    });
+    console.log("filter==", newData);
+    newData.length < 1 && Alert.alert("לא נמצאו תוצאות");
+    text != '' ?
+      this.setState({
+        //setting the filtered newData on datasource
+        filteredArray: newData,
+        text: text,
+      })
+      : this.setState({ filteredArray: this.arrayholder, text: text });
+  }
 
-    //*I'm going to  */
-    fetchGetEvents(userId) {
-        console.log("in fetch");
-        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Events/Att?userId=' + userId, {
+  toggleOverlay() {
+    this.setState({ visible: false });
+  }
 
-            method: 'GET',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-            }
-        })
-            .then(res => {
-                return res.json();
-            })
-            .then(
-                (result) => {
-                    if (result.length > 0) {
-                        console.log("Events = ", result);
-                        this.arrayholder = result;
-                        this.setState({ filteredArray: result })
-                    }
-                    else
-                        Alert.alert(" מצטערים, אנו נסו שנית!");
-                },
-                (error) => {
-                    console.log("err post=", error);
-                    Alert.alert("מצטערים, אנו נסו שנית!");
-                }
-            );
-    }
+  toggleMapOverlay() {
+    this.setState({ mapVisible: false });
+  }
 
-    fetchDeleteAttend() {
-        //console.log("in fetch");
-        const att = {
-          Id: this.state.selectedCard.Id,
-            Attandance: [{ UserId: this.state.user.UserId }]
-        }
-        console.log(att)
-        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Events/DeleteAtt', {
 
-            method: 'DELETE',
-            body: JSON.stringify(att),
-            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json',}
-        })
-            .then(res => {
-                //console.log('res=', res);
-                return res.json()
-            })
-            .then(
-                (result) => {
-                    console.log("fetch delete = ", result);
-                    if (result === 1)
-                        Alert.alert("השתתפותך בוטלה");
-                    else {
-                        Alert.alert("אירעה שגיאה, אנא נסה שנית");
-                    }
-                },
-                (error) => {
-                    console.log("err post=", error);
-                    Alert.alert("אנא נסה שנית");
-                }
-            );
-    }
-    //filter the events by text
-    SearchFilterFunction(text) {
-        const newData = this.arrayholder.filter(function (item) {
-            //applying filter for the inserted text in search bar
-            const itemData = item.Name;
-            return itemData.indexOf(text) > -1;
-        });
-        console.log("filter==", newData);
-        newData.length < 1 && Alert.alert("לא נמצאו תוצאות");
-        text != '' ?
-            this.setState({
-                //setting the filtered newData on datasource
-                filteredArray: newData,
-                text: text,
-            })
-            : this.setState({ filteredArray: this.arrayholder, text: text });
-    }
 
-   
-    toggleOverlay() {
-        this.setState({ visible: false });
-    }
 
-    attendToEvent() {
-        this.fetchPostAttend();
-
-    }
-
-    render() {
-        const { navigation } = this.props;
-        return (
-            <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
-
-                <Header />
-                <BackButton goBack={() => navigation.navigate('MainPage')} />
-
-                <View style={styles.row}>
+  render() {
+    const { navigation } = this.props;
+    return (
+      <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
+        <Header />
+        <BackButton goBack={() => navigation.navigate('MainPage')} />
+        <View style={styles.row}>
                     <View style={styles.search}>
                         <SearchBar
                             placeholder="חפש/י אירועים בשכונה.."
@@ -167,7 +133,6 @@ export default class AttendanceEvents extends React.Component {
                         </OurButton>
                     </View>
                 </View>
-               
                 <ScrollView>
                     {
                         this.state.filteredArray.length > 0 &&
@@ -235,7 +200,7 @@ export default class AttendanceEvents extends React.Component {
                                                 </View>
                                                 <View style={styles.cardIcons}>
                                                     <FontAwesome name="user" size={22}></FontAwesome>
-                                                    <Text style={styles.cardIconsText}> {this.state.selectedOwner.FirstName + ' ' + this.state.selectedOwner.LastName}</Text>
+                                                    <Text style={styles.cardIconsText}> {this.state.user.FirstName + ' ' + this.state.user.LastName}</Text>
                                                 </View>
                                                 <View style={styles.cardIcons}>
                                                     <FontAwesome5 name="id-card" size={22}></FontAwesome5>
@@ -243,29 +208,56 @@ export default class AttendanceEvents extends React.Component {
                                                 </View>
                                                 <TouchableOpacity
                                                     style={{ paddingVertical: 20, alignSelf: 'center' }}
-                                                    onPress={() => this.setState({ visible: false })}>
+                                                    onPress={() => this.setState({ mapVisible: true })}>
                                                     {/* nav to map */}
                                                     <Text style={styles.locationText}>לחץ לצפייה במיקום האירוע</Text>
                                                 </TouchableOpacity>
-                                                <Button
-                                                        title='ביטול הגעה'
+                                                <Overlay isVisible={this.state.mapVisible} onBackdropPress={() => this.toggleMapOverlay()}>
+                                                    <MapView
+                                                        style={{
+                                                            width: "100%",
+                                                            height:"100%"
+                                                        }}
+                                                        region={{
+                                                            latitude: this.state.selectedCard.Lat,
+                                                            longitude: this.state.selectedCard.Lan,
+                                                            latitudeDelta: 0.003,
+                                                            longitudeDelta: 0.003,
+                                                          }}>
+                                                              <Marker
+                                                            coordinate={{
+                                                                latitude: this.state.selectedCard.Lat,
+                                                                longitude: this.state.selectedCard.Lan,
+                                                                latitudeDelta: 0.009,
+                                                                longitudeDelta: 0.009,
+                                                              }}
+                                                            title={this.state.selectedCard.Location}
+                                                        />
+
+                                                        </MapView>
+                                      </Overlay>
+                                                    <Button
+                                                        title='עריכה'
                                                         buttonStyle={styles.cardButton}
                                                         titleStyle={styles.cardButtonText}
-                                                        onPress={() => this.fetchDeleteAttend()}
+                                                        onPress={()=>{
+                                                          this.setState({ visible: false });
+                                                           navigation.navigate('CreateEvent', { edit: true, eventDetails: this.state.selectedCard });
+                                                          }
+                                                        }
                                                     > </Button>
-                                               
-                                  </Card>
+                                            </Card>
 
-                                </Overlay>
+                                        </Overlay>
 
-                              </Card>
-                            </View>
+                                    </Card>
+                                </View>
 
-                          )
+                            )
                         }
-                )}
-            </ScrollView>
-          </View>
+                        )}
+                </ScrollView>
+            </View>
         );
     }
 };
@@ -308,8 +300,8 @@ const styles = StyleSheet.create({
         shadowColor: '#D1D3D4'
     },
     cardContainer: {
-        width: Dimensions.get('window').width - 24,
-        borderRadius: 6,
+        width: Dimensions.get('window').width - 20,
+        borderRadius: 5,
         borderColor: '#D1D3D4',
         shadowRadius: 5
     },
@@ -327,8 +319,7 @@ const styles = StyleSheet.create({
     cardTitleText: {
         fontSize: 26,
         color: "black",
-        fontFamily: 'rubik-regular',
-        alignSelf: 'center'
+        fontFamily: 'rubik-regular'
     },
     cardIcons: {
         alignItems: "flex-end",
@@ -365,3 +356,4 @@ const styles = StyleSheet.create({
         color: colors.turkiz
     }
 });
+
