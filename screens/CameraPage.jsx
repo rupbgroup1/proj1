@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet,Alert, Text, View, Dimensions, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet,Alert, Text, View, Dimensions, Image, TouchableOpacity, AsyncStorage} from 'react-native';
 import { Camera } from 'expo-camera';
 
 export default class CameraPage extends React.Component {
@@ -25,16 +25,36 @@ export default class CameraPage extends React.Component {
   }
 
   btnSnap = async () => {
+    const {goBack} = this.props.navigation;
+    //const {params} = this.props.navigation;
+
     if (this.camera) {
-      let photo = await this.camera.takePictureAsync({ quality: 0.1, base64:true});
+      let photo = await this.camera.takePictureAsync({ quality: 0.2, base64:true,});
      
-      this.setState({ photoUri: photo.uri },()=>
+      
+      this.setState({ 
+        pic64base:photo.base64,
+        photoName: 'image1_' + new Date().getTime() + '.jpg',
+        photoUri:photo.uri,
+        //photoUri: photo.uri 
+      },()=>
       
       Alert.alert(
         'האם תרצה לשמור את התמונה?',
         '',
         [
-          {text: 'כן', onPress: () => this.props.navigation.navigate('Pic', {photoUri: photo.uri})},
+          {text: 'כן', onPress: () => {
+            let cameraDetails={
+              pic64base:this.state.pic64base,
+              picName: this.state.photoName,
+              picUri: this.state.photoUri
+            };
+            console.log(cameraDetails.picUri);
+            
+            AsyncStorage.mergeItem('cameraDetails', JSON.stringify(cameraDetails),()=>
+          goBack()
+          );
+          }},
           {
             text: 'לא',
             style: 'cancel',
@@ -49,7 +69,7 @@ export default class CameraPage extends React.Component {
 
   btnUpload = () => {
     let img = this.state.photoUri;
-    let imgName = 'imgProfile.jpg';
+    let imgName = this.state.picName64base;
     this.imageUpload(img, imgName);
   };
 

@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: colors.subTitle,
         textAlign: "center",
+        
 
     },
 

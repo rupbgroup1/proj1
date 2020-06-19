@@ -56,13 +56,12 @@ export default class MainPage extends Component {
                 עסקים בקהילה
               </BusinessesBTN>
             </View>
-          {/* <Button onPress={() => navigation.navigate('Chat', {userCode:24})} title="בדיקה צאט"/> */}
 
           </View>
 
           <View style={styles.item4}>
             <FindingsButton
-            onPress={() => navigation.navigate('GeneralLosts')}>
+            onPress={() => navigation.navigate('ProfileEdit')}>
             נמצא בשכונה
             </FindingsButton>
           </View>

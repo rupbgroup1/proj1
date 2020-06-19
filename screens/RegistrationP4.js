@@ -61,7 +61,10 @@ export default class RegistraionP4 extends Component {
                 (result) => {
                     console.log("fetch POST= ", result);
                     if (result === 1)
+                   {
+                     //  this.btnUpload();
                     this.fetcGetUserId(user.Email);
+                   }
                     else {
                         Alert.alert("מצטערים, הפרופיל לא נוצר בהצלחה. אנא נסה שנית.");
                         this.props.navigation.navigate('RegistrationP1');
@@ -75,6 +78,8 @@ export default class RegistraionP4 extends Component {
             );
 
     }
+
+    
 
     fetcGetUserId = (email) => {
         console.log("in fetch 2");
@@ -142,6 +147,9 @@ export default class RegistraionP4 extends Component {
 
     componentDidMount() {
         this.getInitialState();
+       
+       
+       
     }
 
 
