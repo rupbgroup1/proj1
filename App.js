@@ -31,7 +31,12 @@ import EventLocation from './screens/Events/EventLocation';
 import GeneralServices from './screens/Services/GeneralServices';
 import MyServices from './screens/Services/MyServices';
 import { Notifications } from 'expo';
+import Chat from './screens/Chat';
+import CreateService from './screens/Services/CreateService'
 import registerForPushNotificationsAsync from './components/registerForPushNotificationsAsync';
+import GeneralLosts from './screens/Losts/GeneralLosts';
+import CreateLost from './screens/Losts/CreateLost';
+import MyLosts from './screens/Losts/MyLosts';
 
 //cancel the timer error
 YellowBox.ignoreWarnings(['Setting a timer']);
@@ -81,6 +86,11 @@ const navigator = createStackNavigator({
   EventLocation:EventLocation,
   GeneralServices:GeneralServices,
   MyServices:MyServices,
+  Chat:Chat,
+  CreateService:CreateService,
+  GeneralLosts:GeneralLosts,
+  MyLosts:MyLosts,
+  CreateLost:CreateLost,
   }, {
         initialRouteName: 'LoginScreen',
         defaultNavigationOptions: {

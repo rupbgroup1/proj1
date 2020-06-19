@@ -220,11 +220,6 @@ class GeneralEvents extends React.Component {
     }
 
 
-    //press on plus
-    createNewEvent() {
-        // navigation.navigate('CreateEvent');
-    }
-
     toggleOverlay() {
         this.setState({ visible: false });
     }
@@ -295,7 +290,7 @@ class GeneralEvents extends React.Component {
 
                             return (
 
-                                <View style={{ right: 5 }}>
+                                <View style={{ right: 3.5}}>
                                     <Card
                                         key={e.Id}
                                         //title={e.Name}
@@ -377,8 +372,8 @@ class GeneralEvents extends React.Component {
                                                         region={{
                                                             latitude: this.state.selectedCard.Lat,
                                                             longitude: this.state.selectedCard.Lan,
-                                                            latitudeDelta: 0.09,
-                                                            longitudeDelta: 0.09,
+                                                            latitudeDelta: 0.003,
+                                                            longitudeDelta: 0.003,
                                                           }}>
                                                               <Marker
                                                             coordinate={{
@@ -405,6 +400,7 @@ class GeneralEvents extends React.Component {
                                                         buttonStyle={styles.cardButton}
                                                         titleStyle={styles.cardButtonText}
                                                         onPress={() => this.fetchDeleteAttend()}
+                                                        
                                                     > </Button>
                                                 }
                                             </Card>
@@ -521,10 +517,11 @@ const styles = StyleSheet.create({
         marginBottom: 0,
         width: '60%',
         alignSelf: 'center',
-        backgroundColor: colors.turkiz
+        backgroundColor: colors.turkiz,
+        elevation: 4
     },
     cardButtonText: {
-        fontSize: 20,
+        fontSize: 16,
         fontFamily: 'rubik-regular'
     },
     locationText: {

@@ -49,8 +49,6 @@ import firebaseSvc from '../FirebaseSvc';
                 }))
               );
         });
-        
-
     }
   
     componentDidMount() {

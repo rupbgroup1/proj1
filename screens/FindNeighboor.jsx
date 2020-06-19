@@ -61,7 +61,7 @@ export default class FindNeighboor extends Component {
             .then(
                 (result) => {
                     if (result.length > 0) {
-                        console.log("matcch", result);
+                        //console.log("matcch", result);
                         this.setState({ MatchUsers: result })
                     }
                     else
@@ -84,10 +84,6 @@ export default class FindNeighboor extends Component {
             })
         })
             .then(res => {
-                //console.log('res=', res);
-                //console.log("in");
-                //const statusCode = res.status;
-                //console.log(statusCode);
                 return res.json();
             })
             .then(
@@ -175,7 +171,7 @@ export default class FindNeighboor extends Component {
 
         this.setState({ selectedInterest: Id });
         const intrestId = Id;
-        const NeighborhoodName = this.user.NeighborhoodName;
+        const NeighborhoodName = this.state.NeighborhoodName;
 
         return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Neighboors/Intrest/' + NeighborhoodName + '/' + intrestId, {
             method: 'GET',

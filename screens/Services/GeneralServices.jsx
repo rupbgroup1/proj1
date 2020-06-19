@@ -338,6 +338,15 @@ const styles = StyleSheet.create({
         borderColor: '#D1D3D4',
         shadowColor: '#D1D3D4'
     },
+    titleCat: {
+        color: colors.turkiz,
+        fontFamily: 'rubik-regular'
+    },
+    coloredTitleCat: {
+        color: 'white',
+        fontFamily: 'rubik-bold'
+    },
+
     cardContainer: {
         width: Dimensions.get('window').width - 24,
         borderRadius: 6,
@@ -345,8 +354,6 @@ const styles = StyleSheet.create({
         shadowRadius: 5
     },
     innerCardContainer: {
-        paddingHorizontal: 40,
-        paddingVertical: 20,
         width: 300,
         alignSelf: 'center'
     },
@@ -356,6 +363,7 @@ const styles = StyleSheet.create({
         fontFamily: 'rubik-regular'
     },
     cardTitleText: {
+        alignSelf: 'center',
         fontSize: 26,
         color: "black",
         fontFamily: 'rubik-regular'
@@ -383,16 +391,22 @@ const styles = StyleSheet.create({
         marginBottom: 0,
         width: '60%',
         alignSelf: 'center',
-        backgroundColor: colors.turkiz
+        backgroundColor: colors.turkiz,
+        elevation: 4
     },
     cardButtonText: {
-        fontSize: 20,
+        fontSize: 16,
         fontFamily: 'rubik-regular'
     },
     locationText: {
         fontFamily: 'rubik-regular',
         fontSize: 16,
         color: colors.turkiz
+    },
+    innerCardImage: {
+        height: 200,
+        marginLeft: 0,
+        marginRight: 0
     }
 });
 
@@ -405,6 +419,7 @@ const TabNavigator = createMaterialBottomTabNavigator(
                 activeColor: colors.turkiz,
                 inactiveColor: 'black',
                 barStyle: { backgroundColor: 'white' },
+                key: 1,
 
                 tabBarIcon: () => (
                     <View>
@@ -421,6 +436,7 @@ const TabNavigator = createMaterialBottomTabNavigator(
                 activeColor: colors.turkiz,
                 inactiveColor: 'black',
                 barStyle: { backgroundColor: 'white' },
+                key: 2,
                 tabBarIcon: () => (
                     <View>
                         <FontAwesome5 name={'user-alt'} size={24} color={'black'} />
