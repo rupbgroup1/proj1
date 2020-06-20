@@ -71,12 +71,13 @@ class GeneralEvents extends React.Component {
             .then(
                 (result) => {
                     if (result.length > 0) {
-                        console.log("Events = ", result);
+                        //console.log("Events = ", result);
                         this.arrayholder = result;
                         this.setState({ filteredArray: result })
                     }
                     else
-                        Alert.alert(" מצטערים, אנו נסו שנית!");
+                        Alert.alert("לא נמצאו אירועים!");
+                        console.log("Events = ", result);
                 },
                 (error) => {
                     console.log("err post=", error);
@@ -100,7 +101,7 @@ class GeneralEvents extends React.Component {
             .then(
                 (result) => {
                     if (result.length > 0) {
-                        console.log("Cat = ", result);
+                       // console.log("Cat = ", result);
                         this.catArray = result;
                     }
                     else
@@ -119,7 +120,7 @@ class GeneralEvents extends React.Component {
             Id: this.state.selectedCard.Id,
             Attandance: [{ UserId: this.state.user.UserId }]
         }
-        console.log("**att**", att);
+        //console.log("**att**", att);
         return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Events/PostAtt', {
 
             method: 'POST',
@@ -134,7 +135,7 @@ class GeneralEvents extends React.Component {
             })
             .then(
                 (result) => {
-                    console.log("fetch POST att = ", result);
+                   // console.log("fetch POST att = ", result);
                     if (result === 1)
                         Alert.alert("השתתפותך נרשמה, תהנה באירוע!");
                     else {
@@ -340,6 +341,11 @@ class GeneralEvents extends React.Component {
                                                     <FontAwesome5 name="calendar-alt" size={20}></FontAwesome5>
                                                     <Text style={styles.cardIconsText}>{moment(this.state.selectedCard.StartDate).format("DD/MM/YYYY")} עד </Text>
                                                     <Text style={styles.cardIconsText}>{moment(this.state.selectedCard.EndDate).format("DD/MM/YYYY")}</Text>
+                                                </View>
+                                                <View style={styles.cardIcons}>
+                                                    <FontAwesome5 name="calendar-alt" size={20}></FontAwesome5>
+                                                    <Text style={styles.cardIconsText}>{moment(this.state.selectedCard.StartDate).format("HH:mm")} עד </Text>
+                                                    <Text style={styles.cardIconsText}>{moment(this.state.selectedCard.EndDate).format("HH:mm")}</Text>
                                                 </View>
                                                 <View style={styles.cardIcons}>
                                                     <FontAwesome5 name="users" size={22}></FontAwesome5>

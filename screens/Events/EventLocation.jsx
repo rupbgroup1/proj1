@@ -29,7 +29,7 @@ export default class EventLocation extends Component {
     componentDidMount() {
         getLocation().then(
             (data) => {
-                console.log(data);
+                //console.log(data);
                 this.setState({
                     region: {
                         latitude: data.latitude,
@@ -59,8 +59,9 @@ export default class EventLocation extends Component {
 
     //when choosing the location on map
     onMapRegionChange(region) {
-        console.log("reg=", region);
         this.setState({ ...this.state.region, region });
+        this.props.navigation.setParams({region});
+        console.log("reg=", this.props.navigation.getParam("region"));
         
 
     }
@@ -69,9 +70,11 @@ export default class EventLocation extends Component {
         this.setState({ CityName: name });
         console.log(name);
     }
+
     handleFullName(name) {
-        this.setState({ Location: name });
-        console.log(name);
+        //this.setState({ Location: name });
+        this.props.navigation.setParams({ Location: name });
+        console.log("reg=", this.props.navigation.getParam("Location"));
     }
 
     render() {
@@ -94,8 +97,9 @@ export default class EventLocation extends Component {
                     <Button title={'שמור'}
                     onPress={() => {
                         this.props.navigation.getParam('type')==="e"?
-                        this.props.navigation.navigate('CreateEvent',{region:this.state.region, Location:this.state.Location}) :
-                        this.props.navigation.navigate('CreateService',{region:this.state.region, Location:this.state.Location})
+                        this.props.navigation.navigate('CreateEvent',{region: this.props.navigation.getParam("region"), Location:this.props.navigation.getParam("Location")}) :
+                        this.props.navigation.navigate('CreateService',{region: this.props.navigation.getParam("region"), Location:this.props.navigation.getParam("Location")})
+                        
                     }}
                 />
                 </View>

@@ -68,7 +68,7 @@ export default class MyEvents extends React.Component {
             this.setState({ filteredArray: result })
           }
           else
-            Alert.alert(" מצטערים, אנו נסו שנית!");
+            Alert.alert(" לא נמצאו אירועים");
         },
         (error) => {
           console.log("err post=", error);
@@ -189,6 +189,11 @@ export default class MyEvents extends React.Component {
                                                     <FontAwesome5 name="calendar-alt" size={20}></FontAwesome5>
                                                     <Text style={styles.cardIconsText}>{moment(this.state.selectedCard.StartDate).format("DD/MM/YYYY")} עד </Text>
                                                     <Text style={styles.cardIconsText}>{moment(this.state.selectedCard.EndDate).format("DD/MM/YYYY")}</Text>
+                                                </View>
+                                                <View style={styles.cardIcons}>
+                                                    <FontAwesome5 name="calendar-alt" size={20}></FontAwesome5>
+                                                    <Text style={styles.cardIconsText}>{moment(this.state.selectedCard.StartDate).format("HH:mm")} עד </Text>
+                                                    <Text style={styles.cardIconsText}>{moment(this.state.selectedCard.EndDate).format("HH:mm")}</Text>
                                                 </View>
                                                 <View style={styles.cardIcons}>
                                                     <FontAwesome5 name="users" size={22}></FontAwesome5>
