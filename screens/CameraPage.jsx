@@ -51,7 +51,7 @@ export default class CameraPage extends React.Component {
             };
             console.log(cameraDetails.picUri);
             
-            AsyncStorage.mergeItem('cameraDetails', JSON.stringify(cameraDetails),()=>
+            AsyncStorage.setItem('cameraDetails', JSON.stringify(cameraDetails),()=>
           goBack()
           );
           }},

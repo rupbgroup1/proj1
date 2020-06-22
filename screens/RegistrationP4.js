@@ -62,6 +62,7 @@ export default class RegistraionP4 extends Component {
                     console.log("fetch POST= ", result);
                     if (result === 1)
                    {
+                   
                      //  this.btnUpload();
                     this.fetcGetUserId(user.Email);
                    }
