@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, AsyncStorage, Image, ScrollView, Alert, Dimensions, TouchableOpacity, Button } from 'react-native';
-import { Icon } from 'react-native-elements';
+import { View, Text, StyleSheet, AsyncStorage, Image, ScrollView, Alert, Dimensions, TouchableOpacity, TouchableHighlight } from 'react-native';
 import Header from '../../components/Header';
 import BackButton from '../../components/BackButton';
 import colors from '../../assets/constant/colors';
-import { SearchBar, Card, Overlay } from 'react-native-elements';
+import { SearchBar, Card, Button, Overlay } from 'react-native-elements';
 import OurButton from '../../components/OurButton';
-import ProfileButton from '../../components/ProfileButton';
 import { MaterialIcons, FontAwesome5, FontAwesome } from '@expo/vector-icons';
 import moment from "moment";
 import MapView,{ Marker } from 'react-native-maps';
@@ -181,6 +179,7 @@ export default class MyEvents extends React.Component {
                                             <Card
                                                 key={this.state.selectedCard.Id}
                                                 image={{ uri: this.state.selectedCard.Image }}
+                                                imageStyle={styles.innerCardImage}
                                                 containerStyle={styles.innerCardContainer}
                                             >
                                                 <Text style={styles.cardTitleText} >{this.state.selectedCard.Name}</Text>
@@ -315,8 +314,6 @@ const styles = StyleSheet.create({
         shadowRadius: 5
     },
     innerCardContainer: {
-        paddingHorizontal: 40,
-        paddingVertical: 20,
         width: 300,
         alignSelf: 'center'
     },
@@ -354,16 +351,22 @@ const styles = StyleSheet.create({
         marginBottom: 0,
         width: '60%',
         alignSelf: 'center',
-        backgroundColor: "#D1D3D4"
+        backgroundColor: colors.turkiz,
+        elevation: 4
     },
     cardButtonText: {
-        fontSize: 20,
+        fontSize: 16,
         fontFamily: 'rubik-regular'
     },
     locationText: {
         fontFamily: 'rubik-regular',
         fontSize: 16,
         color: colors.turkiz
-    }
+    },
+    innerCardImage: {
+        height:200, 
+        marginLeft:0, 
+        marginRight:0
+    } 
 });
 
