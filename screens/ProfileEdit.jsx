@@ -69,7 +69,7 @@ export default class ProfileEdit extends Component {
 
         AsyncStorage.getItem('user', (ERR, userJSON) => {
             let userObj = JSON.parse(userJSON);
-            console.log("fromuser", userObj, "JSON", userJSON);
+            //console.log("fromuser", userObj, "JSON", userJSON);
             let jobName = userObj.JobTitle!= null ? userObj.JobTitle.JobName : '';
             this.setState({
                 user: userObj,
@@ -247,7 +247,6 @@ export default class ProfileEdit extends Component {
     fetchUpdateUser() {
         const user = {
             UserId: this.state.user.UserId,
-           
             JobTitleId: this.state.jobType,
             WorkPlace: this.state.jobArea,
             FamilyStatus: this.state.familyStatus,

@@ -13,12 +13,6 @@ const MapComponent = (props) => {
     const pinkImage = require('./MarkerIcons/location-icon-f.jpg');
 
 
-    console.log('props.nav=', props.nav);
-    //const {navigation} = this.props;
-    // const blueImage = require('./MarkerIcons/blue-loc.png');
-    // const pinkImage = require('./MarkerIcons/red-loc.png');
-
-
 
     const selectLocation = event => {
         setSelectedLocation({

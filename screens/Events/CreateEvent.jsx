@@ -35,7 +35,10 @@ export default class CreateEvent extends React.Component {
             region: {},
             CityName: '',
             selectedCat: '',
-            newEvent: {},
+            newEvent: {
+                Name:'',
+                Desc:'',
+            },
             eventDetails: {},
             //formated date
             showStart: '',
@@ -59,9 +62,10 @@ export default class CreateEvent extends React.Component {
         this.fetchGetAllIntrests();
         console.log("new event= ", this.state.newEvent, this.state.setLoc);
 
-        console.log(this.editMode, this.eventDetails);
+        //console.log(this.editMode, this.eventDetails);
 
     }
+
     fetchGetAllCategories() {
         //console.log("in fetch");
         return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Category/All', {
@@ -77,7 +81,7 @@ export default class CreateEvent extends React.Component {
             .then(
                 (result) => {
                     if (result.length > 0) {
-                        console.log("Cat = ", result);
+                        //console.log("Cat = ", result);
                         this.catArray = result;
                     }
                     else
@@ -99,8 +103,9 @@ export default class CreateEvent extends React.Component {
                 newEvent: {
                     ...prevState.newEvent,
                     OpenedBy: userObj.UserId,
-                    NeiCode: userObj.NeighborhoodName,
-                    Admin: userObj,
+                    NeiCode: userObj.NeighborhoodName, 
+                    //delete:
+                    Image: 'https://www.sabresim.co.il/sites/default/files/styles/large/public/yad2.jpg?itok=3AhW2N6T'
                 }
             }));
 
@@ -108,38 +113,15 @@ export default class CreateEvent extends React.Component {
         );
 
     }
-    fetchGetAllCategories() {
-        //console.log("in fetch");
-        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Category/All', {
+    
 
-            method: 'GET',
-            headers: new Headers({
-                'Content-Type': 'application/json; charset=UTF-8',
-            })
-        })
-            .then(res => {
-                return res.json();
-            })
-            .then(
-                (result) => {
-                    if (result.length > 0) {
-                        console.log("Cat = ", result);
-                        this.catArray = result;
-                    }
-                    else
-                        Alert.alert(" מצטערים, אנו נסו שנית!");
-                },
-                (error) => {
-                    console.log("err post=", error);
-                    Alert.alert("מצטערים, אנו נסו שנית!");
-                }
-            );
-    }
     handleFocus = e => {
         this.setState({ isFocus: true });
     }
+
     handleBlur = e => {
         this.setState({ isFocus: false });
+
     }
 
 
@@ -217,11 +199,41 @@ export default class CreateEvent extends React.Component {
         this.setState({ show2: true, mode: 'time' });
     };
 
+    validateInputes() {
+        this.state.newEvent.Name === '' ? Alert.alert("אנא מלא/י כותרת") : (
+            this.state.newEvent.Desc === '' ? Alert.alert("אנא מלא/י תיאור") : (
+                !this.state.newEvent.StartDate ? Alert.alert("אנא מלא/י תאריך התחלה") : (
+                    !this.state.newEvent.EndDate ? Alert.alert("אנא מלא/י תאריך סיום") : (
+                        !this.state.newEvent.StartHour ? Alert.alert("אנא מלא/י שעת התחלה") : (
+                            !this.state.newEvent.EndHour ? Alert.alert("אנא מלא/י שעת סיום") : (
+                                !this.props.navigation.getParam('Location') ? Alert.alert("אנא מלא/י מיקום") : this.updateLocation()
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    }
+
+    updateLocation(){
+        const LocationString = this.props.navigation.getParam('Location');
+        const locationCoords = this.props.navigation.getParam('region');
+        console.log("update loc - ", LocationString, "r= ",locationCoords.latitude);
+        const Lat= locationCoords.latitude;
+        const Lan= locationCoords.longitude;
+        this.setState(prevState => ({
+            newEvent: {
+                ...prevState.newEvent,
+                Location: LocationString,
+                Lat: Lat,
+                Lan: Lan
+            },
+        }), () =>  this.fetchCreatEvent()
+        );
+    }
+
     fetchCreatEvent() {
-
-        console.log("in fetch=", this.state.newEvent);
-
-        console.log("in new event=", this.state.newEvent);
+         console.log("in new event fetch =", this.state.newEvent);
         return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Events/New', {
 
             method: 'POST',
@@ -237,7 +249,7 @@ export default class CreateEvent extends React.Component {
                 (result) => {
                     if (result == 1) {
                         Alert.alert(" האירוע נשמר בהצלחה");
-                        console.log(result);
+                        //console.log(result);
                         this.props.navigation.navigate('GeneralEvents');
                     }
                     else
@@ -366,10 +378,11 @@ export default class CreateEvent extends React.Component {
     render() {
         const { navigation } = this.props;
         const blue = colors.Events;
-        const grey = "grey";
         const newEvent = this.state.newEvent;
-        const eventDetails = this.state.eventDetails;
-        console.log("event", newEvent)
+       
+        //console.log("event", newEvent)
+        //Keyboard.dismiss();
+        //console.log(this.state.CityName);
         return (
             <View style={{ flex: 1, backgroundColor: 'white', justifyContent: "flex-start", paddingBottom: 20 }}>
                 <Header />
@@ -612,7 +625,7 @@ export default class CreateEvent extends React.Component {
                     title={this.editMode ? "עדכן" : "צור אירוע"}
                     buttonStyle={styles.createButton}
                     containerStyle={{ marginTop: 1 }}
-                    onPress={() => this.editMode ? this.fetchUpdateEvent() : this.fetchCreatEvent()}
+                    onPress={() => this.editMode ? this.fetchUpdateEvent() : this.validateInputes()}
                 ></Button>
             </View>
         );

@@ -38,10 +38,11 @@ export default class LoginScreen extends Component {
     }
   
     _handleNotification = (notification) => {
-      console.log("not= ", notification);
-      console.log("nav To= ",notification.data.navigateTo);
+      console.log("nav To= ",notification.data.ScreenName);
       this.setState({ notification: notification });
-      //this.props.navigation.navigate(notification.data.navigateTo);
+      if(notification.data.ScreenName!=null){
+        this.props.navigation.navigate(notification.data.ScreenName, {userCode: notification.data.SendFrom});
+      }
     };
 
   //Search for the userDetails in DB
@@ -65,9 +66,10 @@ export default class LoginScreen extends Component {
     fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/User/login', {
       method: 'POST',
       body: JSON.stringify(loginDetails),
-      headers: new Headers({
-        'Content-type': 'application/json; charset=UTF-8'
-      })
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      }
     })
       .then(res => {
         //console.log('res=', res);

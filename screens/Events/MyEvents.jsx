@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, AsyncStorage, Image, ScrollView, Alert, Dimensions, TouchableOpacity, Button } from 'react-native';
-import { Icon } from 'react-native-elements';
+import { View, Text, StyleSheet, AsyncStorage, Image, ScrollView, Alert, Dimensions, TouchableOpacity, TouchableHighlight } from 'react-native';
 import Header from '../../components/Header';
 import BackButton from '../../components/BackButton';
 import colors from '../../assets/constant/colors';
-import { SearchBar, Card, Overlay } from 'react-native-elements';
+import { SearchBar, Card, Button, Overlay } from 'react-native-elements';
 import OurButton from '../../components/OurButton';
-import ProfileButton from '../../components/ProfileButton';
 import { MaterialIcons, FontAwesome5, FontAwesome } from '@expo/vector-icons';
 import moment from "moment";
 import MapView,{ Marker } from 'react-native-maps';
@@ -68,7 +66,7 @@ export default class MyEvents extends React.Component {
             this.setState({ filteredArray: result })
           }
           else
-            Alert.alert(" מצטערים, אנו נסו שנית!");
+            Alert.alert(" לא נמצאו אירועים");
         },
         (error) => {
           console.log("err post=", error);
@@ -181,6 +179,7 @@ export default class MyEvents extends React.Component {
                                             <Card
                                                 key={this.state.selectedCard.Id}
                                                 image={{ uri: this.state.selectedCard.Image }}
+                                                imageStyle={styles.innerCardImage}
                                                 containerStyle={styles.innerCardContainer}
                                             >
                                                 <Text style={styles.cardTitleText} >{this.state.selectedCard.Name}</Text>
@@ -189,6 +188,11 @@ export default class MyEvents extends React.Component {
                                                     <FontAwesome5 name="calendar-alt" size={20}></FontAwesome5>
                                                     <Text style={styles.cardIconsText}>{moment(this.state.selectedCard.StartDate).format("DD/MM/YYYY")} עד </Text>
                                                     <Text style={styles.cardIconsText}>{moment(this.state.selectedCard.EndDate).format("DD/MM/YYYY")}</Text>
+                                                </View>
+                                                <View style={styles.cardIcons}>
+                                                    <FontAwesome5 name="calendar-alt" size={20}></FontAwesome5>
+                                                    <Text style={styles.cardIconsText}>{moment(this.state.selectedCard.StartDate).format("HH:mm")} עד </Text>
+                                                    <Text style={styles.cardIconsText}>{moment(this.state.selectedCard.EndDate).format("HH:mm")}</Text>
                                                 </View>
                                                 <View style={styles.cardIcons}>
                                                     <FontAwesome5 name="users" size={22}></FontAwesome5>
@@ -310,8 +314,6 @@ const styles = StyleSheet.create({
         shadowRadius: 5
     },
     innerCardContainer: {
-        paddingHorizontal: 40,
-        paddingVertical: 20,
         width: 300,
         alignSelf: 'center'
     },
@@ -353,13 +355,18 @@ const styles = StyleSheet.create({
         elevation: 4
     },
     cardButtonText: {
-        fontSize: 20,
+        fontSize: 16,
         fontFamily: 'rubik-regular'
     },
     locationText: {
         fontFamily: 'rubik-regular',
         fontSize: 16,
         color: colors.Events
-    }
+    },
+    innerCardImage: {
+        height:200, 
+        marginLeft:0, 
+        marginRight:0
+    } 
 });
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, View, Button, Image, KeyboardAvoidingView, StyleSheet } from 'react-native';
+import { Alert, View, Button, Image, KeyboardAvoidingView, StyleSheet, AsyncStorage } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
 export default class ImageGallery extends React.Component {
@@ -10,18 +10,20 @@ export default class ImageGallery extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            image: null,
+            picUri: null,
+            picName: 'image1_' + new Date().getTime() + '.jpg'
         }
     }
 
     btnOpenGalery = async () => {
+        const {goBack} = this.props.navigation;
         let result = await ImagePicker.launchImageLibraryAsync({
 
         });
 
 
         if (!result.cancelled) {
-            this.setState({ image: result.uri });
+            this.setState({ picUri: result.uri });
         }
 
 
@@ -29,12 +31,25 @@ export default class ImageGallery extends React.Component {
             'האם תרצה לשמור את התמונה?',
             '',
             [
-                { text: 'כן', onPress: () => this.props.navigation.navigate('Pic', { photoUri: result.uri }) },
+                {
+                    text: 'כן', onPress: () => {
+                        let cameraDetails = {
+                            picName: this.state.picName,
+                            picUri: this.state.picUri
+                        };
+                        console.log(cameraDetails);
+
+                        AsyncStorage.setItem('cameraDetails', JSON.stringify(cameraDetails), () =>
+                            goBack()
+                        );
+                    }
+                },
+                //{ text: 'כן', onPress: () => this.props.navigation.navigate('Pic', { photoUri: result.uri }) },
                 {
                     text: 'לא',
                     style: 'cancel',
                 }],
-
+        
         );
     };
 

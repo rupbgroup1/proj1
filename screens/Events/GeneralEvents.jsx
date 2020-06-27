@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, AsyncStorage, Image, ScrollView, Alert, Dimensi
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 //import { Icon } from 'react-native-elements';
 import AttendanceEvents from './AttendanceEvents';
+import RecommendedEvents from './RecommendedEvents';
 import MyEvents from './MyEvents';
 import Header from '../../components/Header';
 import BackButton from '../../components/BackButton';
@@ -40,8 +41,9 @@ class GeneralEvents extends React.Component {
     }
 
     componentDidMount() {
-        this.getUser();
         this.fetchGetAllCategories();
+        this.getUser();
+        
     }
 
     getUser() {
@@ -71,12 +73,13 @@ class GeneralEvents extends React.Component {
             .then(
                 (result) => {
                     if (result.length > 0) {
-                        console.log("Events = ", result);
+                        //console.log("Events = ", result);
                         this.arrayholder = result;
                         this.setState({ filteredArray: result })
                     }
                     else
-                        Alert.alert(" מצטערים, אנו נסו שנית!");
+                        Alert.alert("לא נמצאו אירועים!");
+                        console.log("Events = ", result);
                 },
                 (error) => {
                     console.log("err post=", error);
@@ -100,7 +103,7 @@ class GeneralEvents extends React.Component {
             .then(
                 (result) => {
                     if (result.length > 0) {
-                        console.log("Cat = ", result);
+                       // console.log("Cat = ", result);
                         this.catArray = result;
                     }
                     else
@@ -113,13 +116,64 @@ class GeneralEvents extends React.Component {
             );
     }
 
+    //filter the events by text
+    SearchFilterFunction(text) {
+        const newData = this.arrayholder.filter(function (item) {
+            //applying filter for the inserted text in search bar
+            const itemData = item.Name;
+            return itemData.indexOf(text) > -1;
+        });
+        console.log("filter==", newData);
+        newData.length < 1 && Alert.alert("לא נמצאו תוצאות");
+        text != '' ?
+            this.setState({
+                //setting the filtered newData on datasource
+                filteredArray: newData,
+                text: text,
+            })
+            : this.setState({ filteredArray: this.arrayholder, text: text });
+    }
+
+    //filter the events by selected category 
+    filterByCat(catId) {
+        if (catId == this.state.selectedCat) {
+            this.setState({ filteredArray: this.arrayholder, selectedCat:0 })
+        }
+        else {
+            const newData = this.arrayholder.filter(function (item) {
+                //applying filter for the inserted text in search bar
+                const itemData = item.CategoryId;
+                return itemData == catId;
+            });
+            this.setState({
+                filteredArray: newData,
+                selectedCat: catId,
+                pressStatus: true
+            });
+            console.log(this.state.filteredArray)
+        }
+    }
+
+    //*overlays -make visible
+    toggleOverlay() {
+        this.setState({ visible: false });
+    }
+    toggleMapOverlay() {
+        this.setState({ mapVisible: false });
+    }
+
+    //change attendance status
+    attendToEvent() {
+        this.fetchPostAttend();
+    }
+    
     fetchPostAttend() {
         //console.log("in fetch");
         const att = {
             Id: this.state.selectedCard.Id,
             Attandance: [{ UserId: this.state.user.UserId }]
         }
-        console.log("**att**", att);
+        //console.log("**att**", att);
         return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Events/PostAtt', {
 
             method: 'POST',
@@ -134,7 +188,7 @@ class GeneralEvents extends React.Component {
             })
             .then(
                 (result) => {
-                    console.log("fetch POST att = ", result);
+                   // console.log("fetch POST att = ", result);
                     if (result === 1)
                         Alert.alert("השתתפותך נרשמה, תהנה באירוע!");
                     else {
@@ -180,56 +234,6 @@ class GeneralEvents extends React.Component {
                     Alert.alert("אנא נסה שנית");
                 }
             );
-    }
-    //filter the events by text
-    SearchFilterFunction(text) {
-        const newData = this.arrayholder.filter(function (item) {
-            //applying filter for the inserted text in search bar
-            const itemData = item.Name;
-            return itemData.indexOf(text) > -1;
-        });
-        console.log("filter==", newData);
-        newData.length < 1 && Alert.alert("לא נמצאו תוצאות");
-        text != '' ?
-            this.setState({
-                //setting the filtered newData on datasource
-                filteredArray: newData,
-                text: text,
-            })
-            : this.setState({ filteredArray: this.arrayholder, text: text });
-    }
-
-    //filter the events by selected category 
-    filterByCat(catId) {
-        if (catId == this.state.selectedCat) {
-            this.setState({ filteredArray: this.arrayholder, selectedCat:0 })
-        }
-        else {
-            const newData = this.arrayholder.filter(function (item) {
-                //applying filter for the inserted text in search bar
-                const itemData = item.CategoryId;
-                return itemData == catId;
-            });
-            this.setState({
-                filteredArray: newData,
-                selectedCat: catId,
-                pressStatus: true
-            });
-            console.log(this.state.filteredArray)
-        }
-    }
-
-
-    toggleOverlay() {
-        this.setState({ visible: false });
-    }
-    toggleMapOverlay() {
-        this.setState({ mapVisible: false });
-    }
-
-    attendToEvent() {
-        this.fetchPostAttend();
-
     }
 
     render() {
@@ -341,6 +345,11 @@ class GeneralEvents extends React.Component {
                                                     <FontAwesome5 name="calendar-alt" size={20}></FontAwesome5>
                                                     <Text style={styles.cardIconsText}>{moment(this.state.selectedCard.StartDate).format("DD/MM/YYYY")} עד </Text>
                                                     <Text style={styles.cardIconsText}>{moment(this.state.selectedCard.EndDate).format("DD/MM/YYYY")}</Text>
+                                                </View>
+                                                <View style={styles.cardIcons}>
+                                                    <FontAwesome5 name="calendar-alt" size={20}></FontAwesome5>
+                                                    <Text style={styles.cardIconsText}>{moment(this.state.selectedCard.StartDate).format("HH:mm")} עד </Text>
+                                                    <Text style={styles.cardIconsText}>{moment(this.state.selectedCard.EndDate).format("HH:mm")}</Text>
                                                 </View>
                                                 <View style={styles.cardIcons}>
                                                     <FontAwesome5 name="users" size={22}></FontAwesome5>
@@ -556,6 +565,21 @@ const TabNavigator = createMaterialBottomTabNavigator(
                 tabBarIcon: () => (
                     <View>
                         <FontAwesome5 name={'home'} size={23} color={'black'} />
+                    </View>
+                )
+
+            }
+        },
+        RecommendedEvents: {
+            screen: RecommendedEvents,
+            navigationOptions: {
+                tabBarLabel: 'מומלצים',
+                activeColor: colors.turkiz,
+                inactiveColor: 'black',
+                barStyle: { backgroundColor: 'white' },
+                tabBarIcon: () => (
+                    <View>
+                        <FontAwesome name={'star'} size={24} color={'black'} />
                     </View>
                 )
 
