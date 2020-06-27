@@ -277,6 +277,7 @@ class GeneralEvents extends React.Component {
                                         raised={true}
                                         buttonStyle={c.CategoryId===this.state.selectedCat?styles.selectedCategory: styles.categories}
                                     >
+                                        {/* <FontAwesome5 name={c.CategoryIcon} size={25} color={colors.Evemts} /> */}
                                     </Button>
                                 </View>
                             )
@@ -327,7 +328,7 @@ class GeneralEvents extends React.Component {
                                             >
                                             </Button>
                                         </View>
-                                        <Overlay overlayStyle={{ backgroundColor: 'rgba(52, 52, 52, 0)' }} isVisible={this.state.visible} onBackdropPress={() => this.toggleOverlay()}>
+                                        <Overlay overlayStyle={styles.overlay} isVisible={this.state.visible} onBackdropPress={() => this.toggleOverlay()}>
                                             <Card
                                                 key={this.state.selectedCard.Id}
                                                 image={{ uri: this.state.selectedCard.Image }}
@@ -457,7 +458,7 @@ const styles = StyleSheet.create({
         shadowColor: '#D1D3D4'
     },
     selectedCategory:{
-        backgroundColor: colors.turkiz,
+        backgroundColor: colors.Events,
         borderRadius: 0,
         paddingVertical: 5,
         paddingHorizontal: 10,
@@ -465,7 +466,7 @@ const styles = StyleSheet.create({
         shadowColor: '#D1D3D4'
     },
     titleCat: { 
-        color: colors.turkiz, 
+        color: colors.Events, 
         fontFamily:'rubik-regular' 
     },
     coloredTitleCat: { 
@@ -481,7 +482,8 @@ const styles = StyleSheet.create({
     },
     innerCardContainer: {
         width: 300,
-        alignSelf: 'center'
+        alignSelf: 'center',
+        borderWidth:0
     },
     cardTitle: {
         fontSize: 26,
@@ -517,22 +519,27 @@ const styles = StyleSheet.create({
         marginBottom: 0,
         width: '60%',
         alignSelf: 'center',
-        backgroundColor: colors.turkiz,
+        backgroundColor: colors.Events,
         elevation: 4
     },
     cardButtonText: {
-        fontSize: 16,
+        fontSize: 20,
         fontFamily: 'rubik-regular'
     },
     locationText: {
         fontFamily: 'rubik-regular',
         fontSize: 16,
-        color: colors.turkiz
+        color: colors.Events
     },
     innerCardImage: {
         height:200, 
         marginLeft:0, 
         marginRight:0
+    },
+    overlay:{
+        backgroundColor: 'rgba(52, 52, 52, 0)', 
+        width:200, 
+        height:400
     } 
 });
 
@@ -542,7 +549,7 @@ const TabNavigator = createMaterialBottomTabNavigator(
             screen: GeneralEvents,
             navigationOptions: {
                 tabBarLabel: 'כללי',
-                activeColor: colors.turkiz,
+                activeColor: colors.Events,
                 inactiveColor: 'black',
                 barStyle: { backgroundColor: 'white' },
 
@@ -558,7 +565,7 @@ const TabNavigator = createMaterialBottomTabNavigator(
             screen: MyEvents,
             navigationOptions: {
                 tabBarLabel: 'האירועים שלי',
-                activeColor: colors.turkiz,
+                activeColor: colors.Events,
                 inactiveColor: 'black',
                 barStyle: { backgroundColor: 'white' },
                 tabBarIcon: () => (
@@ -573,7 +580,7 @@ const TabNavigator = createMaterialBottomTabNavigator(
             screen: AttendanceEvents,
             navigationOptions: {
                 tabBarLabel: 'מגיע/ה',
-                activeColor: colors.turkiz,
+                activeColor: colors.Events,
                 inactiveColor: 'black',
                 barStyle: { backgroundColor: 'white' },
                 tabBarIcon: () => (

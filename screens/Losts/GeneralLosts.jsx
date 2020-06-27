@@ -138,7 +138,7 @@ class GeneralLosts extends React.Component {
                                             <MaterialIcons 
                                                 name="location-on"
                                                 size={22}
-                                                color={colors.turkiz}>
+                                                color={colors.Losts}>
                                             </MaterialIcons>
                                             <Text style={styles.cardText}>{l.Location}</Text>
                                         </View>
@@ -147,7 +147,7 @@ class GeneralLosts extends React.Component {
                                             <MaterialIcons 
                                                 name="event"
                                                 size={22}
-                                                color={colors.turkiz}>
+                                                color={colors.Losts}>
                                             </MaterialIcons>
                                             <Text style={styles.cardText}>{moment(l.FoundDate).format("DD/MM/YYYY")}</Text>
                                         </View>
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
         shadowColor: '#D1D3D4'
     },
     selectedCategory: {
-        backgroundColor: colors.turkiz,
+        backgroundColor: colors.Losts,
         borderRadius: 0,
         paddingVertical: 5,
         paddingHorizontal: 10,
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
         shadowColor: '#D1D3D4'
     },
     titleCat: {
-        color: colors.turkiz,
+        color: colors.Losts,
         fontFamily: 'rubik-regular'
     },
     coloredTitleCat: {
@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
         marginBottom: 0,
         width: '60%',
         alignSelf: 'center',
-        backgroundColor: colors.turkiz,
+        backgroundColor: colors.Losts,
         elevation: 4
     },
     cardButtonText: {
@@ -289,7 +289,7 @@ const styles = StyleSheet.create({
     locationText: {
         fontFamily: 'rubik-regular',
         fontSize: 16,
-        color: colors.turkiz
+        color: colors.Losts
     },
     innerCardImage: {
         height: 200,
@@ -304,7 +304,7 @@ const TabNavigator = createMaterialBottomTabNavigator(
             screen: GeneralLosts,
             navigationOptions: {
                 tabBarLabel: 'מציאות בשכונה',
-                activeColor: colors.turkiz,
+                activeColor: colors.Losts,
                 inactiveColor: 'black',
                 barStyle: { backgroundColor: 'white' },
                 key: 1,
@@ -320,7 +320,7 @@ const TabNavigator = createMaterialBottomTabNavigator(
             screen: MyLosts,
             navigationOptions: {
                 tabBarLabel: 'המציאות שלי',
-                activeColor: colors.turkiz,
+                activeColor: colors.Losts,
                 inactiveColor: 'black',
                 barStyle: { backgroundColor: 'white' },
                 key:2,

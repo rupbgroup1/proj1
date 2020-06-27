@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import colors from '../assets/constant/colors';
 
 const EventsBTN = props => {
     return(
@@ -13,11 +14,11 @@ const EventsBTN = props => {
 
 const styles = StyleSheet.create({
     button:{
-        backgroundColor: '#1dd1a1',
+        backgroundColor: colors.Events,
         paddingVertical:0,
         paddingHorizontal:10,
-        borderColor: '#1dd1a1',
-        shadowColor: '#1dd1a1',
+        borderColor: colors.Events,
+        shadowColor: colors.Events,
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.8,
         shadowRadius: 8,

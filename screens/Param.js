@@ -1,24 +1,24 @@
 import React, { Component } from 'react';
-import { Button, View, StyleSheet, Text, Picker , Alert} from 'react-native';
+import { Button, View, StyleSheet, Text, Picker, Alert } from 'react-native';
 import colors from '../assets/constant/colors';
-import { SimpleLineIcons } from '@expo/vector-icons';
+import { SimpleLineIcons, FontAwesome5 } from '@expo/vector-icons';
 import OurButton from '../components/OurButton';
 import { Dropdown } from 'react-native-material-dropdown';
 import { ScrollView } from 'react-native-gesture-handler';
 
-export default class Param extends Component{
-    constructor(props){
+export default class Param extends Component {
+    constructor(props) {
         super(props);
-        this.state={
-            paramArray:[],
-            ParamNameHeb:'',
-            paramId:''
+        this.state = {
+            paramArray: [],
+            ParamNameHeb: '',
+            paramId: ''
         }
     }
 
     componentDidMount = () => {
         this.fetchGetParams();
-        
+
     }
 
     fetchGetParams() {
@@ -36,7 +36,7 @@ export default class Param extends Component{
                 (result) => {
                     console.log(result);
                     this.setState({ paramArray: result })
-                    
+
                 },
                 (error) => {
                     console.log("err post=", error);
@@ -45,13 +45,13 @@ export default class Param extends Component{
             );
     }
 
-     
+
 
     fetchPostNewParam = () => {
-        let param={
+        let param = {
             CategoryId: this.state.paramId
         }
-        fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Votes' , {
+        fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Votes', {
             method: 'PUT',
             body: JSON.stringify(param),
             headers: new Headers({
@@ -65,7 +65,7 @@ export default class Param extends Component{
             .then(
                 (result) => {
                     console.log("fetch POST= ", result);
-                    if (result === 1){
+                    if (result === 1) {
                         this.props.navigation.navigate('FindNeighboor');
                         Alert.alert("תודה על תגובתך!");
                     }
@@ -81,27 +81,27 @@ export default class Param extends Component{
             );
 
     }
-    
-    render (){
+
+    render() {
         const paramArray = this.state.paramArray;
 
         return (
-         < View style={styles.container}>
+            < View style={styles.container}>
                 <ScrollView style={styles.container} >
 
-                <View style={{paddingHorizontal:10, paddingTop:60}}>
-             <OurButton onPress={() => this.props.navigation.navigate('FindNeighboor')}><SimpleLineIcons name="close" size={40} color="grey" /></OurButton>
-    
-             </View>
-    
-             
-            <View style={{flex:1, marginTop:50}}>
-            <Text style={styles.subTitle}> איזה פרמטר חשוב לך בהכרות עם שכנייך? </Text>
-            </View>
-            <View>
-            
-            </View>
-            <View style={{ fontFamily: 'rubik-regular', paddingTop:'20%',  alignItems: 'center', justifyContent: 'center'}}>
+                    <View style={{ paddingHorizontal: 15, paddingTop: 60 }}>
+                        <OurButton onPress={() => this.props.navigation.navigate('FindNeighboor')}><FontAwesome5 name="times" size={30} color="grey" /></OurButton>
+
+                    </View>
+
+
+                    <View style={styles.titleView}>
+                        <Text style={styles.title}> איזה מהפרמטרים הינו החשוב ביותר בהיכרותך עם שכניך? </Text>
+                    </View>
+                    <View>
+
+                    </View>
+                    <View style={{ fontFamily: 'rubik-regular', paddingTop: '20%', alignItems: 'center', justifyContent: 'center' }}>
 
                         <Dropdown
                             labelFontSize='20'
@@ -110,62 +110,65 @@ export default class Param extends Component{
                             valueExtractor={({ ParamCode }) => ParamCode}
                             labelExtractor={({ ParamNameHeb }) => ParamNameHeb}
                             data={paramArray}
-                            selectedItemColor= {colors.subTitle}
+                            selectedItemColor={colors.subTitle}
                             onChangeText={(ParamNameHeb, ParamCode) => {
                                 this.setState({
                                     paramId: ParamCode,
-                                    ParamNameHeb:ParamNameHeb
+                                    ParamNameHeb: ParamNameHeb
 
                                 });
                                 //console.log(this.state.familyStatus)
                             }}
-                            itemTextStyle={{textAlign:"center", fontFamily: 'rubik-regular'}}
+                            itemTextStyle={{ textAlign: "center", fontFamily: 'rubik-regular' }}
                             containerStyle={{ width: '90%', fontFamily: 'rubik-regular' }}
-                            labelTextStyle={{ fontFamily: 'rubik-regular', alignItems:"center"}}
-                            
-                            
-                            
-                        />
-            </View>
-            <View style={styles.button}>
+                            labelTextStyle={{ fontFamily: 'rubik-regular', alignItems: "center" }}
 
-            <Button onPress={() => {
-                this.fetchPostNewParam()
-            }} title={"שלח"} />
-            </View>
+
+
+                        />
+                    </View>
+                    <View style={styles.button}>
+
+                        <Button onPress={() => {
+                            this.fetchPostNewParam()
+                        }} title={"שלח"} />
+                    </View>
 
 
 
                 </ScrollView>
 
-             
-            
-          </View>
+
+
+            </View>
         );
     }
 }
 
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.regBackground,
-  },
-  subTitle: {
-    fontFamily: 'rubik-regular',
-    marginVertical: 1,
-    fontSize: 26,
-    color: colors.subTitle,
-    paddingTop: 25,
-    paddingHorizontal:20,
-    textAlign:"center",
+    container: {
+        flex: 1,
+        backgroundColor: colors.regBackground,
+    },
+    title: {
+        fontFamily: 'rubik-regular',
+        marginVertical: 1,
+        fontSize: 26,
+        color: colors.subTitle,
+        paddingTop: 25,
+        paddingHorizontal: 20,
+        textAlign: "center",
 
-},
-button: {
-    width: '90%',
-    paddingTop: 40,
-   alignSelf:"center"
-},
+    },
+    titleView:{
+        paddingTop: 100
+    },
+    button: {
+        width: '90%',
+        paddingTop: 40,
+        alignSelf: "center"
+    },
 
- 
+
 });

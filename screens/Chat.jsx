@@ -99,7 +99,7 @@ export default class Chat extends React.Component {
     return (
       <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
         <Header />
-        <BackButton goBack={() => this.props.navigation.navigate('MainPage')} />
+        <BackButton goBack={() => this.props.navigation.navigate('GeneralServices')} />
         <View style={{
           width: '95%', height: '80%', borderRadius: 10,
           shadowColor: 'black',

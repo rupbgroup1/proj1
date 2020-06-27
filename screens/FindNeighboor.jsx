@@ -253,7 +253,7 @@ export default class FindNeighboor extends Component {
                 </View>
 
                 <View style={styles.mapView}>
-                    {console.log('this.props.navigation=' , this.props.navigation)}
+                    {console.log('this.props.navigation=', this.props.navigation)}
                     <MapComponent
                         region={this.state.region}
                         onRegionChange={(reg) => this.onMapRegionChange(reg)}
@@ -265,9 +265,9 @@ export default class FindNeighboor extends Component {
                     />
                     <TouchableOpacity
                         onPress={() => this.props.navigation.navigate('Param')}
-                        style={{paddingVertical:15}}
+                        style={{ paddingVertical: 15 }}
                     >
-                        <Text style={{fontFamily: 'rubik-regular', fontSize:16}}>מרוצה מההתאמה? עזור לנו להשתפר עבורך</Text>
+                        <Text style={{ fontFamily: 'rubik-regular', fontSize: 16 }}>מרוצה מההתאמה? עזור לנו להשתפר עבורך</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -326,7 +326,7 @@ const styles = StyleSheet.create({
         width: '100%',
         justifyContent: 'space-between',
         //backgroundColor:'#F36B74'
-        backgroundColor: '#0fb9b1'
+        backgroundColor: colors.Neighboors
 
     },
     screen: {

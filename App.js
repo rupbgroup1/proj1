@@ -92,7 +92,7 @@ const navigator = createStackNavigator({
   MyLosts:MyLosts,
   CreateLost:CreateLost,
   }, {
-        initialRouteName: 'LoginScreen',
+        initialRouteName: 'GeneralServices',
         defaultNavigationOptions: {
         headerShown: false
      }

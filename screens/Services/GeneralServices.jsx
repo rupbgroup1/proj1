@@ -10,7 +10,7 @@ import { SearchBar, Card, Button, Overlay } from 'react-native-elements';
 import OurButton from '../../components/OurButton';
 import { MaterialIcons, FontAwesome5, FontAwesome } from '@expo/vector-icons';
 import moment from "moment";
-import MapView,{ Marker } from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 
 // import { AccessAlarm, ThreeDRotation } from '@material-ui/icons';
 // import home from '@material-ui/icons/DeleteRounded';
@@ -29,7 +29,7 @@ class GeneralServices extends React.Component {
             selectedCat: 0,
             selectedCard: {},
             selectedOwner: {},
-            mapVisible:false,
+            mapVisible: false,
         };
         this.arrayholder = [];
         this.catArray = [];
@@ -110,7 +110,7 @@ class GeneralServices extends React.Component {
             );
     }
 
-    
+
     //filter the events by text
     SearchFilterFunction(text) {
         const newData = this.arrayholder.filter(function (item) {
@@ -184,7 +184,7 @@ class GeneralServices extends React.Component {
                         <OurButton
                             title='add'
                             key='add'
-                            onPress={() => navigation.navigate('CreateEvent')}>
+                            onPress={() => navigation.navigate('CreateService')}>
                             <MaterialIcons name="add" size={40} color={colors.header} />
                         </OurButton>
                     </View>
@@ -196,13 +196,14 @@ class GeneralServices extends React.Component {
                                 <View style={{ paddingHorizontal: 1 }}>
                                     <Button
                                         type="outline"
-                                        title={c.CategoryName}
-                                        titleStyle={{ color: colors.turkiz, fontFamily:'rubik-regular' }}
+                                        title={<FontAwesome5 name={c.Icon} size={25}/>}
+                                        titleStyle={{ color: colors.Business, fontFamily: 'rubik-regular' }}
                                         key={c.CategoryId}
                                         onPress={cat => this.filterByCat(c.CategoryId)}
                                         raised={true}
                                         buttonStyle={styles.categories}
                                     >
+                                        <FontAwesome name={c.Icon} size={25} color={colors.turkiz} />
                                     </Button>
                                 </View>
                             )
@@ -229,7 +230,7 @@ class GeneralServices extends React.Component {
 
                                             <Text style={styles.cardText}>{s.Description}</Text>
                                         </View>
-                                        
+
                                         <View style={{ paddingVertical: 10 }}>
                                             <Button
                                                 title='פרטים נוספים'
@@ -239,18 +240,20 @@ class GeneralServices extends React.Component {
                                             >
                                             </Button>
                                         </View>
-                                        <Overlay overlayStyle={{ backgroundColor: 'rgba(52, 52, 52, 0)' }} isVisible={this.state.visible} onBackdropPress={() => this.toggleOverlay()}>
+                                        <Overlay overlayStyle={styles.overlay} isVisible={this.state.visible} onBackdropPress={() => this.toggleOverlay()}>
                                             <Card
                                                 key={this.state.selectedCard.ServiceId}
                                                 image={{ uri: this.state.selectedCard.ImageGallery }}
                                                 containerStyle={styles.innerCardContainer}
                                             >
-                                                <Text style={styles.cardTitleText} >{this.state.selectedCard.ServiceName}</Text>
-                                                <Text>{this.state.selectedCard.Description}</Text>
-                                                <Text> דירוג העסק {this.state.selectedCard.Rate}</Text>
-                                                <Text> פתוח בימי:  {this.state.selectedCard.OpenDays}</Text>
-                                                <Text> בין השעות {this.state.selectedCard.OpenHoursStart}-{this.state.selectedCard.OpenHoursEnds}</Text>
-                                                <Text> כתובת {this.state.selectedCard.ServiceAddress}</Text>
+                                                <View style={styles.details}>
+                                                    <Text style={styles.cardTitleText} >{this.state.selectedCard.ServiceName}</Text>
+                                                    <Text style={styles.serviceDetails}>{this.state.selectedCard.Description}</Text>
+                                                    <Text style={styles.serviceDetails}> דירוג העסק: {this.state.selectedCard.Rate}</Text>
+                                                    <Text style={styles.serviceDetails}> פתוח בימים:  {this.state.selectedCard.OpenDays}</Text>
+                                                    <Text style={styles.serviceDetails}> בין השעות: {this.state.selectedCard.OpenHoursStart}-{this.state.selectedCard.OpenHoursEnds}</Text>
+                                                    <Text style={styles.serviceDetails}> כתובת: {this.state.selectedCard.ServiceAddress}</Text>
+                                                </View>
 
                                                 <Button
                                                     title='צור קשר'
@@ -317,7 +320,7 @@ const styles = StyleSheet.create({
         shadowColor: '#D1D3D4'
     },
     titleCat: {
-        color: colors.turkiz,
+        color: colors.Business,
         fontFamily: 'rubik-regular'
     },
     coloredTitleCat: {
@@ -332,8 +335,11 @@ const styles = StyleSheet.create({
         shadowRadius: 5
     },
     innerCardContainer: {
-        width: 300,
-        alignSelf: 'center'
+        width: 330,
+        height: 550,
+        alignSelf: 'center',
+        borderWidth: 0,
+        top: 40
     },
     cardTitle: {
         fontSize: 26,
@@ -344,7 +350,8 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         fontSize: 26,
         color: "black",
-        fontFamily: 'rubik-regular'
+        fontFamily: 'rubik-regular',
+        paddingBottom: 10
     },
     cardIcons: {
         alignItems: "flex-end",
@@ -366,10 +373,11 @@ const styles = StyleSheet.create({
     },
     cardButton: {
         borderRadius: 30,
-        marginBottom: 0,
-        width: '60%',
+        margin: 10,
+        width: '50%',
+        height: 40,
         alignSelf: 'center',
-        backgroundColor: colors.turkiz,
+        backgroundColor: colors.Business,
         elevation: 4
     },
     cardButtonText: {
@@ -379,12 +387,23 @@ const styles = StyleSheet.create({
     locationText: {
         fontFamily: 'rubik-regular',
         fontSize: 16,
-        color: colors.turkiz
+        color: colors.Business
     },
     innerCardImage: {
         height: 200,
         marginLeft: 0,
         marginRight: 0
+    },
+    overlay: {
+        backgroundColor: 'rgba(52, 52, 52, 0)'
+    },
+    serviceDetails: {
+        paddingVertical: 5,
+        alignSelf: 'flex-start',
+        fontSize: 18
+    },
+    details: {
+        paddingVertical: 20
     }
 });
 
@@ -394,7 +413,7 @@ const TabNavigator = createMaterialBottomTabNavigator(
             screen: GeneralServices,
             navigationOptions: {
                 tabBarLabel: 'עסקים בקהילה',
-                activeColor: colors.turkiz,
+                activeColor: colors.Business,
                 inactiveColor: 'black',
                 barStyle: { backgroundColor: 'white' },
                 key: 1,
@@ -411,7 +430,7 @@ const TabNavigator = createMaterialBottomTabNavigator(
             screen: MyServices,
             navigationOptions: {
                 tabBarLabel: 'העסקים שלי',
-                activeColor: colors.turkiz,
+                activeColor: colors.Business,
                 inactiveColor: 'black',
                 barStyle: { backgroundColor: 'white' },
                 key: 2,

@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import colors from '../assets/constant/colors';
 
 const BusinessesBTN = props => {
     return(
@@ -13,11 +14,11 @@ const BusinessesBTN = props => {
 
 const styles = StyleSheet.create({
     button:{
-        backgroundColor: '#218c74',
+        backgroundColor: colors.Business,
         paddingVertical:0,
         paddingHorizontal:10,
-        borderColor: '#38ada9',
-        shadowColor: '#38ada9',
+        borderColor: colors.Business,
+        shadowColor: colors.Business,
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.8,
         shadowRadius: 8,

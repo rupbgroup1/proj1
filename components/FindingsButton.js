@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import colors from '../assets/constant/colors';
 
 const NeiButton = props => {
     return(
@@ -13,9 +14,9 @@ const NeiButton = props => {
 
 const styles = StyleSheet.create({
     button:{
-        backgroundColor: '#48CFAF',
-        borderColor: '#48CFAF',
-        shadowColor: '#48CFAF',
+        backgroundColor: colors.Losts,
+        borderColor: colors.Losts,
+        shadowColor: colors.Losts,
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.8,
         shadowRadius: 8,

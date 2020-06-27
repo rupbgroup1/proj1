@@ -365,39 +365,27 @@ export default class CreateEvent extends React.Component {
 
     render() {
         const { navigation } = this.props;
-        const blue = colors.turkiz;
+        const blue = colors.Events;
         const grey = "grey";
         const newEvent = this.state.newEvent;
         const eventDetails = this.state.eventDetails;
         console.log("event", newEvent)
-        //Keyboard.dismiss();
-        //console.log(this.state.CityName);
         return (
-            <View style={{ flex: 1, backgroundColor: 'white', justifyContent: "flex-start", paddingBottom:20 }}>
+            <View style={{ flex: 1, backgroundColor: 'white', justifyContent: "flex-start", paddingBottom: 20 }}>
                 <Header />
                 <BackButton goBack={() => navigation.navigate('GeneralEvents')} />
-                {/* My design:
-                 <ScrollView style={{top:-15}}>
-
-                    <Card containerStyle={{ backgroundColor: '#F1F2F2', height: '25%', width: Dimensions.get('window').width, alignSelf: 'center' }}>
-
-                        <View style={{ flexDirection: 'column', alignSelf: 'center', top: 70 }}>
-                            <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-                                <OurButton onPress={() => this.props.navigation.navigate('CameraPage')} style={{ paddingHorizontal: 20 }}><SimpleLineIcons name="camera" size={40} color="grey" /></OurButton>
-                                <OurButton onPress={() => this.props.navigation.navigate('ImageGallery')} style={{ paddingHorizontal: 20 }}><SimpleLineIcons name="picture" size={40} color="grey" /></OurButton>
-                            </View> */}
                 <ScrollView>
-                    
-                    
-                        <View style={{ flexDirection: 'row', borderColor: 'white', borderWidth: 1, borderRadius: 15, justifyContent: 'center', alignItems: "center", height:'20%' }}>
-                           <ImageBackground source={{uri:newEvent.Image}} style={{flex: 1,resizeMode: "cover",justifyContent: "center"}}>
-                           
-                           <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-                                <OurButton onPress={() => this.props.navigation.navigate('CameraPage')} style={{ paddingHorizontal: 20 }}><MaterialIcons name="camera-alt" size={40} color={colors.turkiz}/></OurButton>
-                                <OurButton onPress={() => this.props.navigation.navigate('ImageGallery')} style={{ paddingHorizontal: 20 }}><MaterialIcons name="photo" size={40} color={colors.turkiz}/></OurButton>
+
+
+                    <View style={styles.scrollView}>
+                        <ImageBackground source={{ uri: newEvent.Image }} style={styles.image}>
+
+                            <View style={styles.imageIconsView}>
+                                <OurButton onPress={() => this.props.navigation.navigate('CameraPage')} style={{ paddingHorizontal: 20 }}><MaterialIcons name="camera-alt" size={40} color={colors.Events} /></OurButton>
+                                <OurButton onPress={() => this.props.navigation.navigate('ImageGallery')} style={{ paddingHorizontal: 20 }}><MaterialIcons name="photo" size={40} color={colors.Events} /></OurButton>
                             </View>
-                            </ImageBackground>
-                        </View>
+                        </ImageBackground>
+                    </View>
                     <TextInput
                         style={styles.input}
                         autoFocus={true}
@@ -415,59 +403,59 @@ export default class CreateEvent extends React.Component {
                         }))}
                     >
                     </TextInput>
-                    <View style={{ flexDirection: 'row', paddingVertical:10 }}>
-                    <View style={{flexDirection:'row', paddingLeft:10}}>
-                        <MaterialIcons 
-                        name="event" 
-                        size={22} 
-                        color={colors.turkiz}>
-                        </MaterialIcons>
-                        <TouchableOpacity onPress={this.showDatepicker1} >
-                            <Text style={{ fontFamily: 'rubik-regular', fontSize: 20, color:colors.turkiz, paddingHorizontal:5}}>
-                                תאריך התחלה
+                    <View style={styles.dateTimeView}>
+                        <View style={styles.dateTimeTitle}>
+                            <MaterialIcons
+                                name="event"
+                                size={22}
+                                color={colors.Events}>
+                            </MaterialIcons>
+                            <TouchableOpacity onPress={this.showDatepicker1} >
+                                <Text style={styles.dateTimeText}>
+                                    תאריך התחלה
                             </Text>
-                        </TouchableOpacity>
+                            </TouchableOpacity>
                         </View>
-                        <View style={{flexDirection:'row', paddingLeft:20}}>
-                        <MaterialIcons 
-                        name="access-time" 
-                        size={22} 
-                        color={colors.turkiz}>
-                        </MaterialIcons>
-                        <TouchableOpacity onPress={this.showTimepicker1}>
-                            <Text style={{ fontFamily: 'rubik-regular', fontSize: 20, color:colors.turkiz, paddingHorizontal:5 }}>
-                                שעת התחלה
+                        <View style={{ flexDirection: 'row', paddingLeft: 20 }}>
+                            <MaterialIcons
+                                name="access-time"
+                                size={22}
+                                color={colors.Events}>
+                            </MaterialIcons>
+                            <TouchableOpacity onPress={this.showTimepicker1}>
+                                <Text style={styles.dateTimeText}>
+                                    שעת התחלה
                             </Text>
-                        </TouchableOpacity>
+                            </TouchableOpacity>
                         </View>
                     </View>
                     <Text style={styles.dateTimeDisplay}>
                         {moment(newEvent.StartHour).format("HH:mm")}         {moment(newEvent.StartDate).format("DD/MM/YYYY")}
                     </Text>
-                    <View style={{ flexDirection: 'row', alignContent: 'space-around', paddingVertical:10 }}>
-                    <View style={{flexDirection:'row', paddingLeft:10}}>
-                    <MaterialIcons 
-                        name="event" 
-                        size={22} 
-                        color={colors.turkiz}>
-                        </MaterialIcons>
-                        <TouchableOpacity onPress={this.showDatepicker2}>
-                            <Text style={{fontFamily: 'rubik-regular', fontSize: 20, color:colors.turkiz, paddingHorizontal:5 }}>
-                                תאריך סיום
+                    <View style={styles.dateTimeView}>
+                        <View style={styles.dateTimeTitle}>
+                            <MaterialIcons
+                                name="event"
+                                size={22}
+                                color={colors.Events}>
+                            </MaterialIcons>
+                            <TouchableOpacity onPress={this.showDatepicker2}>
+                                <Text style={styles.dateTimeText}>
+                                    תאריך סיום
                             </Text>
-                        </TouchableOpacity>
+                            </TouchableOpacity>
                         </View>
-                        <View style={{flexDirection:'row', paddingLeft:45}}>
-                        <MaterialIcons 
-                        name="access-time" 
-                        size={22} 
-                        color={colors.turkiz}>
-                        </MaterialIcons>
-                        <TouchableOpacity onPress={this.showTimepicker2}>
-                            <Text style={{fontFamily: 'rubik-regular', fontSize: 20, color:colors.turkiz, paddingHorizontal:5 }}>
-                                שעת סיום
+                        <View style={{ flexDirection: 'row', paddingLeft: 45 }}>
+                            <MaterialIcons
+                                name="access-time"
+                                size={22}
+                                color={colors.Events}>
+                            </MaterialIcons>
+                            <TouchableOpacity onPress={this.showTimepicker2}>
+                                <Text style={styles.dateTimeText}>
+                                    שעת סיום
                             </Text>
-                        </TouchableOpacity>
+                            </TouchableOpacity>
                         </View>
                     </View>
                     <Text style={styles.dateTimeDisplay}>
@@ -487,7 +475,7 @@ export default class CreateEvent extends React.Component {
                             value={this.state.dateEnd}
                             mode={this.state.mode}
                             is24Hour={true}
-                            display= "default"
+                            display="default"
                             onChange={this.state.mode === 'date' ? this.setEndDate : this.setEndTime}
                         />
                     )}
@@ -527,7 +515,7 @@ export default class CreateEvent extends React.Component {
                     ></TextInput>
                     <TextInput
                         style={styles.input}
-                        placeholder="גיל מינימלי" 
+                        placeholder="גיל מינימלי"
                         placeholderTextColor={'grey'}
                         selectionColor={blue}
                         onFocus={this.handleFocus}
@@ -574,13 +562,13 @@ export default class CreateEvent extends React.Component {
                         value={newEvent.Price != null && newEvent.Price + ""}
                     ></TextInput>
                     <TouchableOpacity onPress={() => {
-                        this.setState({ setLoc: true }, () => navigation.navigate('EventLocation',{type:"e"}));
+                        this.setState({ setLoc: true }, () => navigation.navigate('EventLocation', { type: "e" }));
                     }}>
-                        <Text style={{ fontFamily: 'rubik-regular', fontSize: 22, color: colors.turkiz, textAlign: 'left', paddingLeft:10 }}> לחץ/י להזנת מיקום האירוע </Text>
+                        <Text style={styles.eventLoc}> לחץ/י להזנת מיקום האירוע </Text>
                     </TouchableOpacity>
                     {!this.editMode &&
-                        <Text style={{ fontFamily: 'rubik-regular', fontSize: 22, color: 'grey', textAlign: 'center', paddingTop:30, paddingBottom:5 }}>תחומי עניין </Text>}
-                        <Text style={{ fontFamily: 'rubik-regular', fontSize: 15, color: 'grey', textAlign: 'center', paddingBottom:20 }}>בחירת תחומי העניין תסייע להתאמת האירוע לחברי הקהילה </Text>
+                        <Text style={styles.interstsAndCategory}>תחומי עניין </Text>}
+                    <Text style={styles.interstsDetails}>בחירת תחומי העניין תסייע להתאמת האירוע לחברי הקהילה </Text>
                     <View style={{ paddingBottom: 200 }}>
                         {!this.editMode &&
                             <Interests
@@ -604,7 +592,7 @@ export default class CreateEvent extends React.Component {
                                 valueExtractor={({ CategoryId }) => CategoryId}
                                 labelExtractor={({ CategoryName }) => CategoryName}
                                 data={this.catArray}
-                                selectedItemColor={colors.turkiz}
+                                selectedItemColor={colors.Events}
                                 onChangeText={(value) => this.setState(prevState => ({
                                     newEvent: {
                                         ...prevState.newEvent,
@@ -614,15 +602,15 @@ export default class CreateEvent extends React.Component {
                                 }
 
                             />
-                            <Text style={{ fontFamily: 'rubik-regular', fontSize: 22, color: 'grey', textAlign: 'center', paddingTop:30, paddingBottom:5 }}>קטגוריית האירוע</Text>
-                            
+                            <Text style={styles.interstsAndCategory}>קטגוריית האירוע</Text>
+
                         </View>
                     </View>
-                    
+
                 </ScrollView>
                 <Button
                     title={this.editMode ? "עדכן" : "צור אירוע"}
-                    buttonStyle={{ borderRadius: 5, marginLeft: 20, marginRight: 20 }}
+                    buttonStyle={styles.createButton}
                     containerStyle={{ marginTop: 1 }}
                     onPress={() => this.editMode ? this.fetchUpdateEvent() : this.fetchCreatEvent()}
                 ></Button>
@@ -645,33 +633,19 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#F1F2F2',
         marginVertical: 15,
-        marginHorizontal:15,
+        marginHorizontal: 15,
         textAlign: 'right',
         backgroundColor: 'white',
-        borderRadius:10, 
-        fontSize:18
+        borderRadius: 10,
+        fontSize: 18
     },
-    // description: {
-    //     fontFamily: 'rubik-regular',
-    //     width: '90%',
-    //     height: 64,
-    //     paddingLeft: 10,
-    //     borderWidth: 1,
-    //     borderColor: '#F1F2F2',
-    //     marginVertical: 15,
-    //     marginHorizontal:15,
-    //     textAlign: 'right',
-    //     backgroundColor: 'white',
-    //     borderRadius:10, 
-    //     fontSize:18
-    // },
     imageCard: {
         resizeMode: 'cover'
     },
     title: {
         alignItems: 'center',
         fontSize: 24,
-        color: colors.turkiz,
+        color: colors.Events,
         fontFamily: 'rubik-regular'
     },
     dropDown: {
@@ -702,11 +676,72 @@ const styles = StyleSheet.create({
         paddingBottom: 10
 
     },
-    dateTimeDisplay: { 
-        textAlign: 'left', 
+    dateTimeDisplay: {
+        textAlign: 'left',
+        fontFamily: 'rubik-regular',
+        fontSize: 20,
+        paddingHorizontal: 20
+    },
+    createButton: {
+        borderRadius: 30,
+        marginBottom: 0,
+        width: '60%',
+        alignSelf: 'center',
+        backgroundColor: colors.Events,
+        elevation: 4
+    },
+    scrollView: {
+        flexDirection: 'row',
+        borderColor: 'white',
+        borderWidth: 1,
+        borderRadius: 15,
+        justifyContent: 'center',
+        alignItems: "center",
+        height: '20%'
+    },
+    image: {
+        flex: 1,
+        resizeMode: "cover",
+        justifyContent: "center"
+    },
+    imageIconsView: { 
+        flexDirection: 'row', 
+        alignSelf: 'center' 
+    },
+    dateTimeView: { 
+        flexDirection: 'row', 
+        paddingVertical: 10 
+    },
+    dateTimeText: { 
         fontFamily: 'rubik-regular', 
         fontSize: 20, 
-        paddingHorizontal:20 
+        color: colors.Events, 
+        paddingHorizontal: 5 
+    },
+    dateTimeTitle: { 
+        flexDirection: 'row', 
+        paddingLeft: 10 
+    },
+    eventLoc: { 
+        fontFamily: 'rubik-regular', 
+        fontSize: 22, 
+        color: colors.Events, 
+        textAlign: 'left', 
+        paddingLeft: 10 
+    },
+    interstsAndCategory: { 
+        fontFamily: 'rubik-regular', 
+        fontSize: 22, color: 'grey', 
+        textAlign: 'center', 
+        paddingTop: 30, 
+        paddingBottom: 5 
+    },
+    interstsDetails: { 
+        fontFamily: 'rubik-regular', 
+        fontSize: 15, 
+        color: 'grey', 
+        textAlign: 'center', 
+        paddingBottom: 20 
     }
 });
 

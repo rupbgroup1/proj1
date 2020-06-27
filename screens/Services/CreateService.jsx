@@ -284,8 +284,8 @@ export default class CreateEvent extends React.Component {
                 <Header />
                 <BackButton goBack={() => navigation.navigate('GeneralServices')} />
                 <ScrollView>
-                        <View style={{ flexDirection: 'row', borderColor: 'white', borderWidth: 1, borderRadius: 15, justifyContent: 'center', alignItems: "center" }}>
-                           <ImageBackground source={{uri:newS.ImageGallery}} style={{flex: 1,resizeMode: "cover",justifyContent: "center"}}>
+                        <View style={styles.scrollView}>
+                           <ImageBackground source={{uri:newS.ImageGallery}} style={styles.image}>
                            <Text style={styles.textOr}>הוספת תמונה  </Text>
                             <OurButton onPress={() => this.props.navigation.navigate('CameraPage')}><SimpleLineIcons name="camera" size={30} color="black" /></OurButton>
                             <OurButton onPress={() => this.props.navigation.navigate('ImageGallery')}><SimpleLineIcons name="picture" size={30} color="black" /></OurButton>
@@ -474,5 +474,18 @@ const styles = StyleSheet.create({
         paddingBottom: 10
 
     },
+    scrollView: { 
+        flexDirection: 'row', 
+        borderColor: 'white', 
+        borderWidth: 1, 
+        borderRadius: 15, 
+        justifyContent: 'center', 
+        alignItems: "center" 
+    },
+    image: {
+        flex: 1,
+        resizeMode: "cover",
+        justifyContent: "center"
+    }
 });
 

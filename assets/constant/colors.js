@@ -4,6 +4,10 @@ export default {
     //reeBackgrouond:'#F9F9F9',
     reeBackgrouond: '#ecf0f1',
     turkiz:'#1985A1',
+    Business:'#77BD8B',
+    Events:'#00848C',
+    Losts:'#48CFAF',
+    Neighboors:'#0fb9b1',
     
     header:'#041418',
     rainbow: [

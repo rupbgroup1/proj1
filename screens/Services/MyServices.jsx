@@ -164,18 +164,20 @@ export default class MyServices extends React.Component {
                                             >
                                             </Button>
                                         </View>
-                                        <Overlay overlayStyle={{ backgroundColor: 'rgba(52, 52, 52, 0)' }} isVisible={this.state.visible} onBackdropPress={() => this.toggleOverlay()}>
+                                        <Overlay overlayStyle={styles.overlay} isVisible={this.state.visible} onBackdropPress={() => this.toggleOverlay()}>
                                             <Card
                                                 key={this.state.selectedCard.ServiceId}
                                                 image={{ uri: this.state.selectedCard.ImageGallery }}
                                                 containerStyle={styles.innerCardContainer}
                                             >
+                                                <View style={styles.details}>
                                                 <Text style={styles.cardTitleText} >{this.state.selectedCard.ServiceName}</Text>
-                                                <Text>{this.state.selectedCard.Description}</Text>
-                                                <Text> דירוג העסק {this.state.selectedCard.Rate}</Text>
-                                                <Text> פתוח בימי:  {this.state.selectedCard.OpenDays}</Text>
-                                                <Text> בין השעות {this.state.selectedCard.OpenHoursStart}-{this.state.selectedCard.OpenHoursEnds}</Text>
-                                                <Text> כתובת {this.state.selectedCard.ServiceAddress}</Text>
+                                                <Text style={styles.serviceDetails}>{this.state.selectedCard.Description}</Text>
+                                                <Text style={styles.serviceDetails}> דירוג העסק: {this.state.selectedCard.Rate}</Text>
+                                                <Text style={styles.serviceDetails}> פתוח בימים:  {this.state.selectedCard.OpenDays}</Text>
+                                                <Text style={styles.serviceDetails}> בין השעות: {this.state.selectedCard.OpenHoursStart}-{this.state.selectedCard.OpenHoursEnds}</Text>
+                                                <Text style={styles.serviceDetails}> כתובת: {this.state.selectedCard.ServiceAddress}</Text>
+                                                </View>
                                                 <TouchableOpacity
                                                     style={{ paddingVertical: 20, alignSelf: 'center' }}
                                                     onPress={() => this.setState({ mapVisible: true })}>
@@ -271,7 +273,7 @@ const styles = StyleSheet.create({
         shadowColor: '#D1D3D4'
     },
     selectedCategory:{
-        backgroundColor: colors.turkiz,
+        backgroundColor: colors.Business,
         borderRadius: 0,
         paddingVertical: 5,
         paddingHorizontal: 10,
@@ -279,7 +281,7 @@ const styles = StyleSheet.create({
         shadowColor: '#D1D3D4'
     },
     titleCat: { 
-        color: colors.turkiz, 
+        color: colors.Business, 
         fontFamily:'rubik-regular' 
     },
     coloredTitleCat: { 
@@ -294,8 +296,11 @@ const styles = StyleSheet.create({
         shadowRadius: 5
     },
     innerCardContainer: {
-        width: 300,
-        alignSelf: 'center'
+        width: 330,
+        height:550,
+        alignSelf: 'center',
+        borderWidth:0,
+        top:40
     },
     cardTitle: {
         fontSize: 26,
@@ -328,10 +333,11 @@ const styles = StyleSheet.create({
     },
     cardButton: {
         borderRadius: 30,
-        marginBottom: 0,
-        width: '60%',
+        margin:10,
+        width: '50%',
+        height:40,
         alignSelf: 'center',
-        backgroundColor: colors.turkiz,
+        backgroundColor: colors.Business,
         elevation: 4
     },
     cardButtonText: {
@@ -341,12 +347,23 @@ const styles = StyleSheet.create({
     locationText: {
         fontFamily: 'rubik-regular',
         fontSize: 16,
-        color: colors.turkiz
+        color: colors.Business
     },
     innerCardImage: {
         height:200, 
         marginLeft:0, 
         marginRight:0
+    },
+    overlay:{
+        backgroundColor: 'rgba(52, 52, 52, 0)'
+    },
+    serviceDetails:{
+        paddingVertical:5,
+        alignSelf:'flex-start',
+        fontSize:16
+    },
+    details:{
+        paddingVertical:20
     } 
 });
 

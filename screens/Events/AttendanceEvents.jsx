@@ -352,7 +352,7 @@ const styles = StyleSheet.create({
         marginBottom: 0,
         width: '60%',
         alignSelf: 'center',
-        backgroundColor: colors.turkiz
+        backgroundColor: colors.Events
     },
     cardButtonText: {
         fontSize: 20,
@@ -361,6 +361,6 @@ const styles = StyleSheet.create({
     locationText: {
         fontFamily: 'rubik-regular',
         fontSize: 16,
-        color: colors.turkiz
+        color: colors.Events
     }
 });
