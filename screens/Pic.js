@@ -19,7 +19,7 @@ export default class Pic extends Component {
     this.state = {
       isChecked: true,
       picUri: 'https://cdn1.iconfinder.com/data/icons/business-users/512/circle-512.png',
-      picName: 'user_' + new Date().getTime() + '.jpg'
+     // picName: 'user_' + new Date().getTime() + '.jpg'
     };
     this.handleChecked = this.handleChecked.bind(this); // set this, because you need get methods from CheckBox 
     this.uplodedPicPath = 'http://proj.ruppin.ac.il/bgroup29/test1/uploadFiles/';
@@ -38,17 +38,17 @@ export default class Pic extends Component {
     const { navigation } = this.props;
     this._unsubscribe = navigation.addListener('didFocus', () => {
       AsyncStorage.getItem('cameraDetails', (err, cameraDetailsJSON) => {
-        
+
         if (cameraDetailsJSON !== null) {
           const cameraDetailsObj = JSON.parse(cameraDetailsJSON);
-        this.setState({ picUri: cameraDetailsObj.picUri, picName: 'user_' + new Date().getTime() + '.jpg' });
-        console.log("cameraDetailsObj:" + cameraDetailsObj.photoUri)
-         }
+          this.setState({ picUri: cameraDetailsObj.picUri, picName: 'user_' + new Date().getTime() + '.jpg' });
+          console.log("cameraDetailsObj:" + cameraDetailsObj.picUri)
+        }
 
-      //   else{
-      //     this.setState({ picUri: 'https://cdn1.iconfinder.com/data/icons/business-users/512/circle-512.png', picName: 'user_' + new Date().getTime() + '.jpg' });
-      //   }
-       });
+        //   else{
+        //     this.setState({ picUri: 'https://cdn1.iconfinder.com/data/icons/business-users/512/circle-512.png', picName: 'user_' + new Date().getTime() + '.jpg' });
+        //   }
+      });
 
 
 
@@ -105,9 +105,10 @@ export default class Pic extends Component {
             ImagePath: this.uplodedPicPath + imageNameWithGUID
           }
       
-          //await AsyncStorage.removeItem('cameraDetails')
+          
           AsyncStorage.mergeItem('user', JSON.stringify(userDetails), () =>
-            this.props.navigation.navigate('RegistrationP4'));
+          AsyncStorage.removeItem('cameraDetails'));
+          this.props.navigation.navigate('RegistrationP4');
         
           console.log(this.state.uplodedPicUri);
           

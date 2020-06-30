@@ -184,7 +184,7 @@ class GeneralServices extends React.Component {
                         <OurButton
                             title='add'
                             key='add'
-                            onPress={() => navigation.navigate('CreateEvent')}>
+                            onPress={() => navigation.navigate('CreateService')}>
                             <MaterialIcons name="add" size={40} color={colors.header} />
                         </OurButton>
                     </View>

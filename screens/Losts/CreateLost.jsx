@@ -25,13 +25,28 @@ export default class CreateLost extends React.Component {
             mode: 'date',
             show1: false,
             show2: false,
-            newLost:{}
+            newLost:{},
+            picUri: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Lost_main_title.svg/1200px-Lost_main_title.svg.png"
         };
+        this.uplodedPicPath = 'http://proj.ruppin.ac.il/bgroup29/test1/uploadFiles/';
     }
 
     componentDidMount() {
         console.log(this.state.newLost);
         this.getUser();
+        const { navigation } = this.props;
+        this._unsubscribe = navigation.addListener('didFocus', () => {
+            AsyncStorage.getItem('cameraDetails', (err, cameraDetailsJSON) => {
+      
+              if (cameraDetailsJSON !== null) {
+                const cameraDetailsObj = JSON.parse(cameraDetailsJSON);
+                this.setState({ picUri: cameraDetailsObj.picUri, picName: 'losts_' + new Date().getTime() + '.jpg' });
+                console.log("cameraDetailsObj:" + cameraDetailsObj.picUri);
+                
+              }
+            });
+      
+          });
     }
 
     getUser() {
@@ -52,6 +67,75 @@ export default class CreateLost extends React.Component {
         );
 
     }
+    btnUpload = () => {
+        console.log("btnupload");
+        console.log(this.state.picUri);
+        console.log(this.state.picName);
+        let img = this.state.picUri;
+        let imgName = this.state.picName;
+        this.imageUpload(img, imgName);
+    }
+
+    imageUpload = (imgUri, picName) => {
+        let urlAPI = "http://proj.ruppin.ac.il/bgroup29/test1/uploadpicture";
+        let dataI = new FormData();
+        dataI.append('picture', {
+          uri: imgUri,
+          name: picName,
+          type: 'image/jpg'
+        });
+        const config = {
+          method: 'POST',
+          body: dataI,
+        };
+    
+    
+        fetch(urlAPI, config)
+          .then((res) => {
+            console.log('res.status=', res.status);
+            if (res.status == 201) {
+              return res.json();
+            }
+            else {
+              console.log('error uploding ...1');
+              return "err";
+            }
+          })
+          .then((responseData) => {
+            console.log(responseData);
+              if (responseData != "err") {
+                  let picNameWOExt = picName.substring(0, picName.indexOf("."));
+                  let imageNameWithGUID = responseData.substring(responseData.indexOf(picNameWOExt), responseData.indexOf(".jpg") + 4);
+                  this.setState(prevState => ({
+                    newS: {
+                        ...prevState.newLost,
+                        Image: this.uplodedPicPath + imageNameWithGUID
+                    }
+                      
+                  }))
+                  console.log("Image" + this.state.newLost.Image)
+    
+    
+                  AsyncStorage.removeItem('cameraDetails');
+                  //{this.editMode ? this.fetchUpdateEvent() : this.fetchCreatEvent()}
+                   this.fetchCreateLost();
+                  //this.fetchCreatEvent();
+    
+    
+    
+    
+                  //console.log(this.state.uplodedPicUri);
+    
+              }
+            else {
+              console.log('error uploding ...2');
+              alert('error uploding ...2');
+            }
+          })
+          .catch(err => {
+            alert('err upload= ' + err);
+          });
+      }
 
     handleFocus = e => {
         this.setState({ isFocus: true });
@@ -127,8 +211,8 @@ export default class CreateLost extends React.Component {
                 <Header />
                 <BackButton goBack={() => navigation.navigate('GeneralLosts')} />
                 <ScrollView>
-                    <View style={{ flexDirection: 'row', borderColor: 'white', borderWidth: 1, borderRadius: 15, justifyContent: 'center', alignItems: "center", height: '20%' }}>
-                        <ImageBackground source={{ uri: newLost.ImageId }} style={{ flex: 1, resizeMode: "cover", justifyContent: "center" }}>
+                    <View style={{ flexDirection: 'row', borderColor: 'white', borderWidth: 1, borderRadius: 15, justifyContent: 'center', alignItems: "center"}}>
+                        <ImageBackground source={{ uri: this.state.picUri }} style={{ flex: 1, resizeMode: "cover", justifyContent: "center", height:'100%', width:'100%' }}>
                             <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
                                 <OurButton onPress={() => this.props.navigation.navigate('CameraPage')} style={{ paddingHorizontal: 20 }}><MaterialIcons name="camera-alt" size={40} color={colors.turkiz} /></OurButton>
                                 <OurButton onPress={() => this.props.navigation.navigate('ImageGallery')} style={{ paddingHorizontal: 20 }}><MaterialIcons name="photo" size={40} color={colors.turkiz} /></OurButton>
@@ -220,7 +304,7 @@ export default class CreateLost extends React.Component {
                     title="שמור"
                     buttonStyle={{ borderRadius: 5, marginLeft: 20, marginRight: 20 }}
                     containerStyle={{ marginTop: 1 }}
-                    onPress={()=>this.fetchCreateLost()}
+                    onPress={()=>this.btnUpload()}
                 ></Button>
             </View>
         );

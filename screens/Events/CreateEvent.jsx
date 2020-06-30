@@ -43,11 +43,15 @@ export default class CreateEvent extends React.Component {
             //formated date
             showStart: '',
             showEnd: '',
-            setLoc: false
+            setLoc: false,
+            picUri:'https://www.ladn.eu/wp-content/uploads/2017/04/my-event.png',
+            change: false,
+            editMode: false
         };
         this.catArray = [];
         this.editMode = false;
         this.eventDetails = {};
+        this.uplodedPicPath = 'http://proj.ruppin.ac.il/bgroup29/test1/uploadFiles/';
 
 
     }
@@ -56,13 +60,40 @@ export default class CreateEvent extends React.Component {
         console.log("Nav====", this.props.navigation.getParam('edit'), this.props.navigation.getParam('eventDetails'));
         this.editMode = this.props.navigation.getParam('edit');
         this.editMode &&
-            this.setState({ newEvent: this.props.navigation.getParam('eventDetails') });
+            this.setState({ newEvent: this.props.navigation.getParam('eventDetails'), picUri: this.props.navigation.getParam('eventDetails').Image, change:true , editMode: true});
         this.getUser();
         this.fetchGetAllCategories();
         this.fetchGetAllIntrests();
         console.log("new event= ", this.state.newEvent, this.state.setLoc);
+        const { navigation } = this.props;
+        this._unsubscribe = navigation.addListener('didFocus', () => {
+            AsyncStorage.getItem('cameraDetails', (err, cameraDetailsJSON) => {
+      
+              if (cameraDetailsJSON !== null) {
+                const cameraDetailsObj = JSON.parse(cameraDetailsJSON);
+                this.setState({ picUri: cameraDetailsObj.picUri, picName: 'event_' + new Date().getTime() + '.jpg' });
+                console.log("cameraDetailsObj:" + cameraDetailsObj.picUri);
+                
+              }
+            });
+      
+            console.log("chande" + this.state.change);
+            console.log(this.state.editMode);
+          });
 
         //console.log(this.editMode, this.eventDetails);
+
+    }
+
+    updateImage() {
+        if (this.state.change && this.editMode) {
+            this.btnUpload()
+        }
+        else {
+
+            this.fetchUpdateEvent()
+
+        }
 
     }
 
@@ -105,7 +136,9 @@ export default class CreateEvent extends React.Component {
                     OpenedBy: userObj.UserId,
                     NeiCode: userObj.NeighborhoodName, 
                     //delete:
-                    Image: 'https://www.sabresim.co.il/sites/default/files/styles/large/public/yad2.jpg?itok=3AhW2N6T'
+                    //Image: '../assets/createEvent.jpg'
+                   // Image: 'https://www.ladn.eu/wp-content/uploads/2017/04/my-event.png'
+                  // picUri: use
                 }
             }));
 
@@ -215,12 +248,12 @@ export default class CreateEvent extends React.Component {
         )
     }
 
-    updateLocation(){
+    updateLocation() {
         const LocationString = this.props.navigation.getParam('Location');
         const locationCoords = this.props.navigation.getParam('region');
-        console.log("update loc - ", LocationString, "r= ",locationCoords.latitude);
-        const Lat= locationCoords.latitude;
-        const Lan= locationCoords.longitude;
+        console.log("update loc - ", LocationString, "r= ", locationCoords.latitude);
+        const Lat = locationCoords.latitude;
+        const Lan = locationCoords.longitude;
         this.setState(prevState => ({
             newEvent: {
                 ...prevState.newEvent,
@@ -228,9 +261,78 @@ export default class CreateEvent extends React.Component {
                 Lat: Lat,
                 Lan: Lan
             },
-        }), () =>  this.fetchCreatEvent()
+        }), () => this.btnUpload()
         );
     }
+    btnUpload = () => {
+        console.log("btnupload");
+        console.log(this.state.picUri);
+        console.log(this.state.picName);
+        let img = this.state.picUri;
+        let imgName = this.state.picName;
+        this.imageUpload(img, imgName);
+    }
+
+   
+
+  imageUpload = (imgUri, picName) => {
+    let urlAPI = "http://proj.ruppin.ac.il/bgroup29/test1/uploadpicture";
+    let dataI = new FormData();
+    dataI.append('picture', {
+      uri: imgUri,
+      name: picName,
+      type: 'image/jpg'
+    });
+    const config = {
+      method: 'POST',
+      body: dataI,
+    };
+
+
+    fetch(urlAPI, config)
+      .then((res) => {
+        console.log('res.status=', res.status);
+        if (res.status == 201) {
+          return res.json();
+        }
+        else {
+          console.log('error uploding ...1');
+          return "err";
+        }
+      })
+      .then((responseData) => {
+        console.log(responseData);
+          if (responseData != "err") {
+              let picNameWOExt = picName.substring(0, picName.indexOf("."));
+              let imageNameWithGUID = responseData.substring(responseData.indexOf(picNameWOExt), responseData.indexOf(".jpg") + 4);
+              this.setState(prevState => ({
+                  newEvent: {
+                      ...prevState.newEvent,
+                      Image: this.uplodedPicPath + imageNameWithGUID
+                  }
+              }))
+              console.log("Image" + this.state.newEvent.Image)
+
+
+              AsyncStorage.removeItem('cameraDetails');
+              {this.editMode ? this.fetchUpdateEvent() : this.fetchCreatEvent()}
+              //this.fetchCreatEvent();
+
+
+
+
+              //console.log(this.state.uplodedPicUri);
+
+          }
+        else {
+          console.log('error uploding ...2');
+          alert('error uploding ...2');
+        }
+      })
+      .catch(err => {
+        alert('err upload= ' + err);
+      });
+  }
 
     fetchCreatEvent() {
          console.log("in new event fetch =", this.state.newEvent);
@@ -250,6 +352,7 @@ export default class CreateEvent extends React.Component {
                     if (result == 1) {
                         Alert.alert(" האירוע נשמר בהצלחה");
                         //console.log(result);
+                        AsyncStorage.removeItem('cameraDetails');
                         this.props.navigation.navigate('GeneralEvents');
                     }
                     else
@@ -401,9 +504,9 @@ export default class CreateEvent extends React.Component {
                     
                     
                         <View style={{ flexDirection: 'row', borderColor: 'white', borderWidth: 1, borderRadius: 15, justifyContent: 'center', alignItems: "center", height:'20%' }}>
-                           <ImageBackground source={{uri:newEvent.Image}} style={{flex: 1,resizeMode: "cover",justifyContent: "center"}}>
+                           <ImageBackground source={{uri:this.state.picUri}} style={{flex: 1,resizeMode: "cover",justifyContent: "center", height:300, width:'100%'}}>
                            
-                           <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+                           <View style={{ flexDirection: 'row', alignSelf: 'center', paddingTop:'20%' }}>
                                 <OurButton onPress={() => this.props.navigation.navigate('CameraPage')} style={{ paddingHorizontal: 20 }}><MaterialIcons name="camera-alt" size={40} color={colors.turkiz}/></OurButton>
                                 <OurButton onPress={() => this.props.navigation.navigate('ImageGallery')} style={{ paddingHorizontal: 20 }}><MaterialIcons name="photo" size={40} color={colors.turkiz}/></OurButton>
                             </View>
@@ -635,7 +738,8 @@ export default class CreateEvent extends React.Component {
                     title={this.editMode ? "עדכן" : "צור אירוע"}
                     buttonStyle={{ borderRadius: 5, marginLeft: 20, marginRight: 20 }}
                     containerStyle={{ marginTop: 1 }}
-                    onPress={() => this.editMode ? this.fetchUpdateEvent() : this.validateInputes()}
+                    onPress={() => this.editMode ? this.updateImage() : this.validateInputes()}
+                    //onPress={()=> this.btnUpload()}
                 ></Button>
             </View>
         );

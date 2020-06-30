@@ -26,16 +26,20 @@ export default class CreateEvent extends React.Component {
             region: {},
             CityName: '',
             selectedCat: '',
-            newS: {},
+            newS: {
+                Rate:0,
+            },
             serviceDetails: {},
             //formated date
             showStart: '',
             showEnd: '',
-            setLoc: false
+            setLoc: false,
+            picUri: "https://img.etimg.com/thumb/msid-59997726,width-643,imgsize-41586,resizemode-4/ending-a-long-term-business-partnership-keep-these-points-in-mind.jpg"
         };
         this.catArray = [];
         this.editMode = false;
         this.serviceDetails = {};
+        this.uplodedPicPath = 'http://proj.ruppin.ac.il/bgroup29/test1/uploadFiles/';
 
 
     }
@@ -49,8 +53,92 @@ export default class CreateEvent extends React.Component {
         this.fetchGetAllCategories();
         console.log("new service= ", this.state.newS, this.state.setLoc);
         console.log(this.editMode, this.serviceDetails);
+        const { navigation } = this.props;
+        this._unsubscribe = navigation.addListener('didFocus', () => {
+            AsyncStorage.getItem('cameraDetails', (err, cameraDetailsJSON) => {
+      
+              if (cameraDetailsJSON !== null) {
+                const cameraDetailsObj = JSON.parse(cameraDetailsJSON);
+                this.setState({ picUri: cameraDetailsObj.picUri, picName: 'service_' + new Date().getTime() + '.jpg' });
+                console.log("cameraDetailsObj:" + cameraDetailsObj.picUri);
+                
+              }
+            });
+      
+          });
 
     }
+    btnUpload = () => {
+        console.log("btnupload");
+        console.log(this.state.picUri);
+        console.log(this.state.picName);
+        let img = this.state.picUri;
+        let imgName = this.state.picName;
+        this.imageUpload(img, imgName);
+    }
+
+   
+
+  imageUpload = (imgUri, picName) => {
+    let urlAPI = "http://proj.ruppin.ac.il/bgroup29/test1/uploadpicture";
+    let dataI = new FormData();
+    dataI.append('picture', {
+      uri: imgUri,
+      name: picName,
+      type: 'image/jpg'
+    });
+    const config = {
+      method: 'POST',
+      body: dataI,
+    };
+
+
+    fetch(urlAPI, config)
+      .then((res) => {
+        console.log('res.status=', res.status);
+        if (res.status == 201) {
+          return res.json();
+        }
+        else {
+          console.log('error uploding ...1');
+          return "err";
+        }
+      })
+      .then((responseData) => {
+        console.log(responseData);
+          if (responseData != "err") {
+              let picNameWOExt = picName.substring(0, picName.indexOf("."));
+              let imageNameWithGUID = responseData.substring(responseData.indexOf(picNameWOExt), responseData.indexOf(".jpg") + 4);
+              this.setState(prevState => ({
+                newS: {
+                    ...prevState.newS,
+                    Image: this.uplodedPicPath + imageNameWithGUID
+                }
+                  
+              }))
+              console.log("Image" + this.state.newS.Image)
+
+
+              AsyncStorage.removeItem('cameraDetails');
+              //{this.editMode ? this.fetchUpdateEvent() : this.fetchCreatEvent()}
+              {this.editMode ? this.fetchUpdateService() : this.fetchCreateService()}
+              //this.fetchCreatEvent();
+
+
+
+
+              //console.log(this.state.uplodedPicUri);
+
+          }
+        else {
+          console.log('error uploding ...2');
+          alert('error uploding ...2');
+        }
+      })
+      .catch(err => {
+        alert('err upload= ' + err);
+      });
+  }
     fetchGetAllCategories() {
         //console.log("in fetch");
         return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Category/All', {
@@ -177,6 +265,8 @@ export default class CreateEvent extends React.Component {
         let serviceToUpdate = {
             ServiceId: s.ServiceId,
             ServiceName: s.ServiceName,
+            //ImageGallery: s.Image,
+            Rate: s.Rate,
             Description: s.Description,
             Owner: s.Owner,
             OpenDays: s.OpenDays,
@@ -207,12 +297,12 @@ export default class CreateEvent extends React.Component {
                         this.props.navigation.navigate('GeneralServices');
                     }
                     else
-                        Alert.alert(" מצטערים, אנו נסו שנית!");
+                        Alert.alert(" 1 מצטערים, אנו נסו שנית!");
                     console.log(result);
                 },
                 (error) => {
                     console.log("err post=", error);
-                    Alert.alert("מצטערים, אנו נסו שנית!");
+                    Alert.alert(" 2 מצטערים, אנו נסו שנית!");
                 }
             );
     }
@@ -284,13 +374,15 @@ export default class CreateEvent extends React.Component {
                 <Header />
                 <BackButton goBack={() => navigation.navigate('GeneralServices')} />
                 <ScrollView>
-                        <View style={{ flexDirection: 'row', borderColor: 'white', borderWidth: 1, borderRadius: 15, justifyContent: 'center', alignItems: "center" }}>
-                           <ImageBackground source={{uri:newS.ImageGallery}} style={{flex: 1,resizeMode: "cover",justifyContent: "center"}}>
-                           <Text style={styles.textOr}>הוספת תמונה  </Text>
-                            <OurButton onPress={() => this.props.navigation.navigate('CameraPage')}><SimpleLineIcons name="camera" size={30} color="black" /></OurButton>
-                            <OurButton onPress={() => this.props.navigation.navigate('ImageGallery')}><SimpleLineIcons name="picture" size={30} color="black" /></OurButton>
-                            </ImageBackground>
-                        </View>
+                    <View style={{ flexDirection: 'row', borderColor: 'white', borderWidth: 1, borderRadius: 15, justifyContent: 'center', alignItems: "center",  marginBottom:'15%' }}>
+                        <ImageBackground source={{ uri: this.state.picUri }} style={{ flex: 1, resizeMode: "cover", justifyContent: "center", height: '100%', width: '100%' }}>
+
+                            <View style={{ flexDirection: 'row', alignSelf: 'center', paddingTop: '20%' }}>
+                                <OurButton onPress={() => this.props.navigation.navigate('CameraPage')} style={{ paddingHorizontal: 20 }}><MaterialIcons name="camera-alt" size={40} color={colors.turkiz} /></OurButton>
+                                <OurButton onPress={() => this.props.navigation.navigate('ImageGallery')} style={{ paddingHorizontal: 20 }}><MaterialIcons name="photo" size={40} color={colors.turkiz} /></OurButton>
+                            </View>
+                        </ImageBackground>
+                    </View>
                     <TextInput
                         style={styles.input}
                         autoFocus={true}
@@ -418,7 +510,8 @@ export default class CreateEvent extends React.Component {
                     title={this.editMode ? "עדכן" : "צור עסק חדש"}
                     buttonStyle={{ borderRadius: 5, marginLeft: 20, marginRight: 20 }}
                     containerStyle={{ marginTop: 1 }}
-                    onPress={() => this.editMode ? this.fetchUpdateService() : this.fetchCreateService()}
+                    //onPress={() => this.editMode ? this.fetchUpdateService() : this.fetchCreateService()}
+                    onPress={()=> this.fetchCreateService()}
                 ></Button>
             </View>
         );

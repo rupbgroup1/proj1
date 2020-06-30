@@ -60,11 +60,12 @@ export default class RegistraionP4 extends Component {
             .then(
                 (result) => {
                     console.log("fetch POST= ", result);
-                    if (result === 1)
-                   {
-                   
-                     //  this.btnUpload();
-                    this.fetcGetUserId(user.Email);
+                    if (result === 1) {
+
+                        //  this.btnUpload();
+                        //AsyncStorage.removeItem('cameraDetails'), () =>
+                            this.fetcGetUserId(user.Email);
+
                    }
                     else {
                         Alert.alert("מצטערים, הפרופיל לא נוצר בהצלחה. אנא נסה שנית.");
