@@ -25,7 +25,10 @@ export default class CreateLost extends React.Component {
             mode: 'date',
             show1: false,
             show2: false,
-            newLost:{},
+            newLost:{
+                Title:'',
+                Description:''
+            },
             picUri: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Lost_main_title.svg/1200px-Lost_main_title.svg.png"
         };
         this.uplodedPicPath = 'http://proj.ruppin.ac.il/bgroup29/test1/uploadFiles/';
@@ -65,6 +68,14 @@ export default class CreateLost extends React.Component {
             console.log(this.state.newLost);
         }
         );
+
+    }
+    validateInputes() {
+        this.state.newLost.Title === '' ? Alert.alert("אנא מלא/י כותרת") : (
+            this.state.newLost.Description === '' ? Alert.alert("אנא מלא/י תיאור") : (
+                this.btnUpload())
+        )
+
 
     }
     btnUpload = () => {
@@ -107,9 +118,9 @@ export default class CreateLost extends React.Component {
                   let picNameWOExt = picName.substring(0, picName.indexOf("."));
                   let imageNameWithGUID = responseData.substring(responseData.indexOf(picNameWOExt), responseData.indexOf(".jpg") + 4);
                   this.setState(prevState => ({
-                    newS: {
+                    newLost: {
                         ...prevState.newLost,
-                        Image: this.uplodedPicPath + imageNameWithGUID
+                        ImageId: this.uplodedPicPath + imageNameWithGUID
                     }
                       
                   }))
@@ -304,7 +315,7 @@ export default class CreateLost extends React.Component {
                     title="שמור"
                     buttonStyle={{ borderRadius: 5, marginLeft: 20, marginRight: 20 }}
                     containerStyle={{ marginTop: 1 }}
-                    onPress={()=>this.btnUpload()}
+                    onPress={()=>this.validateInputes()}
                 ></Button>
             </View>
         );
