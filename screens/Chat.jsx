@@ -22,7 +22,6 @@ export default class Chat extends React.Component {
     user: {},
     userCode: 0,
     Nei: '',
-    //token: 'ExponentPushToken[cQYyeHDo4l_zVTPLg5aq-w]'
   };
 
   get user() {
@@ -60,17 +59,43 @@ export default class Chat extends React.Component {
 
   onSendFunction(messages){
     firebaseSvc.send(messages);
-    this.notificationPush()
+    this.fetchGetToken();
+    //this.notificationPush()
   }
 
-  notificationPush = () => {
+  fetchGetToken(){
+    fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/User/Token?userId='+this.state.sendTo, {
+      method: 'GET',
+      headers: {
+        "Content-type": "application/json; charset=UTF-8"
+      }
+    })
+      .then(res => {
+        return res.json();
+      })
+      .then(
+        (result) => {
+          if (result!==null) {
+            console.log(" get token result = ", result);
+            this.notificationPush(result);
+          }
+         
+        },
+        (error) => {
+          console.log("err post=", error);
+          Alert.alert("מצטערים, אנו נסו שנית!");
+        }
+      );
+  }
+
+  notificationPush = (token) => {
     console.log("in push!");
     let per = {
-      to: this.props.navigation.getParam('userToken'),
+      to: token,
       title:'Commy',
       body: 'הודעה חדשה מ'+ this.state.user.FirstName,
       badge: 3,
-      data: {sender: this.state.user.UserId, navigateTo:"Chat", reciever:this.state.sendTo}
+      data: {SendFrom: this.state.user.UserId, ScreenName:"Chat", SendTo:this.state.sendTo}
     };
 
     // POST adds a random id to the object sent
