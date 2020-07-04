@@ -58,9 +58,6 @@ export default class ProfileEdit extends Component {
 
     componentDidMount = () => {
         this.getUser();
-
-
-
     }
 
     getUser() {

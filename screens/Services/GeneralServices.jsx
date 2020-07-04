@@ -271,7 +271,6 @@ class GeneralServices extends React.Component {
                                 <View style={{ right: 5 }}>
                                     <Card
                                         key={s.ServiceId}
-                                        //title={e.Name}
                                         titleStyle={styles.cardTitle}
                                         image={{ uri: s.ImageGallery }}
                                         containerStyle={styles.cardContainer}
