@@ -35,6 +35,9 @@ export default class MainPage extends Component {
           </View>
 
           <View style={styles.row}>
+          <Text style={styles.pressToReg} onPress={() => this.props.navigation.navigate('Profile')}>
+            להרשמה לחץ כאן
+          </Text>
 
             <View style={styles.item1}>
               <NeiButton

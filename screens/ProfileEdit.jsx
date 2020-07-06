@@ -20,7 +20,7 @@ export default class ProfileEdit extends Component {
         super(props);
 
         this.state = {
-            
+
             editing: false,
 
             fName: '',
@@ -31,7 +31,7 @@ export default class ProfileEdit extends Component {
             intrests: [],
             nameJob: '',
             kidsYearOfBirth: [],
-            
+
             yearOfBirth: '',
             gender: '',
 
@@ -69,8 +69,8 @@ export default class ProfileEdit extends Component {
 
         AsyncStorage.getItem('user', (ERR, userJSON) => {
             let userObj = JSON.parse(userJSON);
-            //console.log("fromuser", userObj, "JSON", userJSON);
-            let jobName = userObj.JobTitle!= null ? userObj.JobTitle.JobName : '';
+            console.log("fromuser", userObj, "JSON", userJSON);
+            let jobName = userObj.JobTitle != null ? userObj.JobTitle.JobName : '';
             this.setState({
                 user: userObj,
                 jobName: jobName,
@@ -83,8 +83,8 @@ export default class ProfileEdit extends Component {
                 initialInterest: userObj.Intrests,
                 finished: true,
 
-                
-               
+
+
                 image: userObj.Image,
                 intrests: userObj.Intrests,
                 yearOfBirth: userObj.YearOfBirth,
@@ -255,8 +255,8 @@ export default class ProfileEdit extends Component {
             Kids: this.state.kidsYearOfBirth,
             Intrests: this.state.choosenInterests,
             //להוסיף בשרת
-            Gender:this.state.gender,
-            YearOfBirth:this.state.yearOfBirth,
+            Gender: this.state.gender,
+            YearOfBirth: this.state.yearOfBirth,
             FirstName: this.state.vFName,
             LastName: this.state.lName,
 
@@ -279,13 +279,12 @@ export default class ProfileEdit extends Component {
                 (result) => {
                     console.log("fetch POST= ", result);
                     if (result === 1) {
-                        AsyncStorage.mergeItem('user', JSON.stringify(user),()=>
-                        {
+                        AsyncStorage.mergeItem('user', JSON.stringify(user), () => {
                             Alert.alert("הפרטים נשמרו בהצלחה");
                             this.props.navigation.navigate('MainPage');
                         }
                         );
-                        
+
                     }
                     else {
                         Alert.alert("אנא נסו שנית");
@@ -306,7 +305,7 @@ export default class ProfileEdit extends Component {
         //const intrests = intrestsTemp;
         const intrests = this.state.intrests.map((buttonIntersts) => (
             buttonIntersts.Subintrest.slice(0, -1)));
-        
+
 
         // להציג שנות לידה
         const kids = this.state.kidsYearOfBirth.map((buttonKids) => (
@@ -337,7 +336,7 @@ export default class ProfileEdit extends Component {
                         onPress={() => this.setState({ editing: !editing })}>
                         <Image
                             style={styles.image}
-                            source={{ uri: 'https://icons-for-free.com/iconfiles/png/512/edit+document+edit+file+edited+editing+icon-1320191040211803620.png' }}
+                            source={{ uri: this.state.user.ImageId }}
 
                         />
                     </TouchableOpacity>
@@ -346,7 +345,7 @@ export default class ProfileEdit extends Component {
                         <View style={styles.screen}>
                             <Text style={styles.subTitle}>הפרופיל שלי</Text>
                             <Image style={styles.avatar}
-                                source={{ uri: this.state.user.Imaged }} />
+                                source={{ uri: this.state.user.ImagePath }} />
 
                             <View style={styles.center}>
                                 <Text style={styles.note, { fontSize: 30, }}>{this.state.user.FirstName} {this.state.user.LastName}</Text>
@@ -374,6 +373,14 @@ export default class ProfileEdit extends Component {
                             <Text style={styles.subTitle} >
                                 עריכת פרופיל
                   </Text>
+                            <Image style={styles.avatar}
+                                source={{ uri: this.state.user.ImagePath }} />
+
+
+                            <View style={{ flexDirection: 'row', alignSelf: 'center', paddingTop: '20%' }}>
+                                <OurButton onPress={() => this.props.navigation.navigate('CameraPage')} style={{ paddingHorizontal: 20 }}><MaterialIcons name="camera-alt" size={40} color={colors.turkiz} /></OurButton>
+                                <OurButton onPress={() => this.props.navigation.navigate('ImageGallery')} style={{ paddingHorizontal: 20 }}><MaterialIcons name="photo" size={40} color={colors.turkiz} /></OurButton>
+                            </View>
 
                             <Input
                                 //שם פרטי 
@@ -581,7 +588,7 @@ export default class ProfileEdit extends Component {
                                     style={styles.item}
                                     title={'ביטול'} onPress={() => {
                                         this.setState({
-                                            editing:false,
+                                            editing: false,
                                             vFName: this.state.fName,
                                             vLName: this.state.lName,
                                             vImage: this.state.image,
@@ -641,8 +648,8 @@ const styles = StyleSheet.create({
         color: 'black',
         //justifyContent:"center",
         textAlign: "center",
-        marginRight:5,
-        marginLeft:5
+        marginRight: 5,
+        marginLeft: 5
     },
 
     subTitle: {

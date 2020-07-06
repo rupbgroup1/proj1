@@ -102,6 +102,8 @@ const MapComponent = (props) => {
                                         //console.log('props.navigation=' , props.navigation);
 
                                         //                       props.navigation.navigate('MainPage');
+                                        console.log("user = " + user.FirstName);
+                                        
                                         Alert.alert(
                                             'Alert Title',
                                             'My Alert Msg',
@@ -110,7 +112,7 @@ const MapComponent = (props) => {
                                                     text: 'Ask me later',
                                                     onPress: () => {
                                                         console.log('Ask me later pressed');
-                                                        props.nav.navigate('MainPage');
+                                                        props.nav.navigate('Profile', {user});
                                                     }
                                                 },
                                                 {
