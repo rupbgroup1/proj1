@@ -89,7 +89,7 @@ export default class FindNeighboor extends Component {
             .then(
                 (result) => {
                     if (result.length > 0) {
-                        console.log(result);
+                        //console.log(result);
                         this.setState({ IntrestsArray: result })
                     }
                     else
@@ -127,7 +127,7 @@ export default class FindNeighboor extends Component {
             .then(
                 (result) => {
                     if (result.length > 0) {
-                        console.log("fetch result= ", result);
+                        //console.log("fetch result= ", result);
                         this.setState({ searchData: result });
                     }
                     else
@@ -142,7 +142,7 @@ export default class FindNeighboor extends Component {
 
     //get sub intrest of main
     fetchSubInterest = () => {
-        console.log(this.state.mainI);
+        //console.log(this.state.mainI);
         // console.log(this.state.searchName+this.state.user.CityName);
         return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Intrests/Sub?mainI=' + this.state.mainI, {
             method: 'GET',
@@ -156,9 +156,9 @@ export default class FindNeighboor extends Component {
 
             .then(
                 (result) => {
-                    console.log("fetch result= ", result[0]);
+                    //console.log("fetch result= ", result[0]);
                     this.setState({ subInArray: result });
-                    console.log("2");
+                    //console.log("2");
                 },
                 (error) => {
                     console.log("err post=", error);
@@ -180,13 +180,13 @@ export default class FindNeighboor extends Component {
             })
         })
             .then(res => {
-                console.log('SEARCH BY I');
+                //console.log('SEARCH BY I');
                 return res.json();
 
             })
             .then(
                 (result) => {
-                    console.log("fetch I result= ", result);
+                    //console.log("fetch I result= ", result);
                     this.setState({ searchData: result });
 
                 },
@@ -197,7 +197,7 @@ export default class FindNeighboor extends Component {
     }
 
     onMapRegionChange(region) {
-        console.log(region);
+       // console.log(region);
     }
 
     handleMainChange(main) {
@@ -253,7 +253,7 @@ export default class FindNeighboor extends Component {
                 </View>
 
                 <View style={styles.mapView}>
-                    {console.log('this.props.navigation=' , this.props.navigation)}
+                    {/* {console.log('this.props.navigation=' , this.props.navigation)} */}
                     <MapComponent
                         region={this.state.region}
                         onRegionChange={(reg) => this.onMapRegionChange(reg)}

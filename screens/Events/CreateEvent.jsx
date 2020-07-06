@@ -45,6 +45,7 @@ export default class CreateEvent extends React.Component {
             showEnd: '',
             setLoc: false,
             picUri:'https://www.ladn.eu/wp-content/uploads/2017/04/my-event.png',
+            picName: 'event_' + new Date().getTime() + '.jpg',
             change: false,
             editMode: false
         };

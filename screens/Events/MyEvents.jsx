@@ -249,9 +249,10 @@ export default class MyEvents extends React.Component {
                                                         buttonStyle={styles.cardButton}
                                                         titleStyle={styles.cardButtonText}
                                                         onPress={()=>{
-                                                          this.setState({ visible: false });
-                                                           navigation.navigate('CreateEvent', { edit: true, eventDetails: this.state.selectedCard });
-                                                          }
+                                                          this.setState({ visible: false });  
+                                                          navigation.navigate('CreateEvent', { edit: true, eventDetails: this.state.selectedCard });
+                                                         
+                                                        }
                                                         }
                                                     > </Button>
                                             </Card>

@@ -29,7 +29,8 @@ export default class CreateLost extends React.Component {
                 Title:'',
                 Description:''
             },
-            picUri: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Lost_main_title.svg/1200px-Lost_main_title.svg.png"
+            picUri: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Lost_main_title.svg/1200px-Lost_main_title.svg.png",
+            picName: 'losts_' + new Date().getTime() + '.jpg'
         };
         this.uplodedPicPath = 'http://proj.ruppin.ac.il/bgroup29/test1/uploadFiles/';
     }
@@ -127,9 +128,9 @@ export default class CreateLost extends React.Component {
                   console.log("Image" + this.state.newLost.Image)
     
     
+                  this.fetchCreateLost();
                   AsyncStorage.removeItem('cameraDetails');
                   //{this.editMode ? this.fetchUpdateEvent() : this.fetchCreatEvent()}
-                   this.fetchCreateLost();
                   //this.fetchCreatEvent();
     
     

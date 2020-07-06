@@ -1,5 +1,5 @@
 import React, { Component, createElement } from 'react';
-import { Button, View, StyleSheet, Text,  Image , Alert, AsyncStorage , TouchableOpacity, Picker, SafeAreaView, ScrollView} from 'react-native';
+import { Button, View, StyleSheet, Text, Image, Alert, AsyncStorage, TouchableOpacity, Picker, SafeAreaView, ScrollView } from 'react-native';
 import Header from '../components/Header';
 import colors from '../assets/constant/colors';
 import BackButton from '../components/BackButton';
@@ -16,51 +16,194 @@ import {
 
 
 export default class Profile extends Component {
-    
+
     constructor(props) {
-        super (props);
+        super(props);
         this.state = {
-            LastName:'',
-            user:{}
+            neighboor: {}
         }
-       const user = {};
-        
     }
 
-    componentDidMount = () => {
-        //this.user = this.props.navigation.getParam('user');
-        this.setState  ({user: this.props.navigation.getParam('user')});
-        //console.log("profile" + this.user);
-        console.log("state" + this.state.user.FirstName);
+    componentDidMount() {
+        let neighboor = this.props.navigation.getParam("neighboor");
+        console.log(neighboor);
+        this.setState({ MatchRate: neighboor.MatchRate });
+        this.fetchGetNeighboor(neighboor);
     }
 
+    fetchGetNeighboor(nei) {
+        const loginDetails = {
+            userId: nei.UserId
+        }
 
-    render(){
-        return(
-            
-        <View style={styles.screen} >
-            <Header />
-            <BackButton goBack={() => this.props.navigation.navigate('MainPage')} />
+        console.log(loginDetails);
 
-            
+        fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/User/login', {
+            method: 'POST',
+            body: JSON.stringify(loginDetails),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(res => {
+                //console.log('res=', res);
+                return res.json()
+            })
+            .then(
+                (result) => {
+                    //console.log("fetch = ", result);
+                    if (result.UserId > 0) {
+                        this.setState({ neighboor: result }, () =>
+                            console.log("after setstate,  ", result));
+                        console.log("intrests: ", this.state.neighboor);
+                    }
+                    else {
+                        console.log("result post=", result);
+                        Alert.alert("איראה שגיאה, אנא נסה שנית");
+                    }
+                },
+                (error) => {
+                    console.log("err post=", error);
+                    Alert.alert("איראה שגיאה, אנא נסה שנית");
+                });
+    }
 
-            <View style={styles.container}>
+    render() {
+        const nei = this.state.neighboor;
+        const gender = nei.Gender === 1 ? 'בת' : 'בן';
+        const age = new Date().getFullYear() - nei.YearOfBirth;
+        const jobName = nei.JobTitle != null ? nei.JobTitle.JobName : '';
 
-                 
-                  
-        <Text>{this.state.user.FirstName}</Text> 
-                </View> 
+        // const intrests = int.map((i) => (
+        //     intrests+= (i.Subintrest+", ")
+        // ));
+        // const kids = nei.Kids.map((buttonKids) => (
+        //     <Text style={styles.note}> {new Date().getFullYear() - buttonKids.YearOfBirth}  </Text>
+        // ));
+        return (
+
+            <View style={styles.screen} >
+                <Header />
+                <BackButton goBack={() => this.props.navigation.navigate('FindNeighboor')} />
+                <View style={styles.container}>
+                    <View style={styles.screen}>
+                        {this.state.neighboor.ImagePath &&
+                            <Image style={styles.avatar}
+                                source={{ uri: nei.ImagePath }}
+                            />
+                        }
+
+                        <Text style={styles.subTitle}>{nei.FirstName} {nei.LastName}</Text>
+                        <Text style={styles.noteCenter}>{this.state.MatchRate}% התאמה</Text>
+
+                        <Text style={styles.title}>פרטים כללים</Text>
+                        <Text style={styles.note}>{gender} {age}, {nei.FamilyStatus}</Text>
+                        <Text style={styles.note}>{nei.AboutMe}</Text>
+                        <Text style={styles.note}>{jobName}, {nei.WorkPlace}</Text>
+                        <Text style={styles.title}>תחומי עניין</Text>
+                        {
+                            nei.Intrests != null && nei.Intrests.map((int, i) => (
+                                <Text style={styles.note}>{int.Subintrest}</Text>
+                            ))
+                        }
+                        {nei.NumOfChildren > 0 &&
+                            <View>
+                                <Text style={styles.title}>ילדים</Text>
+                                <Text style={styles.note}>{nei.NumOfChildren} ילדים</Text>
+                                <View Style={styles.row}>
+                                <Text style={styles.note}>גילאים: 
+                                    {
+                                        nei.Kids != null && nei.Kids.map((k, i) => (
+                                            new Date().getFullYear() - k.YearOfBirth +", "
+                                        ))
+                                    } 
+                                    </Text>
+                                </View>
+                            </View>
+                        }
+                    </View>
+                </View>
             </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    
-      screen: {
+    header: {
+        backgroundColor: "white",
+    },
+    avatar: {
+        width: '53%',
+        height: '30%',
+        borderWidth: 1,
+        borderColor: "white",
+        alignSelf: "center",
+        borderRadius: 160,
+        marginTop: 5
+    },
+    screen: {
         flex: 1,
-        backgroundColor: colors.reeBackgrouond
+        backgroundColor: 'white'
+    },
+    note: {
+        fontFamily: 'rubik-regular',
+        marginVertical: 1,
+        fontSize: 20,
+        color: 'black',
+        //justifyContent:"center",
+        textAlign: "center",
+        marginBottom: 5
+    },
+    noteCenter: {
+        fontFamily: 'rubik-regular',
+        marginVertical: 1,
+        fontSize: 20,
+        color: colors.subTitle,
+        textAlign: "center",
+        marginBottom: 5
+    },
+    subTitle: {
+        fontFamily: 'rubik-regular',
+        fontSize: 40,
+        color: colors.subTitle,
+        textAlign: 'center',
+
+    },
+    title: {
+        fontFamily: 'rubik-regular',
+        fontSize: 25,
+        color: "#009999",
+        marginTop: '5%',
+        textAlign:"center"
     },
 
-    
-  });
+    image: {
+        width: 30,
+        height: 30,
+        marginTop: 15,
+        marginLeft: 15,
+    },
+
+    container: {
+        flex: 1,
+        backgroundColor: 'white',
+    },
+
+    text: {
+        fontFamily: 'rubik-regular', fontSize: 20, color: '#708090', marginTop: 10, marginBottom: 5
+
+    },
+
+    button: {
+        width: '90%',
+        paddingTop: 40,
+        alignSelf: "center",
+
+    },
+    row: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        
+    },
+});

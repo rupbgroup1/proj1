@@ -35,7 +35,7 @@ export default class MainPage extends Component {
           </View>
 
           <View style={styles.row}>
-          <Text style={styles.pressToReg} onPress={() => this.props.navigation.navigate('Profile')}>
+          <Text style={styles.pressToReg} onPress={() => this.props.navigation.navigate('ProfileEdit')}>
             להרשמה לחץ כאן
           </Text>
 

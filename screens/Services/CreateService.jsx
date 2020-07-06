@@ -34,7 +34,8 @@ export default class CreateEvent extends React.Component {
             showStart: '',
             showEnd: '',
             setLoc: false,
-            picUri: "https://img.etimg.com/thumb/msid-59997726,width-643,imgsize-41586,resizemode-4/ending-a-long-term-business-partnership-keep-these-points-in-mind.jpg"
+            picUri: "https://img.etimg.com/thumb/msid-59997726,width-643,imgsize-41586,resizemode-4/ending-a-long-term-business-partnership-keep-these-points-in-mind.jpg",
+            picName: 'service_' + new Date().getTime() + '.jpg'
         };
         this.catArray = [];
         this.editMode = false;
@@ -66,6 +67,8 @@ export default class CreateEvent extends React.Component {
             });
       
           });
+          console.log(this.state.picUri);
+        console.log(this.state.picName);
 
     }
     btnUpload = () => {
@@ -265,7 +268,7 @@ export default class CreateEvent extends React.Component {
         let serviceToUpdate = {
             ServiceId: s.ServiceId,
             ServiceName: s.ServiceName,
-            //ImageGallery: s.Image,
+            ImagePrimary: s.Image,
             Rate: s.Rate,
             Description: s.Description,
             Owner: s.Owner,
@@ -307,7 +310,7 @@ export default class CreateEvent extends React.Component {
             );
     }
 
-    fetchUpdateService() {
+    .fetchUpdateService() {
         console.log("in update!!");
         const s = this.state.newS;
         const locationCoords = this.props.navigation.getParam('region');
@@ -510,8 +513,8 @@ export default class CreateEvent extends React.Component {
                     title={this.editMode ? "עדכן" : "צור עסק חדש"}
                     buttonStyle={{ borderRadius: 5, marginLeft: 20, marginRight: 20 }}
                     containerStyle={{ marginTop: 1 }}
-                    //onPress={() => this.editMode ? this.fetchUpdateService() : this.fetchCreateService()}
-                    onPress={()=> this.fetchCreateService()}
+                    onPress={() => this.editMode ? this.fetchUpdateService() : this.btnUpload()}
+                    //onPress={()=> this.btnUpload()}
                 ></Button>
             </View>
         );
