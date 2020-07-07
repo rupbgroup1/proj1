@@ -504,15 +504,15 @@ export default class CreateEvent extends React.Component {
                 <ScrollView>
                     
                     
-                        <View style={{ flexDirection: 'row', borderColor: 'white', borderWidth: 1, borderRadius: 15, justifyContent: 'center', alignItems: "center", height:'20%' }}>
-                           <ImageBackground source={{uri:this.state.picUri}} style={{flex: 1,resizeMode: "cover",justifyContent: "center", height:300, width:'100%'}}>
-                           
-                           <View style={{ flexDirection: 'row', alignSelf: 'center', paddingTop:'20%' }}>
+                        <View style={{ flexDirection: 'row', borderColor: 'white', borderWidth: 1, borderRadius: 15, justifyContent: 'center', alignItems: "center", }}>
+                          {this.state.picUri === "https://www.ladn.eu/wp-content/uploads/2017/04/my-event.png" ? null :  <ImageBackground source={{uri:this.state.picUri}} style={{flex: 1,resizeMode: "cover",justifyContent: "center", height:300, width:'100%'}}></ImageBackground>  }
+                          
+                            
+                        </View>
+                        <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop:5}}>
                                 <OurButton onPress={() => this.props.navigation.navigate('CameraPage')} style={{ paddingHorizontal: 20 }}><MaterialIcons name="camera-alt" size={40} color={colors.turkiz}/></OurButton>
                                 <OurButton onPress={() => this.props.navigation.navigate('ImageGallery')} style={{ paddingHorizontal: 20 }}><MaterialIcons name="photo" size={40} color={colors.turkiz}/></OurButton>
                             </View>
-                            </ImageBackground>
-                        </View>
                     <TextInput
                         style={styles.input}
                         autoFocus={true}

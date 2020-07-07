@@ -374,8 +374,10 @@ export default class ProfileEdit extends Component {
 
                     {this.state.editing && (
 
-                        <ScrollView style={styles.container}
+                        <View style={{flex:1}}>
+                            <ScrollView style={styles.container}
                             keyboardShouldPersistTaps={"handled"}
+                            contentContainerStyle={{ flexGrow: 1 }}
                         >
                             <View style={styles.screen}>
 
@@ -611,6 +613,7 @@ export default class ProfileEdit extends Component {
                                 </View>
                             </View>
                         </ScrollView>
+                            </View>
                     )}
                 </View>
             </View>
