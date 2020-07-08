@@ -380,7 +380,7 @@ export default class CreateEvent extends React.Component {
                     
                     <View style={{ flexDirection: 'row', borderColor: 'white', borderWidth: 1, borderRadius: 15, justifyContent: 'center', alignItems: "center",  }}>
                         
-                        {this.state.picUri === "https://img.etimg.com/thumb/msid-59997726,width-643,imgsize-41586,resizemode-4/ending-a-long-term-business-partnership-keep-these-points-in-mind.jpg" ? null : <ImageBackground source={{ uri: this.state.picUri }} style={{ flex: 1, resizeMode: "cover", justifyContent: "center", height: '100%', width: '100%' }}></ImageBackground>}
+                        {this.state.picUri === "https://img.etimg.com/thumb/msid-59997726,width-643,imgsize-41586,resizemode-4/ending-a-long-term-business-partnership-keep-these-points-in-mind.jpg" ? null : <ImageBackground source={{ uri: this.state.picUri }} style={{ flex: 1, resizeMode: "cover", justifyContent: "center", height: 250, width: '100%' }}></ImageBackground>}
                     
 
                             

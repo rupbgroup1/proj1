@@ -23,6 +23,7 @@ export default class ProfileEdit extends Component {
         this.state = {
 
             editing: false,
+            
 
             fName: '',
             lName: '',
@@ -58,7 +59,32 @@ export default class ProfileEdit extends Component {
     }
 
     componentDidMount = () => {
-        this.getUser();
+        this.getUser(), ()=>{
+            const { navigation } = this.props;
+            this._unsubscribe = navigation.addListener('didFocus', () => {
+              AsyncStorage.getItem('cameraDetails', (err, cameraDetailsJSON) => {
+        
+                if (cameraDetailsJSON !== null) {
+                  const cameraDetailsObj = JSON.parse(cameraDetailsJSON);
+                  this.setState({ picUri: cameraDetailsObj.picUri, picName: 'user_' + new Date().getTime() + '.jpg' });
+                  console.log("cameraDetailsObj:" + cameraDetailsObj.picUri)
+                }
+        
+                //   else{
+                //     this.setState({ picUri: 'https://cdn1.iconfinder.com/data/icons/business-users/512/circle-512.png', picName: 'user_' + new Date().getTime() + '.jpg' });
+                //   }
+              });
+        
+              console.log("uri = "  +this.state.picUri);
+              console.log(this.state.picName)
+              
+        
+        
+        
+            });
+        };
+       
+        
     }
 
     getUser() {
@@ -71,6 +97,7 @@ export default class ProfileEdit extends Component {
             let jobName = userObj.JobTitle != null ? userObj.JobTitle.JobName : '';
             this.setState({
                 user: userObj,
+                picUri: userObj.ImagePath,
                 jobName: jobName,
                 jobArea: userObj.WorkPlace,
                 aboutMe: userObj.AboutMe,
@@ -262,7 +289,7 @@ export default class ProfileEdit extends Component {
             LastName: this.state.lName,
 
         }
-        console.log("userFetch", user);
+        console.log("userFetch", user.LastName);
 
 
         fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/User/Extra', {
@@ -297,6 +324,70 @@ export default class ProfileEdit extends Component {
                 }
             );
     }
+
+    btnUpload = () => {
+        let img = this.state.picUri;
+        let imgName = this.state.picName;
+        this.imageUpload(img, imgName);
+      }
+    
+       
+    
+      imageUpload = (imgUri, picName) => {
+        let urlAPI = "http://proj.ruppin.ac.il/bgroup29/test1/uploadpicture";
+        let dataI = new FormData();
+        dataI.append('picture', {
+          uri: imgUri,
+          name: picName,
+          type: 'image/jpg'
+        });
+        const config = {
+          method: 'POST',
+          body: dataI,
+        };
+    
+    
+        fetch(urlAPI, config)
+          .then((res) => {
+            console.log('res.status=', res.status);
+            if (res.status == 201) {
+              return res.json();
+            }
+            else {
+              console.log('error uploding ...1');
+              return "err";
+            }
+          })
+          .then((responseData) => {
+            console.log(responseData);
+            if (responseData != "err") {
+              let picNameWOExt = picName.substring(0, picName.indexOf("."));
+              let imageNameWithGUID = responseData.substring(responseData.indexOf(picNameWOExt), responseData.indexOf(".jpg") + 4);
+              this.setState({
+                uplodedPicUri: { uri: this.uplodedPicPath + imageNameWithGUID },
+              });
+              
+              let userDetails = {
+                ImagePath: this.uplodedPicPath + imageNameWithGUID
+              }
+          
+              
+              AsyncStorage.mergeItem('user', JSON.stringify(userDetails), () =>
+              AsyncStorage.removeItem('cameraDetails'));
+              this.props.navigation.navigate('RegistrationP4');
+            
+              console.log(this.state.uplodedPicUri);
+              
+            }
+            else {
+              console.log('error uploding ...2');
+              alert('error uploding ...2');
+            }
+          })
+          .catch(err => {
+            alert('err upload= ' + err);
+          });
+      }
 
     render() {
         const intrests = this.state.intrests.map((buttonIntersts) => (
@@ -340,6 +431,10 @@ export default class ProfileEdit extends Component {
 
 
                     {!this.state.editing && (
+                         <ScrollView style={styles.container}
+                         keyboardShouldPersistTaps={"handled"}
+                         contentContainerStyle={{ flexGrow: 1 }}
+                     >
                         <View style={styles.screen}>
                             <Text style={styles.subTitle}>הפרופיל שלי</Text>
 
@@ -370,6 +465,7 @@ export default class ProfileEdit extends Component {
 
                             </View>
                         </View>
+                        </ScrollView>
                     )}
 
                     {this.state.editing && (
@@ -413,7 +509,7 @@ export default class ProfileEdit extends Component {
                                         //שם משפחה 
                                         value={this.state.vLName}
                                         label='שם משפחה'
-                                        placeholder={this.state.vFName === null ? 'כתוב/י מספר..' : (this.state.aboutMe)}
+                                        placeholder={this.state.vFName === null ? 'כתוב/י מספר..' : (this.state.vLName)}
                                         onChangeText={(vLName) => this.setState({ vLName })}
                                         multiline={true}
                                         placeholderTextColor={'black'}
@@ -593,7 +689,8 @@ export default class ProfileEdit extends Component {
                                         <Button
                                             style={styles.item}
                                             title={'סיום'}
-                                            onPress={() => this.fetchUpdateUser()}
+                                            //onPress={() => this.fetchUpdateUser()}
+                                            onPress={()=>{this.state.picUri === this.user.ImagePath ? this.fetchUpdateUser() : this.btnUpload() }}
 
 
                                         />
@@ -635,8 +732,8 @@ const styles = StyleSheet.create({
 
     },
     avatar1: {
-        width: '50%',
-        height: 100,
+        width: 250,
+        height: 250,
         borderWidth: 4,
         borderColor: "white",
         alignSelf: "center",
