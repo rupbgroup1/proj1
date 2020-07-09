@@ -10,6 +10,7 @@ import FindingsButton from '../components/FindingsButton';
 import { Card, Text } from 'react-native-elements';
 
 
+
 export default class MainPage extends Component {
   constructor(props) {
     super(props);
@@ -20,14 +21,14 @@ export default class MainPage extends Component {
     return (
       <TouchableWithoutFeedback>
         <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
-          <Header />
+          <Header  navigation={navigation}/>
           <View style={{
             width: '95%', height: '60%', borderRadius: 10,
             shadowColor: 'black',
             shadowOpacity: 0.5,
             elevation: 3,
-            backgroundColor:'white',
-            marginTop:10
+            backgroundColor: 'white',
+            marginTop: 10
           }}>
             <Text style={styles.header}>מה חדש בשכונה?</Text>
 
@@ -61,8 +62,8 @@ export default class MainPage extends Component {
 
           <View style={styles.item4}>
             <FindingsButton
-            onPress={() => navigation.navigate('GeneralLosts')}>
-            נמצא בשכונה
+              onPress={() => navigation.navigate('ProfileEdit')}>
+              נמצא בשכונה
             </FindingsButton>
           </View>
         </View>
@@ -99,10 +100,10 @@ const styles = StyleSheet.create({
   },
   item1: {
     top: 20,
-    left:-40
+    left: -40
   },
   item2: {
-    top: 100,
+    top: 85,
     left: -45,
   },
   item3: {
@@ -111,7 +112,7 @@ const styles = StyleSheet.create({
   },
   item4: {
     top: -15,
-    right:-110
+    right: -110
   }
 
 });

@@ -1,12 +1,16 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import colors from '../assets/constant/colors';
+import SMButton from '../components/SideMenuButton';
 
 
-const Header = props => {
+function Header (props) {
   return (
     <View style={styles.header}>
-       <Text style={styles.headerTitle}>Commy</Text>
+      <SMButton onPress={() => {
+          props.navigation.openDrawer();
+        }}/>
+      <Text style={styles.headerTitle} >Commy</Text>
     </View>
   );
 };
@@ -17,13 +21,14 @@ const styles = StyleSheet.create({
     height: 100,
     paddingTop: 25,
     backgroundColor:colors.header,
-    alignItems: 'center'
+    flexDirection:'row-reverse'
   },
   headerTitle: {
     color: 'white',
     fontSize: 30, 
     fontFamily: 'kalam-regular',
-    paddingTop:10
+    paddingTop:20,
+    textAlign:'center'
   }
 });
 

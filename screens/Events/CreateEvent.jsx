@@ -317,11 +317,7 @@ export default class CreateEvent extends React.Component {
               AsyncStorage.removeItem('cameraDetails');
               {this.editMode ? this.fetchUpdateEvent() : this.fetchCreatEvent()}
               //this.fetchCreatEvent();
-
-
-
-
-              //console.log(this.state.uplodedPicUri);
+                //console.log(this.state.uplodedPicUri);
 
           }
         else {
@@ -482,27 +478,14 @@ export default class CreateEvent extends React.Component {
         const { navigation } = this.props;
         const blue = colors.turkiz;
         const newEvent = this.state.newEvent;
-       
-        //console.log("event", newEvent)
-        //Keyboard.dismiss();
-        //console.log(this.state.CityName);
+
         return (
             <View style={{ flex: 1, backgroundColor: 'white', justifyContent: "flex-start", paddingBottom:20 }}>
                 <Header />
                 <BackButton goBack={() => navigation.navigate('GeneralEvents')} />
-                {/* My design:
-                 <ScrollView style={{top:-15}}>
-
-                    <Card containerStyle={{ backgroundColor: '#F1F2F2', height: '25%', width: Dimensions.get('window').width, alignSelf: 'center' }}>
-
-                        <View style={{ flexDirection: 'column', alignSelf: 'center', top: 70 }}>
-                            <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-                                <OurButton onPress={() => this.props.navigation.navigate('CameraPage')} style={{ paddingHorizontal: 20 }}><SimpleLineIcons name="camera" size={40} color="grey" /></OurButton>
-                                <OurButton onPress={() => this.props.navigation.navigate('ImageGallery')} style={{ paddingHorizontal: 20 }}><SimpleLineIcons name="picture" size={40} color="grey" /></OurButton>
-                            </View> */}
+                
                 <ScrollView>
-                    
-                    
+
                         <View style={{ flexDirection: 'row', borderColor: 'white', borderWidth: 1, borderRadius: 15, justifyContent: 'center', alignItems: "center", height:'20%' }}>
                            <ImageBackground source={{uri:this.state.picUri}} style={{flex: 1,resizeMode: "cover",justifyContent: "center", height:300, width:'100%'}}>
                            
@@ -512,6 +495,7 @@ export default class CreateEvent extends React.Component {
                             </View>
                             </ImageBackground>
                         </View>
+
                     <TextInput
                         style={styles.input}
                         autoFocus={true}

@@ -370,7 +370,7 @@ export default class CreateEvent extends React.Component {
         const serviceDetails = this.state.serviceDetails;
         console.log("service", newS)
         return (
-            <View style={{ flex: 1, backgroundColor: 'white', justifyContent: "flex-start" }}>
+            <View style={{flex: 1, backgroundColor: 'white', justifyContent: "flex-start"}}>
                 <Header />
                 <BackButton goBack={() => navigation.navigate('GeneralServices')} />
                 <ScrollView>
@@ -505,6 +505,7 @@ export default class CreateEvent extends React.Component {
                             onChange={this.setEndTime}
                         />
                     )}
+                   
                 </ScrollView>
                 <Button
                     title={this.editMode ? "עדכן" : "צור עסק חדש"}
@@ -513,6 +514,7 @@ export default class CreateEvent extends React.Component {
                     //onPress={() => this.editMode ? this.fetchUpdateService() : this.fetchCreateService()}
                     onPress={()=> this.fetchCreateService()}
                 ></Button>
+                
             </View>
         );
     }
@@ -546,7 +548,8 @@ const styles = StyleSheet.create({
         alignContent: 'flex-start',
         flexDirection: 'column-reverse',
         paddingLeft: 20,
-        paddingRight: 20
+        paddingRight: 20,
+        paddingBottom:200
     },
     row: {
         flexDirection: 'row',
