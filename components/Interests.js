@@ -10,6 +10,9 @@ const Interest = (props) => {
     const [selectedSub, setSelectedSub] = useState(0);
     //multi choice
     const [selectedMultiSub, setSelectedMultiSub] = useState();
+    // selected main interest
+    const [selectedMain, setSelectedMain] = useState(0);
+    
 
     //set initial value to multi (from user data)
     useEffect(() => {
@@ -71,8 +74,12 @@ const Interest = (props) => {
                     <OurButton style={styles.intrestButtons}
                         title={Interest.IName}
                         key={Interest.Id}
-                        onPress={() => props.handleMainChange(Interest.MainInterest)}>
-                        <FontAwesome5 name={Interest.Icon} size={25} color={colors.turkiz} />
+                        onPress={() =>{
+                            props.handleMainChange(Interest.MainInterest);
+                            setSelectedMain(Interest.Id);
+                            console.log("setmain");
+                        }}>
+                        <FontAwesome5 name={Interest.Icon} size={25} color={selectedMain===Interest.Id? "black":colors.turkiz} />
                     </OurButton>
 
                 )}
