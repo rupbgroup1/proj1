@@ -29,7 +29,8 @@ export default class CreateLost extends React.Component {
                 Title:'',
                 Description:''
             },
-            picUri: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Lost_main_title.svg/1200px-Lost_main_title.svg.png"
+            picUri: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Lost_main_title.svg/1200px-Lost_main_title.svg.png",
+            picName: 'losts_' + new Date().getTime() + '.jpg'
         };
         this.uplodedPicPath = 'http://proj.ruppin.ac.il/bgroup29/test1/uploadFiles/';
     }
@@ -127,9 +128,9 @@ export default class CreateLost extends React.Component {
                   console.log("Image" + this.state.newLost.Image)
     
     
+                  this.fetchCreateLost();
                   AsyncStorage.removeItem('cameraDetails');
                   //{this.editMode ? this.fetchUpdateEvent() : this.fetchCreatEvent()}
-                   this.fetchCreateLost();
                   //this.fetchCreatEvent();
     
     
@@ -223,13 +224,14 @@ export default class CreateLost extends React.Component {
                 <BackButton goBack={() => navigation.navigate('GeneralLosts')} />
                 <ScrollView>
                     <View style={{ flexDirection: 'row', borderColor: 'white', borderWidth: 1, borderRadius: 15, justifyContent: 'center', alignItems: "center"}}>
-                        <ImageBackground source={{ uri: this.state.picUri }} style={{ flex: 1, resizeMode: "cover", justifyContent: "center", height:'100%', width:'100%' }}>
-                            <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+                       {this.state.picUri === "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Lost_main_title.svg/1200px-Lost_main_title.svg.png" ? null :  <ImageBackground source={{ uri: this.state.picUri }} style={{ flex: 1, resizeMode: "cover", justifyContent: "center", height:'100%', width:'100%' }}>
+                            
+                        </ImageBackground>}
+                    </View>
+                    <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
                                 <OurButton onPress={() => this.props.navigation.navigate('CameraPage')} style={{ paddingHorizontal: 20 }}><MaterialIcons name="camera-alt" size={40} color={colors.turkiz} /></OurButton>
                                 <OurButton onPress={() => this.props.navigation.navigate('ImageGallery')} style={{ paddingHorizontal: 20 }}><MaterialIcons name="photo" size={40} color={colors.turkiz} /></OurButton>
                             </View>
-                        </ImageBackground>
-                    </View>
                     <TextInput
                         style={styles.input}
                         autoFocus={true}

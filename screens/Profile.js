@@ -152,9 +152,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: 'black',
         //justifyContent:"center",
-        textAlign: "left",
-        right: -10,
-        left: 20,
+        textAlign: "center",
         marginBottom: 5
     },
     noteCenter: {
@@ -177,7 +175,7 @@ const styles = StyleSheet.create({
         fontSize: 25,
         color: "#009999",
         marginTop: '5%',
-        left: 3
+        textAlign:"center"
     },
 
     image: {
@@ -189,7 +187,7 @@ const styles = StyleSheet.create({
 
     container: {
         flex: 1,
-        backgroundColor: 'white'
+        backgroundColor: 'white',
     },
 
     text: {
