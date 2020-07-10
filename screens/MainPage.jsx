@@ -39,22 +39,24 @@ export default class MainPage extends Component {
           
             <View style={styles.item1}>
               <NeiButton
-                onPress={() => navigation.navigate('FindNeighboor')}>
-                הכר את שכניך
+               onPress={() => navigation.navigate('GeneralEvents')}>
+               אירועים בקהילה
               </NeiButton>
             </View>
 
             <View style={styles.item2}>
               <EventsBTN
-                onPress={() => navigation.navigate('GeneralEvents')}>
-                אירועים בקהילה
+              onPress={() => navigation.navigate('GeneralServices')}>
+              עסקים בקהילה
+              
               </EventsBTN>
             </View>
 
             <View style={styles.item3}>
               <BusinessesBTN
-                onPress={() => navigation.navigate('GeneralServices')}>
-                עסקים בקהילה
+                onPress={() => navigation.navigate('GeneralLosts')}>
+                נמצא בשכונה
+                
               </BusinessesBTN>
             </View>
 
@@ -62,8 +64,9 @@ export default class MainPage extends Component {
 
           <View style={styles.item4}>
             <FindingsButton
-              onPress={() => navigation.navigate('GeneralLosts')}>
-              נמצא בשכונה
+             onPress={() => navigation.navigate('FindNeighboor')}>
+             הכר את שכניך
+              
             </FindingsButton>
           </View>
         </View>

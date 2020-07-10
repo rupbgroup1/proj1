@@ -369,7 +369,7 @@ class GeneralServices extends React.Component {
                                                     titleStyle={styles.cardButtonText}
                                                     onPress={() => {
                                                         this.setState({ visible: false }, () =>
-                                                            navigation.navigate('Chat', { userCode: this.state.selectedCard.Owner, userToken: this.state.selectedCard.OwnerToken }));
+                                                            navigation.navigate('Chat', { userCode: this.state.selectedCard.OwnerName}));
                                                     }}
                                                 > </Button>
 

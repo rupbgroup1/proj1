@@ -118,7 +118,7 @@ const MapComponent = (props) => {
                                                 },
                                                 {
                                                     text: 'שלח/י הודעה',
-                                                    onPress: () => props.nav.navigate('Chat', {userCode:user.UserId})
+                                                    onPress: () => props.nav.navigate('Chat', {userCode:user})
                                                 }
                                             ],
                                             { cancelable: false }
