@@ -52,7 +52,7 @@ export default class CreateEvent extends React.Component {
         this.catArray = [];
         this.editMode = false;
         this.eventDetails = {};
-        this.uplodedPicPath = 'http://proj.ruppin.ac.il/bgroup29/test1/uploadFiles/';
+        this.uplodedPicPath = 'http://proj.ruppin.ac.il/bgroup29/prod/uploadFiles/';
 
 
     }
@@ -277,7 +277,7 @@ export default class CreateEvent extends React.Component {
    
 
   imageUpload = (imgUri, picName) => {
-    let urlAPI = "http://proj.ruppin.ac.il/bgroup29/test1/uploadpicture";
+    let urlAPI = "http://proj.ruppin.ac.il/bgroup29/prod/uploadpicture";
     let dataI = new FormData();
     dataI.append('picture', {
       uri: imgUri,

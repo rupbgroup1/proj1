@@ -32,7 +32,7 @@ export default class CreateLost extends React.Component {
             picUri: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Lost_main_title.svg/1200px-Lost_main_title.svg.png",
             picName: 'losts_' + new Date().getTime() + '.jpg'
         };
-        this.uplodedPicPath = 'http://proj.ruppin.ac.il/bgroup29/test1/uploadFiles/';
+        this.uplodedPicPath = 'http://proj.ruppin.ac.il/bgroup29/prod/uploadFiles/';
     }
 
     componentDidMount() {
@@ -89,7 +89,7 @@ export default class CreateLost extends React.Component {
     }
 
     imageUpload = (imgUri, picName) => {
-        let urlAPI = "http://proj.ruppin.ac.il/bgroup29/test1/uploadpicture";
+        let urlAPI = "http://proj.ruppin.ac.il/bgroup29/prod/uploadpicture";
         let dataI = new FormData();
         dataI.append('picture', {
           uri: imgUri,
