@@ -22,7 +22,7 @@ export default class Pic extends Component {
       picName: 'user_' + new Date().getTime() + '.jpg'
     };
     this.handleChecked = this.handleChecked.bind(this); // set this, because you need get methods from CheckBox 
-    this.uplodedPicPath = 'http://proj.ruppin.ac.il/bgroup29/test1/uploadFiles/';
+    this.uplodedPicPath = 'http://proj.ruppin.ac.il/bgroup29/prod/uploadFiles/';
 
   }
 
@@ -72,7 +72,7 @@ export default class Pic extends Component {
    
 
   imageUpload = (imgUri, picName) => {
-    let urlAPI = "http://proj.ruppin.ac.il/bgroup29/test1/uploadpicture";
+    let urlAPI = "http://proj.ruppin.ac.il/bgroup29/prod/uploadpicture";
     let dataI = new FormData();
     dataI.append('picture', {
       uri: imgUri,
