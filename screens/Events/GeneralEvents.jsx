@@ -270,9 +270,9 @@ class GeneralEvents extends React.Component {
                         {this.catArray.map((c) => {
                             return (
                                 <View style={{ paddingHorizontal: 1 }}>
-                                    <Button
+                                    {/* <Button
                                         type="outline"
-                                        title={c.CategoryName}
+                                        title={c.CategoryId===this.state.selectedCat?<FontAwesome name={c.CategoryIcon} size={20} color={colors.header} />:c.CategoryName}
                                         titleStyle={c.CategoryId===this.state.selectedCat
                                             ? styles.coloredTitleCat
                                             : styles.titleCat}
@@ -281,8 +281,23 @@ class GeneralEvents extends React.Component {
                                         raised={true}
                                         buttonStyle={c.CategoryId===this.state.selectedCat?styles.selectedCategory: styles.categories}
                                     >
-                                    </Button>
+                                    </Button> */}
+                                    <OurButton
+                                        title= {c.CategoryName}
+                                        key={c.CategoryId}
+                                        style={{marginRight:40}} 
+                                        onPress={cat => this.filterByCat(c.CategoryId)}>
+                                        <FontAwesome name={c.CategoryIcon} size={22} color={c.CategoryId===this.state.selectedCat?colors.turkiz: colors.header} />
+                                           
+                                    </OurButton>
+                                    <OurButton
+                                        title= {c.CategoryName}
+                                        key={c.CategoryId}
+                                        onPress={cat => this.filterByCat(c.CategoryId)}>
+                                           <Text style={{color:c.CategoryId===this.state.selectedCat?colors.turkiz: colors.header, fontFamily:'rubik-regular' }}>{c.CategoryName}</Text> 
+                                    </OurButton>
                                 </View>
+                                
                             )
                         })}
                     </ScrollView>

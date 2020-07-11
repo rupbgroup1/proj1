@@ -76,10 +76,10 @@ const Interest = (props) => {
                         key={Interest.Id}
                         onPress={() =>{
                             props.handleMainChange(Interest.MainInterest);
-                            setSelectedMain(Interest.Id);
+                            selectedMain===Interest.Id?setSelectedMain(0) : setSelectedMain(Interest.Id);
                             console.log("setmain");
                         }}>
-                        <FontAwesome5 name={Interest.Icon} size={25} color={selectedMain===Interest.Id? "black":colors.turkiz} />
+                        <FontAwesome5 name={Interest.Icon} size={25} color={selectedMain===Interest.Id? colors.turkiz:"black"} />
                     </OurButton>
 
                 )}
