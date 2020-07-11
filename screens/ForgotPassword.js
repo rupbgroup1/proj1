@@ -110,7 +110,7 @@ export default class ForgotPassword extends Component {
                             'שחזור סיסמה התבצע בהצלחה',
                             '',
                             [
-                              {text: 'Ok', onPress: () => this.props.navigation.navigate('LoinScreen')},
+                              {text: 'Ok', onPress: () => this.props.navigation.navigate('LoginScreen')},
                               ],
                            
                           );
@@ -137,7 +137,7 @@ export default class ForgotPassword extends Component {
             <View style={styles.screen}>
                 <Header />
                 <BackButton goBack={() => navigation.navigate('LoinScreen')} />
-                <SimpleLineIcons style={{paddingTop:50, textAlign:"center", fontSize:'100%'}} name="lock" size={40} color="black" />
+                <SimpleLineIcons style={{paddingTop:50, textAlign:"center"}} name="lock" size={40} color="black" />
                 <Text style={styles.subTitle}>שחזור סיסמה</Text>
                 <View style={styles.container}>
                     <Text style={styles.title} >

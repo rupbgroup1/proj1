@@ -64,7 +64,7 @@ const MapComponent = (props) => {
                     if (user.Lat && user.Lan) {
                         //console.log("TEST=", props.searchData);
                         let age = new Date().getFullYear() - user.YearOfBirth;
-                        let about = (user.AboutMe != null ? ", " + user.AboutMe : '');
+                        let about = (user.AboutMe != null ? user.AboutMe : '');
 
 
                         return (
@@ -95,30 +95,31 @@ const MapComponent = (props) => {
                                         style={{ height: 36, width: 26 }}
                                     />
                                 }
-                                <Callout
+                                <Callout style={{width:140}}
                                     onPress={(e) => {
                                         e.stopPropagation();
                                         e.isPropagationStopped();
-                                        //console.log('props.navigation=' , props.navigation);
-
-                                        //                       props.navigation.navigate('MainPage');
+                                        //props.nav.navigate('Profile');                    
                                         Alert.alert(
-                                            'Alert Title',
-                                            'My Alert Msg',
+                                            'הכיר/י את '+user.FirstName,
+                                            '',
                                             [
                                                 {
-                                                    text: 'Ask me later',
+                                                    text: 'מעבר לפרופיל',
                                                     onPress: () => {
-                                                        console.log('Ask me later pressed');
-                                                        props.nav.navigate('MainPage');
+                                                        console.log('to profile', user.UserId);
+                                                        props.nav.navigate('Profile', {neighboor:user});
                                                     }
                                                 },
                                                 {
-                                                    text: 'Cancel',
+                                                    text: 'ביטול',
                                                     onPress: () => console.log('Cancel Pressed'),
                                                     style: 'cancel'
                                                 },
-                                                { text: 'OK', onPress: () => console.log('OK Pressed') }
+                                                {
+                                                    text: 'שלח/י הודעה',
+                                                    onPress: () => props.nav.navigate('Chat', {userCode:user})
+                                                }
                                             ],
                                             { cancelable: false }
                                         );
@@ -142,7 +143,8 @@ const MapComponent = (props) => {
                                         //     );
                                     }}>
                                     <View>
-                                        <Text>{user.FirstName + ", " + age + about}</Text>
+                                        <Text style={{fontFamily:'rubik-medium' }}>{user.FirstName + ", " + age}</Text>
+                                        <Text style={{fontFamily:'rubik-regular', color:'#0fb9b1' }}>{about}</Text>
                                     </View>
 
                                 </Callout>

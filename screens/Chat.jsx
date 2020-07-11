@@ -22,6 +22,7 @@ export default class Chat extends React.Component {
     user: {},
     userCode: 0,
     Nei: '',
+    sendToFullName:"",
   };
 
   get user() {
@@ -50,7 +51,8 @@ export default class Chat extends React.Component {
   componentDidMount() {
     let sendTo = this.props.navigation.getParam('userCode');
     console.log(sendTo);
-    this.getUser(sendTo);
+    this.setState({sendToFullName: sendTo.FirstName+" "+ sendTo.LastName});
+    this.getUser(sendTo.UserId);
 
   }
   componentWillUnmount() {
@@ -131,9 +133,10 @@ export default class Chat extends React.Component {
           shadowOpacity: 0.5,
           elevation: 3,
           backgroundColor: 'white',
-          marginTop: 10
-        }}>
+          marginTop: 10,
           
+        }}>
+          <Text style={styles.text}>{this.state.sendToFullName}</Text>
           <GiftedChat
             messages={this.state.messages}
             onSend={messages=>this.onSendFunction(messages)}
@@ -146,3 +149,14 @@ export default class Chat extends React.Component {
   }
 
 }
+const styles = StyleSheet.create({
+text: {
+  fontFamily: 'rubik-regular',
+  marginVertical: 1,
+  marginBottom: 5,
+  fontSize: 22,
+  paddingTop: 10,
+  color: 'black',
+  marginLeft:10
+}
+});

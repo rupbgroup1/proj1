@@ -22,7 +22,7 @@ export default class Pic extends Component {
       picName: 'user_' + new Date().getTime() + '.jpg'
     };
     this.handleChecked = this.handleChecked.bind(this); // set this, because you need get methods from CheckBox 
-    this.uplodedPicPath = 'http://proj.ruppin.ac.il/bgroup29/test1/uploadFiles/';
+    this.uplodedPicPath = 'http://proj.ruppin.ac.il/bgroup29/prod/uploadFiles/';
 
   }
 
@@ -38,17 +38,21 @@ export default class Pic extends Component {
     const { navigation } = this.props;
     this._unsubscribe = navigation.addListener('didFocus', () => {
       AsyncStorage.getItem('cameraDetails', (err, cameraDetailsJSON) => {
-        
+
         if (cameraDetailsJSON !== null) {
           const cameraDetailsObj = JSON.parse(cameraDetailsJSON);
-        this.setState({ picUri: cameraDetailsObj.picUri, picName: 'user_' + new Date().getTime() + '.jpg' });
-        console.log("cameraDetailsObj:" + cameraDetailsObj.photoUri)
-         }
+          this.setState({ picUri: cameraDetailsObj.picUri, picName: 'user_' + new Date().getTime() + '.jpg' });
+          console.log("cameraDetailsObj:" + cameraDetailsObj.picUri)
+        }
 
-      //   else{
-      //     this.setState({ picUri: 'https://cdn1.iconfinder.com/data/icons/business-users/512/circle-512.png', picName: 'user_' + new Date().getTime() + '.jpg' });
-      //   }
-       });
+        //   else{
+        //     this.setState({ picUri: 'https://cdn1.iconfinder.com/data/icons/business-users/512/circle-512.png', picName: 'user_' + new Date().getTime() + '.jpg' });
+        //   }
+      });
+
+      console.log(this.state.picUri);
+      console.log(this.state.picName)
+      
 
 
 
@@ -68,7 +72,7 @@ export default class Pic extends Component {
    
 
   imageUpload = (imgUri, picName) => {
-    let urlAPI = "http://proj.ruppin.ac.il/bgroup29/test1/uploadpicture";
+    let urlAPI = "http://proj.ruppin.ac.il/bgroup29/prod/uploadpicture";
     let dataI = new FormData();
     dataI.append('picture', {
       uri: imgUri,
@@ -105,9 +109,10 @@ export default class Pic extends Component {
             ImagePath: this.uplodedPicPath + imageNameWithGUID
           }
       
-          //await AsyncStorage.removeItem('cameraDetails')
+          
           AsyncStorage.mergeItem('user', JSON.stringify(userDetails), () =>
-            this.props.navigation.navigate('RegistrationP4'));
+          AsyncStorage.removeItem('cameraDetails'));
+          this.props.navigation.navigate('RegistrationP4');
         
           console.log(this.state.uplodedPicUri);
           
@@ -143,10 +148,10 @@ export default class Pic extends Component {
         <Text style={styles.subTitle}>
           הגדר את תמונת הפרופיל שלך
        </Text>
-        <Image
+       {this.state.picUri === 'https://cdn1.iconfinder.com/data/icons/business-users/512/circle-512.png' ? null : <Image
           style={{ width: 200, height: 200, marginTop: '10%', }}
-          source={{ uri: 'https://cdn1.iconfinder.com/data/icons/business-users/512/circle-512.png' }}
-        />
+          source={{ uri: this.state.picUri }} />}
+        
         <View style={styles.icon}>
           <OurButton onPress={() => this.props.navigation.navigate('CameraPage')}><SimpleLineIcons name="camera" size={40} color="black" /></OurButton>
           <Text style={styles.textOr}> או </Text>
@@ -154,9 +159,7 @@ export default class Pic extends Component {
 
         </View>
 
-        {this.state.picUri === 'https://cdn1.iconfinder.com/data/icons/business-users/512/circle-512.png' ? null : <Image
-          style={{ alignSelf: 'center', width: 300, height: 250 }}
-          source={{ uri: this.state.picUri }} />}
+       
 
 
         <View style={{ width: '80%', paddingBottom: 20 }}>
@@ -196,7 +199,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
-    paddingTop: 20
+    marginTop: '5%'
   },
 
   textOr: {

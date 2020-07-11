@@ -26,6 +26,7 @@ export default class LoginScreen extends Component {
           this.setState({ token });
           console.log('state.token from app.js=', this.state.token);
         });
+        AsyncStorage.removeItem('cameraDetails');
   
   
       // Handle notifications that are received or selected while the app

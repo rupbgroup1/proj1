@@ -9,6 +9,7 @@ import Autocomplete from 'react-native-autocomplete-input';
 import { ScrollView } from 'react-native-gesture-handler';
 import BackButton from '../components/BackButton';
 import OurButton from '../components/OurButton';
+import { MaterialIcons } from '@expo/vector-icons';
 import {
     SimpleLineIcons,
     FontAwesome5
@@ -20,8 +21,9 @@ export default class ProfileEdit extends Component {
         super(props);
 
         this.state = {
-            
+
             editing: false,
+            
 
             fName: '',
             lName: '',
@@ -31,7 +33,7 @@ export default class ProfileEdit extends Component {
             intrests: [],
             nameJob: '',
             kidsYearOfBirth: [],
-            
+
             yearOfBirth: '',
             gender: '',
 
@@ -57,10 +59,32 @@ export default class ProfileEdit extends Component {
     }
 
     componentDidMount = () => {
-        this.getUser();
-
-
-
+        this.getUser(), ()=>{
+            const { navigation } = this.props;
+            this._unsubscribe = navigation.addListener('didFocus', () => {
+              AsyncStorage.getItem('cameraDetails', (err, cameraDetailsJSON) => {
+        
+                if (cameraDetailsJSON !== null) {
+                  const cameraDetailsObj = JSON.parse(cameraDetailsJSON);
+                  this.setState({ picUri: cameraDetailsObj.picUri, picName: 'user_' + new Date().getTime() + '.jpg' });
+                  console.log("cameraDetailsObj:" + cameraDetailsObj.picUri)
+                }
+        
+                //   else{
+                //     this.setState({ picUri: 'https://cdn1.iconfinder.com/data/icons/business-users/512/circle-512.png', picName: 'user_' + new Date().getTime() + '.jpg' });
+                //   }
+              });
+        
+              console.log("uri = "  +this.state.picUri);
+              console.log(this.state.picName)
+              
+        
+        
+        
+            });
+        };
+       
+        
     }
 
     getUser() {
@@ -69,10 +93,11 @@ export default class ProfileEdit extends Component {
 
         AsyncStorage.getItem('user', (ERR, userJSON) => {
             let userObj = JSON.parse(userJSON);
-            //console.log("fromuser", userObj, "JSON", userJSON);
-            let jobName = userObj.JobTitle!= null ? userObj.JobTitle.JobName : '';
+            console.log("fromuser", userObj, "JSON", userJSON);
+            let jobName = userObj.JobTitle != null ? userObj.JobTitle.JobName : '';
             this.setState({
                 user: userObj,
+                picUri: userObj.ImagePath,
                 jobName: jobName,
                 jobArea: userObj.WorkPlace,
                 aboutMe: userObj.AboutMe,
@@ -83,8 +108,8 @@ export default class ProfileEdit extends Component {
                 initialInterest: userObj.Intrests,
                 finished: true,
 
-                
-               
+
+
                 image: userObj.Image,
                 intrests: userObj.Intrests,
                 yearOfBirth: userObj.YearOfBirth,
@@ -93,7 +118,7 @@ export default class ProfileEdit extends Component {
                 vLName: userObj.LastName,
                 gender: userObj.Gender,
                 JobName: jobName,
-                jobType: userObj.JobTitle.JobCode
+                // jobType: userObj.JobTitle.JobCode
 
             }, () => {
                 this.fetchGetAllIntrests();
@@ -102,6 +127,9 @@ export default class ProfileEdit extends Component {
             }
             );
         });
+        //{this.state.user.JobName && this.setState({})}
+
+
     }
 
     onSelectedItemsChange = selectedYears => {
@@ -255,13 +283,13 @@ export default class ProfileEdit extends Component {
             Kids: this.state.kidsYearOfBirth,
             Intrests: this.state.choosenInterests,
             //להוסיף בשרת
-            Gender:this.state.gender,
-            YearOfBirth:this.state.yearOfBirth,
+            Gender: this.state.gender,
+            YearOfBirth: this.state.yearOfBirth,
             FirstName: this.state.vFName,
             LastName: this.state.lName,
 
         }
-        console.log("userFetch", user);
+        console.log("userFetch", user.LastName);
 
 
         fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/User/Extra', {
@@ -279,13 +307,12 @@ export default class ProfileEdit extends Component {
                 (result) => {
                     console.log("fetch POST= ", result);
                     if (result === 1) {
-                        AsyncStorage.mergeItem('user', JSON.stringify(user),()=>
-                        {
+                        AsyncStorage.mergeItem('user', JSON.stringify(user), () => {
                             Alert.alert("הפרטים נשמרו בהצלחה");
                             this.props.navigation.navigate('MainPage');
                         }
                         );
-                        
+
                     }
                     else {
                         Alert.alert("אנא נסו שנית");
@@ -298,15 +325,79 @@ export default class ProfileEdit extends Component {
             );
     }
 
+    btnUpload = () => {
+        let img = this.state.picUri;
+        let imgName = this.state.picName;
+        this.imageUpload(img, imgName);
+      }
+    
+       
+    
+      imageUpload = (imgUri, picName) => {
+        let urlAPI = "http://proj.ruppin.ac.il/bgroup29/test1/uploadpicture";
+        let dataI = new FormData();
+        dataI.append('picture', {
+          uri: imgUri,
+          name: picName,
+          type: 'image/jpg'
+        });
+        const config = {
+          method: 'POST',
+          body: dataI,
+        };
+    
+    
+        fetch(urlAPI, config)
+          .then((res) => {
+            console.log('res.status=', res.status);
+            if (res.status == 201) {
+              return res.json();
+            }
+            else {
+              console.log('error uploding ...1');
+              return "err";
+            }
+          })
+          .then((responseData) => {
+            console.log(responseData);
+            if (responseData != "err") {
+              let picNameWOExt = picName.substring(0, picName.indexOf("."));
+              let imageNameWithGUID = responseData.substring(responseData.indexOf(picNameWOExt), responseData.indexOf(".jpg") + 4);
+              this.setState({
+                uplodedPicUri: { uri: this.uplodedPicPath + imageNameWithGUID },
+              });
+              
+              let userDetails = {
+                ImagePath: this.uplodedPicPath + imageNameWithGUID
+              }
+          
+              
+              AsyncStorage.mergeItem('user', JSON.stringify(userDetails), () =>
+              AsyncStorage.removeItem('cameraDetails'));
+              this.props.navigation.navigate('RegistrationP4');
+            
+              console.log(this.state.uplodedPicUri);
+              
+            }
+            else {
+              console.log('error uploding ...2');
+              alert('error uploding ...2');
+            }
+          })
+          .catch(err => {
+            alert('err upload= ' + err);
+          });
+      }
+
     render() {
-        // const intrests = this.state.intrests.map((buttonIntersts) => (
-        //     <Text style={styles.note}>{buttonIntersts.Subintrest}   |   </Text>
-        // ));
+        const intrests = this.state.intrests.map((buttonIntersts) => (
+            <Text style={styles.note}>{buttonIntersts.Subintrest} |</Text>
+        ));
         //const intrests = intrests1.slice(0,-1);
         //const intrests = intrestsTemp;
-        const intrests = this.state.intrests.map((buttonIntersts) => (
-            buttonIntersts.Subintrest.slice(0, -1)));
-        
+        // const intrests = this.state.intrests.map((buttonIntersts) => (
+        //     buttonIntersts.Subintrest.slice(0, -1)));
+
 
         // להציג שנות לידה
         const kids = this.state.kidsYearOfBirth.map((buttonKids) => (
@@ -322,6 +413,7 @@ export default class ProfileEdit extends Component {
         //return the filtered array according the query from the input
         const jobs = this.findJob(this.state.query);
         const cities = this.findCity(this.state.queryCity);
+
         console.log(jobs);
         return (
 
@@ -329,289 +421,299 @@ export default class ProfileEdit extends Component {
                 <Header />
                 <BackButton goBack={() => this.props.navigation.navigate('MainPage')} />
 
+                <OurButton onPress={() => this.setState({ editing: !editing })}><SimpleLineIcons name="pencil" size='30' color="black" /></OurButton>
+
+
 
 
                 <View style={styles.container}>
 
-                    <TouchableOpacity
-                        onPress={() => this.setState({ editing: !editing })}>
-                        <Image
-                            style={styles.image}
-                            source={{ uri: 'https://icons-for-free.com/iconfiles/png/512/edit+document+edit+file+edited+editing+icon-1320191040211803620.png' }}
 
-                        />
-                    </TouchableOpacity>
 
                     {!this.state.editing && (
+                         <ScrollView style={styles.container}
+                         keyboardShouldPersistTaps={"handled"}
+                         contentContainerStyle={{ flexGrow: 1 }}
+                     >
                         <View style={styles.screen}>
                             <Text style={styles.subTitle}>הפרופיל שלי</Text>
-                            <Image style={styles.avatar}
-                                source={{ uri: this.state.user.Imaged }} />
+
+                            {this.state.user.ImagePath &&
+                                <Image style={styles.avatar}
+                                    source={{ uri: this.state.user.ImagePath }}
+                                />
+                            }
 
                             <View style={styles.center}>
                                 <Text style={styles.note, { fontSize: 30, }}>{this.state.user.FirstName} {this.state.user.LastName}</Text>
-                                <Text style={styles.note}>{this.state.user.FamilyStatus}, {age}</Text>
-                                <Text style={styles.note}>{this.state.jobName}</Text>
-                                <Text style={styles.note}> עובד/ת ב{this.state.user.WorkPlace}</Text>
-                                <Text style={styles.title}>על עצמי</Text>
-                                <Text style={styles.note}>{this.state.user.AboutMe}</Text>
-                                <Text style={styles.title}>תחומי עניין</Text>
-                                <Text style={styles.note}>{intrests}</Text>
 
-                                <Text style={styles.title}>גילאי ילדים</Text>
-                                <Text>{kids}</Text>
+
+                                {this.state.user.FamilyStatus && <Text style={styles.note}>{this.state.user.FamilyStatus}, {age}</Text>}
+                                {this.state.jobName && <Text style={styles.note}>{this.state.jobName}</Text>}
+                                {this.state.user.Gender === 0 && <Text style={styles.note}> עובד ב{this.state.user.WorkPlace}</Text>}
+                                {this.state.user.Gender === 1 && <Text style={styles.note}> עובדת ב{this.state.user.WorkPlace}</Text>}
+                                {this.state.user.Gender === 2 && <Text style={styles.note}> עובד/ת ב{this.state.user.WorkPlace}</Text>}
+                                {this.state.user.AboutMe && <Text style={styles.title}>על עצמי</Text>}
+                                {this.state.user.AboutMe && <Text style={styles.note}>{this.state.user.AboutMe}</Text>}
+                                {intrests && <Text style={styles.note}><Text style={styles.title}>תחומי עניין</Text></Text>}
+                                {intrests && <Text style={styles.note}>{intrests}</Text>}
+                                {kids && <Text style={styles.title}>גילאי ילדים</Text>}
+                                {kids && <Text>{kids}</Text>}
+
+
+
 
                             </View>
                         </View>
+                        </ScrollView>
                     )}
 
                     {this.state.editing && (
 
-                        <ScrollView style={styles.container}
-                            keyboardShouldPersistTaps={"handled"}>
+                        <View style={{ flex: 1 }}>
+                            <ScrollView style={styles.container}
+                                keyboardShouldPersistTaps={"handled"}
+                                contentContainerStyle={{ flexGrow: 1 }}
+                            >
+                                <View style={styles.screen}>
 
 
-                            <Text style={styles.subTitle} >
-                                עריכת פרופיל
-                  </Text>
+                                    <Text style={styles.subTitle} >
+                                        עריכת פרופיל
+                                </Text>
 
-                            <Input
-                                //שם פרטי 
-                                value={this.state.vFName}
-                                label='שם פרטי'
-                                placeholder={this.state.vFName === null ? 'כתוב/י מספר..' : (this.state.vFName)}
-                                onChangeText={(vFName) => this.setState({ vFName })}
-                                multiline={true}
-                                placeholderTextColor={'black'}
-                                containerStyle={styles.inputContainerStyle}
-                                inputStyle={styles.inputInputStyle}
-                                labelStyle={styles.inputLabelStyle}
-
-                            />
-
-                            <Input
-                                //שם משפחה 
-                                value={this.state.vLName}
-                                label='שם משפחה'
-                                placeholder={this.state.vFName === null ? 'כתוב/י מספר..' : (this.state.aboutMe)}
-                                onChangeText={(vLName) => this.setState({ vLName })}
-                                multiline={true}
-                                placeholderTextColor={'black'}
-                                containerStyle={styles.inputContainerStyle}
-                                inputStyle={styles.inputInputStyle}
-                                labelStyle={styles.inputLabelStyle}
-
-                            />
-
-                            <Text style={styles.text} >מגדר</Text>
-                            <View style={styles.genderView}>
-                                <OurButton style={styles.genderButton} onPress={() => this.setState({ gender: 0 })}><SimpleLineIcons name="user" size={40} color="black" /></OurButton>
-                                <OurButton style={styles.genderButton} onPress={() => this.setState({ gender: 1 })} ><SimpleLineIcons name="user-female" size={40} color="black" /></OurButton>
-                                <OurButton style={styles.genderButton} onPress={() => this.setState({ gender: 2 })}><SimpleLineIcons name="user-follow" size={40} color="black" /></OurButton>
-                            </View>
-                            <View style={styles.genderView}>
-                                <Text style={this.state.gender === 0 ? styles.genderNoteSelected : styles.genderNote} >גבר </Text>
-                                <Text style={this.state.gender === 1 ? styles.genderNoteSelected : styles.genderNote}  >אישה </Text>
-                                <Text style={this.state.gender === 2 ? styles.genderNoteSelected : styles.genderNote}  >אחר </Text>
-                            </View>
-
-                            <Text style={styles.text} >שנת לידה</Text>
-                            <Picker
-                                mode="dialog"
-                                style={styles.picker}
-                                selectedValue={this.state.YearOfBirth}
-                                onValueChange={(value) => this.setState({ YearOfBirth: value })}>
-                                {years.map((item, index) => {
-                                    return (<Picker.Item label={item} value={item} key={index} />);
-                                })}
-                            </Picker>
+                                    <Image style={styles.avatar1}
+                                        source={{ uri: this.state.user.ImagePath }} />
 
 
-                            <View style={styles.workPart}>
-                                <Text style={styles.text}>מקצוע</Text>
-                                <Autocomplete
-                                    //מקצוע
+                                    <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+                                        <OurButton onPress={() => this.props.navigation.navigate('CameraPage')} style={{ paddingHorizontal: 20 }}><MaterialIcons name="camera-alt" size={40} color={colors.turkiz} /></OurButton>
+                                        <OurButton onPress={() => this.props.navigation.navigate('ImageGallery')} style={{ paddingHorizontal: 20 }}><MaterialIcons name="photo" size={40} color={colors.turkiz} /></OurButton>
+                                    </View>
 
-                                    listContainerStyle={{ alignItems: "flex-start", alignItems: 'stretch' }}
-                                    listStyle={{ position: "relative", borderColor: 'white', borderRadius: 8 }}
-                                    inputContainerStyle={{ borderColor: colors.reeBackgrouond }}
-                                    hideResults={this.state.hideResults}
-                                    autoCorrect={false}
-                                    defaultValue={this.state.query}
-                                    //placeholder='הזנ/י מקצוע'
-                                    placeholder={this.state.JobName !== null ? (this.state.nameJob) + "" : 'בחר/י תחום עבודה'}
-                                    data={jobs}
-                                    style={styles.autoComplete}
-                                    onChangeText={text => this.setState({ query: text, hideResults: false })}
-                                    renderItem={({ item }) => (
-                                        <TouchableOpacity style={styles.list} onPress={() => this.setState({ query: item.JobName, hideResults: true, jobType: item.JobCode, nameJob: item.JobName })}>
-                                            <Text style={styles.itemText}>
-                                                {item.JobName}
-                                            </Text>
-                                        </TouchableOpacity>
-                                    )}
+                                    <Input
+                                        //שם פרטי 
+                                        value={this.state.vFName}
+                                        label='שם פרטי'
+                                        placeholder={this.state.vFName === null ? 'כתוב/י מספר..' : (this.state.vFName)}
+                                        onChangeText={(vFName) => this.setState({ vFName })}
+                                        multiline={true}
+                                        placeholderTextColor={'black'}
+                                        containerStyle={styles.inputContainerStyle}
+                                        inputStyle={styles.inputInputStyle}
+                                        labelStyle={styles.inputLabelStyle}
 
-                                />
-                            </View>
-                            <View style={styles.workPart}>
-                                <Text style={styles.text}>מקום עבודה</Text>
-                                <Autocomplete
-                                    //מקום עבודה
-                                    listContainerStyle={{ alignItems: "flex-start", alignItems: 'stretch' }}
-                                    listStyle={{ position: "relative", borderColor: 'white', borderRadius: 8 }}
-                                    inputContainerStyle={{ borderColor: colors.reeBackgrouond }}
-                                    data={cities}
-                                    hideResults={this.state.hideCityResults}//close the results
-                                    autoCorrect={false}
-                                    defaultValue={this.state.queryCity}
-                                    //placeholder='הזנ/י את מיקום העבודה'
-                                    placeholder={this.state.jobArea !== null ? (this.state.jobArea) + "" : 'בחר/י מקום עבודה'}
-                                    style={styles.autoComplete}
-                                    onChangeText={text => this.setState({ queryCity: text, hideCityResults: false })}
-                                    renderItem={({ item }) => (
-                                        //the view
-                                        <TouchableOpacity onPress={() => this.setState({ queryCity: item.CityName, hideCityResults: true, jobArea: item.CityName, CityName: item.CityName })}>
-                                            <Text style={styles.itemText}>
-                                                {item.CityName}
-                                            </Text>
-                                        </TouchableOpacity>
-                                    )}
+                                    />
 
-                                />
-                            </View>
+                                    <Input
+                                        //שם משפחה 
+                                        value={this.state.vLName}
+                                        label='שם משפחה'
+                                        placeholder={this.state.vFName === null ? 'כתוב/י מספר..' : (this.state.vLName)}
+                                        onChangeText={(vLName) => this.setState({ vLName })}
+                                        multiline={true}
+                                        placeholderTextColor={'black'}
+                                        containerStyle={styles.inputContainerStyle}
+                                        inputStyle={styles.inputInputStyle}
+                                        labelStyle={styles.inputLabelStyle}
 
-                            <View style={styles.familyStatus}>
+                                    />
 
-                                <Dropdown
-                                    labelFontSize={20}
-                                    label='סטטוס משפחתי'
-                                    value={this.state.familyStatus}
-                                    valueExtractor={({ label }) => label}
-                                    //labelExtractor={({ label }) => label}
-                                    data={status}
-                                    selectedItemColor={colors.subTitle}
-                                    onChangeText={(label) => {
-                                        this.setState({
-                                            familyStatus: label
-                                        });
-                                        console.log("family=", this.state.familyStatus);
-                                    }}
-                                    itemTextStyle={{ textAlign: "right", fontFamily: 'rubik-regular' }}
-                                    containerStyle={{ width: '90%' }}
-                                    labelTextStyle={{ fontFamily: 'rubik-regular', textAlign: "center" }}
-                                />
-                            </View>
+                                    <Text style={styles.text} >מגדר</Text>
+                                    <View style={styles.genderView}>
+                                        <OurButton style={styles.genderButton} onPress={() => this.setState({ gender: 0 })}><SimpleLineIcons name="user" size={40} color="black" /></OurButton>
+                                        <OurButton style={styles.genderButton} onPress={() => this.setState({ gender: 1 })} ><SimpleLineIcons name="user-female" size={40} color="black" /></OurButton>
+                                        <OurButton style={styles.genderButton} onPress={() => this.setState({ gender: 2 })}><SimpleLineIcons name="user-follow" size={40} color="black" /></OurButton>
+                                    </View>
+                                    <View style={styles.genderView}>
+                                        <Text style={this.state.gender === 0 ? styles.genderNoteSelected : styles.genderNote} >גבר </Text>
+                                        <Text style={this.state.gender === 1 ? styles.genderNoteSelected : styles.genderNote}  >אישה </Text>
+                                        <Text style={this.state.gender === 2 ? styles.genderNoteSelected : styles.genderNote}  >אחר </Text>
+                                    </View>
 
-                            <Input
-                                //קצת על עצמי 
-                                value={this.state.aboutMe}
-                                label='קצת על עצמי'
-                                placeholder='הזנ/י עד 255 תווים אודות עצמך'
-                                //placeholder={this.state.user.AboutMe !== null ? (this.state.user.AboutMe) + "" : 'כתוב/י מספר..'}
-                                onChangeText={(aboutMe) => this.setState({ aboutMe })}
-                                multiline={true}
-                                placeholderTextColor={'#D1D3D4'}
-                                containerStyle={{ padding: 10, alignItems: "center", fontFamily: 'rubik-regular', paddingLeft: '5%', paddingRight: '5%' }}
-                                labelStyle={{ fontSize: 20, fontFamily: 'rubik-regular' }}
-                                inputStyle={{ fontFamily: 'rubik-regular', textAlign: "right" }}
-
-                            />
-                            <Input
-                                ///מספר ילדים
-                                value={this.state.numOfKids}
-                                label='מספר ילדים'
-                                //placeholder='הזנ/י את מספר ילדיך'
-                                placeholder={(this.state.user.numOfKids !== null) ? this.state.user.NumOfChildren + "" : 'כתוב/י מספר..'}
-                                onChangeText={(numOfKids) => this.handleNumOfKids(numOfKids)}
-                                multiline={true}
-                                placeholderTextColor={'black'}
-                                containerStyle={{ padding: 10, alignItems: "center", fontFamily: 'rubik-regular', paddingLeft: '5%', paddingRight: '5%' }}
-                                labelStyle={{ fontSize: 20, fontFamily: 'rubik-regular', }}
-                                inputStyle={{ fontFamily: 'rubik-regular', textAlign: "right" }}
-
-                            />
-
-
-                            {this.state.kidsYearOfBirth && <Text style={styles.text}>שנות לידה ילדים</Text>}
-                            <View style={styles.kidsYear}>
-
-                                {this.state.kidsYearOfBirth && this.state.kidsYearOfBirth.map((age, index) => {
-                                    return (<Picker //שנת לידה ילדים
+                                    <Text style={styles.text} >שנת לידה</Text>
+                                    <Picker
                                         mode="dialog"
                                         style={styles.picker}
-                                        //placeholder={this.state.kidsYearOfBirth[index]!==null?this.state.kidsYearOfBirth[index].YearOfBirth:"בחר שנת לידה"}
-                                        //placeholder="בחר שנת לידה"
-                                        selectedValue={this.state.kidsYearOfBirth[index].YearOfBirth}
-                                        onValueChange={(value) => {
-                                            let kidsCopy = JSON.parse(JSON.stringify(this.state.kidsYearOfBirth));
-                                            kidsCopy[index].YearOfBirth = value;
-                                            this.setState({ kidsYearOfBirth: kidsCopy });
-                                        }}>
+                                        selectedValue={this.state.YearOfBirth}
+                                        onValueChange={(value) => this.setState({ YearOfBirth: value })}>
                                         {years.map((item, index) => {
                                             return (<Picker.Item label={item} value={item} key={index} />);
                                         })}
+                                    </Picker>
 
-                                    </Picker>)
-                                }
-                                )}
-                            </View>
 
-                            <Text style={styles.text}>
-                                בחר/י תחומי עניין
+                                    <View style={styles.workPart}>
+                                        <Text style={styles.text}>מקצוע</Text>
+                                        <Autocomplete
+                                            //מקצוע
+
+                                            listContainerStyle={{ alignItems: "flex-start", alignItems: 'stretch' }}
+                                            listStyle={{ position: "relative", borderColor: 'white', borderRadius: 8 }}
+                                            inputContainerStyle={{ borderColor: colors.reeBackgrouond }}
+                                            hideResults={this.state.hideResults}
+                                            autoCorrect={false}
+                                            defaultValue={this.state.query}
+                                            //placeholder='הזנ/י מקצוע'
+                                            placeholder={this.state.JobName !== null ? (this.state.nameJob) + "" : 'בחר/י תחום עבודה'}
+                                            data={jobs}
+                                            style={styles.autoComplete}
+                                            onChangeText={text => this.setState({ query: text, hideResults: false })}
+                                            renderItem={({ item }) => (
+                                                <TouchableOpacity style={styles.list} onPress={() => this.setState({ query: item.JobName, hideResults: true, jobType: item.JobCode, nameJob: item.JobName })}>
+                                                    <Text style={styles.itemText}>
+                                                        {item.JobName}
+                                                    </Text>
+                                                </TouchableOpacity>
+                                            )}
+
+                                        />
+                                    </View>
+                                    <View style={styles.workPart}>
+                                        <Text style={styles.text}>מקום עבודה</Text>
+                                        <Autocomplete
+                                            //מקום עבודה
+                                            listContainerStyle={{ alignItems: "flex-start", alignItems: 'stretch' }}
+                                            listStyle={{ position: "relative", borderColor: 'white', borderRadius: 8 }}
+                                            inputContainerStyle={{ borderColor: colors.reeBackgrouond }}
+                                            data={cities}
+                                            hideResults={this.state.hideCityResults}//close the results
+                                            autoCorrect={false}
+                                            defaultValue={this.state.queryCity}
+                                            //placeholder='הזנ/י את מיקום העבודה'
+                                            placeholder={this.state.jobArea !== null ? (this.state.jobArea) + "" : 'בחר/י מקום עבודה'}
+                                            style={styles.autoComplete}
+                                            onChangeText={text => this.setState({ queryCity: text, hideCityResults: false })}
+                                            renderItem={({ item }) => (
+                                                //the view
+                                                <TouchableOpacity onPress={() => this.setState({ queryCity: item.CityName, hideCityResults: true, jobArea: item.CityName, CityName: item.CityName })}>
+                                                    <Text style={styles.itemText}>
+                                                        {item.CityName}
+                                                    </Text>
+                                                </TouchableOpacity>
+                                            )}
+
+                                        />
+                                    </View>
+
+                                    <View style={styles.familyStatus}>
+
+                                        <Dropdown
+                                            labelFontSize={20}
+                                            label='סטטוס משפחתי'
+                                            value={this.state.familyStatus}
+                                            valueExtractor={({ label }) => label}
+                                            //labelExtractor={({ label }) => label}
+                                            data={status}
+                                            selectedItemColor={colors.subTitle}
+                                            onChangeText={(label) => {
+                                                this.setState({
+                                                    familyStatus: label
+                                                });
+                                                console.log("family=", this.state.familyStatus);
+                                            }}
+                                            itemTextStyle={{ textAlign: "right", fontFamily: 'rubik-regular' }}
+                                            containerStyle={{ width: '90%' }}
+                                            labelTextStyle={{ fontFamily: 'rubik-regular', textAlign: "center" }}
+                                        />
+                                    </View>
+
+                                    <Input
+                                        //קצת על עצמי 
+                                        value={this.state.aboutMe}
+                                        label='קצת על עצמי'
+                                        placeholder='הזנ/י עד 255 תווים אודות עצמך'
+                                        //placeholder={this.state.user.AboutMe !== null ? (this.state.user.AboutMe) + "" : 'כתוב/י מספר..'}
+                                        onChangeText={(aboutMe) => this.setState({ aboutMe })}
+                                        multiline={true}
+                                        placeholderTextColor={'#D1D3D4'}
+                                        containerStyle={{ padding: 10, alignItems: "center", fontFamily: 'rubik-regular', paddingLeft: '5%', paddingRight: '5%' }}
+                                        labelStyle={{ fontSize: 20, fontFamily: 'rubik-regular' }}
+                                        inputStyle={{ fontFamily: 'rubik-regular', textAlign: "right" }}
+
+                                    />
+                                    <Input
+                                        ///מספר ילדים
+                                        value={this.state.numOfKids}
+                                        label='מספר ילדים'
+                                        //placeholder='הזנ/י את מספר ילדיך'
+                                        placeholder={(this.state.user.numOfKids !== null) ? this.state.user.NumOfChildren + "" : 'כתוב/י מספר..'}
+                                        onChangeText={(numOfKids) => this.handleNumOfKids(numOfKids)}
+                                        multiline={true}
+                                        placeholderTextColor={'black'}
+                                        containerStyle={{ padding: 10, alignItems: "center", fontFamily: 'rubik-regular', paddingLeft: '5%', paddingRight: '5%' }}
+                                        labelStyle={{ fontSize: 20, fontFamily: 'rubik-regular', }}
+                                        inputStyle={{ fontFamily: 'rubik-regular', textAlign: "right" }}
+
+                                    />
+
+
+                                    {this.state.kidsYearOfBirth && <Text style={styles.text}>שנות לידה ילדים</Text>}
+                                    <View style={styles.kidsYear}>
+
+                                        {this.state.kidsYearOfBirth && this.state.kidsYearOfBirth.map((age, index) => {
+                                            return (<Picker //שנת לידה ילדים
+                                                mode="dialog"
+                                                style={styles.picker}
+                                                //placeholder={this.state.kidsYearOfBirth[index]!==null?this.state.kidsYearOfBirth[index].YearOfBirth:"בחר שנת לידה"}
+                                                //placeholder="בחר שנת לידה"
+                                                selectedValue={this.state.kidsYearOfBirth[index].YearOfBirth}
+                                                onValueChange={(value) => {
+                                                    let kidsCopy = JSON.parse(JSON.stringify(this.state.kidsYearOfBirth));
+                                                    kidsCopy[index].YearOfBirth = value;
+                                                    this.setState({ kidsYearOfBirth: kidsCopy });
+                                                }}>
+                                                {years.map((item, index) => {
+                                                    return (<Picker.Item label={item} value={item} key={index} />);
+                                                })}
+
+                                            </Picker>)
+                                        }
+                                        )}
+                                    </View>
+
+                                    <Text style={styles.text}>
+                                        בחר/י תחומי עניין
                    </Text>
-                            {this.state.finished &&
-                                <Interests
-                                    IntrestsArray={this.state.IntrestsArray}
-                                    handleMainChange={(mainI) => this.handleMainChange(mainI)}
-                                    subInArray={this.state.subInArray}
-                                    callFetch={(iArray) => this.setState({ choosenInterests: iArray })}
-                                    isMulti={true}
-                                    initialInterest={this.state.initialInterest ? this.state.initialInterest : []}
-                                />}
+                                    {this.state.finished &&
+                                        <Interests
+                                            IntrestsArray={this.state.IntrestsArray}
+                                            handleMainChange={(mainI) => this.handleMainChange(mainI)}
+                                            subInArray={this.state.subInArray}
+                                            callFetch={(iArray) => this.setState({ choosenInterests: iArray })}
+                                            isMulti={true}
+                                            initialInterest={this.state.initialInterest ? this.state.initialInterest : []}
+                                        />}
 
-                            <View style={styles.row}>
-                                <Button
-                                    style={styles.item}
-                                    title={'סיום'}
-                                    onPress={() => this.fetchUpdateUser()}
+                                    <View style={styles.row}>
+                                        <Button
+                                            style={styles.item}
+                                            title={'סיום'}
+                                            //onPress={() => this.fetchUpdateUser()}
+                                            onPress={()=>{this.state.picUri === this.user.ImagePath ? this.fetchUpdateUser() : this.btnUpload() }}
 
 
-                                />
-                                <Button
-                                    style={styles.item}
-                                    title={'ביטול'} onPress={() => {
-                                        this.setState({
-                                            editing:false,
-                                            vFName: this.state.fName,
-                                            vLName: this.state.lName,
-                                            vImage: this.state.image,
-                                            vYearOfBirth: this.state.yearOfBirth,
-                                            vGender: this.state.gender,
-                                        })
-                                    }}
-                                />
-                            </View>
-                        </ScrollView>
-
+                                        />
+                                        <Button
+                                            style={styles.item}
+                                            title={'ביטול'} onPress={() => {
+                                                this.setState({
+                                                    editing: false,
+                                                    vFName: this.state.fName,
+                                                    vLName: this.state.lName,
+                                                    vImage: this.state.image,
+                                                    vYearOfBirth: this.state.yearOfBirth,
+                                                    vGender: this.state.gender,
+                                                })
+                                            }}
+                                        />
+                                    </View>
+                                </View>
+                            </ScrollView>
+                        </View>
                     )}
-
-
-
-
-
-
-
-
                 </View>
-
-
-
-
             </View>
-
-
-
-
         );
     }
 }
@@ -629,9 +731,18 @@ const styles = StyleSheet.create({
 
 
     },
+    avatar1: {
+        width: 250,
+        height: 250,
+        borderWidth: 4,
+        borderColor: "white",
+        alignSelf: "center",
+
+
+    },
     screen: {
         flex: 1,
-        backgroundColor: colors.reeBackgrouond
+        backgroundColor: colors.reeBackgrouond,
     },
 
     note: {
@@ -641,8 +752,8 @@ const styles = StyleSheet.create({
         color: 'black',
         //justifyContent:"center",
         textAlign: "center",
-        marginRight:5,
-        marginLeft:5
+        marginRight: 5,
+        marginLeft: 5
     },
 
     subTitle: {

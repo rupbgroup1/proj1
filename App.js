@@ -37,6 +37,7 @@ import registerForPushNotificationsAsync from './components/registerForPushNotif
 import GeneralLosts from './screens/Losts/GeneralLosts';
 import CreateLost from './screens/Losts/CreateLost';
 import MyLosts from './screens/Losts/MyLosts';
+//import ProfileNeighboord from './screens/ProfileNeighboord';
 
 //cancel the timer error
 YellowBox.ignoreWarnings(['Setting a timer']);
@@ -91,6 +92,7 @@ const navigator = createStackNavigator({
   GeneralLosts:GeneralLosts,
   MyLosts:MyLosts,
   CreateLost:CreateLost,
+  //ProfileNeighboord:ProfileNeighboord
   }, {
         initialRouteName: 'GeneralServices',
         defaultNavigationOptions: {
