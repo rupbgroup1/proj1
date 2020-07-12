@@ -66,11 +66,11 @@ export default class MyEvents extends React.Component {
             this.setState({ filteredArray: result })
           }
           else
-            Alert.alert(" לא נמצאו אירועים");
+            Alert.alert("עדיין לא יצרת אירועים חדשים. להוספת אירוע לחץ/י ' + '");
         },
         (error) => {
           console.log("err post=", error);
-          Alert.alert("מצטערים, אנו נסו שנית!");
+          Alert.alert("מצטערים, אנא נסה שנית!");
         }
       );
   }
@@ -108,7 +108,7 @@ export default class MyEvents extends React.Component {
     const { navigation } = this.props;
     return (
       <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
-        <Header />
+        <Header navigation={navigation}/>
         <BackButton goBack={() => navigation.navigate('MainPage')} />
         <View style={styles.row}>
           <View style={styles.search}>

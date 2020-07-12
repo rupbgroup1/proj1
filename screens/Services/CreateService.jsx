@@ -374,7 +374,7 @@ export default class CreateEvent extends React.Component {
         console.log("service", newS)
         return (
             <View style={{flex: 1, backgroundColor: 'white', justifyContent: "flex-start"}}>
-                <Header />
+                <Header navigation={navigation}/>
                 <BackButton goBack={() => navigation.navigate('GeneralServices')} />
                 <ScrollView>
                     

@@ -21,17 +21,11 @@ export default class MainPage extends Component {
     return (
       <TouchableWithoutFeedback>
         <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
+          
           <Header  navigation={navigation}/>
-          <View style={{
-            width: '95%', height: '60%', borderRadius: 10,
-            shadowColor: 'black',
-            shadowOpacity: 0.5,
-            elevation: 3,
-            backgroundColor: 'white',
-            marginTop: 10
-          }}>
-            <Text style={styles.header}>מה חדש בשכונה?</Text>
 
+          <View style={styles.HeaderView}>
+            <Text style={styles.header}>מה חדש בשכונה?</Text>
             <Feed />
           </View>
 
@@ -87,10 +81,18 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'rubik-regular',
     marginVertical: 1,
-    fontSize: 20,
+    fontSize: 24,
     color: 'black',
     paddingTop: 15,
     paddingBottom: 15
+  },
+  HeaderView:{
+    width: '95%', height: '60%', borderRadius: 10,
+    shadowColor: 'black',
+    shadowOpacity: 0.5,
+    elevation: 3,
+    backgroundColor: 'white',
+    marginTop: 10
   },
   feed: {
     flex: 3,

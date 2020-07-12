@@ -68,7 +68,7 @@ export default class MyServices extends React.Component {
                         this.setState({ filteredArray: result })
                     }
                     else
-                        Alert.alert(" מצטערים, אנו נסו שנית!");
+                        Alert.alert("עדיין לא יצרת עסקים חדשים. להוספת עסק לחץ/י ' + '");
                 },
                 (error) => {
                     console.log("err post=", error);
@@ -112,7 +112,7 @@ export default class MyServices extends React.Component {
         const { navigation } = this.props;
         return (
             <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
-                <Header />
+                <Header navigation={navigation}/>
                 <BackButton goBack={() => navigation.navigate('MainPage')} />
                 <View style={styles.row}>
                     <View style={styles.search}>

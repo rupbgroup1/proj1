@@ -93,7 +93,7 @@ class GeneralLosts extends React.Component {
         return (
             <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
 
-                <Header />
+                <Header navigation={navigation}/>
                 <BackButton goBack={() => navigation.navigate('MainPage')} />
 
                 <View style={styles.row}>

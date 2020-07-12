@@ -135,8 +135,7 @@ export default class ForgotPassword extends Component {
         const { navigation } = this.props;
         return (
             <View style={styles.screen}>
-                <Header />
-                <BackButton goBack={() => navigation.navigate('LoinScreen')} />
+                <BackButton goBack={() => navigation.navigate('LoinScreen')}  />
                 <SimpleLineIcons style={{paddingTop:50, textAlign:"center"}} name="lock" size={40} color="black" />
                 <Text style={styles.subTitle}>שחזור סיסמה</Text>
                 <View style={styles.container}>

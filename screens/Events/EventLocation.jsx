@@ -80,7 +80,7 @@ export default class EventLocation extends Component {
     render() {
         return (
             <View style={styles.screen}>
-            <View style={styles.middlePage}>
+            <View style={styles.topPage}>
                 <Text style={styles.subTitle}>חפש מיקום או סמן על גבי המפה</Text>
                 <GoogleAPIAutoComplete style={styles.API} notifyChange={(loc) => this.getCoordsFromName(loc)} FullAddress={(name) => this.handleFullName(name)} CityName={(name)=>this.handleCityName(name)} />
 
@@ -101,7 +101,8 @@ export default class EventLocation extends Component {
                         this.props.navigation.navigate('CreateService',{region: this.props.navigation.getParam("region"), Location:this.props.navigation.getParam("Location")})
                         
                     }}
-                />
+                    style={styles.SaveButton}
+                    />
                 </View>
 
                 
@@ -122,15 +123,15 @@ const styles = StyleSheet.create({
         backgroundColor: colors.reeBackgrouond
         
     },
-    middlePage: {
-        flex: 2,
-        paddingTop:60,
+    topPage: {
+        flex: 1,
+        paddingTop:80,
         minHeight:200,
         
     },
     bottomPage: {
-        flex: 6,
-        paddingTop:40
+        flex: 4,
+        paddingTop:10
     },
     subTitle: {
         fontFamily: 'rubik-regular',
@@ -142,13 +143,18 @@ const styles = StyleSheet.create({
         color: colors.subTitle,
     },
     API: {
-        paddingBottom: 70,
-        paddingTop:60,
+        paddingBottom: 20,
+        paddingTop:80,
 
     },
     map: {
-        //paddingTop:40
+        flex:1,
+        paddingBottom:100,
+        justifyContent:'space-between'
 
     },
+    SaveButton:{
+        paddingTop:20
+    }
 
 });

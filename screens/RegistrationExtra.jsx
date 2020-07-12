@@ -271,7 +271,7 @@ export default class RegistrationExtra extends Component {
         return (
 
             <View style={styles.screen} >
-                <Header />
+                <Header navigation={navigation}/>
                 <BackButton goBack={() => navigation.navigate('MainPage')} />
                 <ScrollView style={styles.container}
                     keyboardShouldPersistTaps={"handled"}>

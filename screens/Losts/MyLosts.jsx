@@ -58,11 +58,11 @@ export default class MyLosts extends React.Component {
                         this.setState({ filteredArray: result })
                     }
                     else
-                        Alert.alert(" מצטערים, אנו נסו שנית!");
+                        Alert.alert("עדיין לא הוספת מציאות חדשות. להוספת מציאה לחץ/י ' + '");
                 },
                 (error) => {
                     console.log("err post=", error);
-                    Alert.alert("מצטערים, אנו נסו שנית!");
+                    Alert.alert("מצטערים, אנא נסה שנית!");
                 }
             );
     }
@@ -121,7 +121,7 @@ export default class MyLosts extends React.Component {
         return (
             <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
 
-                <Header />
+                <Header navigation={navigation}/>
                 <BackButton goBack={() => navigation.navigate('MainPage')} />
 
                 <View style={styles.row}>

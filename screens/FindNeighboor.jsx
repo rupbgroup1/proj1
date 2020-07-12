@@ -214,7 +214,7 @@ export default class FindNeighboor extends Component {
 
         return (
             <View style={styles.screen}>
-                <Header />
+                <Header navigation={navigation}/>
                 <BackButton goBack={() => this.props.navigation.navigate('MainPage')} />
                 <Text style={styles.text} >
                     חיפוש לפי שם של שכן

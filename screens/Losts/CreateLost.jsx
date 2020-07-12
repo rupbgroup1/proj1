@@ -220,7 +220,7 @@ export default class CreateLost extends React.Component {
         const newLost = this.state.newLost;
         return (
             <View style={{ flex: 1, backgroundColor: 'white', justifyContent: "flex-start", paddingBottom: 20 }}>
-                <Header />
+                <Header navigation={navigation}/>
                 <BackButton goBack={() => navigation.navigate('GeneralLosts')} />
                 <ScrollView>
                     <View style={{ flexDirection: 'row', borderColor: 'white', borderWidth: 1, borderRadius: 15, justifyContent: 'center', alignItems: "center"}}>

@@ -2,6 +2,7 @@ import React from 'react';
 import { TouchableHighlight, StyleSheet, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 
+
 export default class MenuButton extends React.Component {
   render() {
     return (
@@ -41,8 +42,9 @@ const styles = StyleSheet.create({
       width: 25
     },
     btnText: {
-      fontSize: 16,
+      fontSize: 22,
       marginLeft: 10,
-      marginTop: 2
+      marginTop: 2,
+      fontFamily: 'Helvetica-Light'
     }
   });

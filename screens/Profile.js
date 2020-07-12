@@ -84,7 +84,7 @@ export default class Profile extends Component {
         return (
 
             <View style={styles.screen} >
-                <Header />
+                <Header navigation={navigation}/>
                 <BackButton goBack={() => this.props.navigation.navigate('FindNeighboor')} />
                 <View style={styles.container}>
                     <View style={styles.screen}>

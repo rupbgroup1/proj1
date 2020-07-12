@@ -54,8 +54,8 @@ export default class AttendanceEvents extends React.Component {
 
             method: 'GET',
             headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
             }
         })
             .then(res => {
@@ -81,7 +81,7 @@ export default class AttendanceEvents extends React.Component {
     fetchDeleteAttend() {
         //console.log("in fetch");
         const att = {
-          Id: this.state.selectedCard.Id,
+            Id: this.state.selectedCard.Id,
             Attandance: [{ UserId: this.state.user.UserId }]
         }
         console.log(att)
@@ -89,7 +89,7 @@ export default class AttendanceEvents extends React.Component {
 
             method: 'DELETE',
             body: JSON.stringify(att),
-            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json',}
+            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', }
         })
             .then(res => {
                 //console.log('res=', res);
@@ -128,7 +128,7 @@ export default class AttendanceEvents extends React.Component {
             : this.setState({ filteredArray: this.arrayholder, text: text });
     }
 
-   
+
     toggleOverlay() {
         this.setState({ visible: false });
     }
@@ -143,7 +143,7 @@ export default class AttendanceEvents extends React.Component {
         return (
             <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
 
-                <Header />
+                <Header navigation={navigation} />
                 <BackButton goBack={() => navigation.navigate('MainPage')} />
 
                 <View style={styles.row}>
@@ -167,7 +167,7 @@ export default class AttendanceEvents extends React.Component {
                         </OurButton>
                     </View>
                 </View>
-               
+
                 <ScrollView>
                     {
                         this.state.filteredArray.length > 0 &&
@@ -247,24 +247,24 @@ export default class AttendanceEvents extends React.Component {
                                                     <Text style={styles.locationText}>לחץ לצפייה במיקום האירוע</Text>
                                                 </TouchableOpacity>
                                                 <Button
-                                                        title='ביטול הגעה'
-                                                        buttonStyle={styles.cardButton}
-                                                        titleStyle={styles.cardButtonText}
-                                                        onPress={() => this.fetchDeleteAttend()}
-                                                    > </Button>
-                                               
-                                  </Card>
+                                                    title='ביטול הגעה'
+                                                    buttonStyle={styles.cardButton}
+                                                    titleStyle={styles.cardButtonText}
+                                                    onPress={() => this.fetchDeleteAttend()}
+                                                > </Button>
 
-                                </Overlay>
+                                            </Card>
 
-                              </Card>
-                            </View>
+                                        </Overlay>
 
-                          )
+                                    </Card>
+                                </View>
+
+                            )
                         }
-                )}
-            </ScrollView>
-          </View>
+                        )}
+                </ScrollView>
+            </View>
         );
     }
 };

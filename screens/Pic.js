@@ -143,7 +143,7 @@ export default class Pic extends Component {
 
     return (
       <View style={styles.screen}>
-        <Header />
+        <Header navigation={navigation}/>
         <BackButton goBack={() => navigation.navigate('RegistrationP2')} />
         <Text style={styles.subTitle}>
           הגדר את תמונת הפרופיל שלך

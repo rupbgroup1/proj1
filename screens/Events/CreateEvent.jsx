@@ -482,7 +482,7 @@ export default class CreateEvent extends React.Component {
 
         return (
             <View style={{ flex: 1, backgroundColor: 'white', justifyContent: "flex-start", paddingBottom: 20 }}>
-                <Header />
+                <Header navigation={navigation}/>
                 <BackButton goBack={() => navigation.navigate('GeneralEvents')} />
                 
                 <ScrollView>

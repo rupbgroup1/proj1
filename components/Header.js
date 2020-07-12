@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     fontSize: 30, 
     fontFamily: 'kalam-regular',
     paddingTop:20,
-    textAlign:'center'
+    paddingHorizontal:'22%'
   }
 });
 

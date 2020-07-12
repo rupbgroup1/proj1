@@ -418,7 +418,7 @@ export default class ProfileEdit extends Component {
         return (
 
             <View style={styles.screen} >
-                <Header />
+                <Header navigation={navigation}/>
                 <BackButton goBack={() => this.props.navigation.navigate('MainPage')} />
 
                 <OurButton onPress={() => this.setState({ editing: !editing })}><SimpleLineIcons name="pencil" size='30' color="black" /></OurButton>
