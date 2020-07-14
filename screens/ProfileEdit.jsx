@@ -23,7 +23,7 @@ export default class ProfileEdit extends Component {
         this.state = {
 
             editing: false,
-            
+
 
             fName: '',
             lName: '',
@@ -59,32 +59,32 @@ export default class ProfileEdit extends Component {
     }
 
     componentDidMount = () => {
-        this.getUser(), ()=>{
+        this.getUser(), () => {
             const { navigation } = this.props;
             this._unsubscribe = navigation.addListener('didFocus', () => {
-              AsyncStorage.getItem('cameraDetails', (err, cameraDetailsJSON) => {
-        
-                if (cameraDetailsJSON !== null) {
-                  const cameraDetailsObj = JSON.parse(cameraDetailsJSON);
-                  this.setState({ picUri: cameraDetailsObj.picUri, picName: 'user_' + new Date().getTime() + '.jpg' });
-                  console.log("cameraDetailsObj:" + cameraDetailsObj.picUri)
-                }
-        
-                //   else{
-                //     this.setState({ picUri: 'https://cdn1.iconfinder.com/data/icons/business-users/512/circle-512.png', picName: 'user_' + new Date().getTime() + '.jpg' });
-                //   }
-              });
-        
-              console.log("uri = "  +this.state.picUri);
-              console.log(this.state.picName)
-              
-        
-        
-        
+                AsyncStorage.getItem('cameraDetails', (err, cameraDetailsJSON) => {
+
+                    if (cameraDetailsJSON !== null) {
+                        const cameraDetailsObj = JSON.parse(cameraDetailsJSON);
+                        this.setState({ picUri: cameraDetailsObj.picUri, picName: 'user_' + new Date().getTime() + '.jpg' });
+                        console.log("cameraDetailsObj:" + cameraDetailsObj.picUri)
+                    }
+
+                    //   else{
+                    //     this.setState({ picUri: 'https://cdn1.iconfinder.com/data/icons/business-users/512/circle-512.png', picName: 'user_' + new Date().getTime() + '.jpg' });
+                    //   }
+                });
+
+                console.log("uri = " + this.state.picUri);
+                console.log(this.state.picName)
+
+
+
+
             });
         };
-       
-        
+
+
     }
 
     getUser() {
@@ -329,67 +329,68 @@ export default class ProfileEdit extends Component {
         let img = this.state.picUri;
         let imgName = this.state.picName;
         this.imageUpload(img, imgName);
-      }
-    
-       
-    
-      imageUpload = (imgUri, picName) => {
+    }
+
+
+
+    imageUpload = (imgUri, picName) => {
         let urlAPI = "http://proj.ruppin.ac.il/bgroup29/test1/uploadpicture";
         let dataI = new FormData();
         dataI.append('picture', {
-          uri: imgUri,
-          name: picName,
-          type: 'image/jpg'
+            uri: imgUri,
+            name: picName,
+            type: 'image/jpg'
         });
         const config = {
-          method: 'POST',
-          body: dataI,
+            method: 'POST',
+            body: dataI,
         };
-    
-    
+
+
         fetch(urlAPI, config)
-          .then((res) => {
-            console.log('res.status=', res.status);
-            if (res.status == 201) {
-              return res.json();
-            }
-            else {
-              console.log('error uploding ...1');
-              return "err";
-            }
-          })
-          .then((responseData) => {
-            console.log(responseData);
-            if (responseData != "err") {
-              let picNameWOExt = picName.substring(0, picName.indexOf("."));
-              let imageNameWithGUID = responseData.substring(responseData.indexOf(picNameWOExt), responseData.indexOf(".jpg") + 4);
-              this.setState({
-                uplodedPicUri: { uri: this.uplodedPicPath + imageNameWithGUID },
-              });
-              
-              let userDetails = {
-                ImagePath: this.uplodedPicPath + imageNameWithGUID
-              }
-          
-              
-              AsyncStorage.mergeItem('user', JSON.stringify(userDetails), () =>
-              AsyncStorage.removeItem('cameraDetails'));
-              this.props.navigation.navigate('RegistrationP4');
-            
-              console.log(this.state.uplodedPicUri);
-              
-            }
-            else {
-              console.log('error uploding ...2');
-              alert('error uploding ...2');
-            }
-          })
-          .catch(err => {
-            alert('err upload= ' + err);
-          });
-      }
+            .then((res) => {
+                console.log('res.status=', res.status);
+                if (res.status == 201) {
+                    return res.json();
+                }
+                else {
+                    console.log('error uploding ...1');
+                    return "err";
+                }
+            })
+            .then((responseData) => {
+                console.log(responseData);
+                if (responseData != "err") {
+                    let picNameWOExt = picName.substring(0, picName.indexOf("."));
+                    let imageNameWithGUID = responseData.substring(responseData.indexOf(picNameWOExt), responseData.indexOf(".jpg") + 4);
+                    this.setState({
+                        uplodedPicUri: { uri: this.uplodedPicPath + imageNameWithGUID },
+                    });
+
+                    let userDetails = {
+                        ImagePath: this.uplodedPicPath + imageNameWithGUID
+                    }
+
+
+                    AsyncStorage.mergeItem('user', JSON.stringify(userDetails), () =>
+                        AsyncStorage.removeItem('cameraDetails'));
+                    this.props.navigation.navigate('RegistrationP4');
+
+                    console.log(this.state.uplodedPicUri);
+
+                }
+                else {
+                    console.log('error uploding ...2');
+                    alert('error uploding ...2');
+                }
+            })
+            .catch(err => {
+                alert('err upload= ' + err);
+            });
+    }
 
     render() {
+        const { navigation } = this.props;
         const intrests = this.state.intrests.map((buttonIntersts) => (
             <Text style={styles.note}>{buttonIntersts.Subintrest} |</Text>
         ));
@@ -418,7 +419,7 @@ export default class ProfileEdit extends Component {
         return (
 
             <View style={styles.screen} >
-                <Header navigation={navigation}/>
+                <Header navigation={navigation} />
                 <BackButton goBack={() => this.props.navigation.navigate('MainPage')} />
 
                 <OurButton onPress={() => this.setState({ editing: !editing })}><SimpleLineIcons name="pencil" size='30' color="black" /></OurButton>
@@ -431,40 +432,40 @@ export default class ProfileEdit extends Component {
 
 
                     {!this.state.editing && (
-                         <ScrollView style={styles.container}
-                         keyboardShouldPersistTaps={"handled"}
-                         contentContainerStyle={{ flexGrow: 1 }}
-                     >
-                        <View style={styles.screen}>
-                            <Text style={styles.subTitle}>הפרופיל שלי</Text>
+                        <ScrollView style={styles.container}
+                            keyboardShouldPersistTaps={"handled"}
+                            contentContainerStyle={{ flexGrow: 1 }}
+                        >
+                            <View style={styles.screen}>
+                                <Text style={styles.subTitle}>הפרופיל שלי</Text>
 
-                            {this.state.user.ImagePath &&
-                                <Image style={styles.avatar}
-                                    source={{ uri: this.state.user.ImagePath }}
-                                />
-                            }
+                                {this.state.user.ImagePath &&
+                                    <Image style={styles.avatar}
+                                        source={{ uri: this.state.user.ImagePath }}
+                                    />
+                                }
 
-                            <View style={styles.center}>
-                                <Text style={styles.note, { fontSize: 30, }}>{this.state.user.FirstName} {this.state.user.LastName}</Text>
-
-
-                                {this.state.user.FamilyStatus && <Text style={styles.note}>{this.state.user.FamilyStatus}, {age}</Text>}
-                                {this.state.jobName && <Text style={styles.note}>{this.state.jobName}</Text>}
-                                {this.state.user.Gender === 0 && <Text style={styles.note}> עובד ב{this.state.user.WorkPlace}</Text>}
-                                {this.state.user.Gender === 1 && <Text style={styles.note}> עובדת ב{this.state.user.WorkPlace}</Text>}
-                                {this.state.user.Gender === 2 && <Text style={styles.note}> עובד/ת ב{this.state.user.WorkPlace}</Text>}
-                                {this.state.user.AboutMe && <Text style={styles.title}>על עצמי</Text>}
-                                {this.state.user.AboutMe && <Text style={styles.note}>{this.state.user.AboutMe}</Text>}
-                                {intrests && <Text style={styles.note}><Text style={styles.title}>תחומי עניין</Text></Text>}
-                                {intrests && <Text style={styles.note}>{intrests}</Text>}
-                                {kids && <Text style={styles.title}>גילאי ילדים</Text>}
-                                {kids && <Text>{kids}</Text>}
+                                <View style={styles.center}>
+                                    <Text style={styles.note, { fontSize: 30, }}>{this.state.user.FirstName} {this.state.user.LastName}</Text>
 
 
+                                    {this.state.user.FamilyStatus && <Text style={styles.note}>{this.state.user.FamilyStatus}, {age}</Text>}
+                                    {this.state.jobName && <Text style={styles.note}>{this.state.jobName}</Text>}
+                                    {this.state.user.Gender === 0 && <Text style={styles.note}> עובד ב{this.state.user.WorkPlace}</Text>}
+                                    {this.state.user.Gender === 1 && <Text style={styles.note}> עובדת ב{this.state.user.WorkPlace}</Text>}
+                                    {this.state.user.Gender === 2 && <Text style={styles.note}> עובד/ת ב{this.state.user.WorkPlace}</Text>}
+                                    {this.state.user.AboutMe && <Text style={styles.title}>על עצמי</Text>}
+                                    {this.state.user.AboutMe && <Text style={styles.note}>{this.state.user.AboutMe}</Text>}
+                                    {intrests && <Text style={styles.note}><Text style={styles.title}>תחומי עניין</Text></Text>}
+                                    {intrests && <Text style={styles.note}>{intrests}</Text>}
+                                    {kids && <Text style={styles.title}>גילאי ילדים</Text>}
+                                    {kids && <Text>{kids}</Text>}
 
 
+
+
+                                </View>
                             </View>
-                        </View>
                         </ScrollView>
                     )}
 
@@ -690,7 +691,7 @@ export default class ProfileEdit extends Component {
                                             style={styles.item}
                                             title={'סיום'}
                                             //onPress={() => this.fetchUpdateUser()}
-                                            onPress={()=>{this.state.picUri === this.user.ImagePath ? this.fetchUpdateUser() : this.btnUpload() }}
+                                            onPress={() => { this.state.picUri === this.user.ImagePath ? this.fetchUpdateUser() : this.btnUpload() }}
 
 
                                         />
@@ -722,8 +723,8 @@ const styles = StyleSheet.create({
 
 
     avatar: {
-        width: '50%',
-        height: '30%',
+        width: 200,
+        height: 200,
         borderWidth: 4,
         borderColor: "white",
         alignSelf: "center",
