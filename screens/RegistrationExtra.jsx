@@ -15,7 +15,7 @@ export default class RegistrationExtra extends Component {
         super(props);
 
         this.state = {
-            jobType: '',
+            jobType: 0,
             jobArea: '',
             aboutMe: '',
             familyStatus: '',
@@ -52,7 +52,9 @@ export default class RegistrationExtra extends Component {
         AsyncStorage.getItem('user', (ERR, userJSON) => {
             let userObj = JSON.parse(userJSON);
             let jobName = userObj.JobTitle!= null ? userObj.JobTitle.JobName : '';
-            console.log("fromuser", userObj, "JSON", userJSON);
+            console.log("from user = ", userObj);
+            let jobType= userObj.JobTitleId != null ?userObj.JobTitleId : 0;
+            console.log("User jt =", userObj.JobTitle, " state = ", jobType);
             this.setState({
                 user: userObj,
                 jobArea: userObj.WorkPlace,
@@ -61,6 +63,7 @@ export default class RegistrationExtra extends Component {
                 numOfKids: userObj.NumOfChildren,
                 kidsYearOfBirth: userObj.Kids,
                 nameJob: jobName,
+                jobType:jobType,
                 initialInterest: userObj.Intrests,
                 finished: true
 

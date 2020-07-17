@@ -37,7 +37,7 @@ export default class ProfileEdit extends Component {
             yearOfBirth: '',
             gender: '',
 
-            jobType: '',
+            jobType: 0,
             jobArea: '',
             numOfKids: 0,
             selectedYears: [],
@@ -88,13 +88,12 @@ export default class ProfileEdit extends Component {
     }
 
     getUser() {
-        //let userJSON = await AsyncStorage.getItem('user');
-        //const userObj = await JSON.parse(userJSON);
-
         AsyncStorage.getItem('user', (ERR, userJSON) => {
             let userObj = JSON.parse(userJSON);
-            console.log("fromuser", userObj, "JSON", userJSON);
+            console.log("get user = ", userObj);
             let jobName = userObj.JobTitle != null ? userObj.JobTitle.JobName : '';
+            let jobType= userObj.JobTitleId != null ?userObj.JobTitleId : 0;
+            console.log("User jt =", userObj.JobTitle, " state = ", jobType);
             this.setState({
                 user: userObj,
                 picUri: userObj.ImagePath,
@@ -118,7 +117,7 @@ export default class ProfileEdit extends Component {
                 vLName: userObj.LastName,
                 gender: userObj.Gender,
                 JobName: jobName,
-                // jobType: userObj.JobTitle.JobCode
+                jobType: jobType,
 
             }, () => {
                 this.fetchGetAllIntrests();
@@ -273,6 +272,8 @@ export default class ProfileEdit extends Component {
     }
 
     fetchUpdateUser() {
+        
+        console.log("beforeFetch= ", this.state.jobType);
         const user = {
             UserId: this.state.user.UserId,
             JobTitleId: this.state.jobType,
@@ -289,7 +290,7 @@ export default class ProfileEdit extends Component {
             LastName: this.state.lName,
 
         }
-        console.log("userFetch", user.LastName);
+        console.log("userFetch", user);
 
 
         fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/User/Extra', {
@@ -422,7 +423,7 @@ export default class ProfileEdit extends Component {
                 <Header navigation={navigation} />
                 <BackButton goBack={() => this.props.navigation.navigate('MainPage')} />
 
-                <OurButton onPress={() => this.setState({ editing: !editing })}><SimpleLineIcons name="pencil" size='30' color="black" /></OurButton>
+                <OurButton onPress={() => this.setState({ editing: !editing })}><SimpleLineIcons name="pencil" size={30} color="black" /></OurButton>
 
 
 
@@ -446,7 +447,7 @@ export default class ProfileEdit extends Component {
                                 }
 
                                 <View style={styles.center}>
-                                    <Text style={styles.note, { fontSize: 30, }}>{this.state.user.FirstName} {this.state.user.LastName}</Text>
+                                    <Text style={styles.note, { fontSize: 30 }}>{this.state.user.FirstName} {this.state.user.LastName}</Text>
 
 
                                     {this.state.user.FamilyStatus && <Text style={styles.note}>{this.state.user.FamilyStatus}, {age}</Text>}

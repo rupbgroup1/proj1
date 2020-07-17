@@ -66,7 +66,7 @@ const navigator = createStackNavigator({
     SideMenu: SideMenu,
 },
     {
-        initialRouteName: 'MainPage',
+        initialRouteName: 'LoginScreen',
         defaultNavigationOptions: {
             headerShown: false
         }

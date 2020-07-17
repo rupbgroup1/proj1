@@ -211,7 +211,7 @@ export default class FindNeighboor extends Component {
 
 
     render() {
-
+        const { navigation } = this.props;
         return (
             <View style={styles.screen}>
                 <Header navigation={navigation}/>

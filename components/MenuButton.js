@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
       fontSize: 22,
       marginLeft: 10,
       marginTop: 2,
-      fontFamily: 'Helvetica-Light'
+      fontFamily: 'rubik-regular',
+     
     }
   });
