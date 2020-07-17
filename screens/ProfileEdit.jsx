@@ -293,7 +293,7 @@ export default class ProfileEdit extends Component {
         console.log("userFetch", user);
 
 
-        fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/User/Extra', {
+        fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/User/Update', {
             method: 'PUT',
             body: JSON.stringify(user),
             headers: new Headers({

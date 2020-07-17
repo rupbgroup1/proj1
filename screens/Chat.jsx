@@ -123,6 +123,7 @@ export default class Chat extends React.Component {
 
 
   render() {
+    const { navigation } = this.props;
     return (
       <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
         <Header navigation={navigation}/>

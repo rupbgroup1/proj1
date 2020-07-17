@@ -74,7 +74,7 @@ export default class Profile extends Component {
         const gender = nei.Gender === 1 ? 'בת' : 'בן';
         const age = new Date().getFullYear() - nei.YearOfBirth;
         const jobName = nei.JobTitle != null ? nei.JobTitle.JobName : '';
-
+        const { navigation } = this.props;
         // const intrests = int.map((i) => (
         //     intrests+= (i.Subintrest+", ")
         // ));

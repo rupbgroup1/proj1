@@ -138,7 +138,7 @@ export default class Pic extends Component {
   }
 
   render() {
-
+    const { navigation } = this.props;
     const { picUri } = this.state;
 
     return (

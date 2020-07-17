@@ -44,10 +44,10 @@ getUser() {
           <Text style={styles.Name}>
           {'היי ' + this.state.user.FirstName}
           </Text>
-          {/* {this.state.user.ImagePath &&
+          {this.state.user.ImagePath &&
             <Image style={styles.profilePic}
                    source={{ uri: this.state.user.ImagePath }}/>
-          } */}
+          }
           </View>
           <TouchableOpacity
           onPress={() => navigation.navigate('RegistrationExtra')}
