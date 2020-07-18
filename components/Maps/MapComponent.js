@@ -155,25 +155,7 @@ const MapComponent = (props) => {
                 }
 
                 {markerCoordinates != null ? <Marker title='המיקום שלי' coordinate={markerCoordinates}></Marker> : <Marker title='המיקום שלי' coordinate={props.region}></Marker>}
-                {<Marker
-                    coordinate={{
-                        latitude: 32.358049736540236,
-                        longitude: 34.92328689199281,
-                        latitudeDelta: 0.009,
-                        longitudeDelta: 0.009
-                    }}
-                >
-                    <Callout
-                        onPress={() => {
-
-                            Alert.alert("knlk");
-                        }}>
-                        <View>
-                            <Text>This is a plain view</Text>
-                        </View>
-
-                    </Callout>
-                </Marker>}
+                
             </MapView>
 
         </TouchableOpacity >

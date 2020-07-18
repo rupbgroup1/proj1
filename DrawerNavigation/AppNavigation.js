@@ -31,6 +31,7 @@ import GeneralLosts from '../screens/Losts/GeneralLosts';
 import CreateLost from '../screens/Losts/CreateLost';
 import MyLosts from '../screens/Losts/MyLosts';
 import SideMenu from './SideMenu';
+import MyChats from '../screens/MyChats';
 
 
 //add screens to nav
@@ -64,6 +65,7 @@ const navigator = createStackNavigator({
     MyLosts: MyLosts,
     CreateLost: CreateLost,
     SideMenu: SideMenu,
+    MyChats:MyChats
 },
     {
         initialRouteName: 'LoginScreen',

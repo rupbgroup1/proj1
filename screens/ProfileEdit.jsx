@@ -288,6 +288,7 @@ export default class ProfileEdit extends Component {
             YearOfBirth: this.state.yearOfBirth,
             FirstName: this.state.vFName,
             LastName: this.state.lName,
+            ImagePath: this.state.picUri
 
         }
         console.log("userFetch", user);

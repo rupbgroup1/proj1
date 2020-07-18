@@ -62,8 +62,43 @@ export default class Chat extends React.Component {
   onSendFunction(messages){
     firebaseSvc.send(messages);
     this.fetchGetToken();
+    console.log("all messages: ", this.state.messages, ",  length: ",this.state.messages.length );
+    this.state.messages.length===1&&this.updateDB();
     //this.notificationPush()
   }
+
+  updateDB(){
+    console.log("in db");
+    console.log("user id: ", this.state.userCode, "  send to id: ", this.state.sendTo)
+    let chat={
+      FromUser: this.state.userCode,
+      ToUser: this.state.sendTo
+    }
+     return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Chat/New', {
+          method: 'POST',
+          body: JSON.stringify(chat),
+          headers: new Headers({
+              'Content-Type': 'application/json; charset=UTF-8',
+          })
+      })
+          .then(res => {
+              return res.json();
+          })
+          .then(
+              (result) => {
+                  if (result === 1) {
+                      console.log(result);
+                  }
+                  else
+                  console.log(result);
+              },
+              (error) => {
+                  console.log("err post=", error);
+                  Alert.alert("מצטערים, אנו נסו שנית!");
+              }
+          );
+  }
+
 
   fetchGetToken(){
     fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/User/Token?userId='+this.state.sendTo, {
@@ -127,7 +162,7 @@ export default class Chat extends React.Component {
     return (
       <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
         <Header navigation={navigation}/>
-        <BackButton goBack={() => this.props.navigation.navigate('GeneralServices')} />
+        <BackButton goBack={() => this.props.navigation.navigate('MainPage')} />
         <View style={{
           width: '95%', height: '80%', borderRadius: 10,
           shadowColor: 'black',

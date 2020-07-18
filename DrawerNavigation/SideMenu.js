@@ -53,7 +53,7 @@ getUser() {
           onPress={() => navigation.navigate('RegistrationExtra')}
          
           >
-            <Text style={styles.improveText}>לחץ לשיפור הפרופיל</Text>
+            <Text style={styles.improveText}>לחצ/י לשיפור הפרופיל</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.container}>
@@ -69,9 +69,9 @@ getUser() {
           </View>
           <View style={styles.Buttons}>
             <MenuButton
-              title="הצאט שלי"
+              title="השיחות שלי"
               onPress={() => {
-                navigation.navigate('MyChats');
+                navigation.navigate('MyChats', {userId:this.state.user.UserId});
                 navigation.closeDrawer();
               }}
             />
