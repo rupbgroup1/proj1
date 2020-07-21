@@ -108,7 +108,7 @@ export default class MyEvents extends React.Component {
     const { navigation } = this.props;
     return (
       <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
-        <Header navigation={navigation}/>
+        <Header navigation={navigation} user={this.state.user}/>
         <BackButton goBack={() => navigation.navigate('MainPage')} />
         <View style={styles.row}>
           <View style={styles.search}>

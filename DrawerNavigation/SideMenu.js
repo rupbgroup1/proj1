@@ -1,5 +1,6 @@
 import React from "react";
 import { View, StyleSheet, Text, Image, AsyncStorage, TouchableOpacity} from 'react-native';
+import { AppLoading } from 'expo';
 import PropTypes from 'prop-types';
 import MenuButton from '../components/MenuButton';
 import { SimpleLineIcons, FontAwesome } from "@expo/vector-icons";
@@ -12,47 +13,52 @@ export default class SideMenu extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-        fName: '',
-        lName: '',
-        image: '',
-        user: {}
+      fName: '',
+      lName: '',
+      image: '',
+      user: {}
 
     };
 
-}
+  }
 
-componentDidMount() {
-  this.getUser();   
-}
-
-getUser() {
-  AsyncStorage.getItem('user', (ERR, userJSON) => {
-      let userObj = JSON.parse(userJSON);
-      this.setState({
-          user: userObj
-      });
-  });
+  componentDidMount(){
+    //this.getUser();
+  }
 
 
-}
+
+  getUser=()=> {
+    AsyncStorage.getItem('user', (ERR, userJSON) => {
+      const userObj = JSON.parse(userJSON);
+      this.setState({ user: userObj });
+     
+    });
+  }
+
   render() {
     const { navigation } = this.props;
     return (
+      !this.state.dataLoaded ?
+      <AppLoading
+        startAsync={this.getUser}
+        onFinish={() => this.setState({ dataLoaded: true })}
+        onError={(err) => console.log(err)}
+      />
+      :
       <View style={styles.content}>
         <View style={styles.topPage}>
           <View style={styles.PicAndName}>
-          <Text style={styles.Name}>
-          {'היי ' + this.state.user.FirstName}
-          </Text>
-          {this.state.user.ImagePath &&
-            <Image style={styles.profilePic}
-                   source={{ uri: this.state.user.ImagePath }}/>
-          }
+             <Text style={styles.Name}>
+              היי {this.state.user.FirstName} 
+            </Text>
+            {this.state.user.ImagePath &&
+              <Image style={styles.profilePic}
+                source={{ uri: this.state.user.ImagePath }} />
+            }
           </View>
           <TouchableOpacity
-          onPress={() => navigation.navigate('RegistrationExtra')}
-         
-          >
+            onPress={() => navigation.navigate('RegistrationExtra')}>
             <Text style={styles.improveText}>לחצ/י לשיפור הפרופיל</Text>
           </TouchableOpacity>
         </View>
@@ -71,7 +77,7 @@ getUser() {
             <MenuButton
               title="השיחות שלי"
               onPress={() => {
-                navigation.navigate('MyChats', {userId:this.state.user.UserId});
+                navigation.navigate('MyChats', { userId: this.state.user.UserId });
                 navigation.closeDrawer();
               }}
             />
@@ -109,15 +115,17 @@ getUser() {
           </View>
         </View>
         <TouchableOpacity
-        onPress={() => navigation.navigate('LoginScreen')}
-        style={styles.logoutButton}
+          onPress={() => navigation.navigate('LoginScreen')}
+          style={styles.logoutButton}
         >
           <Text style={styles.logoutText}>התנתקות</Text>
-          <FontAwesome name='sign-out' size={18} color='grey'/>
+          <FontAwesome name='sign-out' size={18} color='grey' />
         </TouchableOpacity>
       </View>
+            
     );
-  }
+  
+}
 }
 
 SideMenu.propTypes = {
@@ -137,7 +145,7 @@ const styles = StyleSheet.create({
     flex: 4,
     alignItems: 'flex-start',
     paddingHorizontal: 20,
-    paddingTop:30,
+    paddingTop: 30,
   },
   topPage: {
     flex: 2,
@@ -146,7 +154,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderBottomColor: 'grey',
     borderBottomWidth: 1,
-    width:'90%',
+    width: '90%',
   },
   Buttons: {
     flexDirection: 'row',
@@ -156,40 +164,40 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.2,
     paddingVertical: 15
   },
-  profilePic:{
-    height:90,
-    width:90,
-    paddingRight:20,
+  profilePic: {
+    height: 90,
+    width: 90,
+    paddingRight: 20,
     borderRadius: 160
   },
-  Name:{
-    paddingTop:30,
-    paddingLeft:20,
+  Name: {
+    paddingTop: 30,
+    paddingLeft: 20,
     marginLeft: 5,
     marginTop: 2,
     fontSize: 30,
   },
-  PicAndName:{
-    flexDirection:'row-reverse'
+  PicAndName: {
+    flexDirection: 'row-reverse'
   },
-  improveButton:{
-    top:50,
-    alignSelf:'center'
+  improveButton: {
+    top: 50,
+    alignSelf: 'center'
   },
-  improveText:{
-    color:colors.turkiz,
-    fontSize:20
+  improveText: {
+    color: colors.turkiz,
+    fontSize: 20
   },
-  logoutButton:{
-    paddingBottom:35,
-    paddingHorizontal:20,
-    alignSelf:'flex-end',
-    flexDirection:'row-reverse'
+  logoutButton: {
+    paddingBottom: 35,
+    paddingHorizontal: 20,
+    alignSelf: 'flex-end',
+    flexDirection: 'row-reverse'
   },
-  logoutText:{
-    color:'grey',
-    paddingLeft:5, 
-    fontSize:18, 
+  logoutText: {
+    color: 'grey',
+    paddingLeft: 5,
+    fontSize: 18,
     fontFamily: 'rubik-regular'
 
   }

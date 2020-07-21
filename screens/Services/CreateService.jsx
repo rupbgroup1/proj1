@@ -144,7 +144,7 @@ export default class CreateEvent extends React.Component {
   }
     fetchGetAllCategories() {
         //console.log("in fetch");
-        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Category/All', {
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/SubCategory/All', {
 
             method: 'GET',
             headers: new Headers({
@@ -188,33 +188,7 @@ export default class CreateEvent extends React.Component {
         );
 
     }
-    fetchGetAllCategories() {
-        //console.log("in fetch");
-        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Category/All', {
-
-            method: 'GET',
-            headers: new Headers({
-                'Content-Type': 'application/json; charset=UTF-8',
-            })
-        })
-            .then(res => {
-                return res.json();
-            })
-            .then(
-                (result) => {
-                    if (result.length > 0) {
-                        console.log("Cat = ", result);
-                        this.catArray = result;
-                    }
-                    else
-                        Alert.alert(" מצטערים, אנו נסו שנית!");
-                },
-                (error) => {
-                    console.log("err post=", error);
-                    Alert.alert("מצטערים, אנו נסו שנית!");
-                }
-            );
-    }
+    
     handleFocus = e => {
         this.setState({ isFocus: true });
     }
@@ -479,8 +453,8 @@ export default class CreateEvent extends React.Component {
                             key={1}
                             label='בחר קטגוריה'
                             value={newS.Categories}
-                            valueExtractor={({ CategoryId }) => CategoryId}
-                            labelExtractor={({ CategoryName }) => CategoryName}
+                            valueExtractor={({ Id }) => Id}
+                            labelExtractor={({ Name }) => Name}
                             data={this.catArray}
                             selectedItemColor={colors.turkiz}
                             onChangeText={(value) => this.setState(prevState => ({

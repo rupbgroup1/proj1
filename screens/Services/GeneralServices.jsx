@@ -37,8 +37,9 @@ class GeneralServices extends React.Component {
     }
 
     componentDidMount() {
-        this.getUser();
         this.fetchGetAllCategories();
+        this.getUser();
+        
     }
 
     getUser() {

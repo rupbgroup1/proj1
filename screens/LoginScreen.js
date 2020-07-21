@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Alert, Button, TextInput, View, StyleSheet, Text, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import RememberMe from '../components/RememberMe';
-import { AsyncStorage, I18nManager } from 'react-native';
+import { AsyncStorage } from 'react-native';
 import Background from '../components/Background';
 import registerForPushNotificationsAsync from '../components/registerForPushNotificationsAsync';
 import { Notifications } from 'expo';
@@ -22,12 +22,11 @@ export default class LoginScreen extends Component {
     componentDidMount() {
       registerForPushNotificationsAsync()
         .then((token) => {
-          console.log('token from app.js=', token);
+          //console.log('token from app.js=', token);
           this.setState({ token });
-          console.log('state.token from app.js=', this.state.token);
         });
         AsyncStorage.removeItem('cameraDetails');
-  
+      
   
       // Handle notifications that are received or selected while the app
       // is open. If the app was closed and then opened by tapping the
@@ -39,7 +38,7 @@ export default class LoginScreen extends Component {
     }
   
     _handleNotification = (notification) => {
-      console.log("nav To= ",notification.data.ScreenName);
+     // console.log("nav To= ",notification.data.ScreenName);
       this.setState({ notification: notification });
       if(notification.data.ScreenName!=null){
         this.props.navigation.navigate(notification.data.ScreenName, {userCode: notification.data.SendFrom});
@@ -57,7 +56,7 @@ export default class LoginScreen extends Component {
       Token: this.state.token
     }
 
-    console.log(loginDetails);
+    console.log("login=", loginDetails);
 
     //Check that the user name entered is valid
     if (this.state.username == '' || this.state.password == '') {
@@ -86,7 +85,6 @@ export default class LoginScreen extends Component {
             }); 
           }
           else {
-            //this.setState({user:result});
             Alert.alert("הפרטים אינם נכונים, אנא נסה שנית")
           }
         },

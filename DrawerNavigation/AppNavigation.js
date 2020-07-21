@@ -65,7 +65,7 @@ const navigator = createStackNavigator({
     MyLosts: MyLosts,
     CreateLost: CreateLost,
     SideMenu: SideMenu,
-    MyChats:MyChats
+    MyChats:MyChats,
 },
     {
         initialRouteName: 'LoginScreen',
