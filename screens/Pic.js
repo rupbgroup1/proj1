@@ -204,8 +204,9 @@ const styles = StyleSheet.create({
 
   textOr: {
     fontFamily: 'rubik-regular',
-    fontWeight: 'bold',
-    fontSize: 30
+    fontSize: 30,
+    paddingLeft:10,
+    paddingRight:14
 
   },
   checkBox: {

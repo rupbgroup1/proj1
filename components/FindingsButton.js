@@ -13,16 +13,19 @@ const NeiButton = props => {
 };
 
 const styles = StyleSheet.create({
+
     button:{
         backgroundColor: colors.Losts,
+        paddingVertical:0,
+        paddingHorizontal:10,
         borderColor: colors.Losts,
         shadowColor: colors.Losts,
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.8,
         shadowRadius: 8,
         elevation:20,
-        height: 100,
-        width: 100,
+        height: 75,
+        width: 75,
         borderRadius:400,
         textShadowOffset: { width: 1, height: 1 },
         textShadowRadius: 5,
@@ -30,9 +33,9 @@ const styles = StyleSheet.create({
     buttonText:{
         color:'white',
         fontFamily: 'rubik-regular',
-        fontSize:20,
+        fontSize:16,
         textAlign:'center',
-        paddingVertical:24,
+        paddingVertical:15,
         textShadowOffset: { width: 1, height: 3 },
         textShadowRadius: 10,
         textShadowColor:'#f7f1e3'

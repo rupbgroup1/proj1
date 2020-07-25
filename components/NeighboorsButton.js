@@ -13,30 +13,31 @@ const NeiButton = props => {
 };
 
 const styles = StyleSheet.create({
-    button:{
-        backgroundColor: colors.Neighboors,
-        borderColor: colors.Neighboors,
-        shadowColor: colors.Neighboors,
-        shadowOffset: { width: 0, height: 0 },
-        shadowOpacity: 0.8,
-        shadowRadius: 8,
-        elevation:20,
-        height: 100,
-        width: 100,
-        borderRadius:400,
-        textShadowOffset: { width: 1, height: 1 },
-        textShadowRadius: 5,
-    },
-    buttonText:{
-        color:'white',
-        fontFamily: 'rubik-regular',
-        fontSize:20,
-        textAlign:'center',
-        paddingVertical:24,
-        textShadowOffset: { width: 1, height: 3 },
-        textShadowRadius: 10,
-        textShadowColor:'#f7f1e3'
-    }
+    
+        button:{
+            backgroundColor: colors.Neighboors,
+            borderColor: colors.Neighboors,
+            shadowColor: colors.Neighboors,
+            shadowOffset: { width: 0, height: 0 },
+            shadowOpacity: 0.8,
+            shadowRadius: 8,
+            elevation:20,
+            height: 100,
+            width: 100,
+            borderRadius:400,
+            textShadowOffset: { width: 1, height: 1 },
+            textShadowRadius: 5,
+        },
+        buttonText:{
+            color:'white',
+            fontFamily: 'rubik-regular',
+            fontSize:20,
+            textAlign:'center',
+            paddingVertical:24,
+            textShadowOffset: { width: 1, height: 3 },
+            textShadowRadius: 10,
+            textShadowColor:'#f7f1e3'
+        }
 });
 
 export default NeiButton;

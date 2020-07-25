@@ -136,7 +136,7 @@ class GeneralEvents extends React.Component {
 
     //filter the events by selected category 
     filterByCat(catId) {
-        if (catId == this.state.selectedCat) {
+        if (catId === this.state.selectedCat) {
             this.setState({ filteredArray: this.arrayholder, selectedCat:0 })
         }
         else {
@@ -269,32 +269,22 @@ class GeneralEvents extends React.Component {
                     <ScrollView horizontal={true}>
                         {this.catArray.map((c) => {
                             return (
-                                <View style={{ paddingHorizontal: 1 }}>
-                                    {/* <Button
-                                        type="outline"
-                                        title={c.CategoryId===this.state.selectedCat?<FontAwesome name={c.CategoryIcon} size={20} color={colors.header} />:c.CategoryName}
-                                        titleStyle={c.CategoryId===this.state.selectedCat
-                                            ? styles.coloredTitleCat
-                                            : styles.titleCat}
-                                        key={c.CategoryId}
-                                        onPress={cat => this.filterByCat(c.CategoryId)}
-                                        raised={true}
-                                        buttonStyle={c.CategoryId===this.state.selectedCat?styles.selectedCategory: styles.categories}
-                                    >
-                                    </Button> */}
+                                <View style={{ paddingHorizontal: 1 }} key={c.CategoryId}>
+                                   
                                     <OurButton
                                         title= {c.CategoryName}
                                         key={c.CategoryId}
-                                        style={{marginRight:40}} 
-                                        onPress={cat => this.filterByCat(c.CategoryId)}>
-                                        <FontAwesome name={c.CategoryIcon} size={22} color={c.CategoryId===this.state.selectedCat?colors.turkiz: colors.header} />
+                                        style={styles.categories}
+                                        onPress={() => this.filterByCat(c.CategoryId)}>
+                                        <FontAwesome name={c.CategoryIcon} size={22} color={c.CategoryId===this.state.selectedCat?colors.Events: colors.header} />
                                            
                                     </OurButton>
                                     <OurButton
                                         title= {c.CategoryName}
-                                        key={c.CategoryId}
-                                        onPress={cat => this.filterByCat(c.CategoryId)}>
-                                           <Text style={{color:c.CategoryId===this.state.selectedCat?colors.turkiz: colors.header, fontFamily:'rubik-regular' }}>{c.CategoryName}</Text> 
+                                        key={c.CategoryId+"c"}
+                                        style={styles.categories}
+                                        onPress={() => this.filterByCat(c.CategoryId)}>
+                                           <Text style={{color:c.CategoryId===this.state.selectedCat?colors.Events: colors.header, fontFamily:'rubik-regular' }}>{c.CategoryName}</Text> 
                                     </OurButton>
                                 </View>
                                 
@@ -473,14 +463,11 @@ const styles = StyleSheet.create({
         paddingBottom: 2
     },
     categories: {
-        backgroundColor: 'white',
-        borderRadius: 0,
-        paddingVertical: 5,
-        paddingHorizontal: 10,
-        borderColor: '#D1D3D4',
-        shadowColor: '#D1D3D4'
+        paddingHorizontal: 20,
+        marginBottom: 5,
+        alignItems: 'center'
     },
-    selectedCategory:{
+    selectedCategory: {
         backgroundColor: colors.Events,
         borderRadius: 0,
         paddingVertical: 5,
@@ -488,13 +475,13 @@ const styles = StyleSheet.create({
         borderColor: '#D1D3D4',
         shadowColor: '#D1D3D4'
     },
-    titleCat: { 
-        color: colors.Events, 
-        fontFamily:'rubik-regular' 
+    titleCat: {
+        color: colors.Events,
+        fontFamily: 'rubik-regular'
     },
-    coloredTitleCat: { 
-        color: 'white', 
-        fontFamily:'rubik-bold' 
+    coloredTitleCat: {
+        color: 'white',
+        fontFamily: 'rubik-bold'
     },
 
     cardContainer: {
@@ -504,10 +491,11 @@ const styles = StyleSheet.create({
         shadowRadius: 5
     },
     innerCardContainer: {
-        width: 300,
+        width: 330,
+        height: 650,
         alignSelf: 'center',
-        borderWidth:0
-    },
+        borderWidth: 0
+      },
     cardTitle: {
         fontSize: 26,
         color: "black",
@@ -546,7 +534,7 @@ const styles = StyleSheet.create({
         elevation: 4
     },
     cardButtonText: {
-        fontSize: 20,
+        fontSize: 16,
         fontFamily: 'rubik-regular'
     },
     locationText: {
@@ -559,11 +547,12 @@ const styles = StyleSheet.create({
         marginLeft:0, 
         marginRight:0
     },
-    overlay:{
-        backgroundColor: 'rgba(52, 52, 52, 0)', 
-        width:200, 
-        height:400
-    } 
+    overlay: {
+        backgroundColor: 'rgba(52, 52, 52, 0)',
+        width: 330,
+        height: 650,
+        justifyContent: 'center'
+    }
 });
 
 const TabNavigator = createMaterialBottomTabNavigator(
@@ -588,7 +577,7 @@ const TabNavigator = createMaterialBottomTabNavigator(
             screen: RecommendedEvents,
             navigationOptions: {
                 tabBarLabel: 'מומלצים',
-                activeColor: colors.turkiz,
+                activeColor: colors.Events,
                 inactiveColor: 'black',
                 barStyle: { backgroundColor: 'white' },
                 tabBarIcon: () => (

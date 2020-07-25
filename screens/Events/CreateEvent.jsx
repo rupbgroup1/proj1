@@ -50,6 +50,7 @@ export default class CreateEvent extends React.Component {
             editMode: false
         };
         this.catArray = [];
+        this.IntrestsArray=[];
         this.editMode = false;
         this.eventDetails = {};
         this.uplodedPicPath = 'http://proj.ruppin.ac.il/bgroup29/prod/uploadFiles/';
@@ -61,28 +62,27 @@ export default class CreateEvent extends React.Component {
         console.log("Nav====", this.props.navigation.getParam('edit'), this.props.navigation.getParam('eventDetails'));
         this.editMode = this.props.navigation.getParam('edit');
         this.editMode &&
-            this.setState({ newEvent: this.props.navigation.getParam('eventDetails'), picUri: this.props.navigation.getParam('eventDetails').Image, change:true , editMode: true});
+            this.setState({ newEvent: this.props.navigation.getParam('eventDetails'), picUri: this.props.navigation.getParam('eventDetails').Image, change: true, editMode: true });
         this.getUser();
-        this.fetchGetAllCategories();
         this.fetchGetAllIntrests();
+        this.fetchGetAllCategories();
+        
         console.log("new event= ", this.state.newEvent, this.state.setLoc);
         const { navigation } = this.props;
         this._unsubscribe = navigation.addListener('didFocus', () => {
             AsyncStorage.getItem('cameraDetails', (err, cameraDetailsJSON) => {
-      
-              if (cameraDetailsJSON !== null) {
-                const cameraDetailsObj = JSON.parse(cameraDetailsJSON);
-                this.setState({ picUri: cameraDetailsObj.picUri, picName: 'event_' + new Date().getTime() + '.jpg' });
-                console.log("cameraDetailsObj:" + cameraDetailsObj.picUri);
-                
-              }
+
+                if (cameraDetailsJSON !== null) {
+                    const cameraDetailsObj = JSON.parse(cameraDetailsJSON);
+                    this.setState({ picUri: cameraDetailsObj.picUri, picName: 'event_' + new Date().getTime() + '.jpg' });
+                    console.log("cameraDetailsObj:" + cameraDetailsObj.picUri);
+
+                }
             });
-      
+
             console.log("chande" + this.state.change);
             console.log(this.state.editMode);
-          });
-
-        //console.log(this.editMode, this.eventDetails);
+        });
 
     }
 
@@ -136,10 +136,7 @@ export default class CreateEvent extends React.Component {
                     ...prevState.newEvent,
                     OpenedBy: userObj.UserId,
                     NeiCode: userObj.NeighborhoodName, 
-                    //delete:
-                    //Image: '../assets/createEvent.jpg'
-                   // Image: 'https://www.ladn.eu/wp-content/uploads/2017/04/my-event.png'
-                  // picUri: use
+                    
                 }
             }));
 
@@ -276,60 +273,58 @@ export default class CreateEvent extends React.Component {
 
    
 
-  imageUpload = (imgUri, picName) => {
-    let urlAPI = "http://proj.ruppin.ac.il/bgroup29/prod/uploadpicture";
-    let dataI = new FormData();
-    dataI.append('picture', {
-      uri: imgUri,
-      name: picName,
-      type: 'image/jpg'
-    });
-    const config = {
-      method: 'POST',
-      body: dataI,
-    };
+    imageUpload = (imgUri, picName) => {
+        let urlAPI = "http://proj.ruppin.ac.il/bgroup29/prod/uploadpicture";
+        let dataI = new FormData();
+        dataI.append('picture', {
+            uri: imgUri,
+            name: picName,
+            type: 'image/jpg'
+        });
+        const config = {
+            method: 'POST',
+            body: dataI,
+        };
 
 
-    fetch(urlAPI, config)
-      .then((res) => {
-        console.log('res.status=', res.status);
-        if (res.status == 201) {
-          return res.json();
-        }
-        else {
-          console.log('error uploding ...1');
-          return "err";
-        }
-      })
-      .then((responseData) => {
-        console.log(responseData);
-          if (responseData != "err") {
-              let picNameWOExt = picName.substring(0, picName.indexOf("."));
-              let imageNameWithGUID = responseData.substring(responseData.indexOf(picNameWOExt), responseData.indexOf(".jpg") + 4);
-              this.setState(prevState => ({
-                  newEvent: {
-                      ...prevState.newEvent,
-                      Image: this.uplodedPicPath + imageNameWithGUID
-                  }
-              }))
-              console.log("Image" + this.state.newEvent.Image)
+        fetch(urlAPI, config)
+            .then((res) => {
+                console.log('res.status=', res.status);
+                if (res.status == 201) {
+                    return res.json();
+                }
+                else {
+                    console.log('error uploding ...1');
+                    return "err";
+                }
+            })
+            .then((responseData) => {
+                console.log(responseData);
+                if (responseData != "err") {
+                    let picNameWOExt = picName.substring(0, picName.indexOf("."));
+                    let imageNameWithGUID = responseData.substring(responseData.indexOf(picNameWOExt), responseData.indexOf(".jpg") + 4);
+                    this.setState(prevState => ({
+                        newEvent: {
+                            ...prevState.newEvent,
+                            Image: this.uplodedPicPath + imageNameWithGUID
+                        }
+                    }))
+                    console.log("Image" + this.state.newEvent.Image)
 
 
-              AsyncStorage.removeItem('cameraDetails');
-              {this.editMode ? this.fetchUpdateEvent() : this.fetchCreatEvent()}
-              //this.fetchCreatEvent();
-                //console.log(this.state.uplodedPicUri);
+                    AsyncStorage.removeItem('cameraDetails');
+                    this.editMode ? this.fetchUpdateEvent() : this.fetchCreatEvent();
 
-          }
-        else {
-          console.log('error uploding ...2');
-          alert('error uploding ...2');
-        }
-      })
-      .catch(err => {
-        alert('err upload= ' + err);
-      });
-  }
+
+                }
+                else {
+                    console.log('error uploding ...2');
+                }
+            })
+            .catch(err => {
+                alert('err upload= ' + err);
+            });
+    }
 
     fetchCreatEvent() {
          console.log("in new event fetch =", this.state.newEvent);
@@ -352,9 +347,10 @@ export default class CreateEvent extends React.Component {
                         AsyncStorage.removeItem('cameraDetails');
                         this.props.navigation.navigate('GeneralEvents');
                     }
-                    else
+                    else{
                         Alert.alert(" מצטערים, אנו נסו שנית!");
-                    console.log(result);
+                        console.log(result);
+                    }
                 },
                 (error) => {
                     console.log("err post=", error);
@@ -366,7 +362,8 @@ export default class CreateEvent extends React.Component {
     fetchUpdateEvent() {
         console.log("in update!!");
         const e = this.state.newEvent;
-        const locationCoords = this.state.setLoc ? this.props.navigation.getParam('region') : "";
+        const latitude = this.state.setLoc ? this.props.navigation.getParam('region').latitude : e.latitude;
+        const longitude = this.state.setLoc ? this.props.navigation.getParam('region').longitude : e.longitude;
         let eventToUpdate = {
             CategoryId: e.CategoryId,
             Desc: e.Desc,
@@ -384,8 +381,8 @@ export default class CreateEvent extends React.Component {
             Price: e.Price,
             ToAge: e.ToAge,
             Location: this.props.navigation.getParam('Location'),
-            Lat: locationCoords.latitude,
-            Lan: locationCoords.longitude,
+            Lat: latitude,
+            Lan: longitude,
         }
         console.log("e t o ", eventToUpdate);
 
@@ -408,9 +405,12 @@ export default class CreateEvent extends React.Component {
                         //console.log(result);
                         this.props.navigation.navigate('MyEvents');
                     }
-                    else
+                    else {
                         Alert.alert(" מצטערים, אנו נסו שנית!");
-                    console.log(result);
+                        console.log(result);
+                    }
+
+
                 },
                 (error) => {
                     console.log("err post=", error);
@@ -430,15 +430,17 @@ export default class CreateEvent extends React.Component {
         return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Intrests', {
 
             method: 'GET',
-            headers: new Headers({
-                'Content-Type': 'application/json; charset=UTF-8',
-            })
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
         })
             .then(res => {
                 return res.json();
             })
             .then(
                 (result) => {
+                    this.IntrestsArray=result;
                     this.setState({ IntrestsArray: result })
                 },
                 (error) => {
@@ -481,21 +483,21 @@ export default class CreateEvent extends React.Component {
         const newEvent = this.state.newEvent;
 
         return (
-            <View style={{ flex: 1, backgroundColor: 'white', justifyContent: "flex-start", paddingBottom: 20 }}>
+            <View style={styles.container}>
                 <Header navigation={navigation}/>
                 <BackButton goBack={() => navigation.navigate('GeneralEvents')} />
                 
                 <ScrollView>
                     
                     
-                        <View style={{ flexDirection: 'row', borderColor: 'white', borderWidth: 1, borderRadius: 15, justifyContent: 'center', alignItems: "center", }}>
+                        <View style={styles.scrollView}>
                           {this.state.picUri === "https://www.ladn.eu/wp-content/uploads/2017/04/my-event.png" ? null :  <ImageBackground source={{uri:this.state.picUri}} style={{flex: 1,resizeMode: "cover",justifyContent: "center", height:300, width:'100%'}}></ImageBackground>  }
                           
                             
                         </View>
-                        <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop:5}}>
-                                <OurButton onPress={() => this.props.navigation.navigate('CameraPage')} style={{ paddingHorizontal: 20 }}><MaterialIcons name="camera-alt" size={40} color={colors.turkiz}/></OurButton>
-                                <OurButton onPress={() => this.props.navigation.navigate('ImageGallery')} style={{ paddingHorizontal: 20 }}><MaterialIcons name="photo" size={40} color={colors.turkiz}/></OurButton>
+                        <View style={styles.imageIcons}>
+                                <OurButton onPress={() => this.props.navigation.navigate('CameraPage')} style={{ paddingHorizontal: 20 }}><MaterialIcons name="camera-alt" size={40} color={colors.Events}/></OurButton>
+                                <OurButton onPress={() => this.props.navigation.navigate('ImageGallery')} style={{ paddingHorizontal: 20 }}><MaterialIcons name="photo" size={40} color={colors.Events}/></OurButton>
                             </View>
                     <TextInput
                         style={styles.input}
@@ -683,7 +685,7 @@ export default class CreateEvent extends React.Component {
                     <View style={{ paddingBottom: 200 }}>
                         {!this.editMode &&
                             <Interests
-                                IntrestsArray={this.state.IntrestsArray}
+                                IntrestsArray={this.IntrestsArray}
                                 handleMainChange={(mainI) => this.handleMainChange(mainI)}
                                 subInArray={this.state.subInArray}
                                 callFetch={(iArray) => this.setState(prevState => ({
@@ -699,6 +701,7 @@ export default class CreateEvent extends React.Component {
                             <Dropdown
                                 key={1}
                                 label='בחר קטגוריה'
+                                fontSize={20}
                                 value={newEvent.CategoryId}
                                 valueExtractor={({ CategoryId }) => CategoryId}
                                 labelExtractor={({ CategoryName }) => CategoryName}
@@ -731,12 +734,16 @@ export default class CreateEvent extends React.Component {
     }
 };
 const styles = StyleSheet.create({
-    icon: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        paddingTop: 20
+    container: { 
+        flex: 1, 
+        backgroundColor: 'white', 
+        justifyContent: "flex-start", 
+        paddingBottom: 20 
     },
+    imageIcons: { 
+        flexDirection: 'row', 
+        alignSelf: 'center', 
+        marginTop:5},
     input: {
         fontFamily: 'rubik-regular',
         width: '90%',
@@ -751,42 +758,11 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         fontSize: 18
     },
-    imageCard: {
-        resizeMode: 'cover'
-    },
-    title: {
-        alignItems: 'center',
-        fontSize: 24,
-        color: colors.Events,
-        fontFamily: 'rubik-regular'
-    },
     dropDown: {
         alignContent: 'flex-start',
         flexDirection: 'column-reverse',
         paddingLeft: 20,
         paddingRight: 20
-    },
-    row: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignContent: 'stretch',
-        marginLeft: 0,
-        marginRight: 0
-    },
-    addIcon: {
-        marginTop: 15,
-    },
-    textOr: {
-        fontFamily: 'rubik-regular',
-        fontSize: 24,
-        paddingRight: 10,
-        color: 'white',
-        paddingBottom: 10
-
-    },
-    API: {
-        paddingBottom: 10
-
     },
     dateTimeDisplay: {
         textAlign: 'left',
@@ -808,17 +784,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 15,
         justifyContent: 'center',
-        alignItems: "center",
-        height: '20%'
-    },
-    image: {
-        flex: 1,
-        resizeMode: "cover",
-        justifyContent: "center"
-    },
-    imageIconsView: { 
-        flexDirection: 'row', 
-        alignSelf: 'center' 
+        alignItems: "center"
     },
     dateTimeView: { 
         flexDirection: 'row', 
@@ -827,7 +793,7 @@ const styles = StyleSheet.create({
     dateTimeText: { 
         fontFamily: 'rubik-regular', 
         fontSize: 20, 
-        color: colors.Events, 
+        color: "black", 
         paddingHorizontal: 5 
     },
     dateTimeTitle: { 
@@ -856,4 +822,3 @@ const styles = StyleSheet.create({
         paddingBottom: 20 
     }
 });
-

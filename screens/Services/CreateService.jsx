@@ -243,7 +243,6 @@ export default class CreateEvent extends React.Component {
             ServiceId: s.ServiceId,
             ServiceName: s.ServiceName,
             ImagePrimary: s.Image,
-            Rate: s.Rate,
             Description: s.Description,
             Owner: s.Owner,
             OpenDays: s.OpenDays,
@@ -268,14 +267,15 @@ export default class CreateEvent extends React.Component {
             })
             .then(
                 (result) => {
-                    if (result == 1) {
+                    if (result === 1) {
                         Alert.alert("נשמר בהצלחה");
                         console.log(result);
                         this.props.navigation.navigate('GeneralServices');
                     }
-                    else
+                    else{
                         Alert.alert(" 1 מצטערים, אנו נסו שנית!");
                     console.log(result);
+                    }
                 },
                 (error) => {
                     console.log("err post=", error);
@@ -347,28 +347,28 @@ export default class CreateEvent extends React.Component {
         const serviceDetails = this.state.serviceDetails;
         console.log("service", newS)
         return (
-            <View style={{flex: 1, backgroundColor: 'white', justifyContent: "flex-start"}}>
-                <Header navigation={navigation}/>
+            <View style={styles.container}>
+                <Header navigation={navigation} />
                 <BackButton goBack={() => navigation.navigate('GeneralServices')} />
                 <ScrollView>
-                    
-                    <View style={{ flexDirection: 'row', borderColor: 'white', borderWidth: 1, borderRadius: 15, justifyContent: 'center', alignItems: "center",  }}>
-                        
-                        {this.state.picUri === "https://img.etimg.com/thumb/msid-59997726,width-643,imgsize-41586,resizemode-4/ending-a-long-term-business-partnership-keep-these-points-in-mind.jpg" ? null : <ImageBackground source={{ uri: this.state.picUri }} style={{ flex: 1, resizeMode: "cover", justifyContent: "center", height: 250, width: '100%' }}></ImageBackground>}
-                    
 
-                            
-                        
+                    <View style={styles.scrollView}>
+
+                        {this.state.picUri === "https://img.etimg.com/thumb/msid-59997726,width-643,imgsize-41586,resizemode-4/ending-a-long-term-business-partnership-keep-these-points-in-mind.jpg" ? null : <ImageBackground source={{ uri: this.state.picUri }} style={{ flex: 1, resizeMode: "cover", justifyContent: "center", height: 250, width: '100%' }}></ImageBackground>}
+
+
+
+
                     </View>
-                    <View style={{ flexDirection: 'row', alignSelf: 'center'}}>
-                                <OurButton onPress={() => this.props.navigation.navigate('CameraPage')} style={{ paddingHorizontal: 20 }}><MaterialIcons name="camera-alt" size={40} color={colors.turkiz} /></OurButton>
-                                <OurButton onPress={() => this.props.navigation.navigate('ImageGallery')} style={{ paddingHorizontal: 20 }}><MaterialIcons name="photo" size={40} color={colors.turkiz} /></OurButton>
-                            </View>
+                    <View style={styles.imageIcons}>
+                        <OurButton onPress={() => this.props.navigation.navigate('CameraPage')} style={{ paddingHorizontal: 20 }}><MaterialIcons name="camera-alt" size={40} color={colors.Business} /></OurButton>
+                        <OurButton onPress={() => this.props.navigation.navigate('ImageGallery')} style={{ paddingHorizontal: 20 }}><MaterialIcons name="photo" size={40} color={colors.Business} /></OurButton>
+                    </View>
                     <TextInput
                         style={styles.input}
                         autoFocus={true}
                         placeholder="שם העסק"
-                        placeholderTextColor={colors.turkiz}
+                        placeholderTextColor={'grey'}
                         selectionColor={blue}
                         underlineColorAndroid={this.state.isFocus ? blue : grey}
                         onFocus={this.handleFocus}
@@ -387,7 +387,8 @@ export default class CreateEvent extends React.Component {
                         <TextInput
                             style={styles.input}
                             placeholder="תיאור"
-                            placeholderTextColor={colors.turkiz}
+                            multiline={true}
+                            placeholderTextColor={'grey'}
                             selectionColor={blue}
                             underlineColorAndroid={this.state.isFocus ? blue : grey}
                             onFocus={this.handleFocus}
@@ -403,8 +404,8 @@ export default class CreateEvent extends React.Component {
                     </View>
                     <TextInput
                         style={styles.input}
-                        placeholder="פתוח בימי:"
-                        placeholderTextColor={colors.turkiz}
+                        placeholder="פתוח בימים"
+                        placeholderTextColor={'grey'}
                         selectionColor={blue}
                         underlineColorAndroid={this.state.isFocus ? blue : grey}
                         onFocus={this.handleFocus}
@@ -416,58 +417,33 @@ export default class CreateEvent extends React.Component {
                             }
                         }))}
                         value={newS.OpenDays != null && newS.OpenDays + ""}
-                    >    
+                    >
                     </TextInput>
-                    <View style={{ flexDirection: "row", alignContent: "space-between" }}>
-                        <MaterialIcons name="access-time" size={22} color={colors.turkiz}></MaterialIcons>
-                        <TouchableOpacity onPress={this.showTimepicker1}>
-                            <Text
-                                style={{ textAlign: "right", fontFamily: 'rubik-regular', fontSize: 20 }}>
-                                שעת התחלה
+                    <View style={styles.dateTimeView}>
+                        <View style={styles.dateTimeTitle}>
+                            <MaterialIcons name="access-time" size={22} color={colors.Business}></MaterialIcons>
+                            <TouchableOpacity onPress={this.showTimepicker1}>
+                                <Text
+                                    style={styles.dateTimeText}>
+                                    שעת התחלה
                                </Text>
-                            <Text style={{ textAlign: "center", fontFamily: 'rubik-regular', fontSize: 20 }}> {newS.OpenHoursStart}</Text>
-                        </TouchableOpacity>
-                    </View>
+                                <Text style={styles.dateTimeDisplay}> {newS.OpenHoursStart}</Text>
+                            </TouchableOpacity>
+                        </View>
 
-                    <View style={{ flexDirection: "row", alignContent: "space-around" }}>
-                        <MaterialIcons name="access-time" size={22} color={colors.turkiz}></MaterialIcons>
+                        <View style={styles.dateTimeTitle}>
+                            <MaterialIcons name="access-time" size={22} color={colors.Business}></MaterialIcons>
 
-                        <TouchableOpacity onPress={this.showTimepicker2}>
-                            <Text
-                                style={{ textAlign: "right", fontFamily: 'rubik-regular', fontSize: 20 }}>
-                                שעת סיום
+                            <TouchableOpacity onPress={this.showTimepicker2}>
+                                <Text
+                                    style={styles.dateTimeText}>
+                                    שעת סיום
                             </Text>
-                            <Text style={{ textAlign: "center", fontFamily: 'rubik-regular', fontSize: 20 }}> {newS.OpenHoursEnds}</Text>
-                        </TouchableOpacity>
+                                <Text style={styles.dateTimeDisplay}> {newS.OpenHoursEnds}</Text>
+                            </TouchableOpacity>
 
+                        </View>
                     </View>
-
-                    <TouchableOpacity onPress={() => {
-                        this.setState({ setLoc: true }, () => navigation.navigate('EventLocation', { type: "s" }));
-                    }}>
-                        <Text style={{ fontFamily: 'rubik-regular', fontSize: 22, color: colors.turkiz, textAlign: 'left' }}> מיקום העסק </Text>
-                    </TouchableOpacity>
-
-                    <View style={styles.dropDown}>
-                        <Dropdown
-                            key={1}
-                            label='בחר קטגוריה'
-                            value={newS.Categories}
-                            valueExtractor={({ Id }) => Id}
-                            labelExtractor={({ Name }) => Name}
-                            data={this.catArray}
-                            selectedItemColor={colors.turkiz}
-                            onChangeText={(value) => this.setState(prevState => ({
-                                newS: {
-                                    ...prevState.newS,
-                                    Categories: value
-                                }
-                            }))
-                            }
-
-                        />
-                    </View>
-
                     {this.state.show1 && (
                         <DateTimePicker
                             value={this.state.timeStart}
@@ -486,83 +462,134 @@ export default class CreateEvent extends React.Component {
                             onChange={this.setEndTime}
                         />
                     )}
-                   
+
+                    <TouchableOpacity onPress={() => {
+                        this.setState({ setLoc: true }, () => navigation.navigate('EventLocation', { type: "s" }));
+                    }}>
+                        <Text style={styles.businessLoc}> מיקום העסק </Text>
+                    </TouchableOpacity>
+
+                    <View style={styles.dropDown}>
+                        <Dropdown
+                            key={1}
+                            label='בחר קטגוריה'
+                            fontSize={20}
+                            value={newS.Categories}
+                            valueExtractor={({ Id }) => Id}
+                            labelExtractor={({ Name }) => Name}
+                            data={this.catArray}
+                            selectedItemColor={colors.Business}
+                            onChangeText={(value) => this.setState(prevState => ({
+                                newS: {
+                                    ...prevState.newS,
+                                    Categories: value
+                                }
+                            }))
+                            }
+
+                        />
+                    </View>
+
                 </ScrollView>
                 <Button
                     title={this.editMode ? "עדכן" : "צור עסק חדש"}
-                    buttonStyle={{ borderRadius: 5, marginLeft: 20, marginRight: 20 }}
+                    buttonStyle={styles.createButton}
                     containerStyle={{ marginTop: 1 }}
                     onPress={() => this.editMode ? this.fetchUpdateService() : this.btnUpload()}
-                    //onPress={()=> this.btnUpload()}
+                //onPress={()=> this.btnUpload()}
                 ></Button>
-                
+
             </View>
         );
     }
 };
 const styles = StyleSheet.create({
-    icon: {
+    container: {
         flex: 1,
+        backgroundColor: 'white',
+        justifyContent: "flex-start",
+        paddingBottom: 20
+    },
+    imageIcons: {
         flexDirection: 'row',
-        justifyContent: 'center',
-        paddingTop: 20
+        alignSelf: 'center',
+        marginTop: 5
     },
     input: {
         fontFamily: 'rubik-regular',
         width: '90%',
         height: 44,
-        padding: 5,
-        marginBottom: 10,
+        paddingLeft: 10,
+        borderWidth: 1,
+        borderColor: '#F1F2F2',
+        marginVertical: 15,
+        marginHorizontal: 15,
         textAlign: 'right',
-        fontSize: 22,
-    },
-    imageCard: {
-        resizeMode: 'cover'
-    },
-    title: {
-        alignItems: 'center',
-        fontSize: 24,
-        color: colors.turkiz,
-        fontFamily: 'rubik-regular'
+        backgroundColor: 'white',
+        borderRadius: 10,
+        fontSize: 18
     },
     dropDown: {
         alignContent: 'flex-start',
         flexDirection: 'column-reverse',
         paddingLeft: 20,
-        paddingRight: 20,
-        paddingBottom:200
+        paddingRight: 20
     },
-    row: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignContent: 'stretch',
-        marginLeft: 0,
-        marginRight: 0
-    },
-    addIcon: {
-        marginTop: 15,
-    },
-    textOr: {
+    dateTimeDisplay: {
+        textAlign: 'left',
         fontFamily: 'rubik-regular',
-        fontSize: 24
-
+        fontSize: 20,
+        paddingHorizontal: 20
     },
-    API: {
-        paddingBottom: 10
-
+    createButton: {
+        borderRadius: 30,
+        marginBottom: 0,
+        width: '60%',
+        alignSelf: 'center',
+        backgroundColor: colors.Business,
+        elevation: 4
     },
-    scrollView: { 
-        flexDirection: 'row', 
-        borderColor: 'white', 
-        borderWidth: 1, 
-        borderRadius: 15, 
-        justifyContent: 'center', 
-        alignItems: "center" 
+    scrollView: {
+        flexDirection: 'row',
+        borderColor: 'white',
+        borderWidth: 1,
+        borderRadius: 15,
+        justifyContent: 'center',
+        alignItems: "center"
     },
-    image: {
-        flex: 1,
-        resizeMode: "cover",
-        justifyContent: "center"
+    dateTimeView: {
+        flexDirection: 'row',
+        paddingVertical: 10
+    },
+    dateTimeText: {
+        fontFamily: 'rubik-regular',
+        fontSize: 20,
+        color: colors.Business,
+        paddingHorizontal: 5
+    },
+    dateTimeTitle: {
+        flexDirection: 'row',
+        paddingLeft: 10
+    },
+    businessLoc: {
+        fontFamily: 'rubik-regular',
+        fontSize: 22,
+        color: colors.Business,
+        textAlign: 'left',
+        padding: 10
+    },
+    interstsAndCategory: {
+        fontFamily: 'rubik-regular',
+        fontSize: 22, color: 'grey',
+        textAlign: 'center',
+        paddingTop: 30,
+        paddingBottom: 5
+    },
+    interstsDetails: {
+        fontFamily: 'rubik-regular',
+        fontSize: 15,
+        color: 'grey',
+        textAlign: 'center',
+        paddingBottom: 20
     }
 });
-

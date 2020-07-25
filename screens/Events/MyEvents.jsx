@@ -175,7 +175,7 @@ export default class MyEvents extends React.Component {
                       >
                       </Button>
                     </View>
-                    <Overlay overlayStyle={{ backgroundColor: 'rgba(52, 52, 52, 0)' }}  height={800} isVisible={this.state.visible} onBackdropPress={() => this.toggleOverlay()}>
+                    <Overlay overlayStyle={styles.overlay}  height={800} isVisible={this.state.visible} onBackdropPress={() => this.toggleOverlay()}>
                       <Card
                         key={this.state.selectedCard.Id}
                         image={{ uri: this.state.selectedCard.Image }}
@@ -183,7 +183,7 @@ export default class MyEvents extends React.Component {
                         containerStyle={styles.innerCardContainer}
                       >
                         <Text style={styles.cardTitleText} >{this.state.selectedCard.Name}</Text>
-                        <Text >{this.state.selectedCard.Desc}</Text>
+                        <Text style={{ textAlign: 'center' }}>{this.state.selectedCard.Desc}</Text>
                         <View style={styles.cardIcons}>
                           <FontAwesome5 name="calendar-alt" size={20}></FontAwesome5>
                           <Text style={styles.cardIconsText}>{moment(this.state.selectedCard.StartDate).format("DD/MM/YYYY")} עד </Text>
@@ -317,8 +317,10 @@ const styles = StyleSheet.create({
     shadowRadius: 5
   },
   innerCardContainer: {
-    width: 300,
-    alignSelf: 'center'
+    width: 330,
+    height: 650,
+    alignSelf: 'center',
+    borderWidth: 0
   },
   cardTitle: {
     fontSize: 26,
@@ -347,14 +349,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontFamily: 'rubik-regular',
     fontSize: 16,
-    textAlign: 'left'
+    textAlign: 'center'
   },
   cardButton: {
     borderRadius: 30,
     marginBottom: 0,
     width: '60%',
     alignSelf: 'center',
-    backgroundColor: colors.turkiz,
+    backgroundColor: colors.Events,
     elevation: 4
   },
   cardButtonText: {
@@ -364,12 +366,17 @@ const styles = StyleSheet.create({
   locationText: {
     fontFamily: 'rubik-regular',
     fontSize: 16,
-    color: colors.turkiz
+    color: colors.Events
   },
   innerCardImage: {
     height: 200,
     marginLeft: 0,
     marginRight: 0
-  }
+  },
+  overlay: {
+    backgroundColor: 'rgba(52, 52, 52, 0)',
+    width: 330,
+    height: 650,
+    justifyContent: 'center'
+}
 });
-

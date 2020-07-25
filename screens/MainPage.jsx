@@ -32,36 +32,33 @@ export default class MainPage extends Component {
           <View style={styles.row}>
           
             <View style={styles.item1}>
-              <NeiButton
-               onPress={() => navigation.navigate('GeneralEvents')}>
-               אירועים בקהילה
-              </NeiButton>
-            </View>
-
-            <View style={styles.item2}>
               <EventsBTN
-              onPress={() => navigation.navigate('GeneralServices')}>
-              עסקים בקהילה
-              
+              onPress={() => navigation.navigate('GeneralEvents')}>
+              אירועים בקהילה
               </EventsBTN>
             </View>
 
-            <View style={styles.item3}>
+            <View style={styles.item2}>
               <BusinessesBTN
-                onPress={() => navigation.navigate('GeneralLosts')}>
-                נמצא בשכונה
-                
+                onPress={() => navigation.navigate('GeneralServices')}>
+                עסקים בקהילה
               </BusinessesBTN>
             </View>
 
-          </View>
+            <View style={styles.item3}>
+              <FindingsButton
+                onPress={() => navigation.navigate('GeneralLosts')}>
+                נמצא בשכונה
+              </FindingsButton>
+            </View>
 
-          <View style={styles.item4}>
-            <FindingsButton
-             onPress={() => navigation.navigate('FindNeighboor')}>
-             הכר את שכניך
-              
-            </FindingsButton>
+            <View style={styles.item4}>
+              <NeiButton
+               onPress={() => navigation.navigate('FindNeighboor')}>
+               הכר את שכניך
+              </NeiButton>
+            </View>
+
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -105,19 +102,19 @@ const styles = StyleSheet.create({
   },
   item1: {
     top: 20,
-    left: -40
+    left: 0
   },
   item2: {
-    top: 85,
-    left: -45,
+    top: 100,
+    left: -10,
   },
   item3: {
     top: 20,
-    left: -60
+    left: -20
   },
   item4: {
-    top: -15,
-    right: -110
+    top: 80,
+    left: -20
   }
 
 });

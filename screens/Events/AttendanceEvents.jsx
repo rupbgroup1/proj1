@@ -211,7 +211,7 @@ export default class AttendanceEvents extends React.Component {
                                             >
                                             </Button>
                                         </View>
-                                        <Overlay overlayStyle={{ backgroundColor: 'rgba(52, 52, 52, 0)' }} isVisible={this.state.visible} onBackdropPress={() => this.toggleOverlay()}>
+                                        <Overlay overlayStyle={styles.overlay} windowBackgroundColor={'rgba(52, 52, 52, 0)'} isVisible={this.state.visible} onBackdropPress={() => this.toggleOverlay()}>
                                             <Card
                                                 key={this.state.selectedCard.Id}
                                                 image={{ uri: this.state.selectedCard.Image }}
@@ -313,11 +313,11 @@ const styles = StyleSheet.create({
         shadowRadius: 5
     },
     innerCardContainer: {
-        paddingHorizontal: 40,
-        paddingVertical: 20,
-        width: 300,
-        alignSelf: 'center'
-    },
+        width: 330,
+        height: 650,
+        alignSelf: 'center',
+        borderWidth: 0
+      },
     cardTitle: {
         fontSize: 26,
         color: "black",
@@ -328,6 +328,12 @@ const styles = StyleSheet.create({
         color: "black",
         fontFamily: 'rubik-regular',
         alignSelf: 'center'
+    },
+    overlay: {
+        backgroundColor: 'rgba(52, 52, 52, 0)',
+        width: 330,
+        height: 650,
+        justifyContent: 'center'
     },
     cardIcons: {
         alignItems: "flex-end",
@@ -352,12 +358,13 @@ const styles = StyleSheet.create({
         marginBottom: 0,
         width: '60%',
         alignSelf: 'center',
-        backgroundColor: colors.Events
-    },
-    cardButtonText: {
-        fontSize: 20,
+        backgroundColor: colors.Events,
+        elevation: 4
+      },
+      cardButtonText: {
+        fontSize: 16,
         fontFamily: 'rubik-regular'
-    },
+      },
     locationText: {
         fontFamily: 'rubik-regular',
         fontSize: 16,

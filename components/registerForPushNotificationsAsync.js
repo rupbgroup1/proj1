@@ -29,20 +29,5 @@ export default async function registerForPushNotificationsAsync() {
     // POST the token to your backend server from where you can retrieve it to send push notifications.
     return (
         token
-        // fetch(PUSH_ENDPOINT, {
-        //     method: 'POST',
-        //     headers: {
-        //         Accept: 'application/json',
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify({
-        //         token: {
-        //             value: token,
-        //         },
-        //         user: {
-        //             username: 'Brent',
-        //         },
-        //     }),
-        // })
     );
 }

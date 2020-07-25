@@ -216,21 +216,21 @@ export default class FindNeighboor extends Component {
             <View style={styles.screen}>
                 <Header navigation={navigation}/>
                 <BackButton goBack={() => this.props.navigation.navigate('MainPage')} />
-                <Text style={styles.text} >
+                {/* <Text style={styles.text} >
                     חיפוש לפי שם של שכן
-                   </Text>
+                   </Text> */}
                 <TextInput
                     value={this.state.searchName}
                     onChangeText={(text) => this.setState({ searchName: text })}
-                    placeholder={'הזנ/י שם של שכן'}
+                    placeholder={'חיפוש שם של שכן'}
                     style={styles.input}
                     leftIcon={{ type: 'EvilIcons', name: 'search' }}
+                    placeholderTextColor={"black"}
                     onEndEditing={() => this.fetchSearchNeiByName()}
-
 
                 />
                 <Text style={styles.text} >
-                    חפש לפי תחום עניין משותף
+                    חיפוש לפי תחום עניין משותף
                    </Text>
                 <Interests
                     IntrestsArray={this.state.IntrestsArray}
@@ -265,7 +265,7 @@ export default class FindNeighboor extends Component {
                     />
                     <TouchableOpacity
                         onPress={() => this.props.navigation.navigate('Param')}
-                        style={{ paddingVertical: 15 }}
+                        style={{ paddingVertical: 10 }}
                     >
                         <Text style={{ fontFamily: 'rubik-regular', fontSize: 16 }}>מרוצה מההתאמה? עזור לנו להשתפר עבורך</Text>
                     </TouchableOpacity>
@@ -315,7 +315,7 @@ const styles = StyleSheet.create({
     },
     textHead: {
         fontFamily: 'rubik-regular',
-        marginVertical: 1,
+        marginVertical: 0.5,
         fontSize: 20,
         //padding: 10,
         color: 'white',
@@ -326,26 +326,27 @@ const styles = StyleSheet.create({
         width: '100%',
         justifyContent: 'space-between',
         //backgroundColor:'#F36B74'
-        backgroundColor: colors.Neighboors
+        backgroundColor: colors.turkiz
 
     },
     screen: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: colors.reeBackgrouond
+        backgroundColor: 'white',
     },
     input: {
         fontFamily: 'rubik-regular',
-        width: '95%',
+        width: '90%',
         height: 44,
-        padding: 10,
+        paddingLeft: 10,
         borderWidth: 1,
-        borderColor: 'white',
-        marginBottom: 10,
+        borderColor: '#F1F2F2',
+        marginVertical: 15,
+        marginHorizontal: 15,
         textAlign: 'right',
         backgroundColor: 'white',
         borderRadius: 10,
-        paddingVertical: 10
+        fontSize: 18
     },
     buttonSearch: {
         width: '100%'

@@ -209,7 +209,6 @@ export default class RecommendedEvents extends React.Component {
                 this.state.filteredArray.map((e) => {
 
                     return (
-
                         <View style={{ right: 3.5}}>
                             <Card
                                 key={e.Id}
@@ -247,7 +246,7 @@ export default class RecommendedEvents extends React.Component {
                                     >
                                     </Button>
                                 </View>
-                                <Overlay overlayStyle={{ backgroundColor: 'rgba(52, 52, 52, 0)' }} isVisible={this.state.visible} onBackdropPress={() => this.toggleOverlay()}>
+                                <Overlay overlayStyle={styles.overlay} isVisible={this.state.visible} onBackdropPress={() => this.toggleOverlay()}>
                                     <Card
                                         key={this.state.selectedCard.Id}
                                         image={{ uri: this.state.selectedCard.Image }}
@@ -362,6 +361,12 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         left: 15
     },
+    overlay: {
+        backgroundColor: 'rgba(52, 52, 52, 0)',
+        width: 330,
+        height: 650,
+        justifyContent: 'center'
+    },
     searchContainer: {
         width: '90%',
         backgroundColor: 'white',
@@ -383,7 +388,7 @@ const styles = StyleSheet.create({
         shadowColor: '#D1D3D4'
     },
     selectedCategory:{
-        backgroundColor: colors.turkiz,
+        backgroundColor: colors.Events,
         borderRadius: 0,
         paddingVertical: 5,
         paddingHorizontal: 10,
@@ -391,7 +396,7 @@ const styles = StyleSheet.create({
         shadowColor: '#D1D3D4'
     },
     titleCat: { 
-        color: colors.turkiz, 
+        color: colors.Events, 
         fontFamily:'rubik-regular' 
     },
     coloredTitleCat: { 
@@ -406,9 +411,11 @@ const styles = StyleSheet.create({
         shadowRadius: 5
     },
     innerCardContainer: {
-        width: 300,
-        alignSelf: 'center'
-    },
+        width: 330,
+        height: 650,
+        alignSelf: 'center',
+        borderWidth: 0
+      },
     cardTitle: {
         fontSize: 26,
         color: "black",
@@ -443,7 +450,7 @@ const styles = StyleSheet.create({
         marginBottom: 0,
         width: '60%',
         alignSelf: 'center',
-        backgroundColor: colors.turkiz,
+        backgroundColor: colors.Events,
         elevation: 4
     },
     cardButtonText: {
@@ -453,7 +460,7 @@ const styles = StyleSheet.create({
     locationText: {
         fontFamily: 'rubik-regular',
         fontSize: 16,
-        color: colors.turkiz
+        color: colors.Events
     },
     innerCardImage: {
         height:200, 

@@ -65,7 +65,7 @@ const navigator = createStackNavigator({
     MyLosts: MyLosts,
     CreateLost: CreateLost,
     SideMenu: SideMenu,
-    MyChats:MyChats,
+    MyChats: MyChats,
 },
     {
         initialRouteName: 'LoginScreen',
@@ -77,13 +77,15 @@ const navigator = createStackNavigator({
 const DrawerStack = createDrawerNavigator(
     {
         Main: navigator
+
+
     },
-    {
-        drawerPosition: 'left',
-        initialRouteName: 'Main',
-        drawerWidth: 250,
-        contentComponent: SideMenu
-    }
+    // {
+    //     drawerPosition: 'left',
+    //     initialRouteName: 'Main',
+    //     drawerWidth: 250,
+    //     contentComponent: SideMenu
+    // }
 );
 
 

@@ -48,7 +48,7 @@ export default class App extends React.Component {
           onError={(err) => console.log(err)}
         />
         :
-        <AppContainer />
+        <AppContainer/>
 
 
     )
