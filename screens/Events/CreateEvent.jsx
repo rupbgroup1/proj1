@@ -318,7 +318,7 @@ export default class CreateEvent extends React.Component {
               AsyncStorage.removeItem('cameraDetails');
               {this.editMode ? this.fetchUpdateEvent() : this.fetchCreatEvent()}
               //this.fetchCreatEvent();
-                //console.log(this.state.uplodedPicUri);
+                console.log(this.state.newEvent.Image);
 
           }
         else {
@@ -723,8 +723,8 @@ export default class CreateEvent extends React.Component {
                     title={this.editMode ? "עדכן" : "צור אירוע"}
                     buttonStyle={styles.createButton}
                     containerStyle={{ marginTop: 1 }}
-                    onPress={() => this.editMode ? this.updateImage() : this.validateInputes()}
-                    //onPress={()=> this.btnUpload()}
+                   onPress={() => this.editMode ? this.updateImage() : this.validateInputes()}
+                   // onPress={()=> this.btnUpload()}
                 ></Button>
             </View>
         );

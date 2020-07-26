@@ -74,17 +74,17 @@ const navigator = createStackNavigator({
         }
     });
 
-const DrawerStack = createDrawerNavigator(
-    {
-        Main: navigator
-    },
-    {
-        drawerPosition: 'left',
-        initialRouteName: 'Main',
-        drawerWidth: 250,
-        contentComponent: SideMenu
-    }
-);
+    const DrawerStack = createDrawerNavigator(
+        {
+            Main: navigator
+        },
+        {
+            // drawerPosition: 'left',
+            // initialRouteName: 'Main',
+            // drawerWidth: 250,
+            // contentComponent: SideMenu
+        }
+    );
 
 
 

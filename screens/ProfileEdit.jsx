@@ -55,11 +55,13 @@ export default class ProfileEdit extends Component {
             finished: false,
 
         };
+        this.uplodedPicPath = 'http://proj.ruppin.ac.il/bgroup29/prod/uploadFiles/';
+
 
     }
 
     componentDidMount = () => {
-        this.getUser(), () => {
+        this.getUser();
             const { navigation } = this.props;
             this._unsubscribe = navigation.addListener('didFocus', () => {
                 AsyncStorage.getItem('cameraDetails', (err, cameraDetailsJSON) => {
@@ -82,7 +84,7 @@ export default class ProfileEdit extends Component {
 
 
             });
-        };
+        
 
 
     }
@@ -288,7 +290,7 @@ export default class ProfileEdit extends Component {
             YearOfBirth: this.state.yearOfBirth,
             FirstName: this.state.vFName,
             LastName: this.state.lName,
-            ImagePath: this.state.picUri
+            ImagePath: this.state.uplodedPicUri
 
         }
         console.log("userFetch", user);
@@ -336,7 +338,7 @@ export default class ProfileEdit extends Component {
 
 
     imageUpload = (imgUri, picName) => {
-        let urlAPI = "http://proj.ruppin.ac.il/bgroup29/test1/uploadpicture";
+        let urlAPI = "http://proj.ruppin.ac.il/bgroup29/prod/uploadpicture";
         let dataI = new FormData();
         dataI.append('picture', {
             uri: imgUri,
@@ -366,18 +368,19 @@ export default class ProfileEdit extends Component {
                     let picNameWOExt = picName.substring(0, picName.indexOf("."));
                     let imageNameWithGUID = responseData.substring(responseData.indexOf(picNameWOExt), responseData.indexOf(".jpg") + 4);
                     this.setState({
-                        uplodedPicUri: { uri: this.uplodedPicPath + imageNameWithGUID },
+                        uplodedPicUri:  this.uplodedPicPath + imageNameWithGUID ,
                     });
+                    this.fetchUpdateUser();
+                    AsyncStorage.removeItem('cameraDetails');
+                    ;
 
                     let userDetails = {
                         ImagePath: this.uplodedPicPath + imageNameWithGUID
                     }
+                    ;
 
-
-                    AsyncStorage.mergeItem('user', JSON.stringify(userDetails), () =>
-                        AsyncStorage.removeItem('cameraDetails'));
-                    this.props.navigation.navigate('RegistrationP4');
-
+                   
+                   
                     console.log(this.state.uplodedPicUri);
 
                 }
@@ -441,27 +444,28 @@ export default class ProfileEdit extends Component {
                             <View style={styles.screen}>
                                 <Text style={styles.subTitle}>הפרופיל שלי</Text>
 
-                                {this.state.user.ImagePath &&
-                                    <Image style={styles.avatar}
-                                        source={{ uri: this.state.user.ImagePath }}
-                                    />
-                                }
+                                {this.state.user.ImagePath ?
+                                        <Image style={styles.avatar}
+                                            source={{ uri: this.state.user.ImagePath }}
+                                        />
+                                        : <Text></Text>
+                                    }
 
                                 <View style={styles.center}>
                                     <Text style={styles.note, { fontSize: 30 }}>{this.state.user.FirstName} {this.state.user.LastName}</Text>
 
 
-                                    {this.state.user.FamilyStatus && <Text style={styles.note}>{this.state.user.FamilyStatus}, {age}</Text>}
-                                    {this.state.jobName && <Text style={styles.note}>{this.state.jobName}</Text>}
-                                    {this.state.user.Gender === 0 && <Text style={styles.note}> עובד ב{this.state.user.WorkPlace}</Text>}
-                                    {this.state.user.Gender === 1 && <Text style={styles.note}> עובדת ב{this.state.user.WorkPlace}</Text>}
-                                    {this.state.user.Gender === 2 && <Text style={styles.note}> עובד/ת ב{this.state.user.WorkPlace}</Text>}
-                                    {this.state.user.AboutMe && <Text style={styles.title}>על עצמי</Text>}
-                                    {this.state.user.AboutMe && <Text style={styles.note}>{this.state.user.AboutMe}</Text>}
-                                    {intrests && <Text style={styles.note}><Text style={styles.title}>תחומי עניין</Text></Text>}
-                                    {intrests && <Text style={styles.note}>{intrests}</Text>}
-                                    {kids && <Text style={styles.title}>גילאי ילדים</Text>}
-                                    {kids && <Text>{kids}</Text>}
+                                    {this.state.user.FamilyStatus ? <Text style={styles.note}>{this.state.user.FamilyStatus}, {age}</Text> : <Text></Text>}
+                                    {this.state.jobName ? <Text style={styles.note}>{this.state.jobName}</Text>: <Text></Text>}
+                                    {this.state.user.Gender === 0 ? <Text style={styles.note}> עובד ב{this.state.user.WorkPlace}</Text>: <Text></Text>}
+                                    {this.state.user.Gender === 1 ? <Text style={styles.note}> עובדת ב{this.state.user.WorkPlace}</Text>: <Text></Text>}
+                                    {this.state.user.Gender === 2 ? <Text style={styles.note}> עובד/ת ב{this.state.user.WorkPlace}</Text> : <Text></Text>}
+                                    {this.state.user.AboutMe ? <Text style={styles.title}>על עצמי</Text> : <Text></Text>}
+                                    {this.state.user.AboutMe ? <Text style={styles.note}>{this.state.user.AboutMe}</Text> : <Text></Text>}
+                                    {intrests ? <Text style={styles.note}><Text style={styles.title}>תחומי עניין</Text></Text> : <Text></Text>}
+                                    {intrests ? <Text style={styles.note}>{intrests}</Text> : <Text></Text>}
+                                    {kids ? <Text style={styles.title}>גילאי ילדים</Text>: <Text></Text>}
+                                    {kids ? <Text>{kids}</Text> : <Text></Text>}
 
 
 
@@ -486,7 +490,7 @@ export default class ProfileEdit extends Component {
                                 </Text>
 
                                     <Image style={styles.avatar1}
-                                        source={{ uri: this.state.user.ImagePath }} />
+                                        source={{ uri: this.state.picUri}} />
 
 
                                     <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
@@ -692,8 +696,8 @@ export default class ProfileEdit extends Component {
                                         <Button
                                             style={styles.item}
                                             title={'סיום'}
-                                            //onPress={() => this.fetchUpdateUser()}
-                                            onPress={() => { this.state.picUri === this.user.ImagePath ? this.fetchUpdateUser() : this.btnUpload() }}
+                                           // onPress={() => this.btnUpload()}
+                                           onPress={() => { this.state.picUri === this.state.user.ImagePath ? this.fetchUpdateUser() : this.btnUpload() }}
 
 
                                         />
