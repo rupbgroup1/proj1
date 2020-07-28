@@ -379,10 +379,6 @@ export default class ProfileEdit extends Component {
                     AsyncStorage.removeItem('cameraDetails');
                     ;
 
-                    this.fetchUpdateUser();
-                    AsyncStorage.removeItem('cameraDetails');
-
-
                     let userDetails = {
                         ImagePath: this.uplodedPicPath + imageNameWithGUID
                     }

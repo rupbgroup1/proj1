@@ -200,4 +200,3 @@ const styles = StyleSheet.create({
 
   }
 });
-

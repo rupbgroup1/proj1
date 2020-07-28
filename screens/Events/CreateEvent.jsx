@@ -287,44 +287,46 @@ export default class CreateEvent extends React.Component {
         };
 
 
-        fetch(urlAPI, config)
-            .then((res) => {
-                console.log('res.status=', res.status);
-                if (res.status == 201) {
-                    return res.json();
-                }
-                else {
-                    console.log('error uploding ...1');
-                    return "err";
-                }
-            })
-            .then((responseData) => {
-                console.log(responseData);
-                if (responseData != "err") {
-                    let picNameWOExt = picName.substring(0, picName.indexOf("."));
-                    let imageNameWithGUID = responseData.substring(responseData.indexOf(picNameWOExt), responseData.indexOf(".jpg") + 4);
-                    this.setState(prevState => ({
-                        newEvent: {
-                            ...prevState.newEvent,
-                            Image: this.uplodedPicPath + imageNameWithGUID
-                        }
-                    }))
-                    console.log("Image" + this.state.newEvent.Image)
+    fetch(urlAPI, config)
+      .then((res) => {
+        console.log('res.status=', res.status);
+        if (res.status == 201) {
+          return res.json();
+        }
+        else {
+          console.log('error uploding ...1');
+          return "err";
+        }
+      })
+      .then((responseData) => {
+        console.log(responseData);
+          if (responseData != "err") {
+              let picNameWOExt = picName.substring(0, picName.indexOf("."));
+              let imageNameWithGUID = responseData.substring(responseData.indexOf(picNameWOExt), responseData.indexOf(".jpg") + 4);
+              this.setState(prevState => ({
+                  newEvent: {
+                      ...prevState.newEvent,
+                      Image: this.uplodedPicPath + imageNameWithGUID
+                  }
+              }))
+              console.log("Image" + this.state.newEvent.Image)
 
 
-                    AsyncStorage.removeItem('cameraDetails');
-                    this.editMode ? this.fetchUpdateEvent() : this.fetchCreatEvent();
+              AsyncStorage.removeItem('cameraDetails');
+              {this.editMode ? this.fetchUpdateEvent() : this.fetchCreatEvent()}
+              //this.fetchCreatEvent();
+                console.log(this.state.newEvent.Image);
 
-
-                }
-                else {
-                    console.log('error uploding ...2');
-                }
-            })
-            .catch(err => {
-                alert('err upload= ' + err);
-            });
-    }
+          }
+        else {
+          console.log('error uploding ...2');
+          alert('error uploding ...2');
+        }
+      })
+      .catch(err => {
+        alert('err upload= ' + err);
+      });
+  }
 
     fetchCreatEvent() {
          console.log("in new event fetch =", this.state.newEvent);
@@ -726,8 +728,8 @@ export default class CreateEvent extends React.Component {
                     title={this.editMode ? "עדכן" : "צור אירוע"}
                     buttonStyle={styles.createButton}
                     containerStyle={{ marginTop: 1 }}
-                    onPress={() => this.editMode ? this.updateImage() : this.validateInputes()}
-                    //onPress={()=> this.btnUpload()}
+                   onPress={() => this.editMode ? this.updateImage() : this.validateInputes()}
+                   // onPress={()=> this.btnUpload()}
                 ></Button>
             </View>
         );
