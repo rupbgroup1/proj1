@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { Alert, Button, TextInput, View, StyleSheet, Text, AsyncStorage, Picker, TouchableOpacity, TouchableHighlightBase, Image } from 'react-native';
 import Header from '../components/Header';
 import colors from '../assets/constant/colors';
-import { Input } from 'react-native-elements';
+import { Input, Card } from 'react-native-elements';
 import Interests from '../components/Interests';
 import { Dropdown } from 'react-native-material-dropdown';
 import Autocomplete from 'react-native-autocomplete-input';
 import { ScrollView } from 'react-native-gesture-handler';
 import BackButton from '../components/BackButton';
 import OurButton from '../components/OurButton';
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, FontAwesome } from '@expo/vector-icons';
 import {
     SimpleLineIcons,
     FontAwesome5
@@ -33,6 +33,7 @@ export default class ProfileEdit extends Component {
             intrests: [],
             nameJob: '',
             kidsYearOfBirth: [],
+            MyCity: '',
 
             yearOfBirth: '',
             gender: '',
@@ -53,6 +54,7 @@ export default class ProfileEdit extends Component {
             hideCityResults: false,
             choosenInterests: [],
             finished: false,
+            selectedCard: {}
 
         };
         this.uplodedPicPath = 'http://proj.ruppin.ac.il/bgroup29/prod/uploadFiles/';
@@ -60,7 +62,7 @@ export default class ProfileEdit extends Component {
 
     }
 
-    componentDidMount() {
+    componentDidMount = () => {
         this.getUser();
             const { navigation } = this.props;
             this._unsubscribe = navigation.addListener('didFocus', () => {
@@ -70,6 +72,7 @@ export default class ProfileEdit extends Component {
                         const cameraDetailsObj = JSON.parse(cameraDetailsJSON);
                         this.setState({ picUri: cameraDetailsObj.picUri, picName: 'user_' + new Date().getTime() + '.jpg' });
                         console.log("cameraDetailsObj:" + cameraDetailsObj.picUri)
+
                     }
 
                     //   else{
@@ -94,7 +97,7 @@ export default class ProfileEdit extends Component {
             let userObj = JSON.parse(userJSON);
             console.log("get user = ", userObj);
             let jobName = userObj.JobTitle != null ? userObj.JobTitle.JobName : '';
-            let jobType= userObj.JobTitleId != null ?userObj.JobTitleId : 0;
+            let jobType = userObj.JobTitleId != null ? userObj.JobTitleId : 0;
             console.log("User jt =", userObj.JobTitle, " state = ", jobType);
             this.setState({
                 user: userObj,
@@ -108,6 +111,7 @@ export default class ProfileEdit extends Component {
                 nameJob: jobName,
                 initialInterest: userObj.Intrests,
                 finished: true,
+                MyCity: userObj.city,
 
 
 
@@ -125,6 +129,7 @@ export default class ProfileEdit extends Component {
                 this.fetchGetAllIntrests();
                 this.fetchGetCity();
                 this.fetchGetAllJobTitle();
+                this.fetchGetMyServices(userObj.UserId);
             }
             );
         });
@@ -274,7 +279,7 @@ export default class ProfileEdit extends Component {
     }
 
     fetchUpdateUser() {
-        
+
         console.log("beforeFetch= ", this.state.jobType);
         const user = {
             UserId: this.state.user.UserId,
@@ -374,6 +379,10 @@ export default class ProfileEdit extends Component {
                     AsyncStorage.removeItem('cameraDetails');
                     ;
 
+                    this.fetchUpdateUser();
+                    AsyncStorage.removeItem('cameraDetails');
+
+
                     let userDetails = {
                         ImagePath: this.uplodedPicPath + imageNameWithGUID
                     }
@@ -394,10 +403,41 @@ export default class ProfileEdit extends Component {
             });
     }
 
+    //I'm the owner
+    fetchGetMyServices(userId) {
+        console.log("in fetch");
+        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Services/My?userId=' + userId, {
+
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'application/json; charset=UTF-8',
+            })
+        })
+            .then(res => {
+                return res.json();
+            })
+            .then(
+                (result) => {
+                    if (result.length > 0) {
+                        console.log("Events = ", result);
+                        this.arrayholder = result;
+                        this.setState({ filteredArray: result })
+                    }
+                    else
+                        Alert.alert("עדיין לא יצרת עסקים חדשים. להוספת עסק לחץ/י ' + '");
+                },
+                (error) => {
+                    console.log("err post=", error);
+                    Alert.alert("מצטערים, אנו נסו שנית!");
+                }
+            );
+    }
+
+
     render() {
         const { navigation } = this.props;
         const intrests = this.state.intrests.map((buttonIntersts) => (
-            <Text style={styles.note}>{buttonIntersts.Subintrest} |</Text>
+            <Text>{buttonIntersts.Subintrest}  |  </Text>
         ));
         //const intrests = intrests1.slice(0,-1);
         //const intrests = intrestsTemp;
@@ -427,54 +467,83 @@ export default class ProfileEdit extends Component {
                 <Header navigation={navigation} />
                 <BackButton goBack={() => this.props.navigation.navigate('MainPage')} />
 
-                <OurButton onPress={() => this.setState({ editing: !editing })}><SimpleLineIcons name="pencil" size={30} color="black" /></OurButton>
+                <OurButton onPress={() => this.setState({ editing: !editing })} style={{padding:5}}><SimpleLineIcons name="pencil" size={30} color="black" /></OurButton>
 
 
 
 
                 <View style={styles.container}>
-
-
-
-                    {!this.state.editing && (
+                    {!this.state.editing ? (
                         <ScrollView style={styles.container}
                             keyboardShouldPersistTaps={"handled"}
                             contentContainerStyle={{ flexGrow: 1 }}
                         >
                             <View style={styles.screen}>
-                                <Text style={styles.subTitle}>הפרופיל שלי</Text>
+                                <View style={styles.topPage}>
+                                    {this.state.user.ImagePath ?
+                                        <Image style={styles.profilePic}
+                                            source={{ uri: this.state.user.ImagePath }}
+                                        />
+                                        : <Text></Text>
+                                    }
+                                    <View style={styles.basicInfo}>
+                                        <Text style={styles.userName}>{this.state.user.FirstName} {this.state.user.LastName}</Text>
 
-                                {this.state.user.ImagePath &&
-                                    <Image style={styles.avatar}
-                                        source={{ uri: this.state.user.ImagePath }}
-                                    />
-                                }
+                                        {this.state.user.FamilyStatus && <Text style={styles.note}>{this.state.user.FamilyStatus}, {age}</Text>}
+                                        {this.state.user.Gender === 0 && <Text style={styles.note}>עובד ב{this.state.user.WorkPlace}</Text>}
+                                        {this.state.user.Gender === 1 && <Text style={styles.note}>עובדת ב{this.state.user.WorkPlace}</Text>}
+                                        {this.state.user.Gender === 2 && <Text style={styles.note}>עובד/ת ב{this.state.user.WorkPlace}</Text>}
+                                        {this.state.jobName && <Text style={styles.note}>כ{this.state.jobName}</Text>}
+                                    </View>
+                                </View>
 
                                 <View style={styles.center}>
-                                    <Text style={styles.note, { fontSize: 30 }}>{this.state.user.FirstName} {this.state.user.LastName}</Text>
 
-
-                                    {this.state.user.FamilyStatus && <Text style={styles.note}>{this.state.user.FamilyStatus}, {age}</Text>}
-                                    {this.state.jobName && <Text style={styles.note}>{this.state.jobName}</Text>}
-                                    {this.state.user.Gender === 0 && <Text style={styles.note}> עובד ב{this.state.user.WorkPlace}</Text>}
-                                    {this.state.user.Gender === 1 && <Text style={styles.note}> עובדת ב{this.state.user.WorkPlace}</Text>}
-                                    {this.state.user.Gender === 2 && <Text style={styles.note}> עובד/ת ב{this.state.user.WorkPlace}</Text>}
                                     {this.state.user.AboutMe && <Text style={styles.title}>על עצמי</Text>}
                                     {this.state.user.AboutMe && <Text style={styles.note}>{this.state.user.AboutMe}</Text>}
-                                    {intrests && <Text style={styles.note}><Text style={styles.title}>תחומי עניין</Text></Text>}
-                                    {intrests && <Text style={styles.note}>{intrests}</Text>}
+                                    {intrests && <Text style={styles.title}>תחומי עניין</Text>}
+                                    {intrests && <Text style={styles.intrests}>{intrests}</Text>}
                                     {kids && <Text style={styles.title}>גילאי ילדים</Text>}
-                                    {kids && <Text>{kids}</Text>}
+                                    {kids && <Text>{kids} </Text>}
+                                    {this.state.user.city && <Text style={styles.title}>גר/ה ב</Text>}
+                                    {this.state.user.city && <Text style={styles.note}>{this.state.user.city}</Text>}
+                                </View>
 
+                                <View style={styles.businessCard}>
+                                {this.state.selectedCard && <Text style={styles.title}>העסק שלי</Text>}
+                                <Card
+                                                key={this.state.selectedCard.ServiceId}
+                                                image={{ uri: this.state.selectedCard.ImageGallery }}
+                                                containerStyle={styles.innerCardContainer}
+                                            >
+                                                <View style={styles.details}>
+                                                    <Text style={styles.cardTitleText} >{this.state.selectedCard.ServiceName}</Text>
+                                                    <Text style={styles.serviceDesc}>{this.state.selectedCard.Description}</Text>
+                                                    <View style={{ flexDirection: 'row' }}>
+                                                        <FontAwesome name={'star'} size={24} color={'#009999'} />
+                                                        <Text style={styles.serviceDetails}> עסק זה קיבל דירוג של {this.state.selectedCard.Rate} כוכבים</Text>
+                                                    </View>
+                                                    <View style={{ flexDirection: 'row' }}>
+                                                        <FontAwesome name={'calendar'} size={24} color={'#009999'} />
+                                                        <Text style={styles.serviceDetails}> פתוח {this.state.selectedCard.OpenDays}</Text>
+                                                    </View>
+                                                    <View style={{ flexDirection: 'row' }}>
+                                                        <FontAwesome name={'clock-o'} size={24} color={'#009999'} />
+                                                        <Text style={styles.serviceDetails}> בין השעות {this.state.selectedCard.OpenHoursStart} ל- {this.state.selectedCard.OpenHoursEnds}</Text>
+                                                    </View>
+                                                    <View style={{ flexDirection: 'row' }}>
+                                                        <FontAwesome name={'map-marker'} size={24} color={'#009999'} />
+                                                        <Text style={styles.serviceDetails}>  {this.state.selectedCard.ServiceAddress}</Text>
+                                                    </View>
 
-
-
+                                                </View>
+                                    </Card>
                                 </View>
                             </View>
                         </ScrollView>
-                    )}
+                    ) : <Text></Text>}
 
-                    {this.state.editing && (
+                    {this.state.editing ? (
 
                         <View style={{ flex: 1 }}>
                             <ScrollView style={styles.container}
@@ -483,13 +552,9 @@ export default class ProfileEdit extends Component {
                             >
                                 <View style={styles.screen}>
 
-
-                                    <Text style={styles.subTitle} >
-                                        עריכת פרופיל
-                                </Text>
-
-                                    <Image style={styles.avatar1}
-                                        source={{ uri: this.state.picUri}} />
+                                    
+                                    <Image style={styles.profilePic}
+                                        source={{ uri: this.state.user.ImagePath }} />
 
 
                                     <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
@@ -525,7 +590,7 @@ export default class ProfileEdit extends Component {
 
                                     />
 
-                                    <Text style={styles.text} >מגדר</Text>
+                                    <Text style={styles.centeredTitle} >מגדר</Text>
                                     <View style={styles.genderView}>
                                         <OurButton style={styles.genderButton} onPress={() => this.setState({ gender: 0 })}><SimpleLineIcons name="user" size={40} color="black" /></OurButton>
                                         <OurButton style={styles.genderButton} onPress={() => this.setState({ gender: 1 })} ><SimpleLineIcons name="user-female" size={40} color="black" /></OurButton>
@@ -537,7 +602,7 @@ export default class ProfileEdit extends Component {
                                         <Text style={this.state.gender === 2 ? styles.genderNoteSelected : styles.genderNote}  >אחר </Text>
                                     </View>
 
-                                    <Text style={styles.text} >שנת לידה</Text>
+                                    <Text style={styles.centeredTitle} >שנת לידה</Text>
                                     <Picker
                                         mode="dialog"
                                         style={styles.picker}
@@ -550,13 +615,13 @@ export default class ProfileEdit extends Component {
 
 
                                     <View style={styles.workPart}>
-                                        <Text style={styles.text}>מקצוע</Text>
+                                        <Text style={styles.inputLabelStyle}>מקצוע</Text>
                                         <Autocomplete
                                             //מקצוע
 
                                             listContainerStyle={{ alignItems: "flex-start", alignItems: 'stretch' }}
                                             listStyle={{ position: "relative", borderColor: 'white', borderRadius: 8 }}
-                                            inputContainerStyle={{ borderColor: colors.reeBackgrouond }}
+                                            inputContainerStyle={styles.inputContainerStyle}
                                             hideResults={this.state.hideResults}
                                             autoCorrect={false}
                                             defaultValue={this.state.query}
@@ -576,12 +641,12 @@ export default class ProfileEdit extends Component {
                                         />
                                     </View>
                                     <View style={styles.workPart}>
-                                        <Text style={styles.text}>מקום עבודה</Text>
+                                        <Text style={styles.inputLabelStyle}>מקום עבודה</Text>
                                         <Autocomplete
                                             //מקום עבודה
                                             listContainerStyle={{ alignItems: "flex-start", alignItems: 'stretch' }}
                                             listStyle={{ position: "relative", borderColor: 'white', borderRadius: 8 }}
-                                            inputContainerStyle={{ borderColor: colors.reeBackgrouond }}
+                                            inputContainerStyle={styles.inputContainerStyle}
                                             data={cities}
                                             hideResults={this.state.hideCityResults}//close the results
                                             autoCorrect={false}
@@ -618,9 +683,9 @@ export default class ProfileEdit extends Component {
                                                 });
                                                 console.log("family=", this.state.familyStatus);
                                             }}
-                                            itemTextStyle={{ textAlign: "right", fontFamily: 'rubik-regular' }}
-                                            containerStyle={{ width: '90%' }}
-                                            labelTextStyle={{ fontFamily: 'rubik-regular', textAlign: "center" }}
+                                            itemTextStyle={styles.familyStatus}
+                                            containerStyle={{ width: '100%', paddingVertical:10, paddingHorizontal:20 }}
+                                            labelTextStyle={styles.inputLabelStyle}
                                         />
                                     </View>
 
@@ -634,8 +699,8 @@ export default class ProfileEdit extends Component {
                                         multiline={true}
                                         placeholderTextColor={'#D1D3D4'}
                                         containerStyle={{ padding: 10, alignItems: "center", fontFamily: 'rubik-regular', paddingLeft: '5%', paddingRight: '5%' }}
-                                        labelStyle={{ fontSize: 20, fontFamily: 'rubik-regular' }}
-                                        inputStyle={{ fontFamily: 'rubik-regular', textAlign: "right" }}
+                                        labelStyle={styles.inputLabelStyle}
+                                        inputStyle={styles.inputInputStyle}
 
                                     />
                                     <Input
@@ -646,15 +711,14 @@ export default class ProfileEdit extends Component {
                                         placeholder={(this.state.user.numOfKids !== null) ? this.state.user.NumOfChildren + "" : 'כתוב/י מספר..'}
                                         onChangeText={(numOfKids) => this.handleNumOfKids(numOfKids)}
                                         multiline={true}
-                                        placeholderTextColor={'black'}
                                         containerStyle={{ padding: 10, alignItems: "center", fontFamily: 'rubik-regular', paddingLeft: '5%', paddingRight: '5%' }}
-                                        labelStyle={{ fontSize: 20, fontFamily: 'rubik-regular', }}
-                                        inputStyle={{ fontFamily: 'rubik-regular', textAlign: "right" }}
+                                        labelStyle={styles.inputLabelStyle}
+                                        inputStyle={styles.inputInputStyle}
 
                                     />
 
 
-                                    {this.state.kidsYearOfBirth && <Text style={styles.text}>שנות לידה ילדים</Text>}
+                                    {this.state.kidsYearOfBirth && <Text style={styles.centeredTitle}>שנות לידה ילדים</Text>}
                                     <View style={styles.kidsYear}>
 
                                         {this.state.kidsYearOfBirth && this.state.kidsYearOfBirth.map((age, index) => {
@@ -678,9 +742,9 @@ export default class ProfileEdit extends Component {
                                         )}
                                     </View>
 
-                                    <Text style={styles.text}>
+                                    <Text style={styles.centeredTitle}>
                                         בחר/י תחומי עניין
-                   </Text>
+                                    </Text>
                                     {this.state.finished &&
                                         <Interests
                                             IntrestsArray={this.state.IntrestsArray}
@@ -717,7 +781,7 @@ export default class ProfileEdit extends Component {
                                 </View>
                             </ScrollView>
                         </View>
-                    )}
+                    ) : <Text></Text>}
                 </View>
             </View>
         );
@@ -727,52 +791,55 @@ export default class ProfileEdit extends Component {
 const styles = StyleSheet.create({
 
 
-    avatar: {
-        width: 200,
-        height: 200,
-        borderWidth: 4,
-        borderColor: "white",
-        alignSelf: "center",
-        borderRadius: 160
-
+    profilePic: {
+        width: 150,
+        height: 150,
+        borderRadius: 80,
+        marginHorizontal: 20
+    },
+    topPage: {
+        flexDirection: 'row-reverse',
+        justifyContent: 'space-between',
 
     },
-    avatar1: {
-        width: 250,
-        height: 250,
-        borderWidth: 4,
-        borderColor: "white",
-        alignSelf: "center",
+    basicInfo: {
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
 
+        padding: 10
 
+    },
+    userName: {
+        fontSize: 32,
+        paddingBottom: 15,
+        paddingLeft: 10,
+        fontFamily: 'rubik-regular',
     },
     screen: {
         flex: 1,
-        backgroundColor: colors.reeBackgrouond,
+        backgroundColor: 'white'
     },
 
     note: {
         fontFamily: 'rubik-regular',
-        //marginVertical: 1,
-        fontSize: 20,
-        color: 'black',
-        //justifyContent:"center",
-        textAlign: "center",
-        marginRight: 5,
-        marginLeft: 5
+        fontSize: 18,
+        paddingLeft: 10
     },
 
-    subTitle: {
+    intrests: {
         fontFamily: 'rubik-regular',
-        fontSize: 30,
-        fontWeight: 'bold',
-        color: colors.subTitle,
-        textAlign: "center",
-
+        fontSize: 18,
+        paddingLeft: 10,
+        textAlign: 'center'
     },
 
     title: {
-        fontFamily: 'rubik-regular', fontSize: 25, color: "#009999", marginTop: '5%',
+        fontFamily: 'rubik-regular',
+        fontSize: 22,
+        color: "#009999",
+        padding: 10,
+        paddingTop: 30,
+        alignSelf: 'flex-start',
     },
 
     image: {
@@ -781,15 +848,23 @@ const styles = StyleSheet.create({
 
     container: {
         flex: 1,
-        backgroundColor: colors.reeBackgrouond,
+        backgroundColor: 'white'
     },
 
     center: {
-        alignItems: "center",
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        padding: 10
     },
 
-    text: {
-        fontFamily: 'rubik-regular', fontSize: 20, color: '#708090', marginTop: 10, marginBottom: 5, textAlign: "center"
+    centeredTitle: {
+        fontFamily: 'rubik-regular', 
+        textAlign: "center",
+        fontSize: 20, 
+        color:colors.turkiz,
+        paddingHorizontal:10,
+        paddingVertical:10
+
 
     },
 
@@ -865,7 +940,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         height: 90,
         paddingVertical: 20,
-        alignItems: 'center',
+        //alignItems: 'center',
         justifyContent: 'space-around',
         marginHorizontal: 5,
 
@@ -876,20 +951,11 @@ const styles = StyleSheet.create({
         alignSelf: "center"
     },
 
-    /* picker: {
-        width: 90, 
-        fontFamily: 'rubik-regular', 
-        paddingHorizontal: 15,
-        paddingVertical: 15, 
-        backgroundColor: 'white', 
-        borderColor: 'gray'
-    },*/
-
     familyStatus: {
         fontFamily: 'rubik-regular',
         flexDirection: 'row',
-        textAlign: "center",
-        alignSelf: "center"
+        // textAlign: "center",
+        // alignSelf: "center"
     },
     item: {
         flexDirection: 'row',
@@ -900,14 +966,12 @@ const styles = StyleSheet.create({
     autoComplete: {
         fontFamily: 'rubik-regular',
         width: '100%',
-        height: 44,
-        padding: 10,
+        height: 40,
         borderWidth: 1,
         borderColor: 'white',
-        marginBottom: 10,
         textAlign: 'right',
         backgroundColor: 'white',
-        borderRadius: 10,
+        fontSize:18
     },
 
     workPart: {
@@ -920,15 +984,57 @@ const styles = StyleSheet.create({
         color: 'black'
     },
     inputContainerStyle: {
-        alignItems: "center", paddingLeft: '5%', paddingRight: '5%', padding: 10
+        alignItems: "center", 
+        paddingVertical:5, 
+        paddingHorizontal:20,
+        borderColor: colors.reeBackgrouond
     },
 
     inputInputStyle: {
-        fontFamily: 'rubik-regular', textAlign: "right"
+        fontFamily: 'rubik-regular', 
+        textAlign: "right",
+        color: '#708090',
     },
 
     inputLabelStyle: {
-        fontFamily: 'rubik-regular', fontSize: 20, color: '#708090'
+        fontFamily: 'rubik-regular', 
+        fontSize: 20, 
+        alignSelf:'flex-start',
+        color:colors.turkiz,
+        paddingVertical:5
 
     },
+    businessCard:{
+        justifyContent: 'center',
+        flexDirection: 'column',
+        paddingHorizontal:10,
+        paddingBottom:20
+    },
+    cardTitleText: {
+        textAlign: 'center',
+        fontSize: 26,
+        color: "black",
+        fontFamily: 'rubik-regular',
+        paddingBottom: 10
+    },
+    innerCardContainer: {
+        width: 330,
+        height: 350,
+        alignSelf: 'center',
+        borderWidth: 0
+    },
+    serviceDesc: {
+        textAlign: 'center',
+        paddingVertical: 5,
+        fontSize: 16
+    },
+    serviceDetails: {
+        paddingVertical: 5,
+        alignSelf: 'flex-start',
+        fontSize: 16, 
+        paddingLeft:5
+    },
+    details: {
+        paddingVertical: 5
+    }
 });

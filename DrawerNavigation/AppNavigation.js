@@ -80,12 +80,12 @@ const DrawerStack = createDrawerNavigator(
 
 
     },
-    // {
-    //     drawerPosition: 'left',
-    //     initialRouteName: 'Main',
-    //     drawerWidth: 250,
-    //     contentComponent: SideMenu
-    // }
+    {
+        drawerPosition: 'left',
+        initialRouteName: 'Main',
+        drawerWidth: 250,
+        contentComponent: SideMenu
+    }
 );
 
 
