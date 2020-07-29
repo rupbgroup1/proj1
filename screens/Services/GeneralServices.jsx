@@ -210,10 +210,11 @@ class GeneralServices extends React.Component {
 
     render() {
         const { navigation } = this.props;
+        const { selectedDays } = this.state;
         return (
             <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
 
-                <Header navigation={navigation}/>
+                <Header navigation={navigation} />
                 <BackButton goBack={() => navigation.navigate('MainPage')} />
 
                 <View style={styles.row}>
@@ -242,19 +243,21 @@ class GeneralServices extends React.Component {
                         {this.catArray.map((c) => {
                             return (
                                 <View style={{ paddingHorizontal: 1 }}>
-                                    <Button
-                                        type="outline"
+                                    <OurButton
                                         title={c.Name}
-                                        titleStyle={c.Id===this.state.selectedCat
-                                            ? styles.coloredTitleCat
-                                            : styles.titleCat}
                                         key={c.Id}
-                                        onPress={cat => this.filterByCat(c.Id)}
-                                        raised={true}
-                                        buttonStyle={c.Id === this.state.selectedCat ? styles.selectedCategory : styles.categories}
-                                    >
-                                        <FontAwesome name={c.Icon} size={25} color={colors.turkiz} />
-                                    </Button>
+                                        style={styles.categories}
+                                        onPress={cat => this.filterByCat(c.Id)}>
+                                        <FontAwesome name={c.Icon} size={22} color={c.Id === this.state.selectedCat ? colors.Business : colors.header} />
+
+                                    </OurButton>
+                                    <OurButton
+                                        title={c.Name}
+                                        key={c.Id}
+                                        style={styles.categories}
+                                        onPress={cat => this.filterByCat(c.Id)}>
+                                        <Text style={{ color: c.Id === this.state.selectedCat ? colors.Business : colors.header, fontFamily: 'rubik-regular' }}>{c.Name}</Text>
+                                    </OurButton>
                                 </View>
                             )
                         })}
@@ -317,7 +320,7 @@ class GeneralServices extends React.Component {
                                             />
                                         }
                                         {this.state.selectedS != null &&
-                                            <Overlay isVisible={this.state.mapVisible} onBackdropPress={() => this.toggleMapOverlay()}>
+                                            <Overlay overlayStyle={styles.overlay} isVisible={this.state.mapVisible} onBackdropPress={() => this.toggleMapOverlay()}>
                                                 <MapView
                                                     style={{
                                                         width: "100%",
@@ -360,11 +363,25 @@ class GeneralServices extends React.Component {
                                             >
                                                 <View style={styles.details}>
                                                     <Text style={styles.cardTitleText} >{this.state.selectedCard.ServiceName}</Text>
-                                                    <Text style={styles.serviceDetails}>{this.state.selectedCard.Description}</Text>
-                                                    <Text style={styles.serviceDetails}> דירוג העסק: {this.state.selectedCard.Rate}</Text>
-                                                    <Text style={styles.serviceDetails}> פתוח בימים:  {this.state.selectedCard.OpenDays}</Text>
-                                                    <Text style={styles.serviceDetails}> בין השעות: {this.state.selectedCard.OpenHoursStart}-{this.state.selectedCard.OpenHoursEnds}</Text>
-                                                    <Text style={styles.serviceDetails}> כתובת: {this.state.selectedCard.ServiceAddress}</Text>
+                                                    <Text style={styles.serviceDesc}>{this.state.selectedCard.Description}</Text>
+                                                    <View style={{ flexDirection: 'row' }}>
+                                                        <FontAwesome name={'star'} size={24} color={colors.Business} />
+                                                        <Text style={styles.serviceDetails}> עסק זה קיבל דירוג של {this.state.selectedCard.Rate} כוכבים</Text>
+                                                    </View>
+                                                    <View style={{ flexDirection: 'row' }}>
+                                                        <FontAwesome name={'calendar'} size={24} color={colors.Business} />
+                                                        <Text style={styles.serviceDetails}> פתוח {this.state.selectedCard.OpenDays}</Text>
+                                                    </View>
+                                                    <View style={{ flexDirection: 'row' }}>
+                                                        <FontAwesome name={'clock-o'} size={24} color={colors.Business} />
+                                                        <Text style={styles.serviceDetails}> בין השעות {this.state.selectedCard.OpenHoursStart} ל- {this.state.selectedCard.OpenHoursEnds}</Text>
+                                                    </View>
+                                                    <View style={{ flexDirection: 'row' }}>
+                                                        <FontAwesome name={'map-marker'} size={24} color={colors.Business} />
+                                                        <Text style={styles.serviceDetails}>  {this.state.selectedCard.ServiceAddress}</Text>
+                                                    </View>
+
+                                                    
                                                 </View>
 
                                                 <Button
@@ -373,7 +390,7 @@ class GeneralServices extends React.Component {
                                                     titleStyle={styles.cardButtonText}
                                                     onPress={() => {
                                                         this.setState({ visible: false }, () =>
-                                                            navigation.navigate('Chat', { userCode: this.state.selectedCard.OwnerName}));
+                                                            navigation.navigate('Chat', { userCode: this.state.selectedCard.Owner }));
                                                     }}
                                                 > </Button>
 
@@ -426,24 +443,27 @@ const styles = StyleSheet.create({
         height: '85%',
         marginVertical: 5
     },
-    titleCat: { 
-        color: colors.turkiz, 
-        fontFamily:'rubik-regular' 
+    titleCat: {
+        color: colors.turkiz,
+        fontFamily: 'rubik-regular'
     },
-    coloredTitleCat: { 
-        color: 'white', 
-        fontFamily:'rubik-bold' 
+    coloredTitleCat: {
+        color: 'white',
+        fontFamily: 'rubik-bold'
     },
     bottomIcons: {
         paddingBottom: 2
     },
     categories: {
-        backgroundColor: 'white',
-        borderRadius: 0,
-        paddingVertical: 5,
-        paddingHorizontal: 10,
-        borderColor: '#D1D3D4',
-        shadowColor: '#D1D3D4'
+        // backgroundColor: 'white',
+        // borderRadius: 0,
+        // paddingVertical: 5,
+        // paddingHorizontal: 10,
+        // borderColor: '#D1D3D4',
+        // shadowColor: '#D1D3D4'
+        paddingHorizontal: 20,
+        marginBottom: 5,
+        alignItems: 'center'
     },
     titleCat: {
         color: colors.Business,
@@ -453,8 +473,8 @@ const styles = StyleSheet.create({
         color: 'white',
         fontFamily: 'rubik-bold'
     },
-    selectedCategory:{
-        backgroundColor: colors.turkiz,
+    selectedCategory: {
+        backgroundColor: colors.Business,
         borderRadius: 0,
         paddingVertical: 5,
         paddingHorizontal: 10,
@@ -469,10 +489,9 @@ const styles = StyleSheet.create({
     },
     innerCardContainer: {
         width: 330,
-        height: 550,
+        height: 650,
         alignSelf: 'center',
-        borderWidth: 0,
-        top: 40
+        borderWidth: 0
     },
     cardTitle: {
         fontSize: 26,
@@ -480,7 +499,7 @@ const styles = StyleSheet.create({
         fontFamily: 'rubik-regular'
     },
     cardTitleText: {
-        alignSelf: 'center',
+        textAlign: 'center',
         fontSize: 26,
         color: "black",
         fontFamily: 'rubik-regular',
@@ -528,12 +547,21 @@ const styles = StyleSheet.create({
         marginRight: 0
     },
     overlay: {
-        backgroundColor: 'rgba(52, 52, 52, 0)'
+        backgroundColor: 'rgba(52, 52, 52, 0)',
+        width: 330,
+        height: 650,
+        justifyContent: 'center'
+    },
+    serviceDesc: {
+        textAlign: 'center',
+        paddingVertical: 5,
+        fontSize: 18
     },
     serviceDetails: {
         paddingVertical: 5,
         alignSelf: 'flex-start',
-        fontSize: 18
+        fontSize: 18, 
+        paddingLeft:5
     },
     details: {
         paddingVertical: 20

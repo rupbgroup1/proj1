@@ -51,8 +51,8 @@ export default class Chat extends React.Component {
   componentDidMount() {
     let sendTo = this.props.navigation.getParam('userCode');
     console.log(sendTo);
-    this.setState({sendToFullName: sendTo.FirstName+" "+ sendTo.LastName});
-    this.getUser(sendTo.UserId);
+    //this.setState({sendToFullName: sendTo.FirstName+" "+ sendTo.LastName});
+    this.getUser(sendTo);
 
   }
   componentWillUnmount() {

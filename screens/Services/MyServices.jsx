@@ -184,7 +184,7 @@ export default class MyServices extends React.Component {
                                                     {/* nav to map */}
                                                     <Text style={styles.locationText}>לחץ לצפייה במיקום העסק</Text>
                                                 </TouchableOpacity>
-                                                <Overlay isVisible={this.state.mapVisible} onBackdropPress={() => this.toggleMapOverlay()}>
+                                                <Overlay overlayStyle={styles.overlay} isVisible={this.state.mapVisible} onBackdropPress={() => this.toggleMapOverlay()}>
                                                     <MapView
                                                         style={{
                                                             width: "100%",
@@ -297,10 +297,9 @@ const styles = StyleSheet.create({
     },
     innerCardContainer: {
         width: 330,
-        height:550,
+        height: 650,
         alignSelf: 'center',
-        borderWidth:0,
-        top:40
+        borderWidth: 0
     },
     cardTitle: {
         fontSize: 26,
@@ -355,7 +354,10 @@ const styles = StyleSheet.create({
         marginRight:0
     },
     overlay:{
-        backgroundColor: 'rgba(52, 52, 52, 0)'
+        backgroundColor: 'rgba(52, 52, 52, 0)',
+        width: 330,
+        height: 650,
+        justifyContent: 'center'
     },
     serviceDetails:{
         paddingVertical:5,
@@ -366,4 +368,3 @@ const styles = StyleSheet.create({
         paddingVertical:20
     } 
 });
-

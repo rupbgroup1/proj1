@@ -75,12 +75,9 @@ export default class Profile extends Component {
         const age = new Date().getFullYear() - nei.YearOfBirth;
         const jobName = nei.JobTitle != null ? nei.JobTitle.JobName : '';
         const { navigation } = this.props;
-        // const intrests = int.map((i) => (
-        //     intrests+= (i.Subintrest+", ")
-        // ));
-        // const kids = nei.Kids.map((buttonKids) => (
-        //     <Text style={styles.note}> {new Date().getFullYear() - buttonKids.YearOfBirth}  </Text>
-        // ));
+        const intrests = nei.Intrests != null && nei.Intrests.map((buttonIntersts) => (
+            <Text>{buttonIntersts.Subintrest}  |  </Text>
+        ));
         return (
 
             <View style={styles.screen} >
@@ -102,11 +99,12 @@ export default class Profile extends Component {
                         <Text style={styles.note}>{nei.AboutMe}</Text>
                         <Text style={styles.note}>{jobName}, {nei.WorkPlace}</Text>
                         <Text style={styles.title}>תחומי עניין</Text>
-                        {
+                        <Text style={styles.note}>{intrests}</Text>
+                        {/* {
                             nei.Intrests != null && nei.Intrests.map((int, i) => (
                                 <Text style={styles.note}>{int.Subintrest}</Text>
                             ))
-                        }
+                        } */}
                         {nei.NumOfChildren > 0 &&
                             <View>
                                 <Text style={styles.title}>ילדים</Text>
@@ -122,6 +120,9 @@ export default class Profile extends Component {
                                 </View>
                             </View>
                         }
+                        <Button
+                        style={{alignSelf:"center"}} title={'שלח הודעה'} onPress={()=>navigation.navigate('Chat', {userCode:nei.UserId})}>
+                        </Button>
                     </View>
                 </View>
             </View>

@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
         shadowColor: '#D1D3D4'
     },
     selectedCategory: {
-        backgroundColor: colors.turkiz,
+        backgroundColor: colors.Losts,
         borderRadius: 0,
         paddingVertical: 5,
         paddingHorizontal: 10,
@@ -294,7 +294,7 @@ const styles = StyleSheet.create({
         marginBottom: 0,
         width: '60%',
         alignSelf: 'center',
-        backgroundColor: colors.turkiz,
+        backgroundColor: colors.Losts,
         elevation: 4
     },
     cardButtonText: {
@@ -304,7 +304,7 @@ const styles = StyleSheet.create({
     locationText: {
         fontFamily: 'rubik-regular',
         fontSize: 16,
-        color: colors.turkiz
+        color: colors.Losts
     },
     innerCardImage: {
         height: 200,

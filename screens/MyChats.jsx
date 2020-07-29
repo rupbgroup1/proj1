@@ -65,7 +65,7 @@ export default class MyChats extends Component {
                 title={l.FirstName + " " + l.LastName}
                 
                 bottomDivider
-                onPress={() => this.props.navigation.navigate("Chat", { userCode: l })}
+                onPress={() => this.props.navigation.navigate("Chat", { userCode: l.UserId })}
               />
             )) :
             <Text>לא נמצאו שיחות</Text>

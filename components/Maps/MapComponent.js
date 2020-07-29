@@ -101,46 +101,31 @@ const MapComponent = (props) => {
                                         e.isPropagationStopped();
                                         //props.nav.navigate('Profile');                    
                                         Alert.alert(
-                                            'הכיר/י את '+user.FirstName,
-                                            '',
+                                           "רוצה להכיר את "+user.FirstName + " "+ user.LastName+"?",
+                                            user.AboutMe,
                                             [
                                                 {
-                                                    text: 'מעבר לפרופיל',
+                                                    text: 'צפייה בפרופיל',
                                                     onPress: () => {
                                                         console.log('to profile', user.UserId);
                                                         props.nav.navigate('Profile', {neighboor:user});
                                                     }
                                                 },
                                                 {
+                                                    text: 'שלח הודעה',
+                                                    onPress: () => props.nav.navigate('Chat', {userCode:user.UserId})
+                                                },
+                                                {
                                                     text: 'ביטול',
                                                     onPress: () => console.log('Cancel Pressed'),
                                                     style: 'cancel'
                                                 },
-                                                {
-                                                    text: 'שלח/י הודעה',
-                                                    onPress: () => props.nav.navigate('Chat', {userCode:user})
-                                                }
+
                                             ],
-                                            { cancelable: false }
+                                            {cancelable: false}
                                         );
 
-                                        // Alert.alert(
-                                        //     user.FirstName + " " + user.LastName,
-                                        //     "",
-                                        //     [
-                                        //         {
-                                        //             text: "פרטים נוספים",
-                                        //             onPress: () => console.log("שליחת הודעה")
-                                        //         },
-
-                                        //         {
-                                        //             text: "שליחת הודעה",
-                                        //             onPress: ()=> console.log("שליחת הודעה")
-                                        //         }
-                                        //     ]
-
-
-                                        //     );
+                                            
                                     }}>
                                     <View>
                                         <Text style={{fontFamily:'rubik-medium' }}>{user.FirstName + ", " + age}</Text>

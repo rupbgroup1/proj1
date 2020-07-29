@@ -133,7 +133,6 @@ export default class ProfileEdit extends Component {
             }
             );
         });
-        //{this.state.user.JobName && this.setState({})}
 
 
     }
@@ -435,11 +434,7 @@ export default class ProfileEdit extends Component {
         const intrests = this.state.intrests.map((buttonIntersts) => (
             <Text>{buttonIntersts.Subintrest}  |  </Text>
         ));
-        //const intrests = intrests1.slice(0,-1);
-        //const intrests = intrestsTemp;
-        // const intrests = this.state.intrests.map((buttonIntersts) => (
-        //     buttonIntersts.Subintrest.slice(0, -1)));
-
+        
 
         // להציג שנות לידה
         const kids = this.state.kidsYearOfBirth.map((buttonKids) => (
@@ -505,36 +500,7 @@ export default class ProfileEdit extends Component {
                                     {this.state.user.city && <Text style={styles.note}>{this.state.user.city}</Text>}
                                 </View>
 
-                                <View style={styles.businessCard}>
-                                {this.state.selectedCard && <Text style={styles.title}>העסק שלי</Text>}
-                                <Card
-                                                key={this.state.selectedCard.ServiceId}
-                                                image={{ uri: this.state.selectedCard.ImageGallery }}
-                                                containerStyle={styles.innerCardContainer}
-                                            >
-                                                <View style={styles.details}>
-                                                    <Text style={styles.cardTitleText} >{this.state.selectedCard.ServiceName}</Text>
-                                                    <Text style={styles.serviceDesc}>{this.state.selectedCard.Description}</Text>
-                                                    <View style={{ flexDirection: 'row' }}>
-                                                        <FontAwesome name={'star'} size={24} color={'#009999'} />
-                                                        <Text style={styles.serviceDetails}> עסק זה קיבל דירוג של {this.state.selectedCard.Rate} כוכבים</Text>
-                                                    </View>
-                                                    <View style={{ flexDirection: 'row' }}>
-                                                        <FontAwesome name={'calendar'} size={24} color={'#009999'} />
-                                                        <Text style={styles.serviceDetails}> פתוח {this.state.selectedCard.OpenDays}</Text>
-                                                    </View>
-                                                    <View style={{ flexDirection: 'row' }}>
-                                                        <FontAwesome name={'clock-o'} size={24} color={'#009999'} />
-                                                        <Text style={styles.serviceDetails}> בין השעות {this.state.selectedCard.OpenHoursStart} ל- {this.state.selectedCard.OpenHoursEnds}</Text>
-                                                    </View>
-                                                    <View style={{ flexDirection: 'row' }}>
-                                                        <FontAwesome name={'map-marker'} size={24} color={'#009999'} />
-                                                        <Text style={styles.serviceDetails}>  {this.state.selectedCard.ServiceAddress}</Text>
-                                                    </View>
-
-                                                </View>
-                                    </Card>
-                                </View>
+                                
                             </View>
                         </ScrollView>
                     ) : <Text></Text>}
@@ -795,14 +761,13 @@ const styles = StyleSheet.create({
     },
     topPage: {
         flexDirection: 'row-reverse',
-        justifyContent: 'space-between',
+        //justifyContent: 'space-between',
 
     },
     basicInfo: {
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
-
-        padding: 10
+        right: 20
 
     },
     userName: {
