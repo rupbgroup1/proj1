@@ -58,7 +58,7 @@ export default class MyLosts extends React.Component {
                         this.setState({ filteredArray: result })
                     }
                     else
-                        Alert.alert("עדיין לא הוספת מציאות חדשות. להוספת מציאה לחץ/י ' + '");
+                    console.log("no losts");
                 },
                 (error) => {
                     console.log("err post=", error);

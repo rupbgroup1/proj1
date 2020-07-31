@@ -109,10 +109,9 @@ export default class Pic extends Component {
             ImagePath: this.uplodedPicPath + imageNameWithGUID
           }
       
-          
           AsyncStorage.mergeItem('user', JSON.stringify(userDetails), () =>
-          AsyncStorage.removeItem('cameraDetails'));
-          this.props.navigation.navigate('RegistrationP4');
+          this.props.navigation.navigate('RegistrationP4'));
+          AsyncStorage.removeItem('cameraDetails');
         
           console.log(this.state.uplodedPicUri);
           

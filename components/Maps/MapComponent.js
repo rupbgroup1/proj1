@@ -61,7 +61,7 @@ const MapComponent = (props) => {
                 }
             >
                 {props.searchData.length > 0 && props.searchData.map((user, i) => {
-                    if (user.Lat && user.Lan) {
+                    if (user.Lat!=null && user.Lan!=null) {
                         //console.log("TEST=", props.searchData);
                         let age = new Date().getFullYear() - user.YearOfBirth;
                         let about = (user.AboutMe != null ? user.AboutMe : '');

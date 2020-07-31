@@ -488,11 +488,11 @@ const styles = StyleSheet.create({
         shadowRadius: 5
     },
     innerCardContainer: {
-        width: 330,
-        height: 650,
-        alignSelf: 'center',
-        borderWidth: 0
-    },
+    width: 330,
+    height: 650,
+    alignSelf: 'center',
+    borderWidth: 0
+  },
     cardTitle: {
         fontSize: 26,
         color: "black",

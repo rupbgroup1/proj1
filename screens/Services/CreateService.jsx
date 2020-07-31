@@ -115,16 +115,16 @@ export default class CreateEvent extends React.Component {
               this.setState(prevState => ({
                 newS: {
                     ...prevState.newS,
-                    Image: this.uplodedPicPath + imageNameWithGUID
+                    ImageGallery: this.uplodedPicPath + imageNameWithGUID
                 }
                   
-              }))
-              console.log("Image" + this.state.newS.Image)
+              }));
+              console.log("Image" + this.state.newS.ImageGallery);
 
 
               AsyncStorage.removeItem('cameraDetails');
               //{this.editMode ? this.fetchUpdateEvent() : this.fetchCreatEvent()}
-              {this.editMode ? this.fetchUpdateService() : this.fetchCreateService()}
+              {this.editMode ? this.fetchUpdateService(this.uplodedPicPath + imageNameWithGUID) : this.fetchCreateService()}
               //this.fetchCreatEvent();
 
 
@@ -189,12 +189,7 @@ export default class CreateEvent extends React.Component {
 
     }
     
-    handleFocus = e => {
-        this.setState({ isFocus: true });
-    }
-    handleBlur = e => {
-        this.setState({ isFocus: false });
-    }
+   
 
     setTime = (event, selectedDate) => {
         const currentDate = selectedDate || this.state.timeStart;
@@ -224,7 +219,15 @@ export default class CreateEvent extends React.Component {
         }));
     };
 
-
+    update = () =>{
+        if (this.state.newS.ImageGallery === this.state.picUri){
+            this.fetchUpdateService();
+        }
+        
+        else{
+            this.btnUpload();
+        }
+    }
 
     showTimepicker1 = () => {
         this.setState({ show1: true, mode: 'time' });
@@ -242,7 +245,7 @@ export default class CreateEvent extends React.Component {
         let serviceToUpdate = {
             ServiceId: s.ServiceId,
             ServiceName: s.ServiceName,
-            ImagePrimary: s.Image,
+            ImageGallery: s.ImageGallery,
             Description: s.Description,
             Owner: s.Owner,
             OpenDays: s.OpenDays,
@@ -369,8 +372,6 @@ export default class CreateEvent extends React.Component {
                         autoFocus={true}
                         placeholder="שם העסק"
                         placeholderTextColor={'grey'}
-                        selectionColor={blue}
-                        underlineColorAndroid={this.state.isFocus ? blue : grey}
                         onFocus={this.handleFocus}
                         onBlur={this.handleBlur}
                         value={newS.ServiceName}
@@ -389,10 +390,9 @@ export default class CreateEvent extends React.Component {
                             placeholder="תיאור"
                             multiline={true}
                             placeholderTextColor={'grey'}
-                            selectionColor={blue}
-                            underlineColorAndroid={this.state.isFocus ? blue : grey}
                             onFocus={this.handleFocus}
                             onBlur={this.handleBlur}
+                    
                             onChangeText={text => this.setState(prevState => ({
                                 newS: {
                                     ...prevState.newS,
@@ -406,8 +406,7 @@ export default class CreateEvent extends React.Component {
                         style={styles.input}
                         placeholder="פתוח בימים"
                         placeholderTextColor={'grey'}
-                        selectionColor={blue}
-                        underlineColorAndroid={this.state.isFocus ? blue : grey}
+                    
                         onFocus={this.handleFocus}
                         onBlur={this.handleBlur}
                         onChangeText={text => this.setState(prevState => ({
@@ -495,8 +494,8 @@ export default class CreateEvent extends React.Component {
                     title={this.editMode ? "עדכן" : "צור עסק חדש"}
                     buttonStyle={styles.createButton}
                     containerStyle={{ marginTop: 1 }}
-                    onPress={() => this.editMode ? this.fetchUpdateService() : this.btnUpload()}
-                //onPress={()=> this.btnUpload()}
+                    onPress={() => this.editMode ? this.update(): this.btnUpload()}
+           
                 ></Button>
 
             </View>

@@ -50,10 +50,10 @@ export default class SideMenu extends React.Component {
               <Text style={styles.Name}>
                 היי {this.state.user.FirstName}
               </Text>
-              {this.state.user.ImagePath &&
+              {this.state.user.ImagePath ?
                 <Image style={styles.profilePic}
                   source={{ uri: this.state.user.ImagePath }} />
-              }
+               : <Text></Text>}
             </View>
             <TouchableOpacity
               onPress={() => navigation.navigate('RegistrationExtra')}>
