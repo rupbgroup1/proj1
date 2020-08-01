@@ -12,7 +12,7 @@ import { Dropdown } from 'react-native-material-dropdown';
 import moment from "moment";
 
 
-export default class CreateEvent extends React.Component {
+export default class CreateService extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -119,7 +119,7 @@ export default class CreateEvent extends React.Component {
                 }
                   
               }));
-              console.log("Image" + this.state.newS.ImageGallery);
+              console.log("Image" , this.state.newS.ImageGallery);
 
 
               AsyncStorage.removeItem('cameraDetails');
@@ -135,7 +135,7 @@ export default class CreateEvent extends React.Component {
           }
         else {
           console.log('error uploding ...2');
-          alert('error uploding ...2');
+          //alert('error uploding ...2');
         }
       })
       .catch(err => {

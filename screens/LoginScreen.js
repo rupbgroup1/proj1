@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { Alert, Button, TextInput, View, StyleSheet, Text, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { Alert, TextInput, View, StyleSheet, Text, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { Button } from 'react-native-elements';
 import RememberMe from '../components/RememberMe';
 import { AsyncStorage } from 'react-native';
 import Background from '../components/Background';
 import registerForPushNotificationsAsync from '../components/registerForPushNotificationsAsync';
 import { Notifications } from 'expo';
+import colors from '../assets/constant/colors';
 
 
 export default class LoginScreen extends Component {
@@ -121,22 +123,19 @@ export default class LoginScreen extends Component {
 
 
         <View style={styles.button}>
-          <Button
-            fontFamily='rubik-regular'
-            color='#0d7d96'
-            title={'כניסה'}
-            titleText={{fontSize:26, color:'#f0a500'}}
-            titleStyle={{}}
-            onPress={() => {
-              this.state.usernameValid ? this.fetchOnLogin() : Alert.alert("שם משתמש לא תקין")
-            }
-            }
-            onPressIn={() => {
-              Keyboard.dismiss;
-            }}
-          />
+            <Button
+              buttonStyle={styles.enterButton}
+              title={'כניסה'}
+              onPress={() => {
+                this.state.usernameValid ? this.fetchOnLogin() : Alert.alert("שם משתמש לא תקין")
+              }
+              }
+              onPressIn={() => {
+                Keyboard.dismiss;
+              }}
+            />
 
-        </View>
+          </View>
         <Text onPress={() => this.props.navigation.navigate('ForgotPassword')} style={styles.forgotPassword} >
           שכחתי סיסמה {'\n'}{'\n'}
         </Text>
@@ -212,5 +211,14 @@ const styles = StyleSheet.create({
     fontFamily: 'rubik-regular',
     color: '#0d7d96',
     fontSize: 18
+  },
+  enterButton: {
+    borderRadius: 5,
+    marginBottom: 0,
+    width: '100%',
+    alignSelf: 'center',
+    backgroundColor: colors.turkiz,
+    elevation: 4,
+    padding: 8
   }
 });

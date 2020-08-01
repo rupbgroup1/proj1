@@ -170,13 +170,27 @@ export default class MyServices extends React.Component {
                                                 image={{ uri: this.state.selectedCard.ImageGallery }}
                                                 containerStyle={styles.innerCardContainer}
                                             >
-                                                <View style={styles.details}>
-                                                <Text style={styles.cardTitleText} >{this.state.selectedCard.ServiceName}</Text>
-                                                <Text style={styles.serviceDetails}>{this.state.selectedCard.Description}</Text>
-                                                <Text style={styles.serviceDetails}> דירוג העסק: {this.state.selectedCard.Rate}</Text>
-                                                <Text style={styles.serviceDetails}> פתוח בימים:  {this.state.selectedCard.OpenDays}</Text>
-                                                <Text style={styles.serviceDetails}> בין השעות: {this.state.selectedCard.OpenHoursStart}-{this.state.selectedCard.OpenHoursEnds}</Text>
-                                                <Text style={styles.serviceDetails}> כתובת: {this.state.selectedCard.ServiceAddress}</Text>
+                                                 <View style={styles.details}>
+                                                    <Text style={styles.cardTitleText} >{this.state.selectedCard.ServiceName}</Text>
+                                                    <Text style={styles.serviceDesc}>{this.state.selectedCard.Description}</Text>
+                                                    <View style={{ flexDirection: 'row' }}>
+                                                        <FontAwesome name={'star'} size={24} color={colors.Business} />
+                                                        <Text style={styles.serviceDetails}> עסק זה קיבל דירוג של {this.state.selectedCard.Rate} כוכבים</Text>
+                                                    </View>
+                                                    <View style={{ flexDirection: 'row' }}>
+                                                        <FontAwesome name={'calendar'} size={24} color={colors.Business} />
+                                                        <Text style={styles.serviceDetails}> פתוח {this.state.selectedCard.OpenDays}</Text>
+                                                    </View>
+                                                    <View style={{ flexDirection: 'row' }}>
+                                                        <FontAwesome name={'clock-o'} size={24} color={colors.Business} />
+                                                        <Text style={styles.serviceDetails}> בין השעות {this.state.selectedCard.OpenHoursStart} ל- {this.state.selectedCard.OpenHoursEnds}</Text>
+                                                    </View>
+                                                    <View style={{ flexDirection: 'row' }}>
+                                                        <FontAwesome name={'map-marker'} size={24} color={colors.Business} />
+                                                        <Text style={styles.serviceDetails}>  {this.state.selectedCard.ServiceAddress}</Text>
+                                                    </View>
+
+                                                    
                                                 </View>
                                                 <TouchableOpacity
                                                     style={{ paddingVertical: 20, alignSelf: 'center' }}
@@ -237,6 +251,11 @@ export default class MyServices extends React.Component {
 const styles = StyleSheet.create({
     imageCard: {
         resizeMode: 'cover'
+    },
+    serviceDesc: {
+        textAlign: 'center',
+        paddingVertical: 5,
+        fontSize: 18
     },
     row: {
         flexDirection: 'row',
@@ -359,10 +378,11 @@ const styles = StyleSheet.create({
         height: 650,
         justifyContent: 'center'
     },
-    serviceDetails:{
-        paddingVertical:5,
-        alignSelf:'flex-start',
-        fontSize:16
+    serviceDetails: {
+        paddingVertical: 5,
+        alignSelf: 'flex-start',
+        fontSize: 18, 
+        paddingLeft:5
     },
     details:{
         paddingVertical:20

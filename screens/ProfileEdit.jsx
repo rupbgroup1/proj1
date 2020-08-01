@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Alert, Button, TextInput, View, StyleSheet, Text, AsyncStorage, Picker, TouchableOpacity, TouchableHighlightBase, Image } from 'react-native';
+import { Alert, TextInput, View, StyleSheet, Text, AsyncStorage, Picker, TouchableOpacity, TouchableHighlightBase, Image } from 'react-native';
 import Header from '../components/Header';
 import colors from '../assets/constant/colors';
-import { Input, Card } from 'react-native-elements';
+import { Input, Button, Card } from 'react-native-elements';
 import Interests from '../components/Interests';
 import { Dropdown } from 'react-native-material-dropdown';
 import Autocomplete from 'react-native-autocomplete-input';
@@ -129,7 +129,6 @@ export default class ProfileEdit extends Component {
                 this.fetchGetAllIntrests();
                 this.fetchGetCity();
                 this.fetchGetAllJobTitle();
-                this.fetchGetMyServices(userObj.UserId);
             }
             );
         });
@@ -293,7 +292,7 @@ export default class ProfileEdit extends Component {
             Gender: this.state.gender,
             YearOfBirth: this.state.yearOfBirth,
             FirstName: this.state.vFName,
-            LastName: this.state.lName,
+            LastName: this.state.vLName,
             ImagePath: this.state.uplodedPicUri
 
         }
@@ -398,35 +397,7 @@ export default class ProfileEdit extends Component {
             });
     }
 
-    //I'm the owner
-    fetchGetMyServices(userId) {
-        console.log("in fetch");
-        return fetch('http://proj.ruppin.ac.il/bgroup29/prod/api/Services/My?userId=' + userId, {
-
-            method: 'GET',
-            headers: new Headers({
-                'Content-Type': 'application/json; charset=UTF-8',
-            })
-        })
-            .then(res => {
-                return res.json();
-            })
-            .then(
-                (result) => {
-                    if (result.length > 0) {
-                        console.log("Events = ", result);
-                        this.arrayholder = result;
-                        this.setState({ filteredArray: result })
-                    }
-                    else
-                        Alert.alert("עדיין לא יצרת עסקים חדשים. להוספת עסק לחץ/י ' + '");
-                },
-                (error) => {
-                    console.log("err post=", error);
-                    Alert.alert("מצטערים, אנו נסו שנית!");
-                }
-            );
-    }
+    
 
 
     render() {
@@ -516,7 +487,7 @@ export default class ProfileEdit extends Component {
 
                                     
                                     <Image style={styles.profilePic}
-                                        source={{ uri: this.state.user.ImagePath }} />
+                                        source={{ uri: this.state.picUri }} />
 
 
                                     <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
@@ -717,27 +688,14 @@ export default class ProfileEdit extends Component {
                                             initialInterest={this.state.initialInterest ? this.state.initialInterest : []}
                                         />}
 
-                                    <View style={styles.row}>
+                                    <View style={{ padding: 20 }}>
                                         <Button
-                                            style={styles.item}
+                                            buttonStyle={styles.endButton}
                                             title={'סיום'}
-                                           // onPress={() => this.btnUpload()}
-                                           onPress={() => { this.state.picUri === this.state.user.ImagePath ? this.fetchUpdateUser() : this.btnUpload() }}
+                                            // onPress={() => this.btnUpload()}
+                                            onPress={() => { this.state.picUri === this.state.user.ImagePath ? this.fetchUpdateUser() : this.btnUpload() }}
 
 
-                                        />
-                                        <Button
-                                            style={styles.item}
-                                            title={'ביטול'} onPress={() => {
-                                                this.setState({
-                                                    editing: false,
-                                                    vFName: this.state.fName,
-                                                    vLName: this.state.lName,
-                                                    vImage: this.state.image,
-                                                    vYearOfBirth: this.state.yearOfBirth,
-                                                    vGender: this.state.gender,
-                                                })
-                                            }}
                                         />
                                     </View>
                                 </View>
@@ -769,6 +727,15 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         right: 20
 
+    },
+    endButton: {
+        borderRadius: 30,
+        marginBottom: 0,
+        width: '60%',
+        alignSelf: 'center',
+        backgroundColor: colors.turkiz,
+        elevation: 4,
+        padding: 10
     },
     userName: {
         fontSize: 32,

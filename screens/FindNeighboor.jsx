@@ -26,24 +26,26 @@ export default class FindNeighboor extends Component {
     }
 
     componentDidMount() {
-        this.fetchGetAllIntrests();
         this.getUser();
+        this.fetchGetAllIntrests();
+       
     }
 
-    async getUser() {
-        let userJSON = await AsyncStorage.getItem('user');
-        const userObj = await JSON.parse(userJSON);
-        this.setState({
-            region: {
-                ...this.state.region,
-                latitude: userObj.Lat,
-                longitude: userObj.Lan
-            },
-            user: userObj,
-            NeighborhoodName: userObj.NeighborhoodName
-        });
+    getUser() {
+        AsyncStorage.getItem('user', (err, userJSON) => {
+            const userObj = JSON.parse(userJSON);
+            this.setState({
+                region: {
+                    ...this.state.region,
+                    latitude: userObj.Lat,
+                    longitude: userObj.Lan
+                },
+                user: userObj,
+                NeighborhoodName: userObj.NeighborhoodName
+            });
 
-        this.fetchGetMatches(userObj.UserId);
+            this.fetchGetMatches(userObj.UserId);
+        });
     }
 
     //fetch - get match users
@@ -216,9 +218,7 @@ export default class FindNeighboor extends Component {
             <View style={styles.screen}>
                 <Header navigation={navigation}/>
                 <BackButton goBack={() => this.props.navigation.navigate('MainPage')} />
-                {/* <Text style={styles.text} >
-                    חיפוש לפי שם של שכן
-                   </Text> */}
+                
                 <TextInput
                     value={this.state.searchName}
                     onChangeText={(text) => this.setState({ searchName: text })}

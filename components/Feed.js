@@ -41,9 +41,10 @@ import firebaseSvc from '../FirebaseSvc';
     async getUser() {
         let userJSON = await AsyncStorage.getItem('user');
         const userObj = await JSON.parse(userJSON);
-        firebaseSvc.getNei(userObj.NeighborhoodName);
+        const nei = userObj.NeighborhoodName
+        firebaseSvc.getNei(nei);
         this.setState({ user: userObj, userCode:userObj.UserId, Nei:userObj.NeighborhoodName },() => {
-                    firebaseSvc.refOn(message =>
+           firebaseSvc.refOn(message =>
                 this.setState(previousState => ({
                   messages: GiftedChat.append(previousState.messages, message),
                 }))
@@ -60,11 +61,6 @@ import firebaseSvc from '../FirebaseSvc';
     }
 
 
-      // renderTime(){
-      //   this.state.messages.forEach(mes => {
-      //    return moment(mes.createdAt).format("LT");
-      //  }); 
-      // }
 
     render() {
       return (
