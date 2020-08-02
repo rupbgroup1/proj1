@@ -1,9 +1,9 @@
 import React, { Component, createElement } from 'react';
-import { Button, View, StyleSheet, Text, Image, Alert, AsyncStorage, TouchableOpacity, Picker, SafeAreaView, ScrollView } from 'react-native';
+import { View, StyleSheet, Text, Image, Alert, AsyncStorage, TouchableOpacity, Picker, SafeAreaView, ScrollView } from 'react-native';
 import Header from '../components/Header';
 import colors from '../assets/constant/colors';
 import BackButton from '../components/BackButton';
-import { Input } from 'react-native-elements';
+import { Input, Button } from 'react-native-elements';
 import OurButton from '../components/OurButton';
 import Autocomplete from 'react-native-autocomplete-input';
 import { Dropdown } from 'react-native-material-dropdown';
@@ -120,9 +120,11 @@ export default class Profile extends Component {
                                 </View>
                             </View>
                         }
+                       <View style={{padding:30}}>
                         <Button
-                        style={{alignSelf:"center"}} title={'שלח הודעה'} onPress={()=>navigation.navigate('Chat', {userCode:nei.UserId})}>
+                        buttonStyle={styles.sendButton} title={'שלח הודעה'} onPress={()=>navigation.navigate('Chat', {userCode:nei.UserId})}>
                         </Button>
+                        </View>
                     </View>
                 </View>
             </View>
@@ -133,6 +135,14 @@ export default class Profile extends Component {
 const styles = StyleSheet.create({
     header: {
         backgroundColor: "white",
+    },
+    sendButton: {
+        borderRadius: 30,
+        marginBottom: 0,
+        width: '60%',
+        alignSelf: 'center',
+        backgroundColor: colors.turkiz,
+        elevation: 4
     },
     avatar: {
         width: '53%',

@@ -101,7 +101,7 @@ export default class MyLosts extends React.Component {
     SearchFilterFunction(text) {
         const newData = this.arrayholder.filter(function (item) {
             //applying filter for the inserted text in search bar
-            const itemData = item.ServiceName;
+            const itemData = item.Title;
             return itemData.indexOf(text) > -1;
         });
         console.log("filter==", newData);
@@ -163,8 +163,22 @@ export default class MyLosts extends React.Component {
                                         <Text style={styles.cardTitleText}>{l.Title}</Text>
                                         <View>
                                             <Text style={styles.cardText}>{l.Description}</Text>
+                                            <View style={{flexDirection:"row", paddingLeft:10}}>
+                                            <MaterialIcons 
+                                                name="location-on"
+                                                size={22}
+                                                color={colors.Losts}>
+                                            </MaterialIcons>
                                             <Text style={styles.cardText}>{l.Location}</Text>
-                                            <Text style={styles.cardText}>{l.FoundDate}</Text>
+                                        </View>
+                                            <View style={{flexDirection:"row", paddingLeft:10}}>
+                                            <MaterialIcons 
+                                                name="event"
+                                                size={22}
+                                                color={colors.Losts}>
+                                            </MaterialIcons>
+                                            <Text style={styles.cardText}>{moment(l.FoundDate).format("DD/MM/YYYY")}</Text>
+                                        </View>
                                         </View>
                                         <View style={{ paddingVertical: 10 }}>
                                             <Button

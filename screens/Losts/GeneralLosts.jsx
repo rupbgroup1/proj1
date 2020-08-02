@@ -73,7 +73,7 @@ class GeneralLosts extends React.Component {
     SearchFilterFunction(text) {
         const newData = this.arrayholder.filter(function (item) {
             //applying filter for the inserted text in search bar
-            const itemData = item.ServiceName;
+            const itemData = item.Title;
             return itemData.indexOf(text) > -1;
         });
         console.log("filter==", newData);

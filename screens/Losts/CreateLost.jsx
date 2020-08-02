@@ -216,16 +216,13 @@ export default class CreateLost extends React.Component {
         const newLost = this.state.newLost;
         return (
             <View style={styles.container}>
-                <KeyboardAvoidingView
-                    style={{ flex: 1 }}
-                    behavior={'height'}
-                >
+               
                     <Header navigation={navigation} />
                     <BackButton goBack={() => navigation.navigate('GeneralLosts')} />
                     <ScrollView>
 
                         <View style={styles.scrollView}>
-                            {this.state.picUri === "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Lost_main_title.svg/1200px-Lost_main_title.svg.png" ? null : <ImageBackground source={{ uri: this.state.picUri }} style={{ flex: 1, resizeMode: "cover", justifyContent: "center", height: '100%', width: '100%' }}>
+                            {this.state.picUri === "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Lost_main_title.svg/1200px-Lost_main_title.svg.png" ? null : <ImageBackground source={{ uri: this.state.picUri }} style={{ flex: 1, resizeMode: "cover", justifyContent: "center", height: 250, width: '100%' }}>
 
                             </ImageBackground>}
                         </View>
@@ -324,12 +321,12 @@ export default class CreateLost extends React.Component {
 
                     </ScrollView>
 
-                </KeyboardAvoidingView>
+                
                 <View style={styles.position}>
                     <Button
                         title="שמור"
                         buttonStyle={styles.createButton}
-                        containerStyle={{ marginTop: 1 }}
+                        containerStyle={{ marginTop: 50 }}
                         onPress={() => this.validateInputes()}
                     ></Button>
                 </View>
